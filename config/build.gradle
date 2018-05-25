@@ -1,0 +1,18 @@
+jar {
+  baseName = rootProject.name + '-' + project.name
+  manifest {
+    attributes('Implementation-Title': baseName,
+    'Implementation-Version': project.version)
+  }
+}
+
+dependencies {
+  compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+  compile 'org.jetbrains.kotlin:kotlin-reflect'
+  testCompile 'org.junit.jupiter:junit-jupiter-api'
+  testCompile 'org.junit.jupiter:junit-jupiter-params'
+  testRuntime 'org.junit.jupiter:junit-jupiter-engine'
+  testCompile 'org.jetbrains.spek:spek-api'
+  testRuntime 'org.jetbrains.spek:spek-junit-platform-engine'
+  testCompile 'com.winterbe:expekt'
+}

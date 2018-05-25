@@ -3,6 +3,7 @@ dependencyManagement {
     dependency('org.bouncycastle:bcprov-jdk15on:1.59')
     dependency('com.github.jnr:jnr-ffi:2.1.7')
     dependency('com.google.guava:guava:23.6-jre')
+    dependency('com.winterbe:expekt:0.5.0')
     dependency('io.vertx:vertx-core:3.5.0')
     dependency('org.assertj:assertj-core:3.9.0')
     dependency('org.junit.jupiter:junit-jupiter-api:5.1.0')
@@ -14,6 +15,5 @@ dependencyManagement {
     dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core:0.22.5')
     dependency('org.jetbrains.spek:spek-api:1.1.5')
     dependency('org.jetbrains.spek:spek-junit-platform-engine:1.1.5')
-    dependency('com.winterbe:expekt:0.5.0')
   }
 }
