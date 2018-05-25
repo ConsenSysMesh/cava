@@ -1,0 +1,16 @@
+dependencyManagement {
+  dependencies {
+    dependency('com.google.guava:guava:23.6-jre')
+    dependency('io.vertx:vertx-core:3.5.0')
+    dependency('org.assertj:assertj-core:3.9.0')
+    dependency('org.junit.jupiter:junit-jupiter-api:5.1.0')
+    dependency('org.junit.jupiter:junit-jupiter-params:5.1.0')
+    dependency('org.junit.jupiter:junit-jupiter-engine:5.1.0')
+    dependency('org.jetbrains.kotlin:kotlin-reflect:1.2.41')
+    dependency('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.41')
+    dependency('org.jetbrains.kotlin:kotlin-stdlib:1.2.41')
+    dependency('org.jetbrains.spek:spek-api:1.1.5')
+    dependency('org.jetbrains.spek:spek-junit-platform-engine:1.1.5')
+    dependency('com.winterbe:expekt:0.5.0')
+  }
+}
