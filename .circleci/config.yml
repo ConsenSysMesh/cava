@@ -15,6 +15,19 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Check submodule status
+          command: git submodule status | tee ~/submodule-status
+
+      - restore_cache:
+          name: Restoring cached submodules
+          keys:
+          - v1-submodules-{{ checksum "~/submodule-status" }}
+
+      - run:
+          name: Update submodules
+          command: git submodule update --init --recursive
+
+      - run:
           name: Install Sodium Library
           command: |
             sudo sh -c "echo 'deb http://deb.debian.org/debian unstable main contrib non-free' > /etc/apt/sources.list"
@@ -113,3 +126,9 @@ jobs:
           - .gradle
           - ~/.gradle
           key: v1-gradle-dir-{{ checksum "build.gradle" }}-{{ .Branch }}-{{ .BuildNum }}
+
+      - save_cache:
+          name: Caching submodules
+          paths:
+            - .git/modules
+          key: v1-submodules-{{ checksum "~/submodule-status" }}

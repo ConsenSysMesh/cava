@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+jar { enabled = false }
+
+dependencies {
+  testCompile project(':eth-domain')
+  testCompile project(':merkle-trie')
+  testCompile project(':rlp')
+
+  testCompile 'org.bouncycastle:bcprov-jdk15on'
+  testCompile 'org.junit.jupiter:junit-jupiter-api'
+  testCompile 'org.junit.jupiter:junit-jupiter-params'
+  testCompile 'com.fasterxml.jackson.core:jackson-databind:2.9.5'
+
+  testRuntime 'org.junit.jupiter:junit-jupiter-engine'
+}
