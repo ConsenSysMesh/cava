@@ -1,6 +1,7 @@
 dependencyManagement {
   dependencies {
     dependency('org.bouncycastle:bcprov-jdk15on:1.59')
+    dependency('org.bouncycastle:bcpkix-jdk15on:1.59')
     dependency('com.github.jnr:jnr-ffi:2.1.7')
     dependency('com.google.guava:guava:23.6-jre')
     dependency('com.winterbe:expekt:0.5.0')
