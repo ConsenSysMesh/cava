@@ -1,6 +1,8 @@
 rootProject.name='cava'
 include 'bytes'
 include 'concurrent'
+include 'config'
+include 'crypto'
 include 'io'
 include 'junit'
 include 'units'

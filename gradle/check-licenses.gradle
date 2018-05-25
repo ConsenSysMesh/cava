@@ -21,6 +21,7 @@ ext.acceptedLicenses = [
   'MIT License',
   'Apache License, Version 2.0',
   'Bouncy Castle Licence',
+  'BSD License',
   'BSD 3-Clause'
 ]*.toLowerCase()
 
