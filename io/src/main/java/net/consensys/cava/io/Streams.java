@@ -1,0 +1,60 @@
+package net.consensys.cava.io;
+
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.util.Enumeration;
+import java.util.Spliterator;
+import java.util.Spliterators;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
+
+/**
+ * Utilities for working with streams.
+ */
+public final class Streams {
+  private Streams() {}
+
+  private static final PrintStream NULL_PRINT_STREAM = new PrintStream(NullOutputStream.INSTANCE);
+
+  /**
+   * @return An {@link OutputStream} that discards all input.
+   */
+  public static OutputStream nullOutputStream() {
+    return NullOutputStream.INSTANCE;
+  }
+
+  /**
+   * @return A {@link PrintStream} that discards all input.
+   */
+  public static PrintStream nullPrintStream() {
+    return NULL_PRINT_STREAM;
+  }
+
+  /**
+   * Stream an {@link Enumeration}.
+   *
+   * @param enumeration The enumeration.
+   * @param <T> The type of objects in the enumeration.
+   * @return A stream over the enumeration.
+   */
+  public static <T> Stream<T> enumerationStream(Enumeration<T> enumeration) {
+    return StreamSupport.stream(new Spliterators.AbstractSpliterator<T>(Long.MAX_VALUE, Spliterator.ORDERED) {
+      @Override
+      public boolean tryAdvance(Consumer<? super T> action) {
+        if (enumeration.hasMoreElements()) {
+          action.accept(enumeration.nextElement());
+          return true;
+        }
+        return false;
+      }
+
+      @Override
+      public void forEachRemaining(Consumer<? super T> action) {
+        while (enumeration.hasMoreElements()) {
+          action.accept(enumeration.nextElement());
+        }
+      }
+    }, false);
+  }
+}
