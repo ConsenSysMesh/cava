@@ -1,5 +1,5 @@
 /**
- * Classes and utilities for working with cryptography.
+ * Classes and utilities for working with networking.
  *
  * <p>
  * These classes are included in the standard Cava distribution, or separately when using the gradle dependency
