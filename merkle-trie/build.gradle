@@ -1,3 +1,5 @@
+description = 'Patricia Merkle Trie implementations.'
+
 jar {
   baseName = rootProject.name + '-' + project.name
   manifest {

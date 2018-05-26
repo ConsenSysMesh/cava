@@ -1,5 +1,7 @@
 apply plugin: 'java-library'
 
+description = 'Utilities for better junit testing.'
+
 jar {
   baseName = rootProject.name + '-' + project.name
   manifest {

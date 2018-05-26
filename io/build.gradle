@@ -1,5 +1,7 @@
 apply plugin: 'java-library'
 
+description = 'Classes and utilities for handling file and network IO.'
+
 jar {
   baseName = rootProject.name + '-' + project.name
   manifest {

@@ -1,3 +1,6 @@
+
+description = 'Recursive Length Prefix (RLP) encoding and decoding.'
+
 jar {
   baseName = rootProject.name + '-' + project.name
   manifest {

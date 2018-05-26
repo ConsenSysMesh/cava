@@ -1,5 +1,7 @@
 apply plugin: 'java-library'
 
+description = 'Classes and utilities for working with cryptography.'
+
 jar {
   baseName = rootProject.name + '-' + project.name
   manifest {
