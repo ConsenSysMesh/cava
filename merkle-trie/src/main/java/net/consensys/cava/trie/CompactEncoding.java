@@ -5,12 +5,24 @@ import static com.google.common.base.Preconditions.checkArgument;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.MutableBytes;
 
-final class CompactEncoding {
+/**
+ * Compact (Hex-prefix) encoding and decoding.
+ *
+ * <p>
+ * https://github.com/ethereum/wiki/wiki/Patricia-Tree#specification-compact-encoding-of-hex-sequence-with-optional-terminator
+ */
+public final class CompactEncoding {
   private CompactEncoding() {}
 
-  static final byte LEAF_TERMINATOR = 0x10;
+  public static final byte LEAF_TERMINATOR = 0x10;
 
-  static Bytes bytesToPath(Bytes bytes) {
+  /**
+   * Calculate a RADIX-16 path for a given byte sequence.
+   *
+   * @param bytes The byte sequence to calculate the path for.
+   * @return The Radix-16 path.
+   */
+  public static Bytes bytesToPath(Bytes bytes) {
     MutableBytes path = MutableBytes.create(bytes.size() * 2 + 1);
     int j = 0;
     for (int i = 0; i < bytes.size(); i += 1, j += 2) {
@@ -22,7 +34,13 @@ final class CompactEncoding {
     return path;
   }
 
-  static Bytes encode(Bytes path) {
+  /**
+   * Encode a Radix-16 path.
+   *
+   * @param path A Radix-16 path.
+   * @return A compact-encoded path.
+   */
+  public static Bytes encode(Bytes path) {
     int size = path.size();
     boolean isLeaf = size > 0 && path.get(size - 1) == LEAF_TERMINATOR;
     if (isLeaf) {
@@ -58,6 +76,12 @@ final class CompactEncoding {
     return encoded;
   }
 
+  /**
+   * Decode a compact-encoded path to Radix-16.
+   *
+   * @param encoded A compact-encoded path.
+   * @return A Radix-16 path.
+   */
   public static Bytes decode(Bytes encoded) {
     int size = encoded.size();
     checkArgument(size > 0);
