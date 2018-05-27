@@ -119,32 +119,32 @@ allprojects {
   //////
   // Packaging and deployment
 
+  tasks.withType(Jar) {
+    baseName = rootProject.name + '-' + project.name
+    manifest {
+      attributes('Implementation-Title': baseName,
+      'Implementation-Version': project.version)
+    }
+  }
+
+  jar {
+    destinationDir = file("${rootProject.buildDir}/libs")
+  }
+
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    destinationDir = file("${rootProject.buildDir}/src")
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  task javadocJar(type: Jar, dependsOn: javadoc) {
+    destinationDir = file("${rootProject.buildDir}/docs")
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+  }
+
   afterEvaluate {
     if (project.jar.enabled) {
-      task sourcesJar(type: Jar, dependsOn: classes) {
-        destinationDir = file("${rootProject.buildDir}/src")
-        classifier = 'sources'
-        from sourceSets.main.allSource
-      }
-
-      task javadocJar(type: Jar, dependsOn: javadoc) {
-        destinationDir = file("${rootProject.buildDir}/docs")
-        classifier = 'javadoc'
-        from javadoc.destinationDir
-      }
-
-      jar {
-        destinationDir = file("${rootProject.buildDir}/libs")
-      }
-
-      tasks.withType(Jar) {
-        baseName = rootProject.name + '-' + project.name
-        manifest {
-          attributes('Implementation-Title': baseName,
-          'Implementation-Version': project.version)
-        }
-      }
-
       artifacts {
         archives jar
         archives sourcesJar
@@ -222,7 +222,7 @@ subprojects {
 
 
 //////
-// Bundle all subprojects into a single jar and javadoc
+// Bundle all subprojects
 
 subprojects.each { evaluationDependsOn(it.path) }
 
@@ -232,7 +232,6 @@ jar {
     attributes('Implementation-Title': baseName,
     'Implementation-Version': project.version)
   }
-
   subprojects.each {
     from it.sourceSets.main.output
     dependsOn it.classes
@@ -249,11 +248,31 @@ dependencies {
   }
 }
 
+sourcesJar {
+  baseName = rootProject.name
+  manifest {
+    attributes('Implementation-Title': baseName,
+    'Implementation-Version': project.version)
+  }
+  subprojects.each {
+    from it.sourceSets.main.allSource
+    dependsOn it.classes
+  }
+}
+
 javadoc {
   subprojects.each {
     dependsOn it.javadoc
     source += it.javadoc.source
     classpath += it.javadoc.classpath
+  }
+}
+
+javadocJar {
+  baseName = rootProject.name
+  manifest {
+    attributes('Implementation-Title': baseName,
+    'Implementation-Version': project.version)
   }
 }
 
