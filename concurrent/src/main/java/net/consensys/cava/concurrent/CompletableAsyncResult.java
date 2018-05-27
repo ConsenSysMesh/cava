@@ -1,7 +1,7 @@
 package net.consensys.cava.concurrent;
 
 /**
- * A {@link AsyncResult} that can be later completed successfully with a provided value, or completed with an exception.
+ * An {@link AsyncResult} that can be later completed successfully with a provided value, or completed with an exception.
  *
  * @param <T> The type of the value returned by this result.
  */

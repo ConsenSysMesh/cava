@@ -1,7 +1,7 @@
 package net.consensys.cava.concurrent;
 
 /**
- * A {@link AsyncCompletion} that can later be completed successfully or with a provided exception.
+ * An {@link AsyncCompletion} that can later be completed successfully or with a provided exception.
  */
 public interface CompletableAsyncCompletion extends AsyncCompletion {
 
