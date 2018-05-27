@@ -4,8 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.concurrent.AsyncCompletion;
-import net.consensys.cava.trie.AsyncMerklePatriciaTrie;
+import net.consensys.cava.trie.experimental.MerklePatriciaTrie;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,6 +14,7 @@ import java.nio.file.Paths;
 import java.security.Security;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -43,12 +43,11 @@ class MerkleTrieTestSuite {
   @MethodSource("readAnyOrderTrieTests")
   @SuppressWarnings({"unchecked", "rawtypes"})
   void testAnyOrderTrieTrees(String name, Map input, String root) throws Exception {
-
-    AsyncMerklePatriciaTrie<Bytes, String> trie = new AsyncMerklePatriciaTrie<>(this::readFromString);
-    AsyncCompletion.allOf(input.entrySet().stream().map(entry -> {
+    MerklePatriciaTrie<Bytes, String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
+    for (Object entry : input.entrySet()) {
       Map.Entry keyValue = (Map.Entry) entry;
-      return trie.put(readFromString((String) keyValue.getKey()), (String) keyValue.getValue());
-    })).join();
+      trie.putAsync(readFromString((String) keyValue.getKey()), (String) keyValue.getValue()).join();
+    }
     assertEquals(Bytes.fromHexString(root), trie.rootHash());
   }
 
@@ -56,14 +55,13 @@ class MerkleTrieTestSuite {
   @MethodSource("readTrieTests")
   @SuppressWarnings({"unchecked", "rawtypes"})
   void testTrieTrees(String name, List input, String root) throws Exception {
-    AsyncMerklePatriciaTrie<Bytes, String> trie = new AsyncMerklePatriciaTrie<>(this::readFromString);
-    AsyncCompletion.allOf(input.stream().map(inputElt -> {
-      List keyValue = (List) inputElt;
-      return trie.put(readFromString((String) keyValue.get(0)), (String) keyValue.get(1));
-    })).join();
+    MerklePatriciaTrie<Bytes, String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
+    for (Object entry : input) {
+      List keyValue = (List) entry;
+      trie.putAsync(readFromString((String) keyValue.get(0)), (String) keyValue.get(1)).join();
+    }
     assertEquals(Bytes.fromHexString(root), trie.rootHash());
   }
-
 
   private static Stream<Arguments> readTrieTests() throws IOException {
     return prepareTests(Paths.get("TrieTests", "trietest.json"));

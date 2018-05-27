@@ -5,6 +5,8 @@ dependencies {
   compile project(':concurrent')
   compile project(':crypto')
   compile project(':rlp')
+  compile 'com.google.guava:guava'
+  compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
 
   testCompile 'org.bouncycastle:bcprov-jdk15on'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
