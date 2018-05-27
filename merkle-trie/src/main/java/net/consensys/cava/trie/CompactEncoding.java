@@ -9,7 +9,9 @@ import net.consensys.cava.bytes.MutableBytes;
  * Compact (Hex-prefix) encoding and decoding.
  *
  * <p>
- * https://github.com/ethereum/wiki/wiki/Patricia-Tree#specification-compact-encoding-of-hex-sequence-with-optional-terminator
+ * An implementation of <a href=
+ * "https://github.com/ethereum/wiki/wiki/Patricia-Tree#specification-compact-encoding-of-hex-sequence-with-optional-terminator">Compact
+ * (Hex-prefix) encoding</a>.
  */
 public final class CompactEncoding {
   private CompactEncoding() {}

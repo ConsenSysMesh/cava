@@ -126,6 +126,12 @@ allprojects {
     outputDirectory = "$buildDir/docs/dokka"
     jdkVersion = 8
     includeNonPublic = false
+    def relativePath = rootDir.toPath().relativize(projectDir.toPath()).toString()
+    linkMapping {
+      dir = projectDir.toString()
+      url = "https://github.com/consensys/cava/blob/master/$relativePath"
+      suffix = "#L"
+    }
   }
 
 
@@ -290,16 +296,20 @@ javadocJar {
 
 dokka {
   moduleName = rootProject.name
+  subprojects.each {
+    dependsOn it.classes
+    classpath += it.sourceSets.main.output
+  }
   sourceDirs = files(subprojects.collect {
-    def path = new File(it.projectDir, "/src/main/kotlin")
-    def relativePath = rootDir.toPath().relativize(path.toPath()).toString()
-    linkMapping {
-      dir = path
-      url = "https://github.com/consensys/cava/blob/master/$relativePath"
-      suffix = "#L"
-    }
+    def path = new File(it.projectDir, "/src/main")
     return path
   })
+  linkMapping {
+    dir = rootDir.toString()
+    url = "https://github.com/consensys/cava/blob/master"
+    suffix = "#L"
+  }
+  includes = ['PACKAGE.md']
 }
 
 if (!file("eth-reference-tests/src/test/resources/tests/README.md").exists()) {
