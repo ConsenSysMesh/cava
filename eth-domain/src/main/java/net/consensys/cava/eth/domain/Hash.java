@@ -1,7 +1,7 @@
 package net.consensys.cava.eth.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 import static net.consensys.cava.crypto.Hash.keccak256;
 
 import net.consensys.cava.bytes.Bytes;
@@ -25,7 +25,7 @@ public final class Hash {
    * @throws IllegalArgumentException If {@code bytes.size() != 32}.
    */
   public static Hash fromBytes(Bytes bytes) {
-    checkNotNull(bytes);
+    requireNonNull(bytes);
     checkArgument(bytes.size() == SIZE, "Expected %s bytes but got %s", SIZE, bytes.size());
     return new Hash(Bytes32.wrap(bytes));
   }
@@ -37,7 +37,7 @@ public final class Hash {
    * @return A hash.
    */
   public static Hash fromBytes(Bytes32 bytes) {
-    checkNotNull(bytes);
+    requireNonNull(bytes);
     return new Hash(bytes);
   }
 
@@ -62,7 +62,7 @@ public final class Hash {
       return false;
     }
     Hash hash = (Hash) obj;
-    return Objects.equal(delegate, hash.delegate);
+    return delegate.equals(hash.delegate);
   }
 
   @Override

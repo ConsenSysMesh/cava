@@ -1,7 +1,7 @@
 package net.consensys.cava.eth.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
 
@@ -23,7 +23,7 @@ public final class Address {
    * @throws IllegalArgumentException If {@code bytes.size() != 20}.
    */
   public static Address fromBytes(Bytes bytes) {
-    checkNotNull(bytes);
+    requireNonNull(bytes);
     checkArgument(bytes.size() == SIZE, "Expected %s bytes but got %s", SIZE, bytes.size());
     return new Address(bytes);
   }
@@ -44,8 +44,8 @@ public final class Address {
     if (!(obj instanceof Address)) {
       return false;
     }
-    Address address = (Address) obj;
-    return Objects.equal(delegate, address.delegate);
+    Address other = (Address) obj;
+    return delegate.equals(other.delegate);
   }
 
   @Override

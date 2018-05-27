@@ -1,7 +1,7 @@
 package net.consensys.cava.eth.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
+import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
@@ -119,13 +119,13 @@ public final class Transaction {
       Wei value,
       Bytes payload,
       Signature signature) {
-    checkNotNull(nonce);
+    requireNonNull(nonce);
     checkArgument(nonce.compareTo(UInt256.ZERO) >= 0, "Nonce less than zero");
-    checkNotNull(gasPrice);
-    checkNotNull(to);
-    checkNotNull(value);
-    checkNotNull(signature);
-    checkNotNull(payload);
+    requireNonNull(gasPrice);
+    requireNonNull(to);
+    requireNonNull(value);
+    requireNonNull(signature);
+    requireNonNull(payload);
     this.nonce = nonce;
     this.gasPrice = gasPrice;
     this.gasLimit = gasLimit;
