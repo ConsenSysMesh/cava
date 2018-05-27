@@ -103,7 +103,7 @@ jobs:
 
       - run:
           name: Building JavaDoc
-          command: ./gradlew javadoc
+          command: ./gradlew :javadoc
 
       - store_artifacts:
           name: Uploading JavaDoc

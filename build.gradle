@@ -262,7 +262,6 @@ sourcesJar {
 
 javadoc {
   subprojects.each {
-    dependsOn it.javadoc
     source += it.javadoc.source
     classpath += it.javadoc.classpath
   }
