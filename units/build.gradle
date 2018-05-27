@@ -1,12 +1,4 @@
-apply plugin: 'java-library'
-
-jar {
-  baseName = rootProject.name + '-' + project.name
-  manifest {
-    attributes('Implementation-Title': baseName,
-    'Implementation-Version': project.version)
-  }
-}
+description = 'Classes and utilities for working with 256 bit integers.'
 
 dependencies {
   compile project(':bytes')

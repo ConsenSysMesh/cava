@@ -1,10 +1,4 @@
-jar {
-  baseName = rootProject.name + '-' + project.name
-  manifest {
-    attributes('Implementation-Title': baseName,
-    'Implementation-Version': project.version)
-  }
-}
+description = 'Patricia Merkle Trie implementations.'
 
 dependencies {
   compile project(':bytes')

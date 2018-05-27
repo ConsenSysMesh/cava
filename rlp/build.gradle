@@ -1,10 +1,4 @@
-jar {
-  baseName = rootProject.name + '-' + project.name
-  manifest {
-    attributes('Implementation-Title': baseName,
-    'Implementation-Version': project.version)
-  }
-}
+description = 'Recursive Length Prefix (RLP) encoding and decoding.'
 
 dependencies {
   compile project(':bytes')
@@ -12,10 +6,10 @@ dependencies {
 
   testCompile project(':units')
   testCompile 'com.winterbe:expekt'
+  testCompile 'org.jetbrains.spek:spek-api'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testRuntime 'org.junit.jupiter:junit-jupiter-engine'
   testCompile 'org.junit.jupiter:junit-jupiter-params'
-  testCompile 'org.jetbrains.spek:spek-api'
 
   testRuntime 'org.jetbrains.spek:spek-junit-platform-engine'
 }

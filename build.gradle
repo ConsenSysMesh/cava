@@ -113,15 +113,67 @@ allprojects {
     }
   }
 
+  kotlin.experimental.coroutines = 'enable'
+
+
+  //////
+  // Packaging and deployment
+
   afterEvaluate {
     if (project.jar.enabled) {
+      task sourcesJar(type: Jar, dependsOn: classes) {
+        destinationDir = file("${rootProject.buildDir}/src")
+        classifier = 'sources'
+        from sourceSets.main.allSource
+      }
+
+      task javadocJar(type: Jar, dependsOn: javadoc) {
+        destinationDir = file("${rootProject.buildDir}/docs")
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+      }
+
+      jar {
+        destinationDir = file("${rootProject.buildDir}/libs")
+      }
+
+      tasks.withType(Jar) {
+        baseName = rootProject.name + '-' + project.name
+        manifest {
+          attributes('Implementation-Title': baseName,
+          'Implementation-Version': project.version)
+        }
+      }
+
+      artifacts {
+        archives jar
+        archives sourcesJar
+        archives javadocJar
+      }
+
       publishing {
         publications {
           MavenDeployment(MavenPublication) {
             from components.java
+            artifact sourcesJar { classifier 'sources' }
+            artifact javadocJar { classifier 'javadoc' }
             groupId 'net.consensys.cava'
             artifactId project.jar.baseName
             version project.version
+            pom.withXml {
+              def root = asNode()
+              root.appendNode('description', project.description)
+              root.appendNode('name', project.jar.baseName)
+              root.appendNode('url', 'https://github.com/ConsenSys/cava')
+              def license = root.appendNode('licenses').appendNode('license')
+              license.appendNode('name', 'The Apache Software License, Version 2.0')
+              license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
+              license.appendNode('distribution', 'repo')
+              def scm = root.appendNode('scm')
+              scm.appendNode('url', 'https://github.com/ConsenSys/cava')
+              scm.appendNode('connection', 'scm:https://github.com/ConsenSys/cava.git')
+              scm.appendNode('developerConnection', 'scm:git@github.com:ConsenSys/cava.git')
+            }
           }
         }
       }
@@ -150,13 +202,6 @@ allprojects {
 
 
 subprojects {
-
-  //////
-  // Publish all jars into build/libs
-
-  tasks.withType(Jar) {
-    destinationDir = file("${rootProject.buildDir}/libs")
-  }
 
   //////
   // Parallel build execution
