@@ -24,7 +24,7 @@ import com.google.common.collect.DiscreteDomain;
  * @param <V> The type of values to store in the map.
  */
 @SuppressWarnings("rawtypes") // allow ungenerified Comparable types
-public class AtomicSlotMap<K extends Comparable, V> {
+public final class AtomicSlotMap<K extends Comparable, V> {
   private final DiscreteDomain<K> domain;
   private final ConcurrentHashMap<K, Optional<V>> slots = new ConcurrentHashMap<>();
   private final AtomicInteger size = new AtomicInteger(0);
