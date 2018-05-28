@@ -617,7 +617,7 @@ class BytesTest {
 
   @Test
   void testGetIntNotEnoughBytes() {
-    Throwable exception = assertThrows(IllegalArgumentException.class, () -> wrap(new byte[] {1, 2, 3, 4}).getInt(1));
+    Throwable exception = assertThrows(IndexOutOfBoundsException.class, () -> wrap(new byte[] {1, 2, 3, 4}).getInt(1));
     assertEquals("Value of size 4 has not enough bytes to read a 4 bytes int from index 1", exception.getMessage());
   }
 
@@ -674,7 +674,7 @@ class BytesTest {
 
   @Test
   void testGetLongNotEnoughBytes() {
-    Throwable exception = assertThrows(IllegalArgumentException.class, () -> wrap(new byte[] {1, 2, 3, 4}).getLong(0));
+    Throwable exception = assertThrows(IndexOutOfBoundsException.class, () -> wrap(new byte[] {1, 2, 3, 4}).getLong(0));
     assertEquals("Value of size 4 has not enough bytes to read a 8 bytes long from index 0", exception.getMessage());
   }
 

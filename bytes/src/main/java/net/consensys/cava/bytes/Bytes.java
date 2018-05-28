@@ -3,6 +3,7 @@ package net.consensys.cava.bytes;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 
 import java.math.BigInteger;
 import java.security.MessageDigest;
@@ -319,16 +320,15 @@ public interface Bytes {
    * @param i The index from which to get the int, which must less than or equal to {@code size() -
    *     4}.
    * @return An integer whose value is the 4 bytes from this value starting at index {@code i}.
-   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {i &gt;= size()}.
-   * @throws IllegalArgumentException if {@code i &gt; size() - 4}.
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 4}.
    */
   default int getInt(int i) {
-    checkElementIndex(i, size());
-    checkArgument(
-        i <= size() - 4,
-        "Value of size %s has not enough bytes to read a 4 bytes int from index %s",
-        size(),
-        i);
+    int size = size();
+    checkElementIndex(i, size);
+    if (i > (size - 4)) {
+      throw new IndexOutOfBoundsException(
+          format("Value of size %s has not enough bytes to read a 4 bytes int from index %s", size, i));
+    }
 
     int value = 0;
     value |= ((int) get(i) & 0xFF) << 24;
@@ -380,16 +380,15 @@ public interface Bytes {
    * @param i The index from which to get the long, which must less than or equal to {@code size() -
    *     8}.
    * @return A long whose value is the 8 bytes from this value starting at index {@code i}.
-   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {i &gt;= size()}.
-   * @throws IllegalArgumentException if {@code i &gt; size() - 8}.
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 8}.
    */
   default long getLong(int i) {
-    checkElementIndex(i, size());
-    checkArgument(
-        i <= size() - 8,
-        "Value of size %s has not enough bytes to read a 8 bytes long from index %s",
-        size(),
-        i);
+    int size = size();
+    checkElementIndex(i, size);
+    if (i > (size - 8)) {
+      throw new IndexOutOfBoundsException(
+          format("Value of size %s has not enough bytes to read a 8 bytes long from index %s", size, i));
+    }
 
     long value = 0;
     value |= ((long) get(i) & 0xFF) << 56;

@@ -1,8 +1,8 @@
 package net.consensys.cava.bytes;
 
-import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.lang.String.format;
 
 import io.vertx.core.buffer.Buffer;
 
@@ -113,16 +113,15 @@ public interface MutableBytes extends Bytes {
    *
    * @param i The index, which must less than or equal to {@code size() - 4}.
    * @param value The integer value.
-   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {i &gt;= size()}.
-   * @throws IllegalArgumentException if {@code i &gt; size() - 4}.
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 4}.
    */
   default void setInt(int i, int value) {
-    checkElementIndex(i, size());
-    checkArgument(
-        i <= size() - 4,
-        "Value of size %s does not have enough bytes to write a 4 bytes int from index %s",
-        size(),
-        i);
+    int size = size();
+    checkElementIndex(i, size);
+    if (i > (size - 4)) {
+      throw new IndexOutOfBoundsException(
+          format("Value of size %s has not enough bytes to write a 4 bytes int from index %s", size, i));
+    }
 
     set(i++, (byte) (value >>> 24));
     set(i++, (byte) ((value >>> 16) & 0xFF));
@@ -135,16 +134,15 @@ public interface MutableBytes extends Bytes {
    *
    * @param i The index , which must less than or equal to {@code size() - 8}.
    * @param value The long value.
-   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {i &gt;= size()}.
-   * @throws IllegalArgumentException if {@code i &gt; size() - 8}.
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 8}.
    */
   default void setLong(int i, long value) {
-    checkElementIndex(i, size());
-    checkArgument(
-        i <= size() - 8,
-        "Value of size %s has not enough bytes to write a 8 bytes long from index %s",
-        size(),
-        i);
+    int size = size();
+    checkElementIndex(i, size);
+    if (i > (size - 8)) {
+      throw new IndexOutOfBoundsException(
+          format("Value of size %s has not enough bytes to write a 8 bytes long from index %s", size, i));
+    }
 
     set(i++, (byte) (value >>> 56));
     set(i++, (byte) ((value >>> 48) & 0xFF));
