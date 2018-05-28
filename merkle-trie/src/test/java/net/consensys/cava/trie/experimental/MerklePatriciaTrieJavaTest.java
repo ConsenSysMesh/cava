@@ -9,9 +9,7 @@ import net.consensys.cava.bytes.Bytes32;
 
 import java.security.Security;
 import java.util.Optional;
-import java.util.function.Function;
 
-import kotlin.text.Charsets;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -27,8 +25,7 @@ class MerklePatriciaTrieJavaTest {
 
   @BeforeEach
   void setup() {
-    Function<String, Bytes> valueSerializer = value -> Bytes.wrap(value.getBytes(Charsets.UTF_8));
-    trie = new MerklePatriciaTrie<>(valueSerializer);
+    trie = MerklePatriciaTrie.storingStrings();
   }
 
   @Test

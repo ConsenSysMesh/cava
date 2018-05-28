@@ -9,10 +9,7 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.nio.charset.Charset
 import java.security.Security
-
-private val valueSerializer: (String) -> Bytes = { value -> Bytes.wrap(value.toByteArray(Charset.forName("UTF-8"))) }
 
 internal class MerklePatriciaTrieKotlinTest {
 
@@ -28,7 +25,7 @@ internal class MerklePatriciaTrieKotlinTest {
 
   @BeforeEach
   fun setup() {
-    trie = MerklePatriciaTrie(valueSerializer)
+    trie = MerklePatriciaTrie.storingStrings()
   }
 
   @Test

@@ -11,9 +11,7 @@ import java.security.Security;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 
-import kotlin.text.Charsets;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
@@ -23,9 +21,7 @@ import org.junit.jupiter.api.Test;
 class StoredMerklePatriciaTrieJavaTest {
 
   private MerkleStorage merkleStorage;
-  private Function<String, Bytes> valueSerializer;
-  private Function<Bytes, String> valueDeserializer;
-  private StoredMerklePatriciaTrie<Bytes, String> trie;
+  private StoredMerklePatriciaTrie<String> trie;
 
   @BeforeAll
   static void loadProvider() {
@@ -48,9 +44,7 @@ class StoredMerklePatriciaTrieJavaTest {
       }
     };
 
-    valueSerializer = value -> (value != null) ? Bytes.wrap(value.getBytes(Charsets.UTF_8)) : null;
-    valueDeserializer = bytes -> new String(bytes.toArrayUnsafe(), Charsets.UTF_8);
-    trie = new StoredMerklePatriciaTrie<>(merkleStorage, valueSerializer, valueDeserializer);
+    trie = StoredMerklePatriciaTrie.storingStrings(merkleStorage);
   }
 
   @Test
@@ -287,17 +281,17 @@ class StoredMerklePatriciaTrieJavaTest {
 
     assertEquals(Optional.of("value4"), trie.getAsync(key1).get());
 
-    trie = new StoredMerklePatriciaTrie<>(merkleStorage, hash1, valueSerializer, valueDeserializer);
+    trie = StoredMerklePatriciaTrie.storingStrings(merkleStorage, hash1);
     assertEquals(Optional.of("value1"), trie.getAsync(key1).get());
     assertEquals(Optional.empty(), trie.getAsync(key2).get());
     assertEquals(Optional.empty(), trie.getAsync(key3).get());
 
-    trie = new StoredMerklePatriciaTrie<>(merkleStorage, hash2, valueSerializer, valueDeserializer);
+    trie = StoredMerklePatriciaTrie.storingStrings(merkleStorage, hash2);
     assertEquals(Optional.of("value1"), trie.getAsync(key1).get());
     assertEquals(Optional.of("value2"), trie.getAsync(key2).get());
     assertEquals(Optional.of("value3"), trie.getAsync(key3).get());
 
-    trie = new StoredMerklePatriciaTrie<>(merkleStorage, hash3, valueSerializer, valueDeserializer);
+    trie = StoredMerklePatriciaTrie.storingStrings(merkleStorage, hash3);
     assertEquals(Optional.of("value4"), trie.getAsync(key1).get());
     assertEquals(Optional.of("value2"), trie.getAsync(key2).get());
     assertEquals(Optional.of("value3"), trie.getAsync(key3).get());

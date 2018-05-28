@@ -8,7 +8,6 @@ import net.consensys.cava.concurrent.coroutines.experimental.asyncCompletion
 import net.consensys.cava.concurrent.coroutines.experimental.asyncResult
 import net.consensys.cava.crypto.Hash.keccak256
 import net.consensys.cava.rlp.RLP
-import net.consensys.cava.trie.MerkleStorageException
 import java.util.Optional
 
 /**

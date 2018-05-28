@@ -10,11 +10,7 @@ import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.nio.charset.Charset
 import java.security.Security
-
-private val valueSerializer: (String) -> Bytes = { value -> Bytes.wrap(value.toByteArray(Charset.forName("UTF-8"))) }
-private val valueDeserializer: (Bytes) -> String = { bytes -> String(bytes.toArrayUnsafe(), Charset.forName("UTF-8")) }
 
 internal class StoredMerklePatriciaTrieKotlinTest {
 
@@ -33,12 +29,12 @@ internal class StoredMerklePatriciaTrieKotlinTest {
       storage[hash] = content
     }
   }
-  private lateinit var trie: StoredMerklePatriciaTrie<Bytes, String>
+  private lateinit var trie: StoredMerklePatriciaTrie<String>
 
   @BeforeEach
   fun setup() {
     storage = mutableMapOf()
-    trie = StoredMerklePatriciaTrie(merkleStorage, valueSerializer, valueDeserializer)
+    trie = StoredMerklePatriciaTrie.storingStrings(merkleStorage)
   }
 
   @Test
@@ -299,21 +295,21 @@ internal class StoredMerklePatriciaTrieKotlinTest {
     assertNotEquals(hash3, hash1)
     assertNotEquals(hash3, hash2)
 
-    val trie1 = StoredMerklePatriciaTrie<Bytes, String>(merkleStorage, hash1, valueSerializer, valueDeserializer)
+    val trie1 = StoredMerklePatriciaTrie.storingStrings(merkleStorage, hash1)
     runBlocking {
       assertEquals("value1", trie1.get(key1))
       assertNull(trie1.get(key2))
       assertNull(trie1.get(key3))
     }
 
-    val trie2 = StoredMerklePatriciaTrie<Bytes, String>(merkleStorage, hash2, valueSerializer, valueDeserializer)
+    val trie2 = StoredMerklePatriciaTrie.storingStrings(merkleStorage, hash2)
     runBlocking {
       assertEquals("value1", trie2.get(key1))
       assertEquals("value2", trie2.get(key2))
       assertEquals("value3", trie2.get(key3))
     }
 
-    val trie3 = StoredMerklePatriciaTrie<Bytes, String>(merkleStorage, hash3, valueSerializer, valueDeserializer)
+    val trie3 = StoredMerklePatriciaTrie.storingStrings(merkleStorage, hash3)
     runBlocking {
       assertEquals("value4", trie3.get(key1))
       assertEquals("value2", trie3.get(key2))

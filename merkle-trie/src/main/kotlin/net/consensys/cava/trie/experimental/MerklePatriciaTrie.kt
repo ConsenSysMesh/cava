@@ -5,6 +5,10 @@ import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.trie.CompactEncoding.bytesToPath
 import java.util.function.Function
 
+internal fun bytesIdentity(b: Bytes): Bytes = b
+internal fun stringSerializer(s: String): Bytes = Bytes.wrap(s.toByteArray(Charsets.UTF_8))
+internal fun stringDeserializer(b: Bytes): String = String(b.toArrayUnsafe(), Charsets.UTF_8)
+
 /**
  * An in-memory [MerkleTrie].
  *
@@ -12,7 +16,24 @@ import java.util.function.Function
  * @param valueSerializer A function for serializing values to bytes.
  * @constructor Creates an empty trie.
  */
-class MerklePatriciaTrie<in K : Bytes, V>(valueSerializer: (V) -> Bytes) : MerkleTrie<K, V> {
+class MerklePatriciaTrie<V>(valueSerializer: (V) -> Bytes) : MerkleTrie<Bytes, V> {
+
+  companion object {
+    /**
+     * Create a trie with keys and values of type [Bytes].
+     */
+    @JvmStatic
+    fun storingBytes(): MerklePatriciaTrie<Bytes> = MerklePatriciaTrie(::bytesIdentity)
+
+    /**
+     * Create a trie with value of type [String].
+     *
+     * Strings are stored in UTF-8 encoding.
+     */
+    @JvmStatic
+    fun storingStrings(): MerklePatriciaTrie<String> = MerklePatriciaTrie(::stringSerializer)
+  }
+
   private val getVisitor = GetVisitor<V>()
   private val removeVisitor = RemoveVisitor<V>()
   private val nodeFactory: DefaultNodeFactory<V> = DefaultNodeFactory(valueSerializer)
@@ -25,16 +46,16 @@ class MerklePatriciaTrie<in K : Bytes, V>(valueSerializer: (V) -> Bytes) : Merkl
    */
   constructor(valueSerializer: Function<V, Bytes>) : this(valueSerializer::apply)
 
-  override suspend fun get(key: K): V? = root.accept(getVisitor, bytesToPath(key)).value()
+  override suspend fun get(key: Bytes): V? = root.accept(getVisitor, bytesToPath(key)).value()
 
-  override suspend fun put(key: K, value: V?) {
+  override suspend fun put(key: Bytes, value: V?) {
     if (value == null) {
       return remove(key)
     }
     this.root = root.accept(PutVisitor(nodeFactory, value), bytesToPath(key))
   }
 
-  override suspend fun remove(key: K) {
+  override suspend fun remove(key: Bytes) {
     this.root = root.accept(removeVisitor, bytesToPath(key))
   }
 

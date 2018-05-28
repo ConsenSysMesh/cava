@@ -43,7 +43,7 @@ class MerkleTrieTestSuite {
   @MethodSource("readAnyOrderTrieTests")
   @SuppressWarnings({"unchecked", "rawtypes"})
   void testAnyOrderTrieTrees(String name, Map input, String root) throws Exception {
-    MerklePatriciaTrie<Bytes, String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
+    MerklePatriciaTrie<String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
     for (Object entry : input.entrySet()) {
       Map.Entry keyValue = (Map.Entry) entry;
       trie.putAsync(readFromString((String) keyValue.getKey()), (String) keyValue.getValue()).join();
@@ -55,7 +55,7 @@ class MerkleTrieTestSuite {
   @MethodSource("readTrieTests")
   @SuppressWarnings({"unchecked", "rawtypes"})
   void testTrieTrees(String name, List input, String root) throws Exception {
-    MerklePatriciaTrie<Bytes, String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
+    MerklePatriciaTrie<String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
     for (Object entry : input) {
       List keyValue = (List) entry;
       trie.putAsync(readFromString((String) keyValue.get(0)), (String) keyValue.get(1)).join();

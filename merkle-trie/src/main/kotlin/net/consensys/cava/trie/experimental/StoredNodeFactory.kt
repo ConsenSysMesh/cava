@@ -6,7 +6,6 @@ import net.consensys.cava.rlp.RLP
 import net.consensys.cava.rlp.RLPException
 import net.consensys.cava.rlp.RLPReader
 import net.consensys.cava.trie.CompactEncoding
-import net.consensys.cava.trie.MerkleStorageException
 import java.util.Collections
 
 internal class StoredNodeFactory<V>(

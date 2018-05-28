@@ -10,7 +10,52 @@ import java.util.function.Function
  *
  * @param <V> The type of values stored by this trie.
  */
-class StoredMerklePatriciaTrie<in K : Bytes, V> : MerkleTrie<K, V> {
+class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
+
+  companion object {
+    /**
+     * Create a trie with value of type [Bytes].
+     *
+     * @param storage The storage to use for persistence.
+     */
+    @JvmStatic
+    fun storingBytes(storage: MerkleStorage): StoredMerklePatriciaTrie<Bytes> =
+      StoredMerklePatriciaTrie(storage, ::bytesIdentity, ::bytesIdentity)
+
+    /**
+     * Create a trie with keys and values of type [Bytes].
+     *
+     * @param storage The storage to use for persistence.
+     * @param rootHash The initial root has for the trie, which should be already present in `storage`.
+     */
+    @JvmStatic
+    fun storingBytes(storage: MerkleStorage, rootHash: Bytes32): StoredMerklePatriciaTrie<Bytes> =
+      StoredMerklePatriciaTrie(storage, rootHash, ::bytesIdentity, ::bytesIdentity)
+
+    /**
+     * Create a trie with value of type [String].
+     *
+     * Strings are stored in UTF-8 encoding.
+     *
+     * @param storage The storage to use for persistence.
+     */
+    @JvmStatic
+    fun storingStrings(storage: MerkleStorage): StoredMerklePatriciaTrie<String> =
+      StoredMerklePatriciaTrie(storage, ::stringSerializer, ::stringDeserializer)
+
+    /**
+     * Create a trie with keys and values of type [String].
+     *
+     * Strings are stored in UTF-8 encoding.
+     *
+     * @param storage The storage to use for persistence.
+     * @param rootHash The initial root has for the trie, which should be already present in `storage`.
+     */
+    @JvmStatic
+    fun storingStrings(storage: MerkleStorage, rootHash: Bytes32): StoredMerklePatriciaTrie<String> =
+      StoredMerklePatriciaTrie(storage, rootHash, ::stringSerializer, ::stringDeserializer)
+  }
+
   private val getVisitor = GetVisitor<V>()
   private val removeVisitor = RemoveVisitor<V>()
   private val storage: MerkleStorage
@@ -82,16 +127,16 @@ class StoredMerklePatriciaTrie<in K : Bytes, V> : MerkleTrie<K, V> {
     }
   }
 
-  override suspend fun get(key: K): V? = root.accept(getVisitor, bytesToPath(key)).value()
+  override suspend fun get(key: Bytes): V? = root.accept(getVisitor, bytesToPath(key)).value()
 
-  override suspend fun put(key: K, value: V?) {
+  override suspend fun put(key: Bytes, value: V?) {
     if (value == null) {
       return remove(key)
     }
     updateRoot(root.accept(PutVisitor(nodeFactory, value), bytesToPath(key)))
   }
 
-  override suspend fun remove(key: K) = updateRoot(root.accept(removeVisitor, bytesToPath(key)))
+  override suspend fun remove(key: Bytes) = updateRoot(root.accept(removeVisitor, bytesToPath(key)))
 
   override fun rootHash(): Bytes32 = root.hash()
 
