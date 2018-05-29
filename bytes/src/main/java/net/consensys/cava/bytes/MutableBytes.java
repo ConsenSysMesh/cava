@@ -4,6 +4,7 @@ import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
+import io.netty.buffer.ByteBuf;
 import io.vertx.core.buffer.Buffer;
 
 /**
@@ -104,6 +105,47 @@ public interface MutableBytes extends Bytes {
       return EMPTY;
     }
     return new MutableBufferWrappingBytes(buffer, offset, size);
+  }
+
+  /**
+   * Wrap a full Netty {@link ByteBuf} as a {@link MutableBytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the buffer may be reflected in the returned value.
+   *
+   * @param byteBuf The ByteBuf to wrap.
+   * @return A {@link MutableBytes} value.
+   */
+  static MutableBytes wrapByteBuf(ByteBuf byteBuf) {
+    checkNotNull(byteBuf);
+    if (byteBuf.capacity() == 0) {
+      return EMPTY;
+    }
+    return new MutableByteBufWrappingBytes(byteBuf);
+  }
+
+  /**
+   * Wrap a slice of a Netty {@link ByteBuf} as a {@link MutableBytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the buffer may be reflected in the returned value, and any change to the
+   * returned value will be reflected in the buffer.
+   *
+   * @param byteBuf The byteBuf to wrap.
+   * @param offset The offset in {@code byteBuf} from which to expose the bytes in the returned value. That is,
+   *        {@code wrapByteBuf(byteBuf, i, 1).get(0) == byteBuf.getByte(i)}.
+   * @param size The size of the returned value.
+   * @return A {@link MutableBytes} value.
+   * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (byteBuf.capacity() > 0 && offset >=
+   *     buffer.capacity())}.
+   * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > byteBuf.capacity()}.
+   */
+  static MutableBytes wrapByteBuf(ByteBuf byteBuf, int offset, int size) {
+    checkNotNull(byteBuf);
+    if (size == 0) {
+      return EMPTY;
+    }
+    return new MutableByteBufWrappingBytes(byteBuf, offset, size);
   }
 
   /**

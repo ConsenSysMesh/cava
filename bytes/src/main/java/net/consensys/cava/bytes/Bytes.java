@@ -9,6 +9,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
+import io.netty.buffer.ByteBuf;
 import io.vertx.core.buffer.Buffer;
 
 /**
@@ -145,6 +146,46 @@ public interface Bytes {
       return EMPTY;
     }
     return new BufferWrappingBytes(buffer, offset, size);
+  }
+
+  /**
+   * Wrap a full Netty {@link ByteBuf} as a {@link Bytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the byteBuf may be reflected in the returned value.
+   *
+   * @param byteBuf The byteBuf to wrap.
+   * @return A {@link Bytes} value.
+   */
+  static Bytes wrapByteBuf(ByteBuf byteBuf) {
+    checkNotNull(byteBuf);
+    if (byteBuf.capacity() == 0) {
+      return EMPTY;
+    }
+    return new ByteBufWrappingBytes(byteBuf);
+  }
+
+  /**
+   * Wrap a slice of a Vert.x {@link Buffer} as a {@link Bytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the buffer may be reflected in the returned value.
+   *
+   * @param byteBuf The byteBuf to wrap.
+   * @param offset The offset in {@code byteBuf} from which to expose the bytes in the returned value. That is,
+   *        {@code wrapByteBuf(byteBuf, i, 1).get(0) == byteBuf.getByte(i)}.
+   * @param size The size of the returned value.
+   * @return A {@link Bytes} value.
+   * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (byteBuf.capacity() > 0 && offset >=
+   *     byteBuf.capacity())}.
+   * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > byteBuf.capacity()}.
+   */
+  static Bytes wrapByteBuf(ByteBuf byteBuf, int offset, int size) {
+    checkNotNull(byteBuf);
+    if (size == 0) {
+      return EMPTY;
+    }
+    return new ByteBufWrappingBytes(byteBuf, offset, size);
   }
 
   /**
