@@ -166,7 +166,7 @@ public interface Bytes {
   }
 
   /**
-   * Wrap a slice of a Vert.x {@link Buffer} as a {@link Bytes} value.
+   * Wrap a slice of a Netty {@link ByteBuf} as a {@link Bytes} value.
    *
    * <p>
    * Note that any change to the content of the buffer may be reflected in the returned value.

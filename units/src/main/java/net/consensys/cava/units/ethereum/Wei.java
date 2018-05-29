@@ -7,6 +7,9 @@ import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
 
+/**
+ * A unit measure of Wei as used by the Ethereum VM.
+ */
 public final class Wei extends BaseUInt256Value<Wei> {
 
   private final static int MAX_CONSTANT = 64;

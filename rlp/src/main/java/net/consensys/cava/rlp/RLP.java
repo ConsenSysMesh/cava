@@ -13,6 +13,9 @@ import java.util.function.Function;
 
 import com.google.common.base.Charsets;
 
+/**
+ * Recursive Length Prefix (RLP) encoding and decoding.
+ */
 public final class RLP {
   private RLP() {}
 

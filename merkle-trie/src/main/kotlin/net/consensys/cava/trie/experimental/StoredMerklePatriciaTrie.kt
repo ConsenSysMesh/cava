@@ -162,6 +162,9 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
     }
   }
 
+  /**
+   * @return A string representation of the object.
+   */
   override fun toString(): String {
     return javaClass.simpleName + "[" + rootHash() + "]"
   }

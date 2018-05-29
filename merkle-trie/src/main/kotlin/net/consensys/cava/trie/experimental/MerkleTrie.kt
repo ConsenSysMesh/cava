@@ -16,6 +16,9 @@ import java.util.Optional
 interface MerkleTrie<in K, V> {
 
   companion object {
+    /**
+     * The root hash of an empty tree.
+     */
     val EMPTY_TRIE_ROOT_HASH: Bytes32 = keccak256(RLP.encodeValue(Bytes.EMPTY))
   }
 

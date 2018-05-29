@@ -11,7 +11,7 @@ import java.math.BigInteger;
 import com.google.common.base.Objects;
 
 /**
- * A particular quantity of Gas as used by the Ethereum VM.
+ * A unit measure of Gas as used by the Ethereum VM.
  */
 public final class Gas {
 

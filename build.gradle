@@ -259,6 +259,11 @@ jar {
 
 dependencies {
   subprojects.each {
+    it.configurations.compile.allDependencies.each { d ->
+      if (d instanceof ExternalModuleDependency) {
+        add('compile', d)
+      }
+    }
     it.configurations.runtime.allDependencies.each { d ->
       if (d instanceof ExternalModuleDependency) {
         add('runtime', d)
@@ -298,11 +303,18 @@ dokka {
   moduleName = rootProject.name
   subprojects.each {
     dependsOn it.classes
-    classpath += it.sourceSets.main.output
+    it.sourceSets.main.output.each { d ->
+      if (d.exists()) {
+        classpath += d
+      }
+    }
   }
   sourceDirs = files(subprojects.collect {
     def path = new File(it.projectDir, "/src/main")
-    return path
+    return [
+      new File(it.projectDir, '/src/main/kotlin'),
+      new File(it.projectDir, '/src/main/java')
+    ]
   })
   linkMapping {
     dir = rootDir.toString()
@@ -312,6 +324,6 @@ dokka {
   includes = ['PACKAGE.md']
 }
 
-if (!file("eth-reference-tests/src/test/resources/tests/README.md").exists()) {
+if (!file("${rootDir}/eth-reference-tests/src/test/resources/tests/README.md").exists()) {
   throw new GradleException("eth-reference-tests/src/test/resources/tests/README.md missing: please clone submodules (git submodule update --init --recursive)")
 }

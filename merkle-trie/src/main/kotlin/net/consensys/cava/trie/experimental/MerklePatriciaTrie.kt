@@ -61,6 +61,9 @@ class MerklePatriciaTrie<V>(valueSerializer: (V) -> Bytes) : MerkleTrie<Bytes, V
 
   override fun rootHash(): Bytes32 = root.hash()
 
+  /**
+   * @return A string representation of the object.
+   */
   override fun toString(): String {
     return javaClass.simpleName + "[" + rootHash() + "]"
   }
