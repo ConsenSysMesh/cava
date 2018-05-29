@@ -2,11 +2,50 @@ package net.consensys.cava.bytes;
 
 import static net.consensys.cava.bytes.Bytes.fromHexString;
 import static net.consensys.cava.bytes.Bytes.wrap;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import java.util.Arrays;
+import java.util.stream.Stream;
+
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class ConcatenatedBytesTest {
+
+  @ParameterizedTest
+  @MethodSource("concatenatedWrapProvider")
+  void concatenatedWrap(Object arr1, Object arr2) {
+    byte[] first = (byte[]) arr1;
+    byte[] second = (byte[]) arr2;
+    byte[] res = wrap(wrap(first), wrap(second)).toArray();
+    assertArrayEquals(Arrays.copyOfRange(res, 0, first.length), first);
+    assertArrayEquals(Arrays.copyOfRange(res, first.length, res.length), second);
+  }
+
+  private static Stream<Arguments> concatenatedWrapProvider() {
+    return Stream.of(
+        Arguments.of(new byte[] {}, new byte[] {}),
+        Arguments.of(new byte[] {}, new byte[] {1, 2, 3}),
+        Arguments.of(new byte[] {1, 2, 3}, new byte[] {}),
+        Arguments.of(new byte[] {1, 2, 3}, new byte[] {4, 5}));
+  }
+
+  @Test
+  void testConcatenatedWrapReflectsUpdates() {
+    byte[] first = new byte[] {1, 2, 3};
+    byte[] second = new byte[] {4, 5};
+    byte[] expected1 = new byte[] {1, 2, 3, 4, 5};
+    Bytes res = wrap(wrap(first), wrap(second));
+    assertArrayEquals(res.toArray(), expected1);
+
+    first[1] = 42;
+    second[0] = 42;
+    byte[] expected2 = new byte[] {1, 42, 3, 42, 5};
+    assertArrayEquals(res.toArray(), expected2);
+  }
 
   @Test
   void shouldReadConcatenatedValue() {

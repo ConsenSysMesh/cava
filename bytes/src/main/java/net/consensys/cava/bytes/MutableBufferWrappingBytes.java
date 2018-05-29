@@ -11,9 +11,13 @@ final class MutableBufferWrappingBytes extends AbstractBytes implements MutableB
   private final int offset;
   private final int size;
 
+  MutableBufferWrappingBytes(Buffer buffer) {
+    this(buffer, 0, buffer.length());
+  }
+
   MutableBufferWrappingBytes(Buffer buffer, int offset, int size) {
     checkArgument(size >= 0, "Invalid negative length");
-    checkElementIndex(offset, buffer.length());
+    checkElementIndex(offset, buffer.length() + 1);
     checkArgument(
         offset + size <= buffer.length(),
         "Provided length %s is too big: the buffer has size %s and has only %s bytes from %s",
