@@ -75,7 +75,11 @@ public interface MutableBytes extends Bytes {
    * @return A {@link MutableBytes} value.
    */
   static MutableBytes wrapBuffer(Buffer buffer) {
-    return wrapBuffer(buffer, 0, buffer.length());
+    checkNotNull(buffer);
+    if (buffer.length() == 0) {
+      return EMPTY;
+    }
+    return new MutableBufferWrappingBytes(buffer);
   }
 
   /**
@@ -90,6 +94,9 @@ public interface MutableBytes extends Bytes {
    *        {@code wrapBuffer(buffer, i, 1).get(0) == buffer.getByte(i)}.
    * @param size The size of the returned value.
    * @return A {@link MutableBytes} value.
+   * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (buffer.length() > 0 && offset >=
+   *     buffer.length())}.
+   * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > buffer.length()}.
    */
   static MutableBytes wrapBuffer(Buffer buffer, int offset, int size) {
     checkNotNull(buffer);

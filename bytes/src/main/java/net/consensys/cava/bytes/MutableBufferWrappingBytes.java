@@ -5,45 +5,29 @@ import static com.google.common.base.Preconditions.checkElementIndex;
 
 import io.vertx.core.buffer.Buffer;
 
-final class MutableBufferWrappingBytes extends AbstractBytes implements MutableBytes {
-
-  private final Buffer buffer;
-  private final int offset;
-  private final int size;
+final class MutableBufferWrappingBytes extends BufferWrappingBytes implements MutableBytes {
 
   MutableBufferWrappingBytes(Buffer buffer) {
-    this(buffer, 0, buffer.length());
+    super(buffer);
   }
 
-  MutableBufferWrappingBytes(Buffer buffer, int offset, int size) {
-    checkArgument(size >= 0, "Invalid negative length");
-    checkElementIndex(offset, buffer.length() + 1);
-    checkArgument(
-        offset + size <= buffer.length(),
-        "Provided length %s is too big: the buffer has size %s and has only %s bytes from %s",
-        size,
-        buffer.length(),
-        buffer.length() - offset,
-        offset);
-
-    this.buffer = buffer;
-    this.offset = offset;
-    this.size = size;
-  }
-
-  @Override
-  public int size() {
-    return size;
-  }
-
-  @Override
-  public byte get(int i) {
-    return buffer.getByte(offset + i);
+  MutableBufferWrappingBytes(Buffer buffer, int offset, int length) {
+    super(buffer, offset, length);
   }
 
   @Override
   public void set(int i, byte b) {
-    buffer.setByte(offset + i, b);
+    buffer.setByte(i, b);
+  }
+
+  @Override
+  public void setInt(int i, int value) {
+    buffer.setInt(i, value);
+  }
+
+  @Override
+  public void setLong(int i, long value) {
+    buffer.setLong(i, value);
   }
 
   @Override
@@ -64,12 +48,7 @@ final class MutableBufferWrappingBytes extends AbstractBytes implements MutableB
         size() - index,
         index);
 
-    return new MutableBufferWrappingBytes(buffer, offset + index, length);
-  }
-
-  @Override
-  public Bytes slice(int index, int length) {
-    return mutableSlice(index, length);
+    return new MutableBufferWrappingBytes(buffer);
   }
 
   @Override

@@ -11,16 +11,16 @@ class BufferBytesTest extends CommonBytesTests {
 
   @Override
   MutableBytes m(int size) {
-    return new MutableBufferWrappingBytes(Buffer.buffer(new byte[size]));
+    return MutableBytes.wrapBuffer(Buffer.buffer(new byte[size]));
   }
 
   @Override
   Bytes w(byte[] bytes) {
-    return new MutableBufferWrappingBytes(Buffer.buffer(Bytes.of(bytes).toArray()));
+    return Bytes.wrapBuffer(Buffer.buffer(Bytes.of(bytes).toArray()));
   }
 
   @Override
   Bytes of(int... bytes) {
-    return new MutableBufferWrappingBytes(Buffer.buffer(Bytes.of(bytes).toArray()));
+    return Bytes.wrapBuffer(Buffer.buffer(Bytes.of(bytes).toArray()));
   }
 }

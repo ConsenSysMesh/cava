@@ -117,7 +117,11 @@ public interface Bytes {
    * @return A {@link Bytes} value.
    */
   static Bytes wrapBuffer(Buffer buffer) {
-    return wrapBuffer(buffer, 0, buffer.length());
+    checkNotNull(buffer);
+    if (buffer.length() == 0) {
+      return EMPTY;
+    }
+    return new BufferWrappingBytes(buffer);
   }
 
   /**
@@ -131,9 +135,16 @@ public interface Bytes {
    *        {@code wrapBuffer(buffer, i, 1).get(0) == buffer.getByte(i)}.
    * @param size The size of the returned value.
    * @return A {@link Bytes} value.
+   * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (buffer.length() > 0 && offset >=
+   *     buffer.length())}.
+   * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > buffer.length()}.
    */
   static Bytes wrapBuffer(Buffer buffer, int offset, int size) {
-    return MutableBytes.wrapBuffer(buffer, offset, size);
+    checkNotNull(buffer);
+    if (size == 0) {
+      return EMPTY;
+    }
+    return new BufferWrappingBytes(buffer, offset, size);
   }
 
   /**
