@@ -70,20 +70,18 @@ class ArrayWrappingBytes extends AbstractBytes {
         : new ArrayWrappingBytes(bytes, offset + index, length);
   }
 
+  // MUST be overridden by mutable implementations
   @Override
   public Bytes copy() {
-    // Because MutableArrayWrappingBytesValue overrides this, we know we are immutable. We may
-    // retain more than necessary however.
     if (offset == 0 && length == bytes.length) {
       return this;
     }
-
     return new ArrayWrappingBytes(toArray());
   }
 
   @Override
   public MutableBytes mutableCopy() {
-    return new MutableArrayWrappingBytes(toArray());
+    return new MutableArrayWrappingBytes(toArray(), 0, length);
   }
 
   @Override
@@ -131,6 +129,36 @@ class ArrayWrappingBytes extends AbstractBytes {
   @Override
   public void appendTo(Buffer buffer) {
     buffer.appendBytes(bytes, offset, length);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof ArrayWrappingBytes)) {
+      return super.equals(obj);
+    }
+    ArrayWrappingBytes other = (ArrayWrappingBytes) obj;
+    if (length != other.length) {
+      return false;
+    }
+    for (int i = 0; i < length; ++i) {
+      if (bytes[offset + i] != other.bytes[other.offset + i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  @Override
+  public int hashCode() {
+    int result = 1;
+    int size = size();
+    for (int i = 0; i < size; i++) {
+      result = 31 * result + bytes[i];
+    }
+    return result;
   }
 
   @Override

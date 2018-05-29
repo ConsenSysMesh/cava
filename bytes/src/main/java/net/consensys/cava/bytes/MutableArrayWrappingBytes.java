@@ -7,10 +7,6 @@ import java.util.Arrays;
 
 class MutableArrayWrappingBytes extends ArrayWrappingBytes implements MutableBytes {
 
-  MutableArrayWrappingBytes(byte[] bytes) {
-    super(bytes);
-  }
-
   MutableArrayWrappingBytes(byte[] bytes, int offset, int length) {
     super(bytes, offset, length);
   }

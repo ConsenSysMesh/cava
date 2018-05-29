@@ -26,7 +26,7 @@ public interface MutableBytes extends Bytes {
     if (size == 32) {
       return MutableBytes32.create();
     }
-    return new MutableArrayWrappingBytes(new byte[size]);
+    return new MutableArrayWrappingBytes(new byte[size], 0, size);
   }
 
   /**
@@ -37,7 +37,7 @@ public interface MutableBytes extends Bytes {
    */
   static MutableBytes wrap(byte[] value) {
     checkNotNull(value);
-    return new MutableArrayWrappingBytes(value);
+    return new MutableArrayWrappingBytes(value, 0, value.length);
   }
 
   /**
@@ -176,7 +176,8 @@ public interface MutableBytes extends Bytes {
    * @param b The byte to use to fill the value.
    */
   default void fill(byte b) {
-    for (int i = 0; i < size(); i++) {
+    int size = size();
+    for (int i = 0; i < size; i++) {
       set(i, b);
     }
   }

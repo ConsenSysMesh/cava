@@ -12,23 +12,29 @@ public abstract class AbstractBytes implements Bytes {
    * Compare this value and the provided one for equality.
    *
    * <p>
-   * Two {@link Bytes} values are equal is they have the same time and contain the exact same bytes in order.
+   * Two {@link Bytes} values are equal is they have contain the exact same bytes.
    *
-   * @param other The other value to test for equality.
-   * @return Whether this value and {@code other} are equal.
+   * @param obj The object to test for equality with.
+   * @return <tt>true</tt> if this value and {@code obj} are equal.
    */
   @Override
-  public boolean equals(Object other) {
-    if (!(other instanceof Bytes))
+  public boolean equals(Object obj) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof Bytes)) {
       return false;
+    }
 
-    Bytes that = (Bytes) other;
-    if (this.size() != that.size())
+    Bytes other = (Bytes) obj;
+    if (this.size() != other.size()) {
       return false;
+    }
 
     for (int i = 0; i < size(); i++) {
-      if (this.get(i) != that.get(i))
+      if (this.get(i) != other.get(i)) {
         return false;
+      }
     }
     return true;
   }
@@ -36,8 +42,9 @@ public abstract class AbstractBytes implements Bytes {
   @Override
   public int hashCode() {
     int result = 1;
-    for (int i = 0; i < size(); i++)
+    for (int i = 0; i < size(); i++) {
       result = 31 * result + get(i);
+    }
     return result;
   }
 
