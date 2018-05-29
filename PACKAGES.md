@@ -44,7 +44,7 @@ Classes and utilities for handling file and network IO.
 
 These classes are included in the standard Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-io` (`cava-io.jar`).
 
-# Package net.consensys.cava.io.File
+# Package net.consensys.cava.io.file
 
 General utilities for working with files and the filesystem.
 
@@ -59,6 +59,10 @@ These classes are included in the standard Cava distribution, or separately when
 Classes and utilities for working with networking.
 
 These classes are included in the standard Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-net` (`cava-net.jar`).
+
+# Package net.consensys.cava.net.tls
+
+Utilities for doing fingerprint based TLS certificate checking.
 
 # Package net.consensys.cava.rlp
 
