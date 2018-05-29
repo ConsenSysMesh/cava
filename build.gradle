@@ -321,7 +321,7 @@ dokka {
     url = "https://github.com/consensys/cava/blob/master"
     suffix = "#L"
   }
-  includes = ['PACKAGE.md']
+  includes = ['PACKAGES.md']
 }
 
 if (!file("${rootDir}/eth-reference-tests/src/test/resources/tests/README.md").exists()) {

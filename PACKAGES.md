@@ -16,7 +16,7 @@ These classes are included in the standard Cava distribution, or separately when
 
 # Package net.consensys.cava.concurrent.coroutines.experimental
 
-Extensions for mapping [net.consensys.cava.concurrent.AsyncResult] and [net.consensys.cava.concurrent.AsyncCompletion] objects to and from Kotlin coroutines.
+Extensions for mapping [AsyncResult][net.consensys.cava.concurrent.AsyncResult] and [AsyncCompletion][net.consensys.cava.concurrent.AsyncCompletion] objects to and from Kotlin coroutines.
 
 # Package net.consensys.cava.crypto
 
