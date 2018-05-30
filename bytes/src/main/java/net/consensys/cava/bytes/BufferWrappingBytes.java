@@ -53,25 +53,25 @@ class BufferWrappingBytes extends AbstractBytes {
   }
 
   @Override
-  public Bytes slice(int index, int length) {
+  public Bytes slice(int i, int length) {
     int size = buffer.length();
-    if (index == 0 && length == size) {
+    if (i == 0 && length == size) {
       return this;
     }
     if (length == 0) {
       return Bytes.EMPTY;
     }
 
-    checkElementIndex(index, size);
+    checkElementIndex(i, size);
     checkArgument(
-        index + length <= size,
+        i + length <= size,
         "Provided length %s is too big: the value has size %s and has only %s bytes from %s",
         length,
         size,
-        size - index,
-        index);
+        size - i,
+        i);
 
-    return new BufferWrappingBytes(buffer.slice(index, index + length));
+    return new BufferWrappingBytes(buffer.slice(i, i + length));
   }
 
   @Override

@@ -49,25 +49,25 @@ class ArrayWrappingBytes extends AbstractBytes {
   }
 
   @Override
-  public Bytes slice(int index, int length) {
-    if (index == 0 && length == size()) {
+  public Bytes slice(int i, int length) {
+    if (i == 0 && length == this.length) {
       return this;
     }
     if (length == 0) {
       return Bytes.EMPTY;
     }
 
-    checkElementIndex(index, size());
+    checkElementIndex(i, this.length);
     checkArgument(
-        index + length <= size(),
+        i + length <= this.length,
         "Provided length %s is too big: the value has size %s and has only %s bytes from %s",
         length,
-        size(),
-        size() - index,
-        index);
+        this.length,
+        this.length - i,
+        i);
 
-    return length == Bytes32.SIZE ? new ArrayWrappingBytes32(bytes, offset + index)
-        : new ArrayWrappingBytes(bytes, offset + index, length);
+    return length == Bytes32.SIZE ? new ArrayWrappingBytes32(bytes, offset + i)
+        : new ArrayWrappingBytes(bytes, offset + i, length);
   }
 
   // MUST be overridden by mutable implementations
@@ -81,7 +81,7 @@ class ArrayWrappingBytes extends AbstractBytes {
 
   @Override
   public MutableBytes mutableCopy() {
-    return new MutableArrayWrappingBytes(toArray(), 0, length);
+    return new MutableArrayWrappingBytes(toArray());
   }
 
   @Override

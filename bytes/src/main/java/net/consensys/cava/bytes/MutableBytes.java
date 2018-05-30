@@ -4,6 +4,8 @@ import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
+import java.nio.ByteBuffer;
+
 import io.netty.buffer.ByteBuf;
 import io.vertx.core.buffer.Buffer;
 
@@ -27,7 +29,7 @@ public interface MutableBytes extends Bytes {
     if (size == 32) {
       return MutableBytes32.create();
     }
-    return new MutableArrayWrappingBytes(new byte[size], 0, size);
+    return new MutableArrayWrappingBytes(new byte[size]);
   }
 
   /**
@@ -38,7 +40,7 @@ public interface MutableBytes extends Bytes {
    */
   static MutableBytes wrap(byte[] value) {
     checkNotNull(value);
-    return new MutableArrayWrappingBytes(value, 0, value.length);
+    return new MutableArrayWrappingBytes(value);
   }
 
   /**
@@ -113,7 +115,7 @@ public interface MutableBytes extends Bytes {
    * <p>
    * Note that any change to the content of the buffer may be reflected in the returned value.
    *
-   * @param byteBuf The ByteBuf to wrap.
+   * @param byteBuf The {@link ByteBuf} to wrap.
    * @return A {@link MutableBytes} value.
    */
   static MutableBytes wrapByteBuf(ByteBuf byteBuf) {
@@ -131,13 +133,13 @@ public interface MutableBytes extends Bytes {
    * Note that any change to the content of the buffer may be reflected in the returned value, and any change to the
    * returned value will be reflected in the buffer.
    *
-   * @param byteBuf The byteBuf to wrap.
+   * @param byteBuf The {@link ByteBuf} to wrap.
    * @param offset The offset in {@code byteBuf} from which to expose the bytes in the returned value. That is,
    *        {@code wrapByteBuf(byteBuf, i, 1).get(0) == byteBuf.getByte(i)}.
    * @param size The size of the returned value.
    * @return A {@link MutableBytes} value.
    * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (byteBuf.capacity() > 0 && offset >=
-   *     buffer.capacity())}.
+   *     byteBuf.capacity())}.
    * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > byteBuf.capacity()}.
    */
   static MutableBytes wrapByteBuf(ByteBuf byteBuf, int offset, int size) {
@@ -146,6 +148,47 @@ public interface MutableBytes extends Bytes {
       return EMPTY;
     }
     return new MutableByteBufWrappingBytes(byteBuf, offset, size);
+  }
+
+  /**
+   * Wrap a full Java NIO {@link ByteBuffer} as a {@link MutableBytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the buffer may be reflected in the returned value.
+   *
+   * @param byteBuffer The {@link ByteBuffer} to wrap.
+   * @return A {@link MutableBytes} value.
+   */
+  static MutableBytes wrapByteBuffer(ByteBuffer byteBuffer) {
+    checkNotNull(byteBuffer);
+    if (byteBuffer.limit() == 0) {
+      return EMPTY;
+    }
+    return new MutableByteBufferWrappingBytes(byteBuffer);
+  }
+
+  /**
+   * Wrap a slice of a Java NIO {@link ByteBuffer} as a {@link MutableBytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the buffer may be reflected in the returned value, and any change to the
+   * returned value will be reflected in the buffer.
+   *
+   * @param byteBuffer The {@link ByteBuffer} to wrap.
+   * @param offset The offset in {@code byteBuffer} from which to expose the bytes in the returned value. That is,
+   *        {@code wrapByteBuffer(byteBuffer, i, 1).get(0) == byteBuffer.getByte(i)}.
+   * @param size The size of the returned value.
+   * @return A {@link MutableBytes} value.
+   * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (byteBuffer.limit() > 0 && offset >=
+   *     byteBuffer.limit())}.
+   * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > byteBuffer.limit()}.
+   */
+  static MutableBytes wrapByteBuffer(ByteBuffer byteBuffer, int offset, int size) {
+    checkNotNull(byteBuffer);
+    if (size == 0) {
+      return EMPTY;
+    }
+    return new MutableByteBufferWrappingBytes(byteBuffer, offset, size);
   }
 
   /**
@@ -181,7 +224,7 @@ public interface MutableBytes extends Bytes {
   /**
    * Set the 8 bytes starting at the specified index to the specified long value.
    *
-   * @param i The index , which must less than or equal to {@code size() - 8}.
+   * @param i The index, which must less than or equal to {@code size() - 8}.
    * @param value The long value.
    * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 8}.
    */

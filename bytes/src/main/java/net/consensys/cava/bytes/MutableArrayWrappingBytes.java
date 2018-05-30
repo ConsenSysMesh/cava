@@ -7,6 +7,10 @@ import java.util.Arrays;
 
 class MutableArrayWrappingBytes extends ArrayWrappingBytes implements MutableBytes {
 
+  MutableArrayWrappingBytes(byte[] bytes) {
+    super(bytes);
+  }
+
   MutableArrayWrappingBytes(byte[] bytes, int offset, int length) {
     super(bytes, offset, length);
   }
@@ -21,18 +25,18 @@ class MutableArrayWrappingBytes extends ArrayWrappingBytes implements MutableByt
 
   @Override
   public MutableBytes mutableSlice(int i, int length) {
-    if (i == 0 && length == size())
+    if (i == 0 && length == this.length)
       return this;
     if (length == 0)
       return MutableBytes.EMPTY;
 
-    checkElementIndex(i, size());
+    checkElementIndex(i, this.length);
     checkArgument(
-        i + length <= size(),
+        i + length <= this.length,
         "Specified length %s is too large: the value has size %s and has only %s bytes from %s",
         length,
-        size(),
-        size() - i,
+        this.length,
+        this.length - i,
         i);
     return length == Bytes32.SIZE ? new MutableArrayWrappingBytes32(bytes, offset + i)
         : new MutableArrayWrappingBytes(bytes, offset + i, length);

@@ -6,6 +6,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
@@ -154,7 +155,7 @@ public interface Bytes {
    * <p>
    * Note that any change to the content of the byteBuf may be reflected in the returned value.
    *
-   * @param byteBuf The byteBuf to wrap.
+   * @param byteBuf The {@link ByteBuf} to wrap.
    * @return A {@link Bytes} value.
    */
   static Bytes wrapByteBuf(ByteBuf byteBuf) {
@@ -171,7 +172,7 @@ public interface Bytes {
    * <p>
    * Note that any change to the content of the buffer may be reflected in the returned value.
    *
-   * @param byteBuf The byteBuf to wrap.
+   * @param byteBuf The {@link ByteBuf} to wrap.
    * @param offset The offset in {@code byteBuf} from which to expose the bytes in the returned value. That is,
    *        {@code wrapByteBuf(byteBuf, i, 1).get(0) == byteBuf.getByte(i)}.
    * @param size The size of the returned value.
@@ -186,6 +187,46 @@ public interface Bytes {
       return EMPTY;
     }
     return new ByteBufWrappingBytes(byteBuf, offset, size);
+  }
+
+  /**
+   * Wrap a full Java NIO {@link ByteBuffer} as a {@link Bytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the byteBuf may be reflected in the returned value.
+   *
+   * @param byteBuffer The {@link ByteBuffer} to wrap.
+   * @return A {@link Bytes} value.
+   */
+  static Bytes wrapByteBuffer(ByteBuffer byteBuffer) {
+    checkNotNull(byteBuffer);
+    if (byteBuffer.limit() == 0) {
+      return EMPTY;
+    }
+    return new ByteBufferWrappingBytes(byteBuffer);
+  }
+
+  /**
+   * Wrap a slice of a Java NIO {@link ByteBuf} as a {@link Bytes} value.
+   *
+   * <p>
+   * Note that any change to the content of the buffer may be reflected in the returned value.
+   *
+   * @param byteBuffer The {@link ByteBuffer} to wrap.
+   * @param offset The offset in {@code byteBuffer} from which to expose the bytes in the returned value. That is,
+   *        {@code wrapByteBuffer(byteBuffer, i, 1).get(0) == byteBuffer.getByte(i)}.
+   * @param size The size of the returned value.
+   * @return A {@link Bytes} value.
+   * @throws IndexOutOfBoundsException if {@code offset &lt; 0 || (byteBuffer.limit() > 0 && offset >=
+   *     byteBuf.limit())}.
+   * @throws IllegalArgumentException if {@code length &lt; 0 || offset + length > byteBuffer.limit()}.
+   */
+  static Bytes wrapByteBuffer(ByteBuffer byteBuffer, int offset, int size) {
+    checkNotNull(byteBuffer);
+    if (size == 0) {
+      return EMPTY;
+    }
+    return new ByteBufferWrappingBytes(byteBuffer, offset, size);
   }
 
   /**
@@ -850,16 +891,16 @@ public interface Bytes {
    * holding a reference to the returned slice may hold more memory than the slide represents. Use {@link #copy} on the
    * returned slice if that is not what you want.
    *
-   * @param index The start index for the slice.
-   * @return A new value providing a view over the bytes from index {@code index} (included) to the end.
-   * @throws IndexOutOfBoundsException if {@code index &lt; 0}.
+   * @param i The start index for the slice.
+   * @return A new value providing a view over the bytes from index {@code i} (included) to the end.
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0}.
    */
-  default Bytes slice(int index) {
+  default Bytes slice(int i) {
     int size = size();
-    if (index >= size) {
+    if (i >= size) {
       return EMPTY;
     }
-    return slice(index, size - index);
+    return slice(i, size - i);
   }
 
   /**
@@ -870,14 +911,14 @@ public interface Bytes {
    * holding a reference to the returned slice may hold more memory than the slide represents. Use {@link #copy} on the
    * returned slice if that is not what you want.
    *
-   * @param index The start index for the slice.
+   * @param i The start index for the slice.
    * @param length The length of the resulting value.
-   * @return A new value providing a view over the bytes from index {@code index} (included) to {@code index + length}
+   * @return A new value providing a view over the bytes from index {@code i} (included) to {@code i + length}
    *         (excluded).
    * @throws IllegalArgumentException if {@code length &lt; 0}.
-   * @throws IndexOutOfBoundsException if {@code index &lt; 0} or {index &gt;= size()} or {index + length &gt; size()} .
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {i &gt;= size()} or {i + length &gt; size()} .
    */
-  Bytes slice(int index, int length);
+  Bytes slice(int i, int length);
 
   /**
    * Return a value equivalent to this one but guaranteed to 1) be deeply immutable (i.e. the underlying value will be
