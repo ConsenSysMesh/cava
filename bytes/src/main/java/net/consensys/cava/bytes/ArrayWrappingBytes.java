@@ -156,7 +156,7 @@ class ArrayWrappingBytes extends AbstractBytes {
     int result = 1;
     int size = size();
     for (int i = 0; i < size; i++) {
-      result = 31 * result + bytes[i];
+      result = 31 * result + bytes[offset + i];
     }
     return result;
   }

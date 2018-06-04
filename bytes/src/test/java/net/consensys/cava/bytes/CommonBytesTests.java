@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.function.Function;
 
@@ -518,5 +519,45 @@ abstract class CommonBytesTests {
     assertFalse(Bytes.fromHexString("0x").hasLeadingZero());
     assertTrue(Bytes.fromHexString("0x01").hasLeadingZero());
     assertFalse(Bytes.fromHexString("0xFF0012").hasLeadingZero());
+  }
+
+  @Test
+  void testEquals() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes b2 = w(key);
+    assertEquals(b.hashCode(), b2.hashCode());
+  }
+
+  @Test
+  void testEqualsWithOffset() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key).slice(16, 4);
+    Bytes b2 = w(key).slice(16, 8).slice(0, 4);
+    assertEquals(b, b2);
+  }
+
+  @Test
+  void testHashCode() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes b2 = w(key);
+    assertEquals(b.hashCode(), b2.hashCode());
+  }
+
+  @Test
+  void testHashCodeWithOffset() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key).slice(16, 16);
+    Bytes b2 = w(key).slice(16, 16);
+    assertEquals(b.hashCode(), b2.hashCode());
   }
 }
