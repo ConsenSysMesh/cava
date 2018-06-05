@@ -10,22 +10,20 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.junit;
+package net.consensys.cava.devp2p;
 
-import java.security.Security;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
+import net.consensys.cava.bytes.Bytes;
 
-/**
- * A junit5 extension, that installs a BouncyCastle security provider.
- *
- */
-public class BouncyCastleExtension implements BeforeAllCallback {
+import org.junit.jupiter.api.Test;
 
-  @Override
-  public void beforeAll(ExtensionContext context) throws Exception {
-    Security.addProvider(new BouncyCastleProvider());
+class FindNeighborsPayloadTest {
+
+  @Test
+  void testToBytesAndBack() {
+    FindNeighborsPayload payload = new FindNeighborsPayload(Bytes.of(1, 2, 3), 20L);
+    FindNeighborsPayload read = FindNeighborsPayload.decode(payload.createPayloadBytes());
+    assertEquals(payload, read);
   }
 }
