@@ -4,6 +4,10 @@ dependencies {
   compile project(':crypto')
   compile project(':rlp')
 
+  compileOnly 'io.vertx:vertx-core'
+
+  testCompileOnly 'io.vertx:vertx-core'
+
   testCompile project(':junit')
   testCompile 'org.bouncycastle:bcprov-jdk15on'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
