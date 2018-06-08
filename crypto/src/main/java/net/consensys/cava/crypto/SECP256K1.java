@@ -23,6 +23,7 @@ import java.security.SecureRandom;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.common.base.Objects;
 import org.bouncycastle.asn1.sec.SECNamedCurves;
@@ -130,9 +131,9 @@ public final class SECP256K1 {
    * @param r The R component of the signature.
    * @param s The S component of the signature.
    * @param message Hash of the data that was signed.
-   * @return An ECKey containing only the public part, or null if recovery wasn't possible.
+   * @return An Optional ECKey containing only the public part, or empty if recovery wasn't possible.
    */
-  private static BigInteger recoverFromSignature(int recId, BigInteger r, BigInteger s, Bytes32 message) {
+  private static Optional<BigInteger> recoverFromSignature(int recId, BigInteger r, BigInteger s, Bytes32 message) {
     assert (recId >= 0);
     assert (r.signum() >= 0);
     assert (s.signum() >= 0);
@@ -153,7 +154,7 @@ public final class SECP256K1 {
     BigInteger prime = SecP256K1Curve.q;
     if (x.compareTo(prime) >= 0) {
       // Cannot have point co-ordinates larger than this as everything takes place modulo Q.
-      return null;
+      return Optional.empty();
     }
     // Compressed keys require you to know an extra bit of data about the y-coord as there are
     // two possibilities. So it's encoded in the recId.
@@ -161,7 +162,7 @@ public final class SECP256K1 {
     // 1.4. If nR != point at infinity, then do another iteration of Step 1 (callers
     // responsibility).
     if (!R.multiply(n).isInfinity()) {
-      return null;
+      return Optional.empty();
     }
     // 1.5. Compute e from M using Steps 2 and 3 of ECDSA signature verification.
     BigInteger e = message.unsignedBigIntegerValue();
@@ -187,7 +188,7 @@ public final class SECP256K1 {
 
     byte[] qBytes = q.getEncoded(false);
     // We remove the prefix
-    return new BigInteger(1, Arrays.copyOfRange(qBytes, 1, qBytes.length));
+    return Optional.of(new BigInteger(1, Arrays.copyOfRange(qBytes, 1, qBytes.length)));
   }
 
   /**
@@ -229,8 +230,8 @@ public final class SECP256K1 {
     int recId = -1;
     BigInteger publicKeyBI = keyPair.getPublicKey().encodedBytes().unsignedBigIntegerValue();
     for (int i = 0; i < 4; i++) {
-      BigInteger k = recoverFromSignature(i, r, s, dataHash);
-      if (k != null && k.equals(publicKeyBI)) {
+      Optional<BigInteger> k = recoverFromSignature(i, r, s, dataHash);
+      if (k.isPresent() && k.get().equals(publicKeyBI)) {
         recId = i;
         break;
       }
@@ -458,12 +459,13 @@ public final class SECP256K1 {
      * @param signature The digital signature.
      * @return The associated public key.
      */
-    public static PublicKey recoverFromSignature(Bytes data, Signature signature) {
+    public static Optional<PublicKey> recoverFromSignature(Bytes data, Signature signature) {
       Bytes32 dataHash = keccak256(data);
       int v = signature.v();
       v = v == 27 || v == 28 ? v - 27 : v;
-      BigInteger publicKeyBI = SECP256K1.recoverFromSignature(v, signature.r(), signature.s(), dataHash);
-      return create(publicKeyBI);
+      Optional<BigInteger> publicKeyBI = SECP256K1.recoverFromSignature(v, signature.r(), signature.s(), dataHash);
+
+      return publicKeyBI.map(key -> create(key));
     }
 
     private PublicKey(Bytes encoded) {

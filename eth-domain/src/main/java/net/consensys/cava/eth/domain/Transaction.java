@@ -209,7 +209,7 @@ public final class Transaction {
    * @return The sender of the transaction.
    */
   public Address sender() {
-    PublicKey publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
+    Optional<PublicKey> publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
       writer.writeValue(nonce().toMinimalBytes());
       writer.writeValue(gasPrice().toMinimalBytes());
       writer.writeValue(gasLimit().toMinimalBytes());
@@ -217,7 +217,8 @@ public final class Transaction {
       writer.writeValue(value().toMinimalBytes());
       writer.writeValue(payload());
     }), signature());
-    return Address.fromBytes(Hash.hash(publicKey.encodedBytes()).toBytes().slice(12, 20));
+    return Address
+        .fromBytes(Hash.hash(publicKey.orElseThrow(IllegalStateException::new).encodedBytes()).toBytes().slice(12, 20));
   }
 
   @Override

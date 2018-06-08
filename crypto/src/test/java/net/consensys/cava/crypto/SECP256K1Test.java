@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
+import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.junit.TempDirectory;
 import net.consensys.cava.junit.TempDirectoryExtension;
 
@@ -17,6 +18,7 @@ import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.Security;
+import java.util.Optional;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.jupiter.api.BeforeAll;
@@ -229,8 +231,8 @@ class SECP256K1Test {
     Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
     SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
 
-    SECP256K1.PublicKey recoveredPublicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
-    assertEquals(keyPair.getPublicKey().toString(), recoveredPublicKey.toString());
+    Optional<PublicKey> recoveredPublicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
+    assertEquals(keyPair.getPublicKey().toString(), recoveredPublicKey.get().toString());
   }
 
   @Test
