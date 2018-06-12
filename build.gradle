@@ -239,6 +239,11 @@ subprojects {
   task allDependencies(type: DependencyReportTask) {}
 }
 
+//////
+// Deploy the site
+
+task publishSite(type: Exec) { commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}" }
+
 
 //////
 // Bundle all subprojects
