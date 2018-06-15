@@ -1,0 +1,22 @@
+# URI of the git repository
+git_repo=
+# Branch of the git repository to check out
+git_branch=
+#Location of SSH private key to access the git repository
+ssh_private_key=
+#Location of SSH public key to access the git repository
+ssh_public_key=
+#GPG signing key ID
+signing_key_id=
+#Git author name
+git_name=
+#Git author email
+git_email=
+#Bintray user
+bintray_user=
+#Bintray key
+bintray_key=
+#Git tag name
+tag_name=
+#Git tag comment
+tag_comment=

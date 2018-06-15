@@ -1,0 +1,19 @@
+rootProject.name='cava'
+include 'bytes'
+include 'concurrent'
+include 'config'
+include 'crypto'
+include 'eth-domain'
+include 'eth-reference-tests'
+include 'io'
+include 'junit'
+include 'kv'
+include 'merkle-trie'
+include 'net'
+include 'rlp'
+include 'toml'
+include 'units'
+
+//////
+// Enable feature preview for compatibility with Gradle 5.0
+enableFeaturePreview('STABLE_PUBLISHING')
