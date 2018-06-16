@@ -14,10 +14,10 @@ package net.consensys.cava.crypto.sodium;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
-import java.util.Optional;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
@@ -39,12 +39,12 @@ class XChaCha20Poly1305Test {
     byte[] data = "123456".getBytes(Charsets.UTF_8);
 
     byte[] cipherText = XChaCha20Poly1305.encrypt(message, data, key, nonce);
-    Optional<byte[]> clearText = XChaCha20Poly1305.decrypt(cipherText, data, key, nonce);
+    byte[] clearText = XChaCha20Poly1305.decrypt(cipherText, data, key, nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
-    assertFalse(XChaCha20Poly1305.decrypt(cipherText, data, key, nonce.increment()).isPresent());
+    assertNull(XChaCha20Poly1305.decrypt(cipherText, data, key, nonce.increment()));
   }
 
   @Test
@@ -56,15 +56,14 @@ class XChaCha20Poly1305Test {
     byte[] data = "123456".getBytes(Charsets.UTF_8);
 
     DetachedEncryptionResult result = XChaCha20Poly1305.encryptDetached(message, data, key, nonce);
-    Optional<byte[]> clearText =
-        XChaCha20Poly1305.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce);
+    byte[] clearText = XChaCha20Poly1305.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
     clearText =
         XChaCha20Poly1305.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce.increment());
-    assertFalse(clearText.isPresent());
+    assertNull(clearText);
   }
 
   @Test

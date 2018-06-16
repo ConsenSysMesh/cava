@@ -13,11 +13,9 @@
 package net.consensys.cava.crypto.sodium;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
-import java.util.Optional;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
@@ -47,12 +45,12 @@ class AES256GCMTest {
     byte[] data = "123456".getBytes(Charsets.UTF_8);
 
     byte[] cipherText = AES256GCM.encrypt(message, data, key, nonce);
-    Optional<byte[]> clearText = AES256GCM.decrypt(cipherText, data, key, nonce);
+    byte[] clearText = AES256GCM.decrypt(cipherText, data, key, nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
-    assertFalse(AES256GCM.decrypt(cipherText, data, key, nonce.increment()).isPresent());
+    assertNull(AES256GCM.decrypt(cipherText, data, key, nonce.increment()));
   }
 
   @Test
@@ -62,12 +60,12 @@ class AES256GCMTest {
       byte[] data = "123456".getBytes(Charsets.UTF_8);
 
       byte[] cipherText = precomputed.encrypt(message, data, nonce);
-      Optional<byte[]> clearText = precomputed.decrypt(cipherText, data, nonce);
+      byte[] clearText = precomputed.decrypt(cipherText, data, nonce);
 
-      assertTrue(clearText.isPresent());
-      assertArrayEquals(message, clearText.get());
+      assertNotNull(clearText);
+      assertArrayEquals(message, clearText);
 
-      assertFalse(precomputed.decrypt(cipherText, data, nonce.increment()).isPresent());
+      assertNull(precomputed.decrypt(cipherText, data, nonce.increment()));
     }
   }
 
@@ -79,14 +77,13 @@ class AES256GCMTest {
     byte[] data = "123456".getBytes(Charsets.UTF_8);
 
     DetachedEncryptionResult result = AES256GCM.encryptDetached(message, data, key, nonce);
-    Optional<byte[]> clearText =
-        AES256GCM.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce);
+    byte[] clearText = AES256GCM.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
     clearText = AES256GCM.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce.increment());
-    assertFalse(clearText.isPresent());
+    assertNull(clearText);
   }
 
   @Test
@@ -96,14 +93,13 @@ class AES256GCMTest {
       byte[] data = "123456".getBytes(Charsets.UTF_8);
 
       DetachedEncryptionResult result = precomputed.encryptDetached(message, data, nonce);
-      Optional<byte[]> clearText =
-          precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), data, nonce);
+      byte[] clearText = precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), data, nonce);
 
-      assertTrue(clearText.isPresent());
-      assertArrayEquals(message, clearText.get());
+      assertNotNull(clearText);
+      assertArrayEquals(message, clearText);
 
       clearText = precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), data, nonce.increment());
-      assertFalse(clearText.isPresent());
+      assertNull(clearText);
     }
   }
 }

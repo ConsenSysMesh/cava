@@ -12,4 +12,7 @@
  * dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency
  * 'com.github.jnr:jnr-ffi'.
  */
+@ParametersAreNonnullByDefault
 package net.consensys.cava.crypto.sodium;
+
+import javax.annotation.ParametersAreNonnullByDefault;

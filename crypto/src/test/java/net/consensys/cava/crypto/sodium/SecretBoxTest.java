@@ -12,10 +12,10 @@
  */
 package net.consensys.cava.crypto.sodium;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
-import java.util.Optional;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
@@ -36,14 +36,14 @@ class SecretBoxTest {
     byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
 
     byte[] cipherText = SecretBox.encrypt(message, key, nonce);
-    Optional<byte[]> clearText = SecretBox.decrypt(cipherText, key, nonce);
+    byte[] clearText = SecretBox.decrypt(cipherText, key, nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
-    assertFalse(SecretBox.decrypt(cipherText, key, nonce.increment()).isPresent());
+    assertNull(SecretBox.decrypt(cipherText, key, nonce.increment()));
     SecretBox.Key otherKey = SecretBox.Key.random();
-    assertFalse(SecretBox.decrypt(cipherText, otherKey, nonce).isPresent());
+    assertNull(SecretBox.decrypt(cipherText, otherKey, nonce));
   }
 
   @Test
@@ -54,14 +54,13 @@ class SecretBoxTest {
     byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
 
     DetachedEncryptionResult result = SecretBox.encryptDetached(message, key, nonce);
-    Optional<byte[]> clearText = SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), key, nonce);
+    byte[] clearText = SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), key, nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
-    assertFalse(
-        SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), key, nonce.increment()).isPresent());
+    assertNull(SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), key, nonce.increment()));
     SecretBox.Key otherKey = SecretBox.Key.random();
-    assertFalse(SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), otherKey, nonce).isPresent());
+    assertNull(SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), otherKey, nonce));
   }
 }

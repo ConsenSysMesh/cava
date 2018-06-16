@@ -13,11 +13,9 @@
 package net.consensys.cava.crypto.sodium;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
-
-import java.util.Optional;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
@@ -56,17 +54,17 @@ class BoxTest {
     byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
 
     byte[] cipherText = Box.encrypt(message, aliceKeyPair.publicKey(), bobKeyPair.secretKey(), nonce);
-    Optional<byte[]> clearText = Box.decrypt(cipherText, bobKeyPair.publicKey(), aliceKeyPair.secretKey(), nonce);
+    byte[] clearText = Box.decrypt(cipherText, bobKeyPair.publicKey(), aliceKeyPair.secretKey(), nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
     clearText = Box.decrypt(cipherText, bobKeyPair.publicKey(), aliceKeyPair.secretKey(), nonce.increment());
-    assertFalse(clearText.isPresent());
+    assertNull(clearText);
 
     Box.KeyPair otherKeyPair = Box.KeyPair.random();
     clearText = Box.decrypt(cipherText, otherKeyPair.publicKey(), bobKeyPair.secretKey(), nonce);
-    assertFalse(clearText.isPresent());
+    assertNull(clearText);
   }
 
   @Test
@@ -81,23 +79,23 @@ class BoxTest {
       cipherText = precomputed.encrypt(message, nonce);
     }
 
-    Optional<byte[]> clearText = Box.decrypt(cipherText, bobKeyPair.publicKey(), aliceKeyPair.secretKey(), nonce);
+    byte[] clearText = Box.decrypt(cipherText, bobKeyPair.publicKey(), aliceKeyPair.secretKey(), nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
     try (Box precomputed = Box.forKeys(bobKeyPair.publicKey(), aliceKeyPair.secretKey())) {
       clearText = precomputed.decrypt(cipherText, nonce);
 
-      assertTrue(clearText.isPresent());
-      assertArrayEquals(message, clearText.get());
+      assertNotNull(clearText);
+      assertArrayEquals(message, clearText);
 
-      assertFalse(precomputed.decrypt(cipherText, nonce.increment()).isPresent());
+      assertNull(precomputed.decrypt(cipherText, nonce.increment()));
     }
 
     Box.KeyPair otherKeyPair = Box.KeyPair.random();
     try (Box precomputed = Box.forKeys(otherKeyPair.publicKey(), bobKeyPair.secretKey())) {
-      assertFalse(precomputed.decrypt(cipherText, nonce).isPresent());
+      assertNull(precomputed.decrypt(cipherText, nonce));
     }
   }
 
@@ -110,15 +108,15 @@ class BoxTest {
 
     DetachedEncryptionResult result =
         Box.encryptDetached(message, aliceKeyPair.publicKey(), bobKeyPair.secretKey(), nonce);
-    Optional<byte[]> clearText = Box.decryptDetached(
+    byte[] clearText = Box.decryptDetached(
         result.cipherTextArray(),
         result.macArray(),
         bobKeyPair.publicKey(),
         aliceKeyPair.secretKey(),
         nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
     clearText = Box.decryptDetached(
         result.cipherTextArray(),
@@ -126,7 +124,7 @@ class BoxTest {
         bobKeyPair.publicKey(),
         aliceKeyPair.secretKey(),
         nonce.increment());
-    assertFalse(clearText.isPresent());
+    assertNull(clearText);
 
     Box.KeyPair otherKeyPair = Box.KeyPair.random();
     clearText = Box.decryptDetached(
@@ -135,7 +133,7 @@ class BoxTest {
         otherKeyPair.publicKey(),
         bobKeyPair.secretKey(),
         nonce);
-    assertFalse(clearText.isPresent());
+    assertNull(clearText);
   }
 
   @Test
@@ -150,29 +148,28 @@ class BoxTest {
       result = precomputed.encryptDetached(message, nonce);
     }
 
-    Optional<byte[]> clearText = Box.decryptDetached(
+    byte[] clearText = Box.decryptDetached(
         result.cipherTextArray(),
         result.macArray(),
         bobKeyPair.publicKey(),
         aliceKeyPair.secretKey(),
         nonce);
 
-    assertTrue(clearText.isPresent());
-    assertArrayEquals(message, clearText.get());
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
 
     try (Box precomputed = Box.forKeys(bobKeyPair.publicKey(), aliceKeyPair.secretKey())) {
       clearText = precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), nonce);
 
-      assertTrue(clearText.isPresent());
-      assertArrayEquals(message, clearText.get());
+      assertNotNull(clearText);
+      assertArrayEquals(message, clearText);
 
-      assertFalse(
-          precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), nonce.increment()).isPresent());
+      assertNull(precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), nonce.increment()));
     }
 
     Box.KeyPair otherKeyPair = Box.KeyPair.random();
     try (Box precomputed = Box.forKeys(otherKeyPair.publicKey(), bobKeyPair.secretKey())) {
-      assertFalse(precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), nonce).isPresent());
+      assertNull(precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), nonce));
     }
   }
 }

@@ -12,10 +12,12 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.util.Objects.requireNonNull;
+
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Arrays;
-import java.util.Optional;
+import javax.annotation.Nullable;
 
 import jnr.ffi.Pointer;
 import jnr.ffi.byref.LongLongByReference;
@@ -282,6 +284,7 @@ public final class AES256GCM implements AutoCloseable {
    * @return A {@link AES256GCM} instance.
    */
   public static AES256GCM forKey(Key key) {
+    requireNonNull(key);
     assertAvailable();
     return new AES256GCM(key);
   }
@@ -584,10 +587,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce to use when decrypting.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decrypt(Bytes cipherText, Key key, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), key, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, Key key, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -596,9 +601,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce to use when decrypting.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decrypt(byte[] cipherText, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
     return decrypt(cipherText, EMPTY_BYTES, key, nonce);
   }
 
@@ -609,10 +615,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decrypt(Bytes cipherText, Bytes data, Key key, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, Bytes data, Key key, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -622,9 +630,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
 
     byte[] clearText = new byte[maxClearTextLength(cipherText)];
@@ -641,13 +650,13 @@ public final class AES256GCM implements AutoCloseable {
         nonce.ptr,
         key.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_encrypt: failed with result " + rc);
     }
 
-    return Optional.of(maybeSliceResult(clearText, clearTextLen, "crypto_aead_aes256gcm_decrypt"));
+    return maybeSliceResult(clearText, clearTextLen, "crypto_aead_aes256gcm_decrypt");
   }
 
   /**
@@ -655,10 +664,12 @@ public final class AES256GCM implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<Bytes> decrypt(Bytes cipherText, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), nonce).map(Bytes::wrap);
+  @Nullable
+  public Bytes decrypt(Bytes cipherText, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -666,9 +677,10 @@ public final class AES256GCM implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<byte[]> decrypt(byte[] cipherText, Nonce nonce) {
+  @Nullable
+  public byte[] decrypt(byte[] cipherText, Nonce nonce) {
     return decrypt(cipherText, EMPTY_BYTES, nonce);
   }
 
@@ -678,10 +690,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<Bytes> decrypt(Bytes cipherText, Bytes data, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), data.toArrayUnsafe(), nonce).map(Bytes::wrap);
+  @Nullable
+  public Bytes decrypt(Bytes cipherText, Bytes data, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), data.toArrayUnsafe(), nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -690,9 +704,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<byte[]> decrypt(byte[] cipherText, byte[] data, Nonce nonce) {
+  @Nullable
+  public byte[] decrypt(byte[] cipherText, byte[] data, Nonce nonce) {
     assertOpen();
 
     byte[] clearText = new byte[maxClearTextLength(cipherText)];
@@ -709,13 +724,13 @@ public final class AES256GCM implements AutoCloseable {
         nonce.ptr,
         ctx);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_decrypt_afternm: failed with result " + rc);
     }
 
-    return Optional.of(maybeSliceResult(clearText, clearTextLen, "crypto_aead_aes256gcm_decrypt_afternm"));
+    return maybeSliceResult(clearText, clearTextLen, "crypto_aead_aes256gcm_decrypt_afternm");
   }
 
   private static int maxClearTextLength(byte[] cipherText) {
@@ -736,10 +751,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), key, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -749,9 +766,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
     return decryptDetached(cipherText, mac, EMPTY_BYTES, key, nonce);
   }
 
@@ -763,11 +781,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Key key, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce)
-        .map(Bytes::wrap);
+  @Nullable
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Key key, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -778,9 +797,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
 
     long abytes = Sodium.crypto_aead_aes256gcm_abytes();
@@ -803,13 +823,13 @@ public final class AES256GCM implements AutoCloseable {
         nonce.ptr,
         key.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_encrypt: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   /**
@@ -818,10 +838,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), nonce).map(Bytes::wrap);
+  @Nullable
+  public Bytes decryptDetached(Bytes cipherText, Bytes mac, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -830,9 +852,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, Nonce nonce) {
+  @Nullable
+  public byte[] decryptDetached(byte[] cipherText, byte[] mac, Nonce nonce) {
     return decryptDetached(cipherText, mac, EMPTY_BYTES, nonce);
   }
 
@@ -843,11 +866,12 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), data.toArrayUnsafe(), nonce)
-        .map(Bytes::wrap);
+  @Nullable
+  public Bytes decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), data.toArrayUnsafe(), nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -857,9 +881,10 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Nonce nonce) {
+  @Nullable
+  public byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Nonce nonce) {
     assertAvailable();
 
     long abytes = Sodium.crypto_aead_aes256gcm_abytes();
@@ -882,13 +907,13 @@ public final class AES256GCM implements AutoCloseable {
         nonce.ptr,
         ctx);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_decrypt_detached_afternm: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   private void assertOpen() {
