@@ -143,7 +143,7 @@ public final class SECP256K1 {
    * @param s The S component of the signature.
    * @param message Hash of the data that was signed.
    * @throws IllegalArgumentException if no key can be recovered from the components
-   * @return An Optional ECKey containing only the public part, or empty if recovery wasn't possible.
+   * @return A ECKey containing only the public part.
    */
   private static BigInteger recoverFromSignature(int recId, BigInteger r, BigInteger s, Bytes32 message) {
     assert (recId >= 0);

@@ -29,9 +29,17 @@ import java.security.NoSuchAlgorithmException;
 public final class Hash {
   private Hash() {}
 
+  // SHA-2
+  private static String SHA2_256 = "SHA-256";
+  private static String SHA2_512_256 = "SHA-512/256";
+
+  // Keccak
   private static String KECCAK_256 = "KECCAK-256";
-  private static String SHA_256 = "SHA-256";
+  private static String KECCAK_512 = "KECCAK-512";
+
+  // SHA-3
   private static String SHA3_256 = "SHA3-256";
+  private static String SHA3_512 = "SHA3-512";
 
   /**
    * Helper method to generate a digest using the provided algorithm.
@@ -73,9 +81,9 @@ public final class Hash {
    * @param input The input bytes to produce the digest for.
    * @return A digest.
    */
-  public static byte[] sha256(byte[] input) {
+  public static byte[] sha2_256(byte[] input) {
     try {
-      return digestUsingAlgorithm(input, SHA_256);
+      return digestUsingAlgorithm(input, SHA2_256);
     } catch (NoSuchAlgorithmException e) {
       throw new IllegalStateException("Algorithm should be available but was not", e);
     }
@@ -87,9 +95,37 @@ public final class Hash {
    * @param input The input bytes to produce the digest for.
    * @return A digest.
    */
-  public static Bytes32 sha256(Bytes input) {
+  public static Bytes32 sha2_256(Bytes input) {
     try {
-      return Bytes32.wrap(digestUsingAlgorithm(input, SHA_256).toArrayUnsafe());
+      return Bytes32.wrap(digestUsingAlgorithm(input, SHA2_256).toArrayUnsafe());
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Algorithm should be available but was not", e);
+    }
+  }
+
+  /**
+   * Digest using SHA2-512/256.
+   *
+   * @param input The value to encode.
+   * @return A digest.
+   */
+  public static byte[] sha2_512_256(byte[] input) {
+    try {
+      return digestUsingAlgorithm(input, SHA2_512_256);
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Algorithm should be available but was not", e);
+    }
+  }
+
+  /**
+   * Digest using SHA-512/256.
+   *
+   * @param input The value to encode.
+   * @return A digest.
+   */
+  public static Bytes32 sha2_512_256(Bytes input) {
+    try {
+      return Bytes32.wrap(digestUsingAlgorithm(input, SHA2_512_256).toArrayUnsafe());
     } catch (NoSuchAlgorithmException e) {
       throw new IllegalStateException("Algorithm should be available but was not", e);
     }
@@ -124,12 +160,40 @@ public final class Hash {
   }
 
   /**
-   * Digest using SHA-3-256.
+   * Digest using keccak-512.
+   *
+   * @param input The input bytes to produce the digest for.
+   * @return A digest.
+   */
+  public static byte[] keccak512(byte[] input) {
+    try {
+      return digestUsingAlgorithm(input, KECCAK_512);
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Algorithm should be available but was not", e);
+    }
+  }
+
+  /**
+   * Digest using keccak-512.
+   *
+   * @param input The input bytes to produce the digest for.
+   * @return A digest.
+   */
+  public static Bytes keccak512(Bytes input) {
+    try {
+      return Bytes.wrap(digestUsingAlgorithm(input, KECCAK_512).toArrayUnsafe());
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Algorithm should be available but was not", e);
+    }
+  }
+
+  /**
+   * Digest using SHA3-256.
    *
    * @param input The value to encode.
    * @return A digest.
    */
-  public static byte[] sha3(byte[] input) {
+  public static byte[] sha3_256(byte[] input) {
     try {
       return digestUsingAlgorithm(input, SHA3_256);
     } catch (NoSuchAlgorithmException e) {
@@ -138,14 +202,42 @@ public final class Hash {
   }
 
   /**
-   * Digest using SHA-3-256.
+   * Digest using SHA3-256.
    *
    * @param input The value to encode.
    * @return A digest.
    */
-  public static Bytes32 sha3(Bytes input) {
+  public static Bytes32 sha3_256(Bytes input) {
     try {
       return Bytes32.wrap(digestUsingAlgorithm(input, SHA3_256).toArrayUnsafe());
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Algorithm should be available but was not", e);
+    }
+  }
+
+  /**
+   * Digest using SHA3-512.
+   *
+   * @param input The value to encode.
+   * @return A digest.
+   */
+  public static byte[] sha3_512(byte[] input) {
+    try {
+      return digestUsingAlgorithm(input, SHA3_512);
+    } catch (NoSuchAlgorithmException e) {
+      throw new IllegalStateException("Algorithm should be available but was not", e);
+    }
+  }
+
+  /**
+   * Digest using SHA3-512.
+   *
+   * @param input The value to encode.
+   * @return A digest.
+   */
+  public static Bytes sha3_512(Bytes input) {
+    try {
+      return Bytes.wrap(digestUsingAlgorithm(input, SHA3_512).toArrayUnsafe());
     } catch (NoSuchAlgorithmException e) {
       throw new IllegalStateException("Algorithm should be available but was not", e);
     }
