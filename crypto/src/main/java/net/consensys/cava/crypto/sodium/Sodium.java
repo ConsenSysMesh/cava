@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 import jnr.ffi.LibraryLoader;
 import jnr.ffi.Platform;
@@ -323,7 +324,7 @@ public final class Sodium {
       long mlen,
       byte[] ad,
       long adlen,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       Pointer npub,
       Pointer k) {
     return libSodium().crypto_aead_aes256gcm_encrypt(c, clen_p, m, mlen, ad, adlen, nsec, npub, k);
@@ -332,7 +333,7 @@ public final class Sodium {
   static int crypto_aead_aes256gcm_decrypt(
       byte[] m,
       LongLongByReference mlen_p,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       byte[] c,
       long clen,
       byte[] ad,
@@ -350,7 +351,7 @@ public final class Sodium {
       long mlen,
       byte[] ad,
       long adlen,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       Pointer npub,
       Pointer k) {
     return libSodium().crypto_aead_aes256gcm_encrypt_detached(c, mac, maclen_p, m, mlen, ad, adlen, nsec, npub, k);
@@ -358,7 +359,7 @@ public final class Sodium {
 
   static int crypto_aead_aes256gcm_decrypt_detached(
       byte[] m,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       byte[] c,
       long clen,
       byte[] mac,
@@ -380,7 +381,7 @@ public final class Sodium {
       long mlen,
       byte[] ad,
       long adlen,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       Pointer npub,
       Pointer ctx_) {
     return libSodium().crypto_aead_aes256gcm_encrypt_afternm(c, clen_p, m, mlen, ad, adlen, nsec, npub, ctx_);
@@ -389,7 +390,7 @@ public final class Sodium {
   static int crypto_aead_aes256gcm_decrypt_afternm(
       byte[] m,
       LongLongByReference mlen_p,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       byte[] c,
       long clen,
       byte[] ad,
@@ -407,7 +408,7 @@ public final class Sodium {
       long mlen,
       byte[] ad,
       long adlen,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       Pointer npub,
       Pointer ctx_) {
     return libSodium()
@@ -416,7 +417,7 @@ public final class Sodium {
 
   static int crypto_aead_aes256gcm_decrypt_detached_afternm(
       byte[] m,
-      Pointer nsec,
+      @Nullable Pointer nsec,
       byte[] c,
       long clen,
       byte[] mac,
@@ -614,7 +615,7 @@ public final class Sodium {
       long mlen,
       byte[] ad,
       long adlen,
-      byte[] nsec,
+      @Nullable byte[] nsec,
       Pointer npub,
       Pointer k) {
     return libSodium().crypto_aead_xchacha20poly1305_ietf_encrypt(c, clen_p, m, mlen, ad, adlen, nsec, npub, k);
@@ -623,7 +624,7 @@ public final class Sodium {
   static int crypto_aead_xchacha20poly1305_ietf_decrypt(
       byte[] m,
       LongLongByReference mlen_p,
-      byte[] nsec,
+      @Nullable byte[] nsec,
       byte[] c,
       long clen,
       byte[] ad,
@@ -641,7 +642,7 @@ public final class Sodium {
       long mlen,
       byte[] ad,
       long adlen,
-      byte[] nsec,
+      @Nullable byte[] nsec,
       Pointer npub,
       Pointer k) {
     return libSodium()
@@ -650,7 +651,7 @@ public final class Sodium {
 
   static int crypto_aead_xchacha20poly1305_ietf_decrypt_detached(
       byte[] m,
-      byte[] nsec,
+      @Nullable byte[] nsec,
       byte[] c,
       long clen,
       byte[] mac,
@@ -2001,10 +2002,10 @@ public final class Sodium {
   static int crypto_secretstream_xchacha20poly1305_push(
       Pointer state,
       byte[] c,
-      LongLongByReference clen_p,
+      @Nullable LongLongByReference clen_p,
       byte[] m,
       long mlen,
-      byte[] ad,
+      @Nullable byte[] ad,
       long adlen,
       byte tag) {
     return libSodium().crypto_secretstream_xchacha20poly1305_push(state, c, clen_p, m, mlen, ad, adlen, tag);
@@ -2017,11 +2018,11 @@ public final class Sodium {
   static int crypto_secretstream_xchacha20poly1305_pull(
       Pointer state,
       byte[] m,
-      LongLongByReference mlen_p,
+      @Nullable LongLongByReference mlen_p,
       ByteByReference tag_p,
       byte[] c,
       long clen,
-      byte[] ad,
+      @Nullable byte[] ad,
       long adlen) {
     return libSodium().crypto_secretstream_xchacha20poly1305_pull(state, m, mlen_p, tag_p, c, clen, ad, adlen);
   }

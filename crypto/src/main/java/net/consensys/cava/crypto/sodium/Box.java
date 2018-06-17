@@ -14,7 +14,7 @@ package net.consensys.cava.crypto.sodium;
 
 import net.consensys.cava.bytes.Bytes;
 
-import java.util.Optional;
+import javax.annotation.Nullable;
 
 import jnr.ffi.Pointer;
 
@@ -350,7 +350,9 @@ public final class Box implements AutoCloseable {
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
-        Sodium.sodium_free(publicKey);
+        if (publicKey != null) {
+          Sodium.sodium_free(publicKey);
+        }
         if (secretKey != null) {
           Sodium.sodium_free(secretKey);
         }
@@ -379,7 +381,9 @@ public final class Box implements AutoCloseable {
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
-        Sodium.sodium_free(publicKey);
+        if (publicKey != null) {
+          Sodium.sodium_free(publicKey);
+        }
         if (secretKey != null) {
           Sodium.sodium_free(secretKey);
         }
@@ -752,10 +756,12 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decrypt(Bytes cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), sender, receiver, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), sender, receiver, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -765,20 +771,21 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decrypt(byte[] cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
     byte[] clearText = new byte[clearTextLength(cipherText)];
 
     int rc = Sodium.crypto_box_open_easy(clearText, cipherText, cipherText.length, nonce.ptr, sender.ptr, receiver.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_box_open_easy: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   /**
@@ -786,10 +793,12 @@ public final class Box implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<Bytes> decrypt(Bytes cipherText, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), nonce).map(Bytes::wrap);
+  @Nullable
+  public Bytes decrypt(Bytes cipherText, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -797,22 +806,23 @@ public final class Box implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<byte[]> decrypt(byte[] cipherText, Nonce nonce) {
+  @Nullable
+  public byte[] decrypt(byte[] cipherText, Nonce nonce) {
     assertOpen();
 
     byte[] clearText = new byte[clearTextLength(cipherText)];
 
     int rc = Sodium.crypto_box_open_easy_afternm(clearText, cipherText, cipherText.length, nonce.ptr, ctx);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_box_open_easy_afternm: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   private static int clearTextLength(byte[] cipherText) {
@@ -832,10 +842,12 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decryptSealed(Bytes cipherText, PublicKey sender, SecretKey receiver) {
-    return decryptSealed(cipherText.toArrayUnsafe(), sender, receiver).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decryptSealed(Bytes cipherText, PublicKey sender, SecretKey receiver) {
+    byte[] bytes = decryptSealed(cipherText.toArrayUnsafe(), sender, receiver);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -844,9 +856,10 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decryptSealed(byte[] cipherText, PublicKey sender, SecretKey receiver) {
+  @Nullable
+  public static byte[] decryptSealed(byte[] cipherText, PublicKey sender, SecretKey receiver) {
     long sealbytes = Sodium.crypto_box_sealbytes();
     if (sealbytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_box_sealbytes: " + sealbytes + " is too large");
@@ -858,13 +871,13 @@ public final class Box implements AutoCloseable {
 
     int rc = Sodium.crypto_box_seal_open(clearText, cipherText, cipherText.length, sender.ptr, receiver.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_box_seal_open: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   /**
@@ -875,15 +888,12 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decryptDetached(
-      Bytes cipherText,
-      Bytes mac,
-      PublicKey sender,
-      SecretKey receiver,
-      Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), sender, receiver, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, PublicKey sender, SecretKey receiver, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), sender, receiver, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -894,9 +904,10 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decryptDetached(
+  @Nullable
+  public static byte[] decryptDetached(
       byte[] cipherText,
       byte[] mac,
       PublicKey sender,
@@ -914,13 +925,13 @@ public final class Box implements AutoCloseable {
     int rc = Sodium
         .crypto_box_open_detached(clearText, cipherText, mac, cipherText.length, nonce.ptr, sender.ptr, receiver.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_box_open_detached: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   /**
@@ -929,10 +940,12 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), nonce).map(Bytes::wrap);
+  @Nullable
+  public Bytes decryptDetached(Bytes cipherText, Bytes mac, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -941,9 +954,10 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, Nonce nonce) {
+  @Nullable
+  public byte[] decryptDetached(byte[] cipherText, byte[] mac, Nonce nonce) {
     long macbytes = Sodium.crypto_box_macbytes();
     if (macbytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_box_macbytes: " + macbytes + " is too large");
@@ -955,13 +969,13 @@ public final class Box implements AutoCloseable {
     byte[] clearText = new byte[cipherText.length];
     int rc = Sodium.crypto_box_open_detached_afternm(clearText, cipherText, mac, cipherText.length, nonce.ptr, ctx);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_box_open_detached_afternm: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   private void assertOpen() {

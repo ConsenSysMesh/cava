@@ -14,7 +14,7 @@ package net.consensys.cava.crypto.sodium;
 
 import net.consensys.cava.bytes.Bytes;
 
-import java.util.Optional;
+import javax.annotation.Nullable;
 
 import jnr.ffi.Pointer;
 import jnr.ffi.byref.ByteByReference;
@@ -473,10 +473,12 @@ public final class XChaCha20Poly1305 {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decrypt(Bytes cipherText, Key key, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), key, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, Key key, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -485,9 +487,10 @@ public final class XChaCha20Poly1305 {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decrypt(byte[] cipherText, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
     return decrypt(cipherText, EMPTY_BYTES, key, nonce);
   }
 
@@ -498,10 +501,12 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decrypt(Bytes cipherText, Bytes data, Key key, Nonce nonce) {
-    return decrypt(cipherText.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce).map(Bytes::wrap);
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, Bytes data, Key key, Nonce nonce) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -511,9 +516,10 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
     byte[] clearText = new byte[maxClearTextLength(cipherText)];
 
     LongLongByReference clearTextLen = new LongLongByReference();
@@ -528,13 +534,13 @@ public final class XChaCha20Poly1305 {
         nonce.ptr,
         key.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_aead_xchacha20poly1305_ietf_decrypt: failed with result " + rc);
     }
 
-    return Optional.of(maybeSliceResult(clearText, clearTextLen, "crypto_aead_xchacha20poly1305_ietf_decrypt"));
+    return maybeSliceResult(clearText, clearTextLen, "crypto_aead_xchacha20poly1305_ietf_decrypt");
   }
 
   private static int maxClearTextLength(byte[] cipherText) {
@@ -555,10 +561,11 @@ public final class XChaCha20Poly1305 {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), key, nonce).map(Bytes::wrap);
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -568,9 +575,10 @@ public final class XChaCha20Poly1305 {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
     return decryptDetached(cipherText, mac, EMPTY_BYTES, key, nonce);
   }
 
@@ -582,11 +590,12 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<Bytes> decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Key key, Nonce nonce) {
-    return decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce)
-        .map(Bytes::wrap);
+  @Nullable
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Key key, Nonce nonce) {
+    byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), data.toArrayUnsafe(), key, nonce);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
   /**
@@ -597,9 +606,10 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or {@code Optional.empty()} if verification failed.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
-  public static Optional<byte[]> decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
+  @Nullable
+  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
     long abytes = Sodium.crypto_aead_xchacha20poly1305_ietf_abytes();
     if (abytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_aead_xchacha20poly1305_ietf_abytes: " + abytes + " is too large");
@@ -620,13 +630,13 @@ public final class XChaCha20Poly1305 {
         nonce.ptr,
         key.ptr);
     if (rc == -1) {
-      return Optional.empty();
+      return null;
     }
     if (rc != 0) {
       throw new SodiumException("crypto_aead_xchacha20poly1305_ietf_decrypt_detached: failed with result " + rc);
     }
 
-    return Optional.of(clearText);
+    return clearText;
   }
 
   private static final class SSDecrypt implements SecretDecryptionStream {

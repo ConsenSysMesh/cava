@@ -307,7 +307,9 @@ public final class KeyExchange {
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
-        Sodium.sodium_free(publicKey);
+        if (publicKey != null) {
+          Sodium.sodium_free(publicKey);
+        }
         if (secretKey != null) {
           Sodium.sodium_free(secretKey);
         }
@@ -336,7 +338,9 @@ public final class KeyExchange {
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
-        Sodium.sodium_free(publicKey);
+        if (publicKey != null) {
+          Sodium.sodium_free(publicKey);
+        }
         if (secretKey != null) {
           Sodium.sodium_free(secretKey);
         }
