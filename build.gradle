@@ -324,11 +324,10 @@ sourcesJar {
   }
 }
 
-dokkaJar {
-  baseName = rootProject.name
-  manifest {
-    attributes('Implementation-Title': baseName,
-    'Implementation-Version': project.version)
+javadoc {
+  subprojects.each {
+    source += it.javadoc.source
+    classpath += it.javadoc.classpath
   }
 }
 
@@ -362,6 +361,14 @@ dokka {
 
   externalDocumentationLink {
     url = new URL('https://atoulme.github.io/kotlinx.coroutines/kotlinx-coroutines-core/')
+  }
+}
+
+dokkaJar {
+  baseName = rootProject.name
+  manifest {
+    attributes('Implementation-Title': baseName,
+    'Implementation-Version': project.version)
   }
 }
 
