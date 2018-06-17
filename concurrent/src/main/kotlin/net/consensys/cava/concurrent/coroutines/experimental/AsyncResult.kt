@@ -163,7 +163,7 @@ suspend fun <T> AsyncResult<T>.await(): T {
   return suspendCancellableCoroutine { cont: CancellableContinuation<T> ->
     val consumer = ContinuationBiConsumer(cont)
     whenComplete(consumer)
-    cont.invokeOnCompletion {
+    cont.invokeOnCancellation {
       consumer.cont = null // shall clear reference to continuation
     }
   }
