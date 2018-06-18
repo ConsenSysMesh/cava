@@ -1,0 +1,114 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KeyExchange - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="./index.html">KeyExchange</a><br/>
+<br/>
+<h1>KeyExchange</h1>
+<code><span class="keyword">class </span><span class="identifier">KeyExchange</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/KeyExchange.java#L25">(source)</a>
+<p>Key exchange. 
+<p> Allows two parties can securely compute a set of shared keys using their peer's public key and their own secret key.</p>
+</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-key-pair/index.html">KeyPair</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">KeyPair</span></code>
+<p>A KeyExchange key pair.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-public-key/index.html">PublicKey</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">PublicKey</span></code>
+<p>A KeyExchange public key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-secret-key/index.html">SecretKey</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SecretKey</span></code>
+<p>A KeyExchange secret key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-seed/index.html">Seed</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Seed</span></code>
+<p>A KeyExchange key pair seed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-session-key/index.html">SessionKey</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SessionKey</span></code>
+<p>A KeyExchange session key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-session-key-pair/index.html">SessionKeyPair</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SessionKeyPair</span></code>
+<p>A KeyExchange session key pair.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">KeyExchange</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>Key exchange. 
+<p> Allows two parties can securely compute a set of shared keys using their peer's public key and their own secret key.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="client.html">client</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">client</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyExchange$client(net.consensys.cava.crypto.sodium.KeyExchange.KeyPair, net.consensys.cava.crypto.sodium.KeyExchange.PublicKey)/clientKeys">clientKeys</span><span class="symbol">:</span>&nbsp;<a href="-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyExchange$client(net.consensys.cava.crypto.sodium.KeyExchange.KeyPair, net.consensys.cava.crypto.sodium.KeyExchange.PublicKey)/serverKey">serverKey</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-session-key-pair/index.html"><span class="identifier">SessionKeyPair</span></a></code>
+<p>Computer a pair of session keys for use by a client.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="server.html">server</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">server</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyExchange$server(net.consensys.cava.crypto.sodium.KeyExchange.KeyPair, net.consensys.cava.crypto.sodium.KeyExchange.PublicKey)/serverKeys">serverKeys</span><span class="symbol">:</span>&nbsp;<a href="-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyExchange$server(net.consensys.cava.crypto.sodium.KeyExchange.KeyPair, net.consensys.cava.crypto.sodium.KeyExchange.PublicKey)/clientKey">clientKey</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-session-key-pair/index.html"><span class="identifier">SessionKeyPair</span></a></code>
+<p>Computer a pair of session keys for use by a client.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

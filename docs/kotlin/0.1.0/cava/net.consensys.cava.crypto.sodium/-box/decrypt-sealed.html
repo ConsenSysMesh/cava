@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Box.decryptSealed - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">Box</a>&nbsp;/&nbsp;<a href="./decrypt-sealed.html">decryptSealed</a><br/>
+<br/>
+<h1>decryptSealed</h1>
+<a name="net.consensys.cava.crypto.sodium.Box$decryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decryptSealed</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$decryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$decryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/sender">sender</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$decryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/receiver">receiver</span><span class="symbol">:</span>&nbsp;<a href="-secret-key/index.html"><span class="identifier">SecretKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Box.java#L848">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.Box$decryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decryptSealed</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$decryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$decryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/sender">sender</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$decryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/receiver">receiver</span><span class="symbol">:</span>&nbsp;<a href="-secret-key/index.html"><span class="identifier">SecretKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Box.java#L862">(source)</a>
+<p>Decrypt a sealed message using a given key.</p>
+<h3>Parameters</h3>
+<p><a name="cipherText"></a>
+<code>cipherText</code> - The cipher text to decrypt.</p>
+<p><a name="sender"></a>
+<code>sender</code> - The public key of the sender.</p>
+<p><a name="receiver"></a>
+<code>receiver</code> - The secret key of the receiver.</p>
+<p><strong>Return</strong><br/>
+The decrypted data, or null if verification failed.</p>
+</BODY>
+</HTML>

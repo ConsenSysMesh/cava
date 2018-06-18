@@ -1,0 +1,213 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SchemaBuilder - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="./index.html">SchemaBuilder</a><br/>
+<br/>
+<h1>SchemaBuilder</h1>
+<code><span class="keyword">class </span><span class="identifier">SchemaBuilder</span></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/SchemaBuilder.java#L34">(source)</a>
+<p>This interface allows customers to determine a schema to associate with a configuration to validate the entries read from configuration files, and provide default values if no value is present in the configuration file.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add-boolean.html">addBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addBoolean(kotlin.String, kotlin.Boolean, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Boolean)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addBoolean(kotlin.String, kotlin.Boolean, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Boolean)))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addBoolean(kotlin.String, kotlin.Boolean, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Boolean)))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addBoolean(kotlin.String, kotlin.Boolean, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Boolean)))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a boolean property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a boolean. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-default.html">addDefault</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addDefault</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addDefault(kotlin.String, kotlin.Any)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addDefault(kotlin.String, kotlin.Any)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Provide a default value for a property. 
+<p> Invoking this method with the same key as a previous invocation will replace the default value for that key.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-double.html">addDouble</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addDouble</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addDouble(kotlin.String, kotlin.Double, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Double)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addDouble(kotlin.String, kotlin.Double, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Double)))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addDouble(kotlin.String, kotlin.Double, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Double)))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addDouble(kotlin.String, kotlin.Double, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Double)))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a double property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a double. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-integer.html">addInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addInteger(kotlin.String, kotlin.Int, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Int)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addInteger(kotlin.String, kotlin.Int, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Int)))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addInteger(kotlin.String, kotlin.Int, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Int)))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addInteger(kotlin.String, kotlin.Int, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Int)))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add an integer property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains an integer. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-list-of-boolean.html">addListOfBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addListOfBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfBoolean(kotlin.String, kotlin.collections.MutableList((kotlin.Boolean)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Boolean)))))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfBoolean(kotlin.String, kotlin.collections.MutableList((kotlin.Boolean)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Boolean)))))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfBoolean(kotlin.String, kotlin.collections.MutableList((kotlin.Boolean)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Boolean)))))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfBoolean(kotlin.String, kotlin.collections.MutableList((kotlin.Boolean)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Boolean)))))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a list-of-booleans property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a list of booleans without any null values. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-list-of-double.html">addListOfDouble</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addListOfDouble</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfDouble(kotlin.String, kotlin.collections.MutableList((kotlin.Double)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Double)))))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfDouble(kotlin.String, kotlin.collections.MutableList((kotlin.Double)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Double)))))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfDouble(kotlin.String, kotlin.collections.MutableList((kotlin.Double)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Double)))))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfDouble(kotlin.String, kotlin.collections.MutableList((kotlin.Double)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Double)))))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a list-of-doubles property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a list of doubles without any null values. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-list-of-integer.html">addListOfInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addListOfInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfInteger(kotlin.String, kotlin.collections.MutableList((kotlin.Int)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Int)))))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfInteger(kotlin.String, kotlin.collections.MutableList((kotlin.Int)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Int)))))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfInteger(kotlin.String, kotlin.collections.MutableList((kotlin.Int)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Int)))))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfInteger(kotlin.String, kotlin.collections.MutableList((kotlin.Int)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Int)))))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a list-of-integers property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a list of integers without any null values. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-list-of-long.html">addListOfLong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addListOfLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfLong(kotlin.String, kotlin.collections.MutableList((kotlin.Long)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Long)))))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfLong(kotlin.String, kotlin.collections.MutableList((kotlin.Long)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Long)))))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfLong(kotlin.String, kotlin.collections.MutableList((kotlin.Long)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Long)))))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfLong(kotlin.String, kotlin.collections.MutableList((kotlin.Long)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.Long)))))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a list-of-longs property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a list of longs without any null values. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-list-of-map.html">addListOfMap</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addListOfMap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfMap(kotlin.String, kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))))))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfMap(kotlin.String, kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))))))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfMap(kotlin.String, kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))))))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfMap(kotlin.String, kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.collections.MutableMap((kotlin.String, kotlin.Any)))))))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a list-of-maps property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a list of maps without any null values. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-list-of-string.html">addListOfString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addListOfString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfString(kotlin.String, kotlin.collections.MutableList((kotlin.String)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.String)))))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfString(kotlin.String, kotlin.collections.MutableList((kotlin.String)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.String)))))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfString(kotlin.String, kotlin.collections.MutableList((kotlin.String)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.String)))))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addListOfString(kotlin.String, kotlin.collections.MutableList((kotlin.String)), kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.collections.MutableList((kotlin.String)))))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a list-of-strings property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a list of strings without any null values. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-long.html">addLong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addLong(kotlin.String, kotlin.Long, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Long)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addLong(kotlin.String, kotlin.Long, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Long)))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addLong(kotlin.String, kotlin.Long, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Long)))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addLong(kotlin.String, kotlin.Long, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Long)))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a long property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a long. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-string.html">addString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addString(kotlin.String, kotlin.String, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.String)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addString(kotlin.String, kotlin.String, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.String)))/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addString(kotlin.String, kotlin.String, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.String)))/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$addString(kotlin.String, kotlin.String, kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.String)))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a string property to the schema. 
+<p> Even if no <code>validator</code> is provided, the schema will validate that the configuration property, if present, contains a string. </p>
+<p> If a <code>defaultValue</code> is provided, then the provided validator, if any, will only be invoked if the value is present (i.e. it will not be provided a null value to validate).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="create.html">create</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">create</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Get a new builder for a schema.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="document-property.html">documentProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">documentProperty</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$documentProperty(kotlin.String, kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$documentProperty(kotlin.String, kotlin.String)/description">description</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Provide documentation for a property. 
+<p> Invoking this method with the same key as a previous invocation will replace the description for that key.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-schema.html">toSchema</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toSchema</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-schema/index.html"><span class="identifier">Schema</span></a></code>
+<p>Return the Schema constructed by this builder.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="validate-configuration.html">validateConfiguration</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">validateConfiguration</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$validateConfiguration(net.consensys.cava.config.ConfigurationValidator)/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-configuration-validator/index.html"><span class="identifier">ConfigurationValidator</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a configuration validator to the schema. 
+<p> Multiple validators can be provided by invoking this method multiple times.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="validate-property.html">validateProperty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">validateProperty</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$validateProperty(kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Any)))/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.SchemaBuilder$validateProperty(kotlin.String, net.consensys.cava.config.PropertyValidator((kotlin.Any)))/validator">validator</span><span class="symbol">:</span>&nbsp;<a href="../-property-validator/index.html"><span class="identifier">PropertyValidator</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SchemaBuilder</span></a></code>
+<p>Add a property validation to this schema. 
+<p> Multiple validators can be provided for the same key by invoking this method multiple times.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

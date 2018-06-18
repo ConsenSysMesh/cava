@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PasswordHash.verifySensitive - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">PasswordHash</a>&nbsp;/&nbsp;<a href="./verify-sensitive.html">verifySensitive</a><br/>
+<br/>
+<h1>verifySensitive</h1>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$verifySensitive(kotlin.String, kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">verifySensitive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verifySensitive(kotlin.String, kotlin.String)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verifySensitive(kotlin.String, kotlin.String)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-verification-result/index.html"><span class="identifier">VerificationResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L417">(source)</a>
+<p>Verify a password against a hash using limits on operations and memory that are suitable for sensitive use-cases. 
+<p> Equivalent to <code>verify(hash, password, sensitiveOpsLimit(), sensitiveMemLimit())</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="hash"></a>
+<code>hash</code> - The hash.</p>
+<p><a name="password"></a>
+<code>password</code> - The password to verify.</p>
+<p><strong>Return</strong><br/>
+The result of verification.</p>
+</BODY>
+</HTML>

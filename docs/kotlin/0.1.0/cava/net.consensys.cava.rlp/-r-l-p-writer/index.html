@@ -1,0 +1,102 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLPWriter - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="./index.html">RLPWriter</a><br/>
+<br/>
+<h1>RLPWriter</h1>
+<code><span class="keyword">interface </span><span class="identifier">RLPWriter</span></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPWriter.java#L26">(source)</a>
+<p>A writer for encoding values to RLP.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="write-big-integer.html">writeBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeBigInteger(java.math.BigInteger)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a big integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-byte-array.html">writeByteArray</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeByteArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeByteArray(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Encode a byte array to RLP.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int.html">writeInt</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeInt(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write an integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-list.html">writeList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeList(java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-long.html">writeLong</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeLong(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a long to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-r-l-p.html">writeRLP</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeRLP</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeRLP(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Append an already RLP encoded value. 
+<p> Note that this method <strong>may not</strong> validate that <code>value</code> is a valid RLP sequence. Appending an invalid RLP sequence will cause the entire RLP encoding produced by this writer to also be invalid.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-string.html">writeString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeString(kotlin.String)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a string to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int256.html">writeUInt256</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeUInt256(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a UInt256 to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-value.html">writeValue</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeValue</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPWriter$writeValue(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Encode a Bytes value to RLP.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

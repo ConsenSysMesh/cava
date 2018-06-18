@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Configuration.inputPositionOf - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">Configuration</a>&nbsp;/&nbsp;<a href="./input-position-of.html">inputPositionOf</a><br/>
+<br/>
+<h1>inputPositionOf</h1>
+<a name="net.consensys.cava.config.Configuration$inputPositionOf(kotlin.String)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">inputPositionOf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$inputPositionOf(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-document-position/index.html"><span class="identifier">DocumentPosition</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L199">(source)</a>
+<p>Get the position where a key is defined in the TOML document.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - A configuration key (e.g. <code>"server.address.port"</code>).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the key cannot be parsed.</p>
+<p><strong>Return</strong><br/>
+The input position, or null if the key was not set in this configuration.</p>
+</BODY>
+</HTML>

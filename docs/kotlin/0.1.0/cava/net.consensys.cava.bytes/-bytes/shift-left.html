@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.shiftLeft - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./shift-left.html">shiftLeft</a><br/>
+<br/>
+<h1>shiftLeft</h1>
+<a name="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">shiftLeft</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L855">(source)</a>
+<p>Shift all bits in this value to the left.</p>
+<h3>Parameters</h3>
+<p><a name="distance"></a>
+<code>distance</code> - The number of bits to shift by.</p>
+<p><strong>Return</strong><br/>
+A value containing the shifted bits.</p>
+<a name="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftLeft.T)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">shiftLeft</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftLeft.T)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftLeft.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="shift-left.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="shift-left.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L871">(source)</a>
+<p>Shift all bits in this value to the left. 
+<p> If this value is shorter in length than the output vector, then it will be zero-padded to the left. Likewise, if this value is longer in length than the output vector, then it will be truncated to the left.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="distance"></a>
+<code>distance</code> - The number of bits to shift by.</p>
+<p><a name="result"></a>
+<code>result</code> - The mutable output vector for the result.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The MutableBytes value type.</p>
+<p><strong>Return</strong><br/>
+The <code>result</code> output vector.</p>
+</BODY>
+</HTML>

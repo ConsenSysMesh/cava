@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Configuration.toToml - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">Configuration</a>&nbsp;/&nbsp;<a href="./to-toml.html">toToml</a><br/>
+<br/>
+<h1>toToml</h1>
+<a name="net.consensys.cava.config.Configuration$toToml()"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toToml</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L130">(source)</a>
+<p>Get a TOML-formatted representation of this configuration.</p>
+<p><strong>Return</strong><br/>
+A TOML-formatted representation.</p>
+<a name="net.consensys.cava.config.Configuration$toToml(java.nio.file.Path)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$toToml(java.nio.file.Path)/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L150">(source)</a>
+<p>Save a configuration to a TOML-formatted file. 
+<p> If necessary, parent directories for the output file will be created.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The file path to write the TOML-formatted output to.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If the file cannot be written.</p>
+<a name="net.consensys.cava.config.Configuration$toToml(java.lang.Appendable)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$toToml(java.lang.Appendable)/appendable">appendable</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Appendable.html"><span class="identifier">Appendable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L163">(source)</a>
+<p>Writes a configuration in TOML format.</p>
+<h3>Parameters</h3>
+<p><a name="appendable"></a>
+<code>appendable</code> - The output to write to.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If the file cannot be written.</p>
+</BODY>
+</HTML>

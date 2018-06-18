@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>VertxTrustOptions.whitelistClients - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.tls</a>&nbsp;/&nbsp;<a href="index.html">VertxTrustOptions</a>&nbsp;/&nbsp;<a href="./whitelist-clients.html">whitelistClients</a><br/>
+<br/>
+<h1>whitelistClients</h1>
+<a name="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistClients</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/VertxTrustOptions.java#L239">(source)</a>
+<p>Require servers to present known certificates, or CA-signed certificates. 
+<p> If a certificate is not CA-signed, then its fingerprint must be present in the <code>knownClientsFile</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownClientsFile"></a>
+<code>knownClientsFile</code> - The path to the file containing fingerprints.</p>
+<p><strong>Return</strong><br/>
+A Vert.x TrustOptions.</p>
+<a name="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, kotlin.Boolean)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistClients</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, kotlin.Boolean)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, kotlin.Boolean)/acceptCASigned">acceptCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/VertxTrustOptions.java#L253">(source)</a>
+<p>Require clients to present known certificates. 
+<p> The fingerprint for a client certificate must be present in <code>knownClientsFile</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownClientsFile"></a>
+<code>knownClientsFile</code> - The path to the file containing fingerprints.</p>
+<p><a name="acceptCASigned"></a>
+<code>acceptCASigned</code> - If true, CA-signed certificates will always be accepted.</p>
+<p><strong>Return</strong><br/>
+A Vert.x TrustOptions.</p>
+<a name="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistClients</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/VertxTrustOptions.java#L267">(source)</a>
+<p>Require servers to present known certificates, or CA-signed certificates. 
+<p> If a certificate is not CA-signed, then its fingerprint must be present in the <code>knownClientsFile</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownClientsFile"></a>
+<code>knownClientsFile</code> - The path to the file containing fingerprints.</p>
+<p><a name="tmf"></a>
+<code>tmf</code> - A TrustManagerFactory for checking server certificates against a CA.</p>
+<p><strong>Return</strong><br/>
+A Vert.x TrustOptions.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,60 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CompactEncoding - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.trie</a>&nbsp;/&nbsp;<a href="./index.html">CompactEncoding</a><br/>
+<br/>
+<h1>CompactEncoding</h1>
+<code><span class="keyword">class </span><span class="identifier">CompactEncoding</span></code> <a href="https://github.com/consensys/cava/blob/master//merkle-trie/src/main/java/net/consensys/cava/trie/CompactEncoding.java#L28">(source)</a>
+<p>Compact (Hex-prefix) encoding and decoding. 
+<p> An implementation of <a href="#">Compact (Hex-prefix) encoding</a>.</p>
+</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-l-e-a-f_-t-e-r-m-i-n-a-t-o-r.html">LEAF_TERMINATOR</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">LEAF_TERMINATOR</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="bytes-to-path.html">bytesToPath</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">bytesToPath</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.CompactEncoding$bytesToPath(net.consensys.cava.bytes.Bytes)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Calculate a RADIX-16 path for a given byte sequence.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode.html">decode</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.CompactEncoding$decode(net.consensys.cava.bytes.Bytes)/encoded">encoded</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Decode a compact-encoded path to Radix-16.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode.html">encode</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.CompactEncoding$encode(net.consensys.cava.bytes.Bytes)/path">path</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a Radix-16 path.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

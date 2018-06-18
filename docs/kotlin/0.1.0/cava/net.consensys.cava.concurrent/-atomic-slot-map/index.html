@@ -1,0 +1,125 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AtomicSlotMap - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="./index.html">AtomicSlotMap</a><br/>
+<br/>
+<h1>AtomicSlotMap</h1>
+<code><span class="keyword">class </span><span class="identifier">AtomicSlotMap</span><span class="symbol">&lt;</span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html"><span class="identifier">Comparable</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">V</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AtomicSlotMap.java#L39">(source)</a>
+<p>An atomic map that locates available keys within a DiscreteDomain. 
+<p> This is an atomic map that will allocate key slots based on availability. It will attempt to keep the range compact by filling slots as they become available. </p>
+<p> This implementation should be used with small sets, as addition is an O(N) operation.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="&lt;K&gt;"></a>
+<code><K></code> - The type of the map keys.</p>
+<p><a name="&lt;V&gt;"></a>
+<code><V></code> - The type of values to store in the map.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">AtomicSlotMap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$<init>(com.google.common.collect.DiscreteDomain((net.consensys.cava.concurrent.AtomicSlotMap.K)))/domain">domain</span><span class="symbol">:</span>&nbsp;<span class="identifier">DiscreteDomain</span><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code>
+<p>Create a slot map over the provided domain.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$add(net.consensys.cava.concurrent.AtomicSlotMap.V)/value">value</span><span class="symbol">:</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#K"><span class="identifier">K</span></a></code>
+<p>Add a value to the slot map, using the first available slot.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="compute.html">compute</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">compute</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$compute(java.util.function.Function((net.consensys.cava.concurrent.AtomicSlotMap.K, net.consensys.cava.concurrent.AtomicSlotMap.V)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#K"><span class="identifier">K</span></a></code>
+<p>Find a slot and compute a value for it.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="compute-async.html">computeAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">computeAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$computeAsync(java.util.function.Function((net.consensys.cava.concurrent.AtomicSlotMap.K, net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AtomicSlotMap.V)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">&gt;</span></code>
+<p>Find a slot and compute a value for it.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="entries.html">entries</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">entries</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/-mutable-entry/index.html"><span class="identifier">MutableEntry</span></a><span class="symbol">&lt;</span><a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$get(net.consensys.cava.concurrent.AtomicSlotMap.K)/slot">slot</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>Get the value in a slot.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="positive-integer-slots.html">positiveIntegerSlots</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">V</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">positiveIntegerSlots</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">AtomicSlotMap</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">,</span>&nbsp;<a href="positive-integer-slots.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>Create a slot map over the range of integers &gt; 0.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$put(net.consensys.cava.concurrent.AtomicSlotMap.K, net.consensys.cava.concurrent.AtomicSlotMap.V)/slot">slot</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$put(net.consensys.cava.concurrent.AtomicSlotMap.K, net.consensys.cava.concurrent.AtomicSlotMap.V)/value">value</span><span class="symbol">:</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>Put a value into a specific slot.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="remove.html">remove</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">remove</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AtomicSlotMap$remove(net.consensys.cava.concurrent.AtomicSlotMap.K)/slot">slot</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>Remove a value from a slot, making the slot available again.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="size.html">size</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">size</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="values.html">values</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">values</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

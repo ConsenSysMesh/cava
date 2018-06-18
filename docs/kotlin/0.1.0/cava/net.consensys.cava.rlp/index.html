@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.rlp - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.rlp</a><br/>
+<br/>
+<h2>Package net.consensys.cava.rlp</h2>
+<p>Recursive Length Prefix (RLP) encoding and decoding.</p>
+<p>An implementation of the Ethereum Recursive Length Prefix (RLP) algorithm, as described at https://github.com/ethereum/wiki/wiki/RLP.</p>
+<p>These classes are included in the standard Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-rlp</code> (<code>cava-rlp.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-r-l-p/index.html">RLP</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RLP</span></code>
+<p>Recursive Length Prefix (RLP) encoding and decoding.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-p-reader/index.html">RLPReader</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">RLPReader</span></code>
+<p>A reader for consuming values from an RLP encoded source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-p-writer/index.html">RLPWriter</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">RLPWriter</span></code>
+<p>A writer for encoding values to RLP.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-end-of-r-l-p-exception/index.html">EndOfRLPException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">EndOfRLPException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-r-l-p-exception/index.html"><span class="identifier">RLPException</span></a></code>
+<p>Indicates the end of the RLP source has been reached unexpectedly.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-invalid-r-l-p-encoding-exception/index.html">InvalidRLPEncodingException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">InvalidRLPEncodingException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-r-l-p-exception/index.html"><span class="identifier">RLPException</span></a></code>
+<p>Indicates that invalid RLP encoding was encountered.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-invalid-r-l-p-type-exception/index.html">InvalidRLPTypeException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">InvalidRLPTypeException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-r-l-p-exception/index.html"><span class="identifier">RLPException</span></a></code>
+<p>Indicates that an unexpected type was encountered when decoding RLP.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-p-exception/index.html">RLPException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">RLPException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>Base type for all RLP encoding and decoding exceptions.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

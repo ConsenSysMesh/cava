@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Configuration.fromToml - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">Configuration</a>&nbsp;/&nbsp;<a href="./from-toml.html">fromToml</a><br/>
+<br/>
+<h1>fromToml</h1>
+<a name="net.consensys.cava.config.Configuration$fromToml(kotlin.String)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(kotlin.String)/toml">toml</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Configuration</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L44">(source)</a>
+<p>Read a configuration from a TOML-formatted string.</p>
+<h3>Parameters</h3>
+<p><a name="toml"></a>
+<code>toml</code> - A TOML-formatted string.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+A Configuration loaded from the TOML file.</p>
+<a name="net.consensys.cava.config.Configuration$fromToml(kotlin.String, net.consensys.cava.config.Schema)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(kotlin.String, net.consensys.cava.config.Schema)/toml">toml</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(kotlin.String, net.consensys.cava.config.Schema)/schema">schema</span><span class="symbol">:</span>&nbsp;<a href="../-schema/index.html"><span class="identifier">Schema</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Configuration</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L56">(source)</a>
+<p>Read a configuration from a TOML-formatted string, associated with a validation schema.</p>
+<h3>Parameters</h3>
+<p><a name="toml"></a>
+<code>toml</code> - A TOML-formatted string.</p>
+<p><a name="schema"></a>
+<code>schema</code> - The validation schema for the configuration.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+A Configuration loaded from the TOML file.</p>
+<a name="net.consensys.cava.config.Configuration$fromToml(java.nio.file.Path)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(java.nio.file.Path)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Configuration</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L69">(source)</a>
+<p>Loads a configuration from a TOML-formatted file.</p>
+<h3>Parameters</h3>
+<p><a name="file"></a>
+<code>file</code> - The path of the TOML-formatted configuration file.</p>
+<h3>Exceptions</h3>
+<p><a name="NoSuchFileException"></a>
+<code>NoSuchFileException</code> - If the file could not be found.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+A Configuration loaded from the TOML file.</p>
+<a name="net.consensys.cava.config.Configuration$fromToml(java.nio.file.Path, net.consensys.cava.config.Schema)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(java.nio.file.Path, net.consensys.cava.config.Schema)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(java.nio.file.Path, net.consensys.cava.config.Schema)/schema">schema</span><span class="symbol">:</span>&nbsp;<a href="../-schema/index.html"><span class="identifier">Schema</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Configuration</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L82">(source)</a>
+<p>Loads a configuration from a file, associated with a validation schema.</p>
+<h3>Parameters</h3>
+<p><a name="file"></a>
+<code>file</code> - The path of the TOML-formatted configuration file.</p>
+<p><a name="schema"></a>
+<code>schema</code> - The validation schema for the configuration.</p>
+<h3>Exceptions</h3>
+<p><a name="NoSuchFileException"></a>
+<code>NoSuchFileException</code> - If the file could not be found.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+A Configuration loaded from the TOML file.</p>
+<a name="net.consensys.cava.config.Configuration$fromToml(java.io.InputStream)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(java.io.InputStream)/is">is</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html"><span class="identifier">InputStream</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Configuration</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L94">(source)</a>
+<p>Loads a configuration from a TOML-formatted file.</p>
+<h3>Parameters</h3>
+<p><a name="is"></a>
+<code>is</code> - An input stream providing TOML-formatted configuration.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+A Configuration loaded from the TOML file.</p>
+<a name="net.consensys.cava.config.Configuration$fromToml(java.io.InputStream, net.consensys.cava.config.Schema)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromToml</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(java.io.InputStream, net.consensys.cava.config.Schema)/is">is</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html"><span class="identifier">InputStream</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.config.Configuration$fromToml(java.io.InputStream, net.consensys.cava.config.Schema)/schema">schema</span><span class="symbol">:</span>&nbsp;<a href="../-schema/index.html"><span class="identifier">Schema</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Configuration</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L106">(source)</a>
+<p>Loads a configuration from a file, associated with a validation schema.</p>
+<h3>Parameters</h3>
+<p><a name="is"></a>
+<code>is</code> - An input stream providing TOML-formatted configuration.</p>
+<p><a name="schema"></a>
+<code>schema</code> - The validation schema for the configuration.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+A Configuration loaded from the TOML file.</p>
+</BODY>
+</HTML>

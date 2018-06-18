@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Box.encryptSealed - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">Box</a>&nbsp;/&nbsp;<a href="./encrypt-sealed.html">encryptSealed</a><br/>
+<br/>
+<h1>encryptSealed</h1>
+<a name="net.consensys.cava.crypto.sodium.Box$encryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptSealed</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$encryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$encryptSealed(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Box.PublicKey)/receiver">receiver</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Box.java#L621">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.Box$encryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptSealed</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$encryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$encryptSealed(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Box.PublicKey)/receiver">receiver</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Box.java#L647">(source)</a>
+<p>Encrypt a sealed message for a given key. 
+<p> Sealed boxes are designed to anonymously send messages to a recipient given its public key. </p>
+<p> Only the recipient can decrypt these messages, using its private key. While the recipient can verify the integrity of the message, it cannot verify the identity of the sender. </p>
+<p> A message is encrypted using an ephemeral key pair, whose secret part is destroyed right after the encryption process. </p>
+<p> Without knowing the secret key used for a given message, the sender cannot decrypt its own message later. And without additional data, a message cannot be correlated with the identity of its sender.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="message"></a>
+<code>message</code> - The message to encrypt.</p>
+<p><a name="receiver"></a>
+<code>receiver</code> - The public key of the receiver.</p>
+<p><strong>Return</strong><br/>
+The encrypted data.</p>
+</BODY>
+</HTML>

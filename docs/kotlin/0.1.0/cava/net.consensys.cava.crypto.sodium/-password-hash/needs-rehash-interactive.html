@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PasswordHash.needsRehashInteractive - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">PasswordHash</a>&nbsp;/&nbsp;<a href="./needs-rehash-interactive.html">needsRehashInteractive</a><br/>
+<br/>
+<h1>needsRehashInteractive</h1>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$needsRehashInteractive(kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">needsRehashInteractive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$needsRehashInteractive(kotlin.String)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L513">(source)</a>
+<p>Check if a hash needs to be regenerated using limits on operations and memory that are suitable for interactive use-cases. 
+<p> Equivalent to <code>needsRehash(hash, interactiveOpsLimit(), interactiveMemLimit())</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="hash"></a>
+<code>hash</code> - The hash.</p>
+<p><strong>Return</strong><br/>
+true if the hash should be regenerated.</p>
+</BODY>
+</HTML>

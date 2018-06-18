@@ -1,0 +1,169 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MutableBytes32 - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="./index.html">MutableBytes32</a><br/>
+<br/>
+<h1>MutableBytes32</h1>
+<code><span class="keyword">interface </span><span class="identifier">MutableBytes32</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">, </span><a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/MutableBytes32.java#L20">(source)</a>
+<p>A mutable Bytes32, that is a mutable Bytes value of exactly 32 bytes.</p>
+<h3>Inherited Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/-e-m-p-t-y.html">EMPTY</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">EMPTY</span><span class="symbol">: </span><a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>The empty value (with 0 bytes).</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes32/-s-i-z-e.html">SIZE</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">SIZE</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The number of bytes in this value - i.e. 32</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes32/-z-e-r-o.html">ZERO</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">ZERO</span><span class="symbol">: </span><a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>A <code>Bytes32</code> containing all zero bytes</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="create.html">create</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">create</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes32</span></a></code>
+<p>Create a new mutable 32 bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="wrap.html">wrap</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes32$wrap(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes32</span></a></code>
+<p>Wrap a 32 bytes array as a mutable 32 bytes value.</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes32$wrap(kotlin.ByteArray, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes32$wrap(kotlin.ByteArray, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes32</span></a></code>
+<p>Wrap a the provided array as a MutableBytes32. 
+<p> Note that value is not copied, only wrapped, and thus any future update to <code>value</code> within the wrapped parts will be reflected in the returned value.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes32$wrap(net.consensys.cava.bytes.MutableBytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes32</span></a></code>
+<p>Wrap a the provided value, which must be of size 32, as a MutableBytes32. 
+<p> Note that value is not copied, only wrapped, and thus any future update to <code>value</code> will be reflected in the returned value.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes32$wrap(net.consensys.cava.bytes.MutableBytes, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes32$wrap(net.consensys.cava.bytes.MutableBytes, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes32</span></a></code>
+<p>Wrap a slice/sub-part of the provided value as a MutableBytes32. 
+<p> Note that the value is not copied, and thus any future update to <code>value</code> within the wrapped parts will be reflected in the returned value.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-bytes32/and.html">and</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">and</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes32$and(net.consensys.cava.bytes.Bytes32)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Return a bit-wise AND of these bytes and the supplied bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/clear.html">clear</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">clear</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set all bytes in this value to 0.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/fill.html">fill</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">fill</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$fill(kotlin.Byte)/b">b</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Fill all the bytes of this value with the specified byte.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/mutable-slice.html">mutableSlice</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">mutableSlice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Create a mutable slice of the bytes of this value. 
+<p> Note: the resulting slice is only a view over the original value. Holding a reference to the returned slice may hold more memory than the slide represents. Use <code><a href="../-bytes/copy.html">#copy</a></code> on the returned slice to avoid this.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes32/or.html">or</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">or</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes32$or(net.consensys.cava.bytes.Bytes32)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Return a bit-wise OR of these bytes and the supplied bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/set.html">set</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">set</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$set(kotlin.Int, kotlin.Byte)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$set(kotlin.Int, kotlin.Byte)/b">b</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set a byte in this value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/set-int.html">setInt</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setInt(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setInt(kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set the 4 bytes starting at the specified index to the specified integer value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes/set-long.html">setLong</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setLong(kotlin.Int, kotlin.Long)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setLong(kotlin.Int, kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set the 8 bytes starting at the specified index to the specified long value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes32/xor.html">xor</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes32$xor(net.consensys.cava.bytes.Bytes32)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Return a bit-wise XOR of these bytes and the supplied bytes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

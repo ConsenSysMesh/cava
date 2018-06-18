@@ -1,0 +1,65 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Auth - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="./index.html">Auth</a><br/>
+<br/>
+<h1>Auth</h1>
+<code><span class="keyword">class </span><span class="identifier">Auth</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Auth.java#L49">(source)</a>
+<p>Secret-key authentication. 
+<p> These operations computes an authentication tag for a message and a secret key, and provides a way to verify that a given tag is valid for a given message and a key. </p>
+<p> The function computing the tag is deterministic: the same (message, key) tuple will always produce the same output. </p>
+<p> However, even if the message is public, knowing the key is required in order to be able to compute a valid tag. Therefore, the key should remain confidential. The tag, however, can be public. </p>
+<p> A typical use case is: </p>
+<ul> <li><code>A</code> prepares a message, add an authentication tag, sends it to <code>B</code></li>
+ <li><code>A</code> doesn't store the message</li>
+ <li>Later on, <code>B</code> sends the message and the authentication tag to <code>A</code></li>
+ <li><code>A</code> uses the authentication tag to verify that it created this message.</li>
+ </ul>
+ 
+<p> This operation does not encrypt the message. It only computes and verifies an authentication tag.</p>
+</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-key/index.html">Key</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Key</span></code>
+<p>An Auth key.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="auth.html">auth</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">auth</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$auth(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Auth.Key)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$auth(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Auth.Key)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">auth</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$auth(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Auth.Key)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$auth(kotlin.ByteArray, net.consensys.cava.crypto.sodium.Auth.Key)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Create an authentication tag for a given input.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="verify.html">verify</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">verify</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$verify(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Auth.Key)/tag">tag</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$verify(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Auth.Key)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$verify(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.Auth.Key)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">verify</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$verify(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.Auth.Key)/tag">tag</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$verify(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.Auth.Key)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Auth$verify(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.Auth.Key)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Verify an input using an authentication tag.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

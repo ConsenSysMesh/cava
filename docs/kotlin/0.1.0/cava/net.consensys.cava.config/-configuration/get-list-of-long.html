@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Configuration.getListOfLong - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">Configuration</a>&nbsp;/&nbsp;<a href="./get-list-of-long.html">getListOfLong</a><br/>
+<br/>
+<h1>getListOfLong</h1>
+<a name="net.consensys.cava.config.Configuration$getListOfLong(kotlin.String)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getListOfLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$getListOfLong(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L309">(source)</a>
+<p>Get a list of longs from this configuration.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - A configuration key (e.g. <code>"server.address.ports"</code>).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the key cannot be parsed.</p>
+<p><a name="InvalidConfigurationPropertyTypeException"></a>
+<code>InvalidConfigurationPropertyTypeException</code> - If the value is not a list of longs.</p>
+<p><a name="NoConfigurationPropertyException"></a>
+<code>NoConfigurationPropertyException</code> - If the key was not set in the configuration.</p>
+<p><strong>Return</strong><br/>
+The value.</p>
+</BODY>
+</HTML>

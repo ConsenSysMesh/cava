@@ -1,0 +1,88 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SecretBox - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="./index.html">SecretBox</a><br/>
+<br/>
+<h1>SecretBox</h1>
+<code><span class="keyword">class </span><span class="identifier">SecretBox</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretBox.java#L47">(source)</a>
+<p>Secret-key authenticated encryption. 
+<p> Encrypts a message with a key and a nonce to keep it confidential, and computes an authentication tag. The tag is used to make sure that the message hasn't been tampered with before decrypting it. </p>
+<p> A single key is used both to encrypt/sign and verify/decrypt messages. For this reason, it is critical to keep the key confidential. </p>
+<p> The nonce doesn't have to be confidential, but it should never ever be reused with the same key. The easiest way to generate a nonce is to use randombytes_buf(). </p>
+<p> Messages encrypted are assumed to be independent. If multiple messages are sent using this API and random nonces, there will be no way to detect if a message has been received twice, or if messages have been reordered. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-key/index.html">Key</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Key</span></code>
+<p>A SecretBox key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-nonce/index.html">Nonce</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Nonce</span></code>
+<p>A SecretBox nonce.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="decrypt.html">decrypt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">?</span></code>
+<p>Decrypt a message using a given key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decrypt-detached.html">decryptDetached</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decryptDetached</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/mac">mac</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decryptDetached</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/mac">mac</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$decryptDetached(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">?</span></code>
+<p>Decrypt a message using a given key and a detached message authentication code.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encrypt.html">encrypt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Encrypt a message for a given key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encrypt-detached.html">encryptDetached</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptDetached</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptDetached(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-detached-encryption-result/index.html"><span class="identifier">DetachedEncryptionResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptDetached</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptDetached(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptDetached(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptDetached(kotlin.ByteArray, net.consensys.cava.crypto.sodium.SecretBox.Key, net.consensys.cava.crypto.sodium.SecretBox.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-detached-encryption-result/index.html"><span class="identifier">DetachedEncryptionResult</span></a></code>
+<p>Encrypt a message for a given key, generating a detached message authentication code.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

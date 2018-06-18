@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PasswordHash.hash - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">PasswordHash</a>&nbsp;/&nbsp;<a href="./hash.html">hash</a><br/>
+<br/>
+<h1>hash</h1>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">hash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/salt">salt</span><span class="symbol">:</span>&nbsp;<a href="-salt/index.html"><span class="identifier">Salt</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/opsLimit">opsLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/memLimit">memLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Int, net.consensys.cava.crypto.sodium.PasswordHash.Salt, kotlin.Long, kotlin.Long, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/algorithm">algorithm</span><span class="symbol">:</span>&nbsp;<a href="-algorithm/index.html"><span class="identifier">Algorithm</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L221">(source)</a>
+<p>Compute a specific length key from a password.</p>
+<h3>Parameters</h3>
+<p><a name="password"></a>
+<code>password</code> - The password to hash.</p>
+<p><a name="length"></a>
+<code>length</code> - The key length to generate.</p>
+<p><a name="salt"></a>
+<code>salt</code> - A salt.</p>
+<p><a name="opsLimit"></a>
+<code>opsLimit</code> - The operations limit, which must be in the range <code><a href="min-ops-limit.html">#minOpsLimit()</a></code> to <code><a href="max-ops-limit.html">#maxOpsLimit()</a></code>.</p>
+<p><a name="memLimit"></a>
+<code>memLimit</code> - The memory limit, which must be in the range <code><a href="min-mem-limit.html">#minMemLimit()</a></code> to <code><a href="max-mem-limit.html">#maxMemLimit()</a></code>.</p>
+<p><a name="algorithm"></a>
+<code>algorithm</code> - The algorithm to use.</p>
+<p><strong>Return</strong><br/>
+The derived key.</p>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">hash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L296">(source)</a>
+<p>Compute a hash from a password, using limits on operations and memory that are suitable for most use-cases. 
+<p> Equivalent to <code>hash(password, moderateOpsLimit(), moderateMemLimit())</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="password"></a>
+<code>password</code> - The password to hash.</p>
+<p><strong>Return</strong><br/>
+The hash string.</p>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Long, kotlin.Long)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">hash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Long, kotlin.Long)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Long, kotlin.Long)/opsLimit">opsLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$hash(kotlin.String, kotlin.Long, kotlin.Long)/memLimit">memLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L334">(source)</a>
+<p>Compute a hash from a password.</p>
+<h3>Parameters</h3>
+<p><a name="password"></a>
+<code>password</code> - The password to hash.</p>
+<p><a name="opsLimit"></a>
+<code>opsLimit</code> - The operations limit, which must be in the range <code><a href="min-ops-limit.html">#minOpsLimit()</a></code> to <code><a href="max-ops-limit.html">#maxOpsLimit()</a></code>.</p>
+<p><a name="memLimit"></a>
+<code>memLimit</code> - The memory limit, which must be in the range <code><a href="min-mem-limit.html">#minMemLimit()</a></code> to <code><a href="max-mem-limit.html">#maxMemLimit()</a></code>.</p>
+<p><strong>Return</strong><br/>
+The hash string.</p>
+</BODY>
+</HTML>

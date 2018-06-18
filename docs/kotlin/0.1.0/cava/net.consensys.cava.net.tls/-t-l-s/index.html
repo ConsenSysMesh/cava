@@ -1,0 +1,33 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TLS - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.tls</a>&nbsp;/&nbsp;<a href="./index.html">TLS</a><br/>
+<br/>
+<h1>TLS</h1>
+<code><span class="keyword">class </span><span class="identifier">TLS</span></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TLS.java#L54">(source)</a>
+<p>Common utilities for TLS. 
+<p> This class depends upon the BouncyCastle library being available and added as a java.security.Provider. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation. </p>
+<p> BouncyCastle can be included using the gradle dependencies <code>org.bouncycastle:bcprov-jdk15on</code> and <code>org.bouncycastle:bcpkix-jdk15on</code>.</p>
+</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="create-self-signed-certificate-if-missing.html">createSelfSignedCertificateIfMissing</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">createSelfSignedCertificateIfMissing</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TLS$createSelfSignedCertificateIfMissing(java.nio.file.Path, java.nio.file.Path)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.TLS$createSelfSignedCertificateIfMissing(java.nio.file.Path, java.nio.file.Path)/certificate">certificate</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Create a self-signed certificate, if it is not already present. 
+<p> If either the key or the certificate file are missing, both will be re-created as a self-signed certificate.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

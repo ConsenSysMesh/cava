@@ -1,0 +1,762 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>alltypes - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<p>In the spirit of <a href="https://github.com/google/guava/">Google Guava</a>, Cava is a set of libraries and other tools to aid development of blockchain and other decentralized software in Java and other JVM languages.</p>
+<h3>All Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-a-e-s256-g-c-m/index.html">net.consensys.cava.crypto.sodium.AES256GCM</a></td>
+<td>
+<p>Authenticated Encryption with Additional Data using AES-GCM. 
+<p> WARNING: Despite being the most popular AEAD construction due to its use in TLS, safely using AES-GCM in a different context is tricky. </p>
+<p> No more than ~350 GB of input data should be encrypted with a given key. This is for ~16 KB messages -- Actual figures vary according to message sizes. </p>
+<p> In addition, nonces are short and repeated nonces would totally destroy the security of this scheme. Nonces should thus come from atomic counters, which can be difficult to set up in a distributed environment. </p>
+<p> Unless you absolutely need AES-GCM, use XChaCha20Poly1305 instead. It doesn't have any of these limitations. Or, if you don't need to authenticate additional data, just stick to <code><a href="#">Sodium#crypto_box(byte[], byte[], long, byte[], byte[], byte[])</a></code>. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.bytes/-abstract-bytes/index.html">net.consensys.cava.bytes.AbstractBytes</a></td>
+<td>
+<p>An abstract Bytes value that provides implementations of <code><a href="#">#equals(Object)</a></code>, <code><a href="../net.consensys.cava.bytes/-abstract-bytes/hash-code.html">#hashCode()</a></code> and <code><a href="../net.consensys.cava.bytes/-abstract-bytes/to-string.html">#toString()</a></code>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.eth.domain/-address/index.html">net.consensys.cava.eth.domain.Address</a></td>
+<td>
+<p>An Ethereum account address.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent.coroutines.experimental/net.consensys.cava.concurrent.-async-completion/index.html">net.consensys.cava.concurrent.AsyncCompletion</a> (extensions in package net.consensys.cava.concurrent.coroutines.experimental)</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent/-async-completion/index.html">net.consensys.cava.concurrent.AsyncCompletion</a></td>
+<td>
+<p>A completion that will be complete at a future time.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie.experimental/-async-merkle-storage/index.html">net.consensys.cava.trie.experimental.AsyncMerkleStorage</a></td>
+<td>
+<p>Storage for use in a <a href="../net.consensys.cava.trie.experimental/-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent.coroutines.experimental/net.consensys.cava.concurrent.-async-result/index.html">net.consensys.cava.concurrent.AsyncResult</a> (extensions in package net.consensys.cava.concurrent.coroutines.experimental)</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent/-async-result/index.html">net.consensys.cava.concurrent.AsyncResult</a></td>
+<td>
+<p>A result that will be available at a future time.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent/-atomic-slot-map/index.html">net.consensys.cava.concurrent.AtomicSlotMap</a></td>
+<td>
+<p>An atomic map that locates available keys within a DiscreteDomain. 
+<p> This is an atomic map that will allocate key slots based on availability. It will attempt to keep the range compact by filling slots as they become available. </p>
+<p> This implementation should be used with small sets, as addition is an O(N) operation.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-auth/index.html">net.consensys.cava.crypto.sodium.Auth</a></td>
+<td>
+<p>Secret-key authentication. 
+<p> These operations computes an authentication tag for a message and a secret key, and provides a way to verify that a given tag is valid for a given message and a key. </p>
+<p> The function computing the tag is deterministic: the same (message, key) tuple will always produce the same output. </p>
+<p> However, even if the message is public, knowing the key is required in order to be able to compute a valid tag. Therefore, the key should remain confidential. The tag, however, can be public. </p>
+<p> A typical use case is: </p>
+<ul> <li><code>A</code> prepares a message, add an authentication tag, sends it to <code>B</code></li>
+ <li><code>A</code> doesn't store the message</li>
+ <li>Later on, <code>B</code> sends the message and the authentication tag to <code>A</code></li>
+ <li><code>A</code> uses the authentication tag to verify that it created this message.</li>
+ </ul>
+ 
+<p> This operation does not encrypt the message. It only computes and verifies an authentication tag.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.io/-base64/index.html">net.consensys.cava.io.Base64</a></td>
+<td>
+<p>Utility methods for encoding and decoding base64 strings.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.bigints/-base-u-int256-value/index.html">net.consensys.cava.units.bigints.BaseUInt256Value</a></td>
+<td>
+<p>Base class for UInt256Value. 
+<p> This class is abstract as it is not meant to be used directly, but it has no abstract methods. As mentioned in UInt256Value, this is used to create strongly-typed type aliases of UInt256. In other words, this allow to "tag" numbers with the unit of what they represent for the type-system, which can help clarity, but also forbid mixing numbers that are mean to be of different units (the strongly-typed part). </p>
+<p> This class implements UInt256Value, but also adds a few operations that take a UInt256 directly, for instance <code><a href="../net.consensys.cava.units.bigints/-base-u-int256-value/multiply.html">#multiply(UInt256)</a></code>. The rational is that multiplying a given quantity of something by a "raw" number is always meaningful, and return a new quantity of the same thing.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.eth.domain/-block/index.html">net.consensys.cava.eth.domain.Block</a></td>
+<td>
+<p>An Ethereum block.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.eth.domain/-block-body/index.html">net.consensys.cava.eth.domain.BlockBody</a></td>
+<td>
+<p>An Ethereum block body.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.eth.domain/-block-header/index.html">net.consensys.cava.eth.domain.BlockHeader</a></td>
+<td>
+<p>An Ethereum block header.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.junit/-bouncy-castle-extension/index.html">net.consensys.cava.junit.BouncyCastleExtension</a></td>
+<td>
+<p>A junit5 extension, that installs a BouncyCastle security provider.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-box/index.html">net.consensys.cava.crypto.sodium.Box</a></td>
+<td>
+<p>Public-key authenticated encryption. 
+<p> Using public-key authenticated encryption, Bob can encrypt a confidential message specifically for Alice, using Alice's public key. </p>
+<p> Using Bob's public key, Alice can compute a shared secret key. Using Alice's public key and his secret key, Bob can compute the exact same shared secret key. That shared secret key can be used to verify that the encrypted message was not tampered with, before eventually decrypting it. </p>
+<p> Alice only needs Bob's public key, the nonce and the ciphertext. Bob should never ever share his secret key, even with Alice. </p>
+<p> And in order to send messages to Alice, Bob only needs Alice's public key. Alice should never ever share her secret key either, even with Bob. </p>
+<p> Alice can reply to Bob using the same system, without having to generate a distinct key pair. </p>
+<p> The nonce doesn't have to be confidential, but it should be used with just one encryption for a particular pair of public and secret keys. </p>
+<p> One easy way to generate a nonce is to use <code><a href="../net.consensys.cava.crypto.sodium/-box/-nonce/random.html">Nonce#random()</a></code>, considering the size of the nonces the risk of any random collisions is negligible. For some applications, if you wish to use nonces to detect missing messages or to ignore replayed messages, it is also acceptable to use an incrementing counter as a nonce. </p>
+<p> When doing so you must ensure that the same value can never be re-used (for example you may have multiple threads or even hosts generating messages using the same key pairs). </p>
+<p> As stated above, senders can decrypt their own messages, and compute a valid authentication tag for any messages encrypted with a given shared secret key. This is generally not an issue for online protocols. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.bytes/-bytes/index.html">net.consensys.cava.bytes.Bytes</a></td>
+<td>
+<p>A value made of bytes. 
+<p> This interface makes no thread-safety guarantee, and a Bytes value is generally not thread safe. However, specific implementations may be thread-safe. For instance, the value returned by <code><a href="../net.consensys.cava.bytes/-bytes/copy.html">#copy</a></code> is guaranteed to be thread-safe as it is immutable.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.bytes/-bytes32/index.html">net.consensys.cava.bytes.Bytes32</a></td>
+<td>
+<p>A Bytes value that is guaranteed to contain exactly 32 bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie/-compact-encoding/index.html">net.consensys.cava.trie.CompactEncoding</a></td>
+<td>
+<p>Compact (Hex-prefix) encoding and decoding. 
+<p> An implementation of <a href="#">Compact (Hex-prefix) encoding</a>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent/-completable-async-completion/index.html">net.consensys.cava.concurrent.CompletableAsyncCompletion</a></td>
+<td>
+<p>An AsyncCompletion that can later be completed successfully or with a provided exception.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent/-completable-async-result/index.html">net.consensys.cava.concurrent.CompletableAsyncResult</a></td>
+<td>
+<p>An AsyncResult that can be later completed successfully with a provided value, or completed with an exception.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-configuration/index.html">net.consensys.cava.config.Configuration</a></td>
+<td>
+<p>Represents collection of configuration properties, optionally validated against a schema.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-configuration-error/index.html">net.consensys.cava.config.ConfigurationError</a></td>
+<td>
+<p>Provides details regarding an error in the configuration.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-configuration-errors/index.html">net.consensys.cava.config.ConfigurationErrors</a></td>
+<td>
+<p>Factory methods for collections of ConfigurationError.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-configuration-validator/index.html">net.consensys.cava.config.ConfigurationValidator</a></td>
+<td>
+<p>A validator for a configuration. 
+<p> Validators of this type are invoked during verification after all property validators. However, errors returned by property validators do not prevent this validator being evaluated, so properties of the configuration may be missing or invalid.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent.coroutines.experimental/kotlinx.coroutines.experimental.-deferred/index.html">kotlinx.coroutines.experimental.Deferred</a> (extensions in package net.consensys.cava.concurrent.coroutines.experimental)</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-detached-encryption-result/index.html">net.consensys.cava.crypto.sodium.DetachedEncryptionResult</a></td>
+<td>
+<p>The result from a detached encryption.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-document-position/index.html">net.consensys.cava.config.DocumentPosition</a></td>
+<td>
+<p>A position in an input document.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-end-of-r-l-p-exception/index.html">net.consensys.cava.rlp.EndOfRLPException</a></td>
+<td>
+<p>Indicates the end of the RLP source has been reached unexpectedly.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent/-expiring-map/index.html">net.consensys.cava.concurrent.ExpiringMap</a></td>
+<td>
+<p>A concurrent hash map that stores values along with an expiry. Values are stored in the map until their expiry is reached, after which they will no longer be available and will appear as if removed. The actual removal is done lazily whenever the map is accessed, or when the <code><a href="../net.consensys.cava.concurrent/-expiring-map/purge-expired.html">#purgeExpired()</a></code> method is invoked.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.io.file/-files/index.html">net.consensys.cava.io.file.Files</a></td>
+<td>
+<p>Utility methods for working with files.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.ethereum/-gas/index.html">net.consensys.cava.units.ethereum.Gas</a></td>
+<td>
+<p>A unit measure of Gas as used by the Ethereum VM.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto/-hash/index.html">net.consensys.cava.crypto.Hash</a></td>
+<td>
+<p>Various utilities for providing hashes (digests) of arbitrary data. Requires the BouncyCastleProvider to be loaded and available. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation for detail.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.eth.domain/-hash/index.html">net.consensys.cava.eth.domain.Hash</a></td>
+<td>
+<p>An Ethereum hash.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.io/-i-o-consumer/index.html">net.consensys.cava.io.IOConsumer</a></td>
+<td>
+<p>Represents an operation that accepts a single input argument and returns no result.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-invalid-configuration-property-type-exception/index.html">net.consensys.cava.config.InvalidConfigurationPropertyTypeException</a></td>
+<td>
+<p>An exception thrown when an invalid type is encountered.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-invalid-r-l-p-encoding-exception/index.html">net.consensys.cava.rlp.InvalidRLPEncodingException</a></td>
+<td>
+<p>Indicates that invalid RLP encoding was encountered.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-invalid-r-l-p-type-exception/index.html">net.consensys.cava.rlp.InvalidRLPTypeException</a></td>
+<td>
+<p>Indicates that an unexpected type was encountered when decoding RLP.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto/-invalid-s-e-c256-k1-private-key-store-exception/index.html">net.consensys.cava.crypto.InvalidSEC256K1PrivateKeyStoreException</a></td>
+<td>
+<p>Exception thrown when reading a store that contains an invalid SEC256K1 private keys.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.concurrent.coroutines.experimental/kotlinx.coroutines.experimental.-job/index.html">kotlinx.coroutines.experimental.Job</a> (extensions in package net.consensys.cava.concurrent.coroutines.experimental)</td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-key-derivation/index.html">net.consensys.cava.crypto.sodium.KeyDerivation</a></td>
+<td>
+<p>Key derivation. 
+<p> Multiple secret subkeys can be derived from a single master key. </p>
+<p> Given the master key and a key identifier, a subkey can be deterministically computed. However, given a subkey, an attacker cannot compute the master key nor any other subkeys.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-key-exchange/index.html">net.consensys.cava.crypto.sodium.KeyExchange</a></td>
+<td>
+<p>Key exchange. 
+<p> Allows two parties can securely compute a set of shared keys using their peer's public key and their own secret key.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.kv/-key-value-store/index.html">net.consensys.cava.kv.KeyValueStore</a></td>
+<td>
+<p>A key-value store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.kv/-level-d-b-key-value-store/index.html">net.consensys.cava.kv.LevelDBKeyValueStore</a></td>
+<td>
+<p>A key-value store backed by LevelDB.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-lib-sodium/index.html">net.consensys.cava.crypto.sodium.LibSodium</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.kv/-map-key-value-store/index.html">net.consensys.cava.kv.MapKeyValueStore</a></td>
+<td>
+<p>A key-value store backed by an in-memory Map.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie.experimental/-merkle-patricia-trie/index.html">net.consensys.cava.trie.experimental.MerklePatriciaTrie</a></td>
+<td>
+<p>An in-memory <a href="../net.consensys.cava.trie.experimental/-merkle-trie/index.html">MerkleTrie</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie.experimental/-merkle-storage/index.html">net.consensys.cava.trie.experimental.MerkleStorage</a></td>
+<td>
+<p>Storage for use in a <a href="../net.consensys.cava.trie.experimental/-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie.experimental/-merkle-storage-exception/index.html">net.consensys.cava.trie.experimental.MerkleStorageException</a></td>
+<td>
+<p>This exception is thrown when there is an issue retrieving or decoding values from <a href="../net.consensys.cava.trie.experimental/-merkle-storage/index.html">MerkleStorage</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie.experimental/-merkle-trie/index.html">net.consensys.cava.trie.experimental.MerkleTrie</a></td>
+<td>
+<p>A Merkle Trie.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.bytes/-mutable-byte-buffer-wrapping-bytes/index.html">net.consensys.cava.bytes.MutableByteBufferWrappingBytes</a></td>
+<td>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.bytes/-mutable-bytes/index.html">net.consensys.cava.bytes.MutableBytes</a></td>
+<td>
+<p>A mutable Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.bytes/-mutable-bytes32/index.html">net.consensys.cava.bytes.MutableBytes32</a></td>
+<td>
+<p>A mutable Bytes32, that is a mutable Bytes value of exactly 32 bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-no-configuration-property-exception.html">net.consensys.cava.config.NoConfigurationPropertyException</a></td>
+<td>
+<p>An exception thrown when a requested configuration property is not found. 
+<p> This exception can be avoided by using a schema that provides a default value or asserts that a value has been provided in the configuration.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-password-hash/index.html">net.consensys.cava.crypto.sodium.PasswordHash</a></td>
+<td>
+<p>The Argon2 memory-hard hashing function. 
+<p> Argon2 summarizes the state of the art in the design of memory-hard functions. </p>
+<p> It aims at the highest memory filling rate and effective use of multiple computing units, while still providing defense against tradeoff attacks. </p>
+<p> It prevents ASICs from having a significant advantage over software implementations. </p>
+Guidelines for choosing the parameters 
+<p> Start by determining how much memory the function can use. What will be the highest number of threads/processes evaluating the function simultaneously (ideally, no more than 1 per CPU core)? How much physical memory is guaranteed to be available? </p>
+<p> Set memlimit to the amount of memory you want to reserve for password hashing. </p>
+<p> Then, set opslimit to 3 and measure the time it takes to hash a password. </p>
+<p> If this it is way too long for your application, reduce memlimit, but keep opslimit set to 3. </p>
+<p> If the function is so fast that you can afford it to be more computationally intensive without any usability issues, increase opslimit. </p>
+<p> For online use (e.g. login in on a website), a 1 second computation is likely to be the acceptable maximum. </p>
+<p> For interactive use (e.g. a desktop application), a 5 second pause after having entered a password is acceptable if the password doesn't need to be entered more than once per session. </p>
+<p> For non-interactive use and infrequent use (e.g. restoring an encrypted backup), an even slower computation can be an option. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-property-validator/index.html">net.consensys.cava.config.PropertyValidator</a></td>
+<td>
+<p>A validator associated with a specific configuration property.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-r-l-p/index.html">net.consensys.cava.rlp.RLP</a></td>
+<td>
+<p>Recursive Length Prefix (RLP) encoding and decoding.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-r-l-p-exception/index.html">net.consensys.cava.rlp.RLPException</a></td>
+<td>
+<p>Base type for all RLP encoding and decoding exceptions.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-r-l-p-reader/index.html">net.consensys.cava.rlp.RLPReader</a></td>
+<td>
+<p>A reader for consuming values from an RLP encoded source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.rlp/-r-l-p-writer/index.html">net.consensys.cava.rlp.RLPWriter</a></td>
+<td>
+<p>A writer for encoding values to RLP.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto/-s-e-c-p256-k1/index.html">net.consensys.cava.crypto.SECP256K1</a></td>
+<td>
+<p>An Elliptic Curve Digital Signature using parameters as used by Bitcoin, and defined in Standards for Efficient Cryptography (SEC) (Certicom Research, http://www.secg.org/sec2-v2.pdf). 
+<p> This class depends upon the BouncyCastle library being available and added as a java.security.Provider. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation. </p>
+<p> BouncyCastle can be included using the gradle dependency 'org.bouncycastle:bcprov-jdk15on'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto/-s-e-c-p256-k1-key-recovery-exception.html">net.consensys.cava.crypto.SECP256K1KeyRecoveryException</a></td>
+<td>
+<p>Exception thrown when a key cannot be recovered from a signed data.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-schema/index.html">net.consensys.cava.config.Schema</a></td>
+<td>
+<p>A schema for a configuration, providing default values and validation rules.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.config/-schema-builder/index.html">net.consensys.cava.config.SchemaBuilder</a></td>
+<td>
+<p>This interface allows customers to determine a schema to associate with a configuration to validate the entries read from configuration files, and provide default values if no value is present in the configuration file.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-secret-box/index.html">net.consensys.cava.crypto.sodium.SecretBox</a></td>
+<td>
+<p>Secret-key authenticated encryption. 
+<p> Encrypts a message with a key and a nonce to keep it confidential, and computes an authentication tag. The tag is used to make sure that the message hasn't been tampered with before decrypting it. </p>
+<p> A single key is used both to encrypt/sign and verify/decrypt messages. For this reason, it is critical to keep the key confidential. </p>
+<p> The nonce doesn't have to be confidential, but it should never ever be reused with the same key. The easiest way to generate a nonce is to use randombytes_buf(). </p>
+<p> Messages encrypted are assumed to be independent. If multiple messages are sent using this API and random nonces, there will be no way to detect if a message has been received twice, or if messages have been reordered. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-secret-decryption-stream/index.html">net.consensys.cava.crypto.sodium.SecretDecryptionStream</a></td>
+<td>
+<p>Used to decrypt a sequence of messages, or a single message split into arbitrary chunks.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-secret-encryption-stream/index.html">net.consensys.cava.crypto.sodium.SecretEncryptionStream</a></td>
+<td>
+<p>Used to encrypt a sequence of messages, or a single message split into arbitrary chunks.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-sodium/index.html">net.consensys.cava.crypto.sodium.Sodium</a></td>
+<td>
+<p>Access to the sodium native library. 
+<p> This class provides static methods for checking or loading the sodium native library.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-sodium-exception/index.html">net.consensys.cava.crypto.sodium.SodiumException</a></td>
+<td>
+<p>An exception that is thrown when an error occurs using the native sodium library.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.trie.experimental/-stored-merkle-patricia-trie/index.html">net.consensys.cava.trie.experimental.StoredMerklePatriciaTrie</a></td>
+<td>
+<p>A <a href="../net.consensys.cava.trie.experimental/-merkle-trie/index.html">MerkleTrie</a> that persists trie nodes to a <a href="../net.consensys.cava.trie.experimental/-merkle-storage/index.html">MerkleStorage</a> key/value store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.io/-streams/index.html">net.consensys.cava.io.Streams</a></td>
+<td>
+<p>Utilities for working with streams.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.net.tls/-t-l-s/index.html">net.consensys.cava.net.tls.TLS</a></td>
+<td>
+<p>Common utilities for TLS. 
+<p> This class depends upon the BouncyCastle library being available and added as a java.security.Provider. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation. </p>
+<p> BouncyCastle can be included using the gradle dependencies <code>org.bouncycastle:bcprov-jdk15on</code> and <code>org.bouncycastle:bcpkix-jdk15on</code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.junit/-temp-directory/index.html">net.consensys.cava.junit.TempDirectory</a></td>
+<td>
+<p>A parameter annotation for injecting a temporary directory into junit5 tests.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.junit/-temp-directory-extension/index.html">net.consensys.cava.junit.TempDirectoryExtension</a></td>
+<td>
+<p>A junit5 extension, that provides a temporary directory for tests. The temporary directory is created for the test suite and injected into any tests with parameters annotated by TempDirectory.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml/index.html">net.consensys.cava.toml.Toml</a></td>
+<td>
+<p>Methods for parsing data stored in Tom's Obvious, Minimal Language (TOML).</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-array/index.html">net.consensys.cava.toml.TomlArray</a></td>
+<td>
+<p>An array of TOML values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-invalid-type-exception.html">net.consensys.cava.toml.TomlInvalidTypeException</a></td>
+<td>
+<p>An exception thrown when an invalid type is encountered.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-parse-error/index.html">net.consensys.cava.toml.TomlParseError</a></td>
+<td>
+<p>An error that occurred while parsing.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-parse-result/index.html">net.consensys.cava.toml.TomlParseResult</a></td>
+<td>
+<p>The result from parsing a TOML document.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-position/index.html">net.consensys.cava.toml.TomlPosition</a></td>
+<td>
+<p>A position in an input document.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-table/index.html">net.consensys.cava.toml.TomlTable</a></td>
+<td>
+<p>An interface for accessing data stored in Tom's Obvious, Minimal Language (TOML).</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.toml/-toml-version/index.html">net.consensys.cava.toml.TomlVersion</a></td>
+<td>
+<p>Supported TOML specification versions.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.eth.domain/-transaction/index.html">net.consensys.cava.eth.domain.Transaction</a></td>
+<td>
+<p>An Ethereum transaction.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.net.tls/-trust-manager-factories/index.html">net.consensys.cava.net.tls.TrustManagerFactories</a></td>
+<td>
+<p>Trust manager factories for fingerprinting clients and servers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.bigints/-u-int256/index.html">net.consensys.cava.units.bigints.UInt256</a></td>
+<td>
+<p>An unsigned 256-bit precision number. This is a raw UInt256Value - a 256-bit precision unsigned number of no particular unit.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.bigints/-u-int256-domain/index.html">net.consensys.cava.units.bigints.UInt256Domain</a></td>
+<td>
+<p>A DiscreteDomain over UInt256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.bigints/-u-int256-value/index.html">net.consensys.cava.units.bigints.UInt256Value</a></td>
+<td>
+<p>Represents a 256-bit (32 bytes) unsigned integer value. 
+<p> A UInt256Value is an unsigned integer value stored with 32 bytes, so whose value can range between 0 and 2^256-1. </p>
+<p> This interface defines operations for value types with a 256-bit precision range. The methods provided by this interface take parameters of the same type (and also <code>long</code>. This provides type safety by ensuring calculations cannot mix different <code>UInt256Value</code> types. </p>
+<p> Where only a pure numerical 256-bit value is required, UInt256 should be used. </p>
+<p> It is strongly advised to extend BaseUInt256Value rather than implementing this interface directly. Doing so provides type safety in that quantities of different units cannot be mixed accidentally.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.bigints/-u-int256-value-domain/index.html">net.consensys.cava.units.bigints.UInt256ValueDomain</a></td>
+<td>
+<p>A DiscreteDomain over a UInt256Value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.bigints/-u-int256s/index.html">net.consensys.cava.units.bigints.UInt256s</a></td>
+<td>
+<p>Static utility methods on UInt256 values.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.junit/-vertx-extension/index.html">net.consensys.cava.junit.VertxExtension</a></td>
+<td>
+<p>A junit5 extension, that provides a Vert.X instance for tests. The Vert.X instance created for the test suite and injected into any tests with parameters annotated by VertxInstance.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.junit/-vertx-instance/index.html">net.consensys.cava.junit.VertxInstance</a></td>
+<td>
+<p>A parameter annotation for injecting a temporary Vert.X instance into junit5 tests.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.net.tls/-vertx-trust-options/index.html">net.consensys.cava.net.tls.VertxTrustOptions</a></td>
+<td>
+<p>Vert.x TrustOptions for fingerprinting clients and servers. 
+<p> This class depends upon the Vert.X library being available on the classpath, along with its dependencies. See https://vertx.io/download/. Vert.X can be included using the gradle dependency 'io.vertx:vertx-core'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.units.ethereum/-wei/index.html">net.consensys.cava.units.ethereum.Wei</a></td>
+<td>
+<p>A unit measure of Wei as used by the Ethereum VM.</p>
+</td>
+</tr>
+<tr>
+<td>
+<a href="../net.consensys.cava.crypto.sodium/-x-cha-cha20-poly1305/index.html">net.consensys.cava.crypto.sodium.XChaCha20Poly1305</a></td>
+<td>
+<p>Authenticated Encryption with Additional Data using XChaCha20-Poly1305. 
+<p> The XChaCha20-Poly1305 construction can safely encrypt a practically unlimited number of messages with the same key, without any practical limit to the size of a message (up to ~ 2^64 bytes). </p>
+<p> As an alternative to counters, its large nonce size (192-bit) allows random nonces to be safely used. </p>
+<p> For this reason, and if interoperability with other libraries is not a concern, this is the recommended AEAD construction. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

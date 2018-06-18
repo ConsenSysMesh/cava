@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.get - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./get.html">get</a><br/>
+<br/>
+<h1>get</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$get()"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L314">(source)</a>
+<p>Waits if necessary for the computation to complete, and then retrieves its result.</p>
+<h3>Exceptions</h3>
+<p><a name="CompletionException"></a>
+<code>CompletionException</code> - If the computation threw an exception.</p>
+<p><a name="InterruptedException"></a>
+<code>InterruptedException</code> - If the current thread was interrupted while waiting.</p>
+<p><strong>Return</strong><br/>
+The computed result.</p>
+<a name="net.consensys.cava.concurrent.AsyncResult$get(kotlin.Long, java.util.concurrent.TimeUnit)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$get(kotlin.Long, java.util.concurrent.TimeUnit)/timeout">timeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$get(kotlin.Long, java.util.concurrent.TimeUnit)/unit">unit</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/TimeUnit.html"><span class="identifier">TimeUnit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L326">(source)</a>
+<p>Waits if necessary for at most the given time for the computation to complete, and then retrieves its result.</p>
+<h3>Parameters</h3>
+<p><a name="timeout"></a>
+<code>timeout</code> - The maximum time to wait.</p>
+<p><a name="unit"></a>
+<code>unit</code> - The time unit of the timeout argument.</p>
+<h3>Exceptions</h3>
+<p><a name="CompletionException"></a>
+<code>CompletionException</code> - If the computation threw an exception.</p>
+<p><a name="TimeoutException"></a>
+<code>TimeoutException</code> - If the wait timed out.</p>
+<p><a name="InterruptedException"></a>
+<code>InterruptedException</code> - If the current thread was interrupted while waiting.</p>
+<p><strong>Return</strong><br/>
+The computed result.</p>
+</BODY>
+</HTML>

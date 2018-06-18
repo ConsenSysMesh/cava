@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.junit - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.junit</a><br/>
+<br/>
+<h2>Package net.consensys.cava.junit</h2>
+<p>Utilities for better junit testing.</p>
+<p>These classes are included in the standard Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-junit</code> (<code>cava-junit.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-bouncy-castle-extension/index.html">BouncyCastleExtension</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">BouncyCastleExtension</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">BeforeAllCallback</span></code>
+<p>A junit5 extension, that installs a BouncyCastle security provider.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-temp-directory-extension/index.html">TempDirectoryExtension</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">TempDirectoryExtension</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ParameterResolver</span><span class="symbol">, </span><span class="identifier">AfterAllCallback</span></code>
+<p>A junit5 extension, that provides a temporary directory for tests. The temporary directory is created for the test suite and injected into any tests with parameters annotated by TempDirectory.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-vertx-extension/index.html">VertxExtension</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">VertxExtension</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ParameterResolver</span><span class="symbol">, </span><span class="identifier">AfterAllCallback</span></code>
+<p>A junit5 extension, that provides a Vert.X instance for tests. The Vert.X instance created for the test suite and injected into any tests with parameters annotated by VertxInstance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Annotations</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-temp-directory/index.html">TempDirectory</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">TempDirectory</span></code>
+<p>A parameter annotation for injecting a temporary directory into junit5 tests.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-vertx-instance/index.html">VertxInstance</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">VertxInstance</span></code>
+<p>A parameter annotation for injecting a temporary Vert.X instance into junit5 tests.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

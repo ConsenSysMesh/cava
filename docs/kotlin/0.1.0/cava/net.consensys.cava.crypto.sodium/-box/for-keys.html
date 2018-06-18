@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Box.forKeys - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">Box</a>&nbsp;/&nbsp;<a href="./for-keys.html">forKeys</a><br/>
+<br/>
+<h1>forKeys</h1>
+<a name="net.consensys.cava.crypto.sodium.Box$forKeys(net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">forKeys</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$forKeys(net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/receiver">receiver</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.Box$forKeys(net.consensys.cava.crypto.sodium.Box.PublicKey, net.consensys.cava.crypto.sodium.Box.SecretKey)/sender">sender</span><span class="symbol">:</span>&nbsp;<a href="-secret-key/index.html"><span class="identifier">SecretKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Box</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Box.java#L531">(source)</a>
+<p>Precompute the shared key for a given sender and receiver. 
+<p> Note that the returned instance of Box should be closed using <code><a href="close.html">#close()</a></code> (or try-with-resources) to ensure timely release of the shared key, which is held in native memory.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="receiver"></a>
+<code>receiver</code> - The public key of the receiver.</p>
+<p><a name="sender"></a>
+<code>sender</code> - The secret key of the sender.</p>
+<p><strong>Return</strong><br/>
+A Box instance.</p>
+</BODY>
+</HTML>

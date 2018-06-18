@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PasswordHash.verify - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">PasswordHash</a>&nbsp;/&nbsp;<a href="./verify.html">verify</a><br/>
+<br/>
+<h1>verify</h1>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">verify</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-verification-result/index.html"><span class="identifier">VerificationResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L389">(source)</a>
+<p>Verify a password against a hash using limits on operations and memory that are suitable for most use-cases. 
+<p> Equivalent to <code>verify(hash, password, moderateOpsLimit(), moderateMemLimit())</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="hash"></a>
+<code>hash</code> - The hash.</p>
+<p><a name="password"></a>
+<code>password</code> - The password to verify.</p>
+<p><strong>Return</strong><br/>
+The result of verification.</p>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String, kotlin.Long, kotlin.Long)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">verify</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String, kotlin.Long, kotlin.Long)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String, kotlin.Long, kotlin.Long)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String, kotlin.Long, kotlin.Long)/opsLimit">opsLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$verify(kotlin.String, kotlin.String, kotlin.Long, kotlin.Long)/memLimit">memLimit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-verification-result/index.html"><span class="identifier">VerificationResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L430">(source)</a>
+<p>Verify a password against a hash.</p>
+<h3>Parameters</h3>
+<p><a name="hash"></a>
+<code>hash</code> - The hash.</p>
+<p><a name="password"></a>
+<code>password</code> - The password to verify.</p>
+<p><a name="opsLimit"></a>
+<code>opsLimit</code> - The operations limit, which must be in the range <code><a href="min-ops-limit.html">#minOpsLimit()</a></code> to <code><a href="max-ops-limit.html">#maxOpsLimit()</a></code>.</p>
+<p><a name="memLimit"></a>
+<code>memLimit</code> - The memory limit, which must be in the range <code><a href="min-mem-limit.html">#minMemLimit()</a></code> to <code><a href="max-mem-limit.html">#maxMemLimit()</a></code>.</p>
+<p><strong>Return</strong><br/>
+The result of verification.</p>
+</BODY>
+</HTML>

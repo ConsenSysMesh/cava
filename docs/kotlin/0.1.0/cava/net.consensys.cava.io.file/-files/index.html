@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Files - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.io.file</a>&nbsp;/&nbsp;<a href="./index.html">Files</a><br/>
+<br/>
+<h1>Files</h1>
+<code><span class="keyword">class </span><span class="identifier">Files</span></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L40">(source)</a>
+<p>Utility methods for working with files.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="atomic-replace.html">atomicReplace</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">atomicReplace</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, kotlin.ByteArray)/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, kotlin.ByteArray)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">atomicReplace</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, net.consensys.cava.io.IOConsumer((java.io.Writer)))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, net.consensys.cava.io.IOConsumer((java.io.Writer)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.io/-i-o-consumer/index.html"><span class="identifier">IOConsumer</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html"><span class="identifier">Writer</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">atomicReplace</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))/charset">charset</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html"><span class="identifier">Charset</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.io/-i-o-consumer/index.html"><span class="identifier">IOConsumer</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html"><span class="identifier">Writer</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a temporary file and then replace target.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="copy.html">copy</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">copy</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$copy(java.nio.file.Path, java.io.Writer)/source">source</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$copy(java.nio.file.Path, java.io.Writer)/out">out</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html"><span class="identifier">Writer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">copy</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$copy(java.nio.file.Path, java.io.Writer, java.nio.charset.Charset)/source">source</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$copy(java.nio.file.Path, java.io.Writer, java.nio.charset.Charset)/out">out</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html"><span class="identifier">Writer</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$copy(java.nio.file.Path, java.io.Writer, java.nio.charset.Charset)/charset">charset</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html"><span class="identifier">Charset</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Copies all characters from a file to an writer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="create-file-if-missing.html">createFileIfMissing</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">createFileIfMissing</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$createFileIfMissing(java.nio.file.Path, kotlin.Array((java.nio.file.attribute.FileAttribute((kotlin.Any)))))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.io.file.Files$createFileIfMissing(java.nio.file.Path, kotlin.Array((java.nio.file.attribute.FileAttribute((kotlin.Any)))))/attrs">attrs</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/attribute/FileAttribute.html"><span class="identifier">FileAttribute</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Create a file, if it does not already exist.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="delete-recursively.html">deleteRecursively</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">deleteRecursively</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$deleteRecursively(java.nio.file.Path)/directory">directory</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Delete a directory and all files contained within it.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>UInt256.fromHexString - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.units.bigints</a>&nbsp;/&nbsp;<a href="index.html">UInt256</a>&nbsp;/&nbsp;<a href="./from-hex-string.html">fromHexString</a><br/>
+<br/>
+<h1>fromHexString</h1>
+<a name="net.consensys.cava.units.bigints.UInt256$fromHexString(kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromHexString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$fromHexString(kotlin.String)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">UInt256</span></a></code> <a href="https://github.com/consensys/cava/blob/master//units/src/main/java/net/consensys/cava/units/bigints/UInt256.java#L121">(source)</a>
+<p>Parse an hexadecimal string into a UInt256.</p>
+<h3>Parameters</h3>
+<p><a name="str"></a>
+<code>str</code> - The hexadecimal string to parse, which may or may not start with "0x". That representation may contain less than 32 bytes, in which case the result is left padded with zeros.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>str</code> does not correspond to valid hexadecimal representation or contains more than 32 bytes.</p>
+<p><strong>Return</strong><br/>
+The value corresponding to <code>str</code>.</p>
+</BODY>
+</HTML>

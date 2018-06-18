@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncMerkleStorage.putAsync - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.trie.experimental</a>&nbsp;/&nbsp;<a href="index.html">AsyncMerkleStorage</a>&nbsp;/&nbsp;<a href="./put-async.html">putAsync</a><br/>
+<br/>
+<h1>putAsync</h1>
+<a name="net.consensys.cava.trie.experimental.AsyncMerkleStorage$putAsync(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$putAsync(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$putAsync(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/content">content</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//merkle-trie/src/main/kotlin/net/consensys/cava/trie/experimental/MerkleStorage.kt#L79">(source)</a>
+<p>Store content with a given hash.</p>
+<p>Note: if the storage implementation already contains content for the given hash, it does not need to replace the
+existing content.</p>
+<h3>Parameters</h3>
+<p><a name="hash"></a>
+<code>hash</code> - The hash for the content.</p>
+<p><a name="content"></a>
+<code>content</code> - The content to store.</p>
+<p><strong>Return</strong><br/>
+An <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> that will complete when the content is stored, or with an exception.</p>
+</BODY>
+</HTML>

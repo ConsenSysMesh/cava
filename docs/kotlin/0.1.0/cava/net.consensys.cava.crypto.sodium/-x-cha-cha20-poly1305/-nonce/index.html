@@ -1,0 +1,74 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>XChaCha20Poly1305.Nonce - cava</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">cava</a>&nbsp;/&nbsp;<a href="../../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="../index.html">XChaCha20Poly1305</a>&nbsp;/&nbsp;<a href="./index.html">Nonce</a><br/>
+<br/>
+<h1>Nonce</h1>
+<code><span class="keyword">class </span><span class="identifier">Nonce</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/XChaCha20Poly1305.java#L141">(source)</a>
+<p>A XChaCha20-Poly1305 nonce.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="bytes.html">bytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="bytes-array.html">bytesArray</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bytesArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="for-bytes.html">forBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">forBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce$forBytes(net.consensys.cava.bytes.Bytes)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Nonce</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">forBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce$forBytes(kotlin.ByteArray)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Nonce</span></a></code>
+<p>Create a Nonce from an array of bytes. 
+<p> The byte array must be of length <code><a href="length.html">#length()</a></code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="increment.html">increment</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">increment</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Nonce</span></a></code>
+<p>Increment this nonce. 
+<p> Note that this is not synchronized. If multiple threads are creating encrypted messages and incrementing this nonce, then external synchronization is required to ensure no two encrypt operations use the same nonce.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="length.html">length</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">length</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Obtain the length of the nonce in bytes (24).</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="random.html">random</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">random</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Nonce</span></a></code>
+<p>Generate a new Nonce using a random generator.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Sodium - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="./index.html">Sodium</a><br/>
+<br/>
+<h1>Sodium</h1>
+<code><span class="keyword">class </span><span class="identifier">Sodium</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Sodium.java#L35">(source)</a>
+<p>Access to the sodium native library. 
+<p> This class provides static methods for checking or loading the sodium native library.</p>
+</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-available.html">isAvailable</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">isAvailable</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if the sodium library is available. 
+<p> If the sodium library has not already been loaded, this will attempt to load and initialize it before returning.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="load-library.html">loadLibrary</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">loadLibrary</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Sodium$loadLibrary(java.nio.file.Path)/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Load and initialize the native libsodium shared library. 
+<p> If this method returns successfully (without throwing a LinkageError), then all future calls to methods provided by this class will use the loaded library.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="supported-major-version.html">supportedMajorVersion</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">supportedMajorVersion</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="supported-min-minor-version.html">supportedMinMinorVersion</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">supportedMinMinorVersion</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
