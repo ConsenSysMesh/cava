@@ -62,7 +62,7 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory recordServerFingerprints(Path knownServersFile, boolean skipCASigned) {
     requireNonNull(knownServersFile);
-    return wrap(HostFingerprintTrustManager.record(knownServersFile), skipCASigned);
+    return wrap(ServerFingerprintTrustManager.record(knownServersFile), skipCASigned);
   }
 
   /**
@@ -82,7 +82,7 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory recordServerFingerprints(Path knownServersFile, TrustManagerFactory tmf) {
     requireNonNull(knownServersFile);
     requireNonNull(tmf);
-    return wrap(HostFingerprintTrustManager.record(knownServersFile), tmf);
+    return wrap(ServerFingerprintTrustManager.record(knownServersFile), tmf);
   }
 
   /**
@@ -116,7 +116,7 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory trustServerOnFirstUse(Path knownServersFile, boolean acceptCASigned) {
     requireNonNull(knownServersFile);
-    return wrap(HostFingerprintTrustManager.tofu(knownServersFile), acceptCASigned);
+    return wrap(ServerFingerprintTrustManager.tofu(knownServersFile), acceptCASigned);
   }
 
   /**
@@ -134,7 +134,7 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory trustServerOnFirstUse(Path knownServersFile, TrustManagerFactory tmf) {
     requireNonNull(knownServersFile);
     requireNonNull(tmf);
-    return wrap(HostFingerprintTrustManager.tofu(knownServersFile), tmf);
+    return wrap(ServerFingerprintTrustManager.tofu(knownServersFile), tmf);
   }
 
   /**
@@ -165,7 +165,7 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory whitelistServers(Path knownServersFile, boolean acceptCASigned) {
     requireNonNull(knownServersFile);
-    return wrap(HostFingerprintTrustManager.whitelist(knownServersFile), acceptCASigned);
+    return wrap(ServerFingerprintTrustManager.whitelist(knownServersFile), acceptCASigned);
   }
 
   /**
@@ -182,7 +182,7 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory whitelistServers(Path knownServersFile, TrustManagerFactory tmf) {
     requireNonNull(knownServersFile);
     requireNonNull(tmf);
-    return wrap(HostFingerprintTrustManager.whitelist(knownServersFile), tmf);
+    return wrap(ServerFingerprintTrustManager.whitelist(knownServersFile), tmf);
   }
 
   /**
@@ -218,7 +218,7 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory recordClientFingerprints(Path knownClientsFile, boolean skipCASigned) {
     requireNonNull(knownClientsFile);
-    return wrap(FingerprintTrustManager.record(knownClientsFile), skipCASigned);
+    return wrap(ClientFingerprintTrustManager.record(knownClientsFile), skipCASigned);
   }
 
   /**
@@ -238,7 +238,78 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory recordClientFingerprints(Path knownClientsFile, TrustManagerFactory tmf) {
     requireNonNull(knownClientsFile);
     requireNonNull(tmf);
-    return wrap(FingerprintTrustManager.record(knownClientsFile), tmf);
+    return wrap(ClientFingerprintTrustManager.record(knownClientsFile), tmf);
+  }
+
+  /**
+   * Accept CA-signed client certificates, and otherwise trust client certificates on first access.
+   *
+   * <p>
+   * Except when a client presents a CA-signed certificate, on first connection to this server the common name and
+   * fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected
+   * if the fingerprint has changed.
+   *
+   * <p>
+   * <i>Note: unlike the seemingly equivalent {@link #trustServerOnFirstUse(Path)} method for authenticating servers,
+   * this method for authenticating clients is <b>insecure</b> and <b>provides zero confidence in client identity</b>.
+   * Unlike the server version, which bases the identity on the hostname and port the connection is being established
+   * to, the client version only uses the common name of the certificate that the connecting client presents. Therefore,
+   * clients can circumvent access control by using a different common name from any previously recorded client.</i>
+   *
+   * @param knownClientsFile The path to the file containing fingerprints.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile) {
+    requireNonNull(knownClientsFile);
+    return trustClientOnFirstAccess(knownClientsFile, true);
+  }
+
+  /**
+   * Trust client certificates on first access.
+   *
+   * <p>
+   * on first connection to this server the common name and fingerprint of the presented certificate will be recorded.
+   * On subsequent connections, the client will be rejected if the fingerprint has changed.
+   *
+   * <p>
+   * <i>Note: unlike the seemingly equivalent {@link #trustServerOnFirstUse(Path)} method for authenticating servers,
+   * this method for authenticating clients is <b>insecure</b> and <b>provides zero confidence in client identity</b>.
+   * Unlike the server version, which bases the identity on the hostname and port the connection is being established
+   * to, the client version only uses the common name of the certificate that the connecting client presents. Therefore,
+   * clients can circumvent access control by using a different common name from any previously recorded client.</i>
+   *
+   * @param knownClientsFile The path to the file containing fingerprints.
+   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile, boolean acceptCASigned) {
+    requireNonNull(knownClientsFile);
+    return wrap(ClientFingerprintTrustManager.tofa(knownClientsFile), acceptCASigned);
+  }
+
+  /**
+   * Accept CA-signed certificates, and otherwise trust client certificates on first access.
+   *
+   * <p>
+   * Except when a client presents a CA-signed certificate, on first connection to this server the common name and
+   * fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected
+   * if the fingerprint has changed.
+   *
+   * <p>
+   * <i>Note: unlike the seemingly equivalent {@link #trustServerOnFirstUse(Path)} method for authenticating servers,
+   * this method for authenticating clients is <b>insecure</b> and <b>provides zero confidence in client identity</b>.
+   * Unlike the server version, which bases the identity on the hostname and port the connection is being established
+   * to, the client version only uses the common name of the certificate that the connecting client presents. Therefore,
+   * clients can circumvent access control by using a different common name from any previously recorded client.</i>
+   *
+   * @param knownClientsFile The path to the file containing fingerprints.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile, TrustManagerFactory tmf) {
+    requireNonNull(knownClientsFile);
+    requireNonNull(tmf);
+    return wrap(ClientFingerprintTrustManager.tofa(knownClientsFile), tmf);
   }
 
   /**
@@ -267,7 +338,7 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory whitelistClients(Path knownClientsFile, boolean acceptCASigned) {
     requireNonNull(knownClientsFile);
-    return wrap(FingerprintTrustManager.whitelist(knownClientsFile), acceptCASigned);
+    return wrap(ClientFingerprintTrustManager.whitelist(knownClientsFile), acceptCASigned);
   }
 
   /**
@@ -283,7 +354,7 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory whitelistClients(Path knownClientsFile, TrustManagerFactory tmf) {
     requireNonNull(knownClientsFile);
     requireNonNull(tmf);
-    return wrap(FingerprintTrustManager.whitelist(knownClientsFile), tmf);
+    return wrap(ClientFingerprintTrustManager.whitelist(knownClientsFile), tmf);
   }
 
   private static TrustManagerFactory wrap(X509TrustManager trustManager, boolean acceptCASigned) {

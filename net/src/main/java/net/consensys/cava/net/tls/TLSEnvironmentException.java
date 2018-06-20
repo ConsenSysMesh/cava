@@ -14,7 +14,11 @@ package net.consensys.cava.net.tls;
 
 final class TLSEnvironmentException extends RuntimeException {
 
-  TLSEnvironmentException(String message, Throwable t) {
-    super(message, t);
+  TLSEnvironmentException(String message) {
+    super(message);
+  }
+
+  TLSEnvironmentException(String message, Throwable cause) {
+    super(message, cause);
   }
 }

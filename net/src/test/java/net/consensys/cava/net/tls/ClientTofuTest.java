@@ -12,8 +12,11 @@
  */
 package net.consensys.cava.net.tls;
 
+import static net.consensys.cava.crypto.Hash.sha2_256;
+import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
 import static net.consensys.cava.net.tls.SecurityTestUtils.startServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.junit.TempDirectory;
@@ -24,13 +27,13 @@ import net.consensys.cava.junit.VertxInstance;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.security.cert.CertificateException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import javax.net.ssl.SSLException;
 
-import com.google.common.hash.Hashing;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
@@ -50,10 +53,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class ClientTofuTest {
 
   private static String caValidFingerprint;
-  private static String fooFingerprint;
   private static HttpServer caValidServer;
+  private static String fooFingerprint;
   private static HttpServer fooServer;
-  private static HttpServer otherFooServer;
+  private static String foobarFingerprint;
+  private static HttpServer foobarServer;
 
   private Path knownServersFile;
   private HttpClient client;
@@ -62,41 +66,36 @@ class ClientTofuTest {
   static void startServers(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
     SelfSignedCertificate caSignedCert = SelfSignedCertificate.create("localhost");
     SecurityTestUtils.configureJDKTrustStore(tempDir, caSignedCert);
-    caValidFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(caSignedCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
+    caValidFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(caSignedCert.keyCertOptions().getCertPath()))));
     caValidServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(caSignedCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(caValidServer);
 
     SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
-    fooFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
+    fooFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
     fooServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(fooCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(fooServer);
 
-    SelfSignedCertificate otherFooCert = SelfSignedCertificate.create("foo.com");
-    otherFooServer = vertx
-        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(otherFooCert.keyCertOptions()))
+    SelfSignedCertificate foobarCert = SelfSignedCertificate.create("foobar.com");
+    foobarFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(foobarCert.keyCertOptions().getCertPath()))));
+    foobarServer = vertx
+        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(foobarCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
-    startServer(otherFooServer);
+    startServer(foobarServer);
   }
 
   @BeforeEach
   void setupClient(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
-    knownServersFile = tempDir.resolve("knownclients.txt");
-    Files.deleteIfExists(knownServersFile);
-    Files.write(knownServersFile, Collections.singletonList("#First line"));
+    knownServersFile = tempDir.resolve("known-hosts.txt");
+    Files.write(
+        knownServersFile,
+        Arrays.asList("#First line", "localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT));
 
     HttpClientOptions options = new HttpClientOptions();
     options
@@ -117,7 +116,7 @@ class ClientTofuTest {
   static void stopServers() {
     caValidServer.close();
     fooServer.close();
-    otherFooServer.close();
+    foobarServer.close();
     System.clearProperty("javax.net.ssl.trustStore");
     System.clearProperty("javax.net.ssl.trustStorePassword");
   }
@@ -136,9 +135,10 @@ class ClientTofuTest {
     assertEquals((Integer) 200, statusCode.join());
 
     List<String> knownServers = Files.readAllLines(knownServersFile);
-    assertEquals(2, knownServers.size());
+    assertEquals(3, knownServers.size(), "Host was verified via TOFU and not CA");
     assertEquals("#First line", knownServers.get(0));
-    assertEquals("localhost:" + caValidServer.actualPort() + " " + caValidFingerprint, knownServers.get(1));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+    assertEquals("localhost:" + caValidServer.actualPort() + " " + caValidFingerprint, knownServers.get(2));
   }
 
   @Test
@@ -151,29 +151,26 @@ class ClientTofuTest {
     assertEquals((Integer) 200, statusCode.join());
 
     List<String> knownServers = Files.readAllLines(knownServersFile);
-    assertEquals(2, knownServers.size());
+    assertEquals(3, knownServers.size());
     assertEquals("#First line", knownServers.get(0));
-    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(1));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(2));
   }
 
   @Test
-  void shouldRejectDifferentCertificate() throws Throwable {
-    // do a first connection
-    shouldValidateOnFirstUse();
-
+  void shouldRejectDifferentCertificate() {
     CompletableFuture<Integer> statusCode = new CompletableFuture<>();
     client
-        .post(
-            otherFooServer.actualPort(),
-            "localhost",
-            "/sample",
-            response -> statusCode.complete(response.statusCode()))
+        .post(foobarServer.actualPort(), "localhost", "/sample", response -> statusCode.complete(response.statusCode()))
         .exceptionHandler(statusCode::completeExceptionally)
         .end();
-    try {
-      statusCode.join();
-    } catch (CompletionException e) {
-      assertTrue(e.getCause() instanceof SSLException);
+    Throwable e = assertThrows(CompletionException.class, statusCode::join);
+    e = e.getCause();
+    while (!(e instanceof CertificateException)) {
+      assertTrue(e instanceof SSLException);
+      e = e.getCause();
     }
+    assertTrue(e.getMessage().contains("Remote host identification has changed!!"), e.getMessage());
+    assertTrue(e.getMessage().contains("has fingerprint " + foobarFingerprint));
   }
 }

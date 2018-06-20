@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.net.tls;
 
+import static net.consensys.cava.crypto.Hash.sha2_256;
+import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
 import static net.consensys.cava.net.tls.SecurityTestUtils.startServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -23,11 +25,10 @@ import net.consensys.cava.junit.VertxInstance;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.google.common.hash.Hashing;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
@@ -47,9 +48,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class ClientCaOrRecordTest {
 
   private static String caValidFingerprint;
-  private static String fooFingerprint;
   private static HttpServer caValidServer;
+  private static String fooFingerprint;
   private static HttpServer fooServer;
+  private static String barFingerprint;
+  private static HttpServer barServer;
+  private static String foobarFingerprint;
   private static HttpServer foobarServer;
 
   private Path knownServersFile;
@@ -59,41 +63,44 @@ class ClientCaOrRecordTest {
   static void startServers(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
     SelfSignedCertificate caSignedCert = SelfSignedCertificate.create("localhost");
     SecurityTestUtils.configureJDKTrustStore(tempDir, caSignedCert);
-    caValidFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(caSignedCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
+    caValidFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(caSignedCert.keyCertOptions().getCertPath()))));
     caValidServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(caSignedCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(caValidServer);
 
     SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
-    fooFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
+    fooFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
     fooServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(fooCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(fooServer);
 
+    SelfSignedCertificate barCert = SelfSignedCertificate.create("bar.com");
+    barFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(barCert.keyCertOptions().getCertPath()))));
+    barServer = vertx
+        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(barCert.keyCertOptions()))
+        .requestHandler(context -> context.response().end("OK"));
+    startServer(barServer);
+
+    SelfSignedCertificate foobarCert = SelfSignedCertificate.create("foobar.com");
+    foobarFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(foobarCert.keyCertOptions().getCertPath()))));
     foobarServer = vertx
-        .createHttpServer(
-            new HttpServerOptions().setSsl(true).setPemKeyCertOptions(
-                SelfSignedCertificate.create("foobar.com").keyCertOptions()))
+        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(foobarCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(foobarServer);
   }
 
   @BeforeEach
   void setupClient(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
-    knownServersFile = tempDir.resolve("knownclients.txt");
-    Files.write(knownServersFile, Collections.singletonList("#First line"));
+    knownServersFile = tempDir.resolve("known-hosts.txt");
+    Files.write(
+        knownServersFile,
+        Arrays.asList("#First line", "localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT));
 
     HttpClientOptions options = new HttpClientOptions();
     options
@@ -114,6 +121,7 @@ class ClientCaOrRecordTest {
   static void stopServers() {
     caValidServer.close();
     fooServer.close();
+    barServer.close();
     foobarServer.close();
     System.clearProperty("javax.net.ssl.trustStore");
     System.clearProperty("javax.net.ssl.trustStorePassword");
@@ -133,8 +141,43 @@ class ClientCaOrRecordTest {
     assertEquals((Integer) 200, statusCode.join());
 
     List<String> knownServers = Files.readAllLines(knownServersFile);
-    assertEquals(1, knownServers.size(), "CA verified host should not have been recorded");
+    assertEquals(2, knownServers.size(), "CA verified host should not have been recorded");
     assertEquals("#First line", knownServers.get(0));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+  }
+
+  @Test
+  void shouldRecordMultipleHosts() throws Exception {
+    CompletableFuture<Integer> statusCode = new CompletableFuture<>();
+    client
+        .post(fooServer.actualPort(), "localhost", "/sample", response -> statusCode.complete(response.statusCode()))
+        .exceptionHandler(statusCode::completeExceptionally)
+        .end();
+    assertEquals((Integer) 200, statusCode.join());
+
+    List<String> knownServers = Files.readAllLines(knownServersFile);
+    assertEquals(3, knownServers.size(), String.join("\n", knownServers));
+    assertEquals("#First line", knownServers.get(0));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(2));
+
+    CompletableFuture<Integer> secondStatusCode = new CompletableFuture<>();
+    client
+        .post(
+            barServer.actualPort(),
+            "localhost",
+            "/sample",
+            response -> secondStatusCode.complete(response.statusCode()))
+        .exceptionHandler(secondStatusCode::completeExceptionally)
+        .end();
+    assertEquals((Integer) 200, secondStatusCode.join());
+
+    knownServers = Files.readAllLines(knownServersFile);
+    assertEquals(4, knownServers.size(), String.join("\n", knownServers));
+    assertEquals("#First line", knownServers.get(0));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(2));
+    assertEquals("localhost:" + barServer.actualPort() + " " + barFingerprint, knownServers.get(3));
   }
 
   @Test
@@ -151,13 +194,14 @@ class ClientCaOrRecordTest {
     assertEquals((Integer) 200, statusCode.join());
 
     List<String> knownServers = Files.readAllLines(knownServersFile);
-    assertEquals(2, knownServers.size(), String.join("\n", knownServers));
+    assertEquals(3, knownServers.size(), String.join("\n", knownServers));
     assertEquals("#First line", knownServers.get(0));
-    assertEquals("127.0.0.1:" + caValidServer.actualPort() + " " + caValidFingerprint, knownServers.get(1));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+    assertEquals("127.0.0.1:" + caValidServer.actualPort() + " " + caValidFingerprint, knownServers.get(2));
   }
 
   @Test
-  void shouldRecordMultipleHosts() throws Exception {
+  void shouldReplaceFingerprint() throws Exception {
     CompletableFuture<Integer> statusCode = new CompletableFuture<>();
     client
         .post(fooServer.actualPort(), "localhost", "/sample", response -> statusCode.complete(response.statusCode()))
@@ -166,9 +210,10 @@ class ClientCaOrRecordTest {
     assertEquals((Integer) 200, statusCode.join());
 
     List<String> knownServers = Files.readAllLines(knownServersFile);
-    assertEquals(2, knownServers.size(), String.join("\n", knownServers));
+    assertEquals(3, knownServers.size(), String.join("\n", knownServers));
     assertEquals("#First line", knownServers.get(0));
-    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(1));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + DUMMY_FINGERPRINT, knownServers.get(1));
+    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(2));
 
     CompletableFuture<Integer> secondStatusCode = new CompletableFuture<>();
     client
@@ -177,10 +222,14 @@ class ClientCaOrRecordTest {
             "localhost",
             "/sample",
             response -> secondStatusCode.complete(response.statusCode()))
+        .exceptionHandler(secondStatusCode::completeExceptionally)
         .end();
     assertEquals((Integer) 200, secondStatusCode.join());
 
     knownServers = Files.readAllLines(knownServersFile);
     assertEquals(3, knownServers.size(), String.join("\n", knownServers));
+    assertEquals("#First line", knownServers.get(0));
+    assertEquals("localhost:" + foobarServer.actualPort() + " " + foobarFingerprint, knownServers.get(1));
+    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(2));
   }
 }

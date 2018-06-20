@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.net.tls;
 
+import static net.consensys.cava.crypto.Hash.sha2_256;
+import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.junit.TempDirectory;
@@ -22,11 +24,10 @@ import net.consensys.cava.junit.VertxInstance;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import com.google.common.hash.Hashing;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.ClientAuth;
@@ -48,61 +49,72 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(VertxExtension.class)
 class ServerRecordTest {
 
-  private static String caClientFingerprint;
+  private static String caFingerprint;
   private static HttpClient caClient;
-  private static String unknownClientFingerprint;
-  private static HttpClient unknownClient1;
-  private static HttpClient unknownClient2;
+  private static String fooFingerprint;
+  private static HttpClient fooClient;
+  private static String barFingerprint;
+  private static HttpClient barClient;
+  private static String foobarFingerprint;
+  private static HttpClient foobarClient;
 
   private Path knownClientsFile;
   private HttpServer httpServer;
 
   @BeforeAll
   static void setupClients(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
-    SelfSignedCertificate caClientCert = SelfSignedCertificate.create();
+    SelfSignedCertificate caClientCert = SelfSignedCertificate.create("example.com");
+    caFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(caClientCert.keyCertOptions().getCertPath()))));
     SecurityTestUtils.configureJDKTrustStore(tempDir, caClientCert);
-    caClientFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(caClientCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
     caClient = vertx.createHttpClient(
         new HttpClientOptions().setTrustOptions(InsecureTrustOptions.INSTANCE).setSsl(true).setKeyCertOptions(
             caClientCert.keyCertOptions()));
 
-    SelfSignedCertificate nonCAClientCert = SelfSignedCertificate.create();
-    unknownClientFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(nonCAClientCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
-    HttpClientOptions unknownClient1Options = new HttpClientOptions();
-    unknownClient1Options
+    SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
+    fooFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
+    HttpClientOptions fooClientOptions = new HttpClientOptions();
+    fooClientOptions
         .setSsl(true)
-        .setKeyCertOptions(nonCAClientCert.keyCertOptions())
+        .setKeyCertOptions(fooCert.keyCertOptions())
         .setTrustOptions(InsecureTrustOptions.INSTANCE)
         .setConnectTimeout(1500)
         .setReuseAddress(true)
         .setReusePort(true);
-    unknownClient1 = vertx.createHttpClient(unknownClient1Options);
+    fooClient = vertx.createHttpClient(fooClientOptions);
 
-    HttpClientOptions unknownClient2Options = new HttpClientOptions();
-    unknownClient2Options
+    SelfSignedCertificate barCert = SelfSignedCertificate.create("bar.com");
+    barFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(barCert.keyCertOptions().getCertPath()))));
+    HttpClientOptions barClientOptions = new HttpClientOptions();
+    barClientOptions
         .setSsl(true)
-        .setKeyCertOptions(SelfSignedCertificate.create().keyCertOptions())
+        .setKeyCertOptions(barCert.keyCertOptions())
         .setTrustOptions(InsecureTrustOptions.INSTANCE)
         .setConnectTimeout(1500)
         .setReuseAddress(true)
         .setReusePort(true);
-    unknownClient2 = vertx.createHttpClient(unknownClient2Options);
+    barClient = vertx.createHttpClient(barClientOptions);
+
+    SelfSignedCertificate foobarCert = SelfSignedCertificate.create("foobar.com");
+    foobarFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(foobarCert.keyCertOptions().getCertPath()))));
+    HttpClientOptions foobarClientOptions = new HttpClientOptions();
+    foobarClientOptions
+        .setSsl(true)
+        .setKeyCertOptions(foobarCert.keyCertOptions())
+        .setTrustOptions(InsecureTrustOptions.INSTANCE)
+        .setConnectTimeout(1500)
+        .setReuseAddress(true)
+        .setReusePort(true);
+    foobarClient = vertx.createHttpClient(foobarClientOptions);
   }
 
   @BeforeEach
   void startServer(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
-    knownClientsFile = tempDir.resolve("knownclients.txt");
-    Files.write(knownClientsFile, Collections.singletonList("#First line"));
+    knownClientsFile = tempDir.resolve("known-clients.txt");
+    Files.write(knownClientsFile, Arrays.asList("#First line", "foobar.com " + DUMMY_FINGERPRINT));
 
     SelfSignedCertificate serverCert = SelfSignedCertificate.create();
     HttpServerOptions options = new HttpServerOptions();
@@ -126,8 +138,9 @@ class ServerRecordTest {
   @AfterAll
   static void cleanupClients() {
     caClient.close();
-    unknownClient1.close();
-    unknownClient2.close();
+    fooClient.close();
+    barClient.close();
+    foobarClient.close();
   }
 
   @Test
@@ -139,25 +152,55 @@ class ServerRecordTest {
     assertEquals(200, resp.statusCode());
 
     List<String> knownClients = Files.readAllLines(knownClientsFile);
-    assertEquals(2, knownClients.size(), String.join("\n", knownClients));
+    assertEquals(3, knownClients.size(), "CA verified host should not have been recorded");
     assertEquals("#First line", knownClients.get(0));
-    assertEquals(caClientFingerprint, knownClients.get(1));
+    assertEquals("foobar.com " + DUMMY_FINGERPRINT, knownClients.get(1));
+    assertEquals("example.com " + caFingerprint, knownClients.get(2));
   }
 
   @Test
   void shouldRecordMultipleFingerprints() throws Exception {
-    HttpClientRequest req = unknownClient1.get(httpServer.actualPort(), "localhost", "/upcheck");
+    HttpClientRequest req = fooClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
     HttpClientResponse resp = respFuture.join();
     assertEquals(200, resp.statusCode());
 
     List<String> knownClients = Files.readAllLines(knownClientsFile);
-    assertEquals(2, knownClients.size(), String.join("\n", knownClients));
+    assertEquals(3, knownClients.size(), String.join("\n", knownClients));
     assertEquals("#First line", knownClients.get(0));
-    assertEquals(unknownClientFingerprint, knownClients.get(1));
+    assertEquals("foobar.com " + DUMMY_FINGERPRINT, knownClients.get(1));
+    assertEquals("foo.com " + fooFingerprint, knownClients.get(2));
 
-    req = unknownClient2.get(httpServer.actualPort(), "localhost", "/upcheck");
+    req = barClient.get(httpServer.actualPort(), "localhost", "/upcheck");
+    respFuture = new CompletableFuture<>();
+    req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
+    resp = respFuture.join();
+    assertEquals(200, resp.statusCode());
+
+    knownClients = Files.readAllLines(knownClientsFile);
+    assertEquals(4, knownClients.size(), String.join("\n", knownClients));
+    assertEquals("#First line", knownClients.get(0));
+    assertEquals("foobar.com " + DUMMY_FINGERPRINT, knownClients.get(1));
+    assertEquals("foo.com " + fooFingerprint, knownClients.get(2));
+    assertEquals("bar.com " + barFingerprint, knownClients.get(3));
+  }
+
+  @Test
+  void shouldReplaceFingerprint() throws Exception {
+    HttpClientRequest req = fooClient.get(httpServer.actualPort(), "localhost", "/upcheck");
+    CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
+    req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
+    HttpClientResponse resp = respFuture.join();
+    assertEquals(200, resp.statusCode());
+
+    List<String> knownClients = Files.readAllLines(knownClientsFile);
+    assertEquals(3, knownClients.size(), String.join("\n", knownClients));
+    assertEquals("#First line", knownClients.get(0));
+    assertEquals("foobar.com " + DUMMY_FINGERPRINT, knownClients.get(1));
+    assertEquals("foo.com " + fooFingerprint, knownClients.get(2));
+
+    req = foobarClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
     resp = respFuture.join();
@@ -166,5 +209,7 @@ class ServerRecordTest {
     knownClients = Files.readAllLines(knownClientsFile);
     assertEquals(3, knownClients.size(), String.join("\n", knownClients));
     assertEquals("#First line", knownClients.get(0));
+    assertEquals("foobar.com " + foobarFingerprint, knownClients.get(1));
+    assertEquals("foo.com " + fooFingerprint, knownClients.get(2));
   }
 }
