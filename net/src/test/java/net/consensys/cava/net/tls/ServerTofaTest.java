@@ -13,6 +13,7 @@
 package net.consensys.cava.net.tls;
 
 import static net.consensys.cava.crypto.Hash.sha2_256;
+import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,19 +50,22 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(TempDirectoryExtension.class)
 @ExtendWith(VertxExtension.class)
-class ServerCaOrWhitelistTest {
+class ServerTofaTest {
 
+  private static String caFingerprint;
   private static HttpClient caClient;
   private static String fooFingerprint;
   private static HttpClient fooClient;
-  private static HttpClient barClient;
+  private static HttpClient foobarClient;
 
   private Path knownClientsFile;
   private HttpServer httpServer;
 
   @BeforeAll
   static void setupClients(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
-    SelfSignedCertificate caClientCert = SelfSignedCertificate.create();
+    SelfSignedCertificate caClientCert = SelfSignedCertificate.create("example.com");
+    caFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(caClientCert.keyCertOptions().getCertPath()))));
     SecurityTestUtils.configureJDKTrustStore(tempDir, caClientCert);
     caClient = vertx.createHttpClient(
         new HttpClientOptions().setTrustOptions(InsecureTrustOptions.INSTANCE).setSsl(true).setKeyCertOptions(
@@ -80,22 +84,22 @@ class ServerCaOrWhitelistTest {
         .setReusePort(true);
     fooClient = vertx.createHttpClient(fooClientOptions);
 
-    SelfSignedCertificate barCert = SelfSignedCertificate.create("bar.com");
-    HttpClientOptions barClientOptions = new HttpClientOptions();
-    barClientOptions
+    SelfSignedCertificate foobarCert = SelfSignedCertificate.create("foobar.com");
+    HttpClientOptions foobarClientOptions = new HttpClientOptions();
+    foobarClientOptions
         .setSsl(true)
-        .setKeyCertOptions(barCert.keyCertOptions())
+        .setKeyCertOptions(foobarCert.keyCertOptions())
         .setTrustOptions(InsecureTrustOptions.INSTANCE)
         .setConnectTimeout(1500)
         .setReuseAddress(true)
         .setReusePort(true);
-    barClient = vertx.createHttpClient(barClientOptions);
+    foobarClient = vertx.createHttpClient(foobarClientOptions);
   }
 
   @BeforeEach
   void startServer(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
     knownClientsFile = tempDir.resolve("known-clients.txt");
-    Files.write(knownClientsFile, Arrays.asList("#First line", "foo.com " + fooFingerprint));
+    Files.write(knownClientsFile, Arrays.asList("#First line", "foobar.com " + DUMMY_FINGERPRINT));
 
     SelfSignedCertificate serverCert = SelfSignedCertificate.create();
     HttpServerOptions options = new HttpServerOptions();
@@ -103,7 +107,7 @@ class ServerCaOrWhitelistTest {
         .setSsl(true)
         .setClientAuth(ClientAuth.REQUIRED)
         .setPemKeyCertOptions(serverCert.keyCertOptions())
-        .setTrustOptions(VertxTrustOptions.whitelistClients(knownClientsFile))
+        .setTrustOptions(VertxTrustOptions.trustClientOnFirstAccess(knownClientsFile, false))
         .setIdleTimeout(1500)
         .setReuseAddress(true)
         .setReusePort(true);
@@ -112,43 +116,50 @@ class ServerCaOrWhitelistTest {
   }
 
   @AfterEach
-  void stopServer() throws Exception {
+  void stopServer() {
     httpServer.close();
-
-    List<String> knownClients = Files.readAllLines(knownClientsFile);
-    assertEquals(2, knownClients.size());
-    assertEquals("#First line", knownClients.get(0));
-    assertEquals("foo.com " + fooFingerprint, knownClients.get(1));
   }
 
   @AfterAll
   static void cleanupClients() {
     caClient.close();
     fooClient.close();
-    barClient.close();
+    foobarClient.close();
   }
 
   @Test
-  void shouldValidateUsingCertificate() {
+  void shouldNotValidateUsingCertificate() throws Exception {
     HttpClientRequest req = caClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
     HttpClientResponse resp = respFuture.join();
     assertEquals(200, resp.statusCode());
+
+    List<String> knownClients = Files.readAllLines(knownClientsFile);
+    assertEquals(3, knownClients.size());
+    assertEquals("#First line", knownClients.get(0));
+    assertEquals("foobar.com " + DUMMY_FINGERPRINT, knownClients.get(1));
+    assertEquals("example.com " + caFingerprint, knownClients.get(2));
   }
 
   @Test
-  void shouldValidateWhitelisted() {
+  void shouldValidateOnFirstUse() throws Exception {
     HttpClientRequest req = fooClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
     HttpClientResponse resp = respFuture.join();
     assertEquals(200, resp.statusCode());
+
+    List<String> knownClients = Files.readAllLines(knownClientsFile);
+    assertEquals(3, knownClients.size());
+    assertEquals("#First line", knownClients.get(0));
+    assertEquals("foobar.com " + DUMMY_FINGERPRINT, knownClients.get(1));
+    assertEquals("foo.com " + fooFingerprint, knownClients.get(2));
   }
 
   @Test
-  void shouldRejectNonWhitelisted() {
-    HttpClientRequest req = barClient.get(httpServer.actualPort(), "localhost", "/upcheck");
+  void shouldRejectDifferentCertificate() {
+    HttpClientRequest req = foobarClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
     Throwable e = assertThrows(CompletionException.class, respFuture::join);

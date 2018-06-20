@@ -12,8 +12,9 @@
  */
 package net.consensys.cava.net.tls;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static net.consensys.cava.crypto.Hash.sha2_256;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.junit.TempDirectory;
@@ -24,12 +25,11 @@ import net.consensys.cava.junit.VertxInstance;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
-import javax.net.ssl.SSLException;
 
-import com.google.common.hash.Hashing;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.ClientAuth;
@@ -52,9 +52,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class ServerWhitelistTest {
 
   private static HttpClient caClient;
-  private static String whitelistedFingerprint;
-  private static HttpClient whitelistClient;
-  private static HttpClient unknownClient;
+  private static String fooFingerprint;
+  private static HttpClient fooClient;
+  private static HttpClient barClient;
 
   private Path knownClientsFile;
   private HttpServer httpServer;
@@ -67,38 +67,35 @@ class ServerWhitelistTest {
         new HttpClientOptions().setTrustOptions(InsecureTrustOptions.INSTANCE).setSsl(true).setKeyCertOptions(
             caClientCert.keyCertOptions()));
 
-    SelfSignedCertificate nonCAClientCert = SelfSignedCertificate.create();
-    whitelistedFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(nonCAClientCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
-    HttpClientOptions whitelistClientOptions = new HttpClientOptions();
-    whitelistClientOptions
+    SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
+    fooFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
+    HttpClientOptions fooClientOptions = new HttpClientOptions();
+    fooClientOptions
         .setSsl(true)
-        .setKeyCertOptions(nonCAClientCert.keyCertOptions())
+        .setKeyCertOptions(fooCert.keyCertOptions())
         .setTrustOptions(InsecureTrustOptions.INSTANCE)
         .setConnectTimeout(1500)
         .setReuseAddress(true)
         .setReusePort(true);
-    whitelistClient = vertx.createHttpClient(whitelistClientOptions);
+    fooClient = vertx.createHttpClient(fooClientOptions);
 
-    HttpClientOptions unknownClientOptions = new HttpClientOptions();
-    unknownClientOptions
+    SelfSignedCertificate barCert = SelfSignedCertificate.create("bar.com");
+    HttpClientOptions barClientOptions = new HttpClientOptions();
+    barClientOptions
         .setSsl(true)
-        .setKeyCertOptions(SelfSignedCertificate.create().keyCertOptions())
+        .setKeyCertOptions(barCert.keyCertOptions())
         .setTrustOptions(InsecureTrustOptions.INSTANCE)
         .setConnectTimeout(1500)
         .setReuseAddress(true)
         .setReusePort(true);
-    unknownClient = vertx.createHttpClient(unknownClientOptions);
+    barClient = vertx.createHttpClient(barClientOptions);
   }
 
   @BeforeEach
   void startServer(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
-    knownClientsFile = tempDir.resolve("knownclients.txt");
-    Files.write(knownClientsFile, whitelistedFingerprint.getBytes(UTF_8));
+    knownClientsFile = tempDir.resolve("known-clients.txt");
+    Files.write(knownClientsFile, Arrays.asList("#First line", "foo.com " + fooFingerprint));
 
     SelfSignedCertificate serverCert = SelfSignedCertificate.create();
     HttpServerOptions options = new HttpServerOptions();
@@ -119,17 +116,16 @@ class ServerWhitelistTest {
     httpServer.close();
 
     List<String> knownClients = Files.readAllLines(knownClientsFile);
-    assertEquals(1, knownClients.size());
-    assertEquals(whitelistedFingerprint, knownClients.get(0));
+    assertEquals(2, knownClients.size());
+    assertEquals("#First line", knownClients.get(0));
+    assertEquals("foo.com " + fooFingerprint, knownClients.get(1));
   }
 
   @AfterAll
   static void cleanupClients() {
     caClient.close();
-    whitelistClient.close();
-    unknownClient.close();
-    System.clearProperty("javax.net.ssl.trustStore");
-    System.clearProperty("javax.net.ssl.trustStorePassword");
+    fooClient.close();
+    barClient.close();
   }
 
   @Test
@@ -137,16 +133,14 @@ class ServerWhitelistTest {
     HttpClientRequest req = caClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
-    try {
-      respFuture.join();
-    } catch (CompletionException e) {
-      assertTrue(e.getCause() instanceof SSLException);
-    }
+    Throwable e = assertThrows(CompletionException.class, respFuture::join);
+    e = e.getCause().getCause();
+    assertTrue(e.getMessage().contains("certificate_unknown"));
   }
 
   @Test
   void shouldValidateWhitelisted() {
-    HttpClientRequest req = whitelistClient.get(httpServer.actualPort(), "localhost", "/upcheck");
+    HttpClientRequest req = fooClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
     HttpClientResponse resp = respFuture.join();
@@ -155,13 +149,11 @@ class ServerWhitelistTest {
 
   @Test
   void shouldRejectNonWhitelisted() {
-    HttpClientRequest req = unknownClient.get(httpServer.actualPort(), "localhost", "/upcheck");
+    HttpClientRequest req = barClient.get(httpServer.actualPort(), "localhost", "/upcheck");
     CompletableFuture<HttpClientResponse> respFuture = new CompletableFuture<>();
     req.handler(respFuture::complete).exceptionHandler(respFuture::completeExceptionally).end();
-    try {
-      respFuture.join();
-    } catch (CompletionException e) {
-      assertTrue(e.getCause() instanceof SSLException);
-    }
+    Throwable e = assertThrows(CompletionException.class, respFuture::join);
+    e = e.getCause().getCause();
+    assertTrue(e.getMessage().contains("certificate_unknown"));
   }
 }

@@ -12,8 +12,10 @@
  */
 package net.consensys.cava.net.tls;
 
+import static net.consensys.cava.crypto.Hash.sha2_256;
 import static net.consensys.cava.net.tls.SecurityTestUtils.startServer;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.junit.TempDirectory;
@@ -24,13 +26,13 @@ import net.consensys.cava.junit.VertxInstance;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.cert.CertificateException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import javax.net.ssl.SSLException;
 
-import com.google.common.hash.Hashing;
 import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
@@ -49,10 +51,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(VertxExtension.class)
 class ClientCaOrWhitelistTest {
 
-  private static String whitelistedFingerprint;
   private static HttpServer caValidServer;
-  private static HttpServer whitelistedServer;
-  private static HttpServer unknownServer;
+  private static String fooFingerprint;
+  private static HttpServer fooServer;
+  private static String barFingerprint;
+  private static HttpServer barServer;
 
   private Path knownServersFile;
   private HttpClient client;
@@ -67,22 +70,20 @@ class ClientCaOrWhitelistTest {
     startServer(caValidServer);
 
     SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
-    whitelistedFingerprint = StringUtil.toHexStringPadded(
-        Hashing
-            .sha256()
-            .hashBytes(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath())))
-            .asBytes());
-
-    whitelistedServer = vertx
+    fooFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
+    fooServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(fooCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
-    startServer(whitelistedServer);
+    startServer(fooServer);
 
-    SelfSignedCertificate unknownCert = SelfSignedCertificate.create();
-    unknownServer = vertx
-        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(unknownCert.keyCertOptions()))
+    SelfSignedCertificate barCert = SelfSignedCertificate.create("bar.com");
+    barFingerprint = StringUtil
+        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(barCert.keyCertOptions().getCertPath()))));
+    barServer = vertx
+        .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(barCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
-    startServer(unknownServer);
+    startServer(barServer);
   }
 
   @BeforeEach
@@ -90,7 +91,7 @@ class ClientCaOrWhitelistTest {
     knownServersFile = tempDir.resolve("knownclients.txt");
     Files.write(
         knownServersFile,
-        Arrays.asList("#First line", "localhost:" + whitelistedServer.actualPort() + " " + whitelistedFingerprint));
+        Arrays.asList("#First line", "localhost:" + fooServer.actualPort() + " " + fooFingerprint));
 
     HttpClientOptions options = new HttpClientOptions();
     options
@@ -109,14 +110,14 @@ class ClientCaOrWhitelistTest {
     List<String> knownServers = Files.readAllLines(knownServersFile);
     assertEquals(2, knownServers.size(), "Host was verified via TOFU and not CA");
     assertEquals("#First line", knownServers.get(0));
-    assertEquals("localhost:" + whitelistedServer.actualPort() + " " + whitelistedFingerprint, knownServers.get(1));
+    assertEquals("localhost:" + fooServer.actualPort() + " " + fooFingerprint, knownServers.get(1));
   }
 
   @AfterAll
   static void stopServers() {
     caValidServer.close();
-    whitelistedServer.close();
-    unknownServer.close();
+    fooServer.close();
+    barServer.close();
     System.clearProperty("javax.net.ssl.trustStore");
     System.clearProperty("javax.net.ssl.trustStorePassword");
   }
@@ -139,11 +140,7 @@ class ClientCaOrWhitelistTest {
   void shouldValidateWhitelisted() {
     CompletableFuture<Integer> statusCode = new CompletableFuture<>();
     client
-        .post(
-            whitelistedServer.actualPort(),
-            "localhost",
-            "/sample",
-            response -> statusCode.complete(response.statusCode()))
+        .post(fooServer.actualPort(), "localhost", "/sample", response -> statusCode.complete(response.statusCode()))
         .exceptionHandler(statusCode::completeExceptionally)
         .end();
     assertEquals((Integer) 200, statusCode.join());
@@ -153,17 +150,15 @@ class ClientCaOrWhitelistTest {
   void shouldRejectNonWhitelisted() {
     CompletableFuture<Integer> statusCode = new CompletableFuture<>();
     client
-        .post(
-            unknownServer.actualPort(),
-            "localhost",
-            "/sample",
-            response -> statusCode.complete(response.statusCode()))
+        .post(barServer.actualPort(), "localhost", "/sample", response -> statusCode.complete(response.statusCode()))
         .exceptionHandler(statusCode::completeExceptionally)
         .end();
-    try {
-      statusCode.join();
-    } catch (CompletionException e) {
-      assertTrue(e.getCause() instanceof SSLException);
+    Throwable e = assertThrows(CompletionException.class, statusCode::join);
+    e = e.getCause();
+    while (!(e instanceof CertificateException)) {
+      assertTrue(e instanceof SSLException);
+      e = e.getCause();
     }
+    assertTrue(e.getMessage().contains("has unknown fingerprint " + barFingerprint));
   }
 }

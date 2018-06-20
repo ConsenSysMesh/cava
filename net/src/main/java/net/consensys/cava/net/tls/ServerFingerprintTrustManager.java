@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.net.tls;
 
+import static java.lang.String.format;
+import static net.consensys.cava.crypto.Hash.sha2_256;
+
 import net.consensys.cava.bytes.Bytes;
 
 import java.net.InetSocketAddress;
@@ -22,30 +25,29 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedTrustManager;
 
-import com.google.common.hash.Hashing;
 
-final class HostFingerprintTrustManager extends X509ExtendedTrustManager {
+final class ServerFingerprintTrustManager extends X509ExtendedTrustManager {
 
   private static final X509Certificate[] EMPTY_X509_CERTIFICATES = new X509Certificate[0];
 
-  static HostFingerprintTrustManager record(Path repository) {
-    return new HostFingerprintTrustManager(repository, true, true);
+  static ServerFingerprintTrustManager record(Path repository) {
+    return new ServerFingerprintTrustManager(repository, true, true);
   }
 
-  static HostFingerprintTrustManager tofu(Path repository) {
-    return new HostFingerprintTrustManager(repository, true, false);
+  static ServerFingerprintTrustManager tofu(Path repository) {
+    return new ServerFingerprintTrustManager(repository, true, false);
   }
 
-  static HostFingerprintTrustManager whitelist(Path repository) {
-    return new HostFingerprintTrustManager(repository, false, false);
+  static ServerFingerprintTrustManager whitelist(Path repository) {
+    return new ServerFingerprintTrustManager(repository, false, false);
   }
 
-  private final HostFingerprintRepository repository;
+  private final FingerprintRepository repository;
   private final boolean acceptNewFingerprints;
   private final boolean updateFingerprints;
 
-  private HostFingerprintTrustManager(Path repository, boolean acceptNewFingerprints, boolean updateFingerprints) {
-    this.repository = new HostFingerprintRepository(repository);
+  private ServerFingerprintTrustManager(Path repository, boolean acceptNewFingerprints, boolean updateFingerprints) {
+    this.repository = new FingerprintRepository(repository);
     this.acceptNewFingerprints = acceptNewFingerprints;
     this.updateFingerprints = updateFingerprints;
   }
@@ -85,29 +87,39 @@ final class HostFingerprintTrustManager extends X509ExtendedTrustManager {
 
   private void checkTrusted(X509Certificate[] chain, String host, int port) throws CertificateException {
     X509Certificate cert = chain[0];
-    Bytes fingerprint = Bytes.wrap(Hashing.sha256().hashBytes(cert.getEncoded()).asBytes());
-    if (repository.contains(host, port, fingerprint)) {
+    String identifier = hostIdentifier(host, port);
+    Bytes fingerprint = Bytes.wrap(sha2_256(cert.getEncoded()));
+    if (repository.contains(identifier, fingerprint)) {
       return;
     }
 
-    if (updateFingerprints || (acceptNewFingerprints && !repository.contains(host, port))) {
-      repository.addHostFingerprint(host, port, fingerprint);
-      return;
+    if (repository.contains(identifier)) {
+      if (!updateFingerprints) {
+        throw new CertificateException(
+            format(
+                "Remote host identification has changed!!" + " Certificate for %s (%s) has fingerprint %s",
+                identifier,
+                cert.getSubjectDN(),
+                fingerprint.toHexString().substring(2).toLowerCase()));
+      }
+    } else if (!acceptNewFingerprints) {
+      throw new CertificateException(
+          format(
+              "Certificate for %s (%s) has unknown fingerprint %s",
+              identifier,
+              cert.getSubjectDN(),
+              fingerprint.toHexString().substring(2).toLowerCase()));
     }
 
-    throw new CertificateException(
-        "Certificate for "
-            + cert.getSubjectDN()
-            + " ("
-            + host
-            + ":"
-            + port
-            + ") with unknown fingerprint: "
-            + fingerprint);
+    repository.addFingerprint(identifier, fingerprint);
   }
 
   @Override
   public X509Certificate[] getAcceptedIssuers() {
     return EMPTY_X509_CERTIFICATES;
+  }
+
+  private String hostIdentifier(String host, int port) {
+    return host.trim().toLowerCase() + ":" + port;
   }
 }

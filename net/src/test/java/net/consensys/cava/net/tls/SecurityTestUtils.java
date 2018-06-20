@@ -36,6 +36,8 @@ import org.bouncycastle.util.encoders.Base64;
 class SecurityTestUtils {
   private SecurityTestUtils() {}
 
+  static final String DUMMY_FINGERPRINT = "1111111111111111111111111111111111111111111111111111111111111111";
+
   static void configureJDKTrustStore(Path workDir, SelfSignedCertificate clientCert) throws Exception {
     KeyStore ks = KeyStore.getInstance("JKS");
     ks.load(null, null);
