@@ -58,15 +58,16 @@ public final class TLS {
    * Create a self-signed certificate, if it is not already present.
    *
    * <p>
-   * If either the key or the certificate file are missing, both will be re-created as a self-signed certificate.
+   * If both the key or the certificate file are missing, they will be re-created as a self-signed certificate.
    *
    * @param key The key path.
    * @param certificate The certificate path.
+   * @return <tt>true</tt> if a self-signed certificate was created.
    * @throws IOException If an IO error occurs creating the certificate.
    */
-  public static void createSelfSignedCertificateIfMissing(Path key, Path certificate) throws IOException {
-    if (Files.exists(certificate) && Files.exists(key)) {
-      return;
+  public static boolean createSelfSignedCertificateIfMissing(Path key, Path certificate) throws IOException {
+    if (Files.exists(certificate) || Files.exists(key)) {
+      return false;
     }
 
     createDirectories(certificate.getParent());
@@ -83,6 +84,7 @@ public final class TLS {
 
     Files.move(keyFile, key, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
     Files.move(certFile, certificate, StandardCopyOption.ATOMIC_MOVE, StandardCopyOption.REPLACE_EXISTING);
+    return true;
   }
 
   private static void createSelfSignedCertificate(Date now, Path key, Path certificate) throws NoSuchAlgorithmException,
