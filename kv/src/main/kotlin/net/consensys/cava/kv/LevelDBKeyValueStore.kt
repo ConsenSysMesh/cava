@@ -18,15 +18,24 @@ package net.consensys.cava.kv
 import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
-import org.iq80.leveldb.DB
+import org.fusesource.leveldbjni.JniDBFactory
+import org.iq80.leveldb.Options
+import java.io.Closeable
+import java.nio.file.Path
 
 /**
  * A key-value store backed by LevelDB.
  */
-class LevelDBKeyValueStore(private val levelDB: DB) : KeyValueStore {
+class LevelDBKeyValueStore
+@JvmOverloads constructor(
+  databasePath: Path,
+  options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong())
+) : KeyValueStore, Closeable {
+
+  private val db = JniDBFactory.factory.open(databasePath.toFile(), options)
 
   override suspend fun get(key: Bytes): Bytes? = withContext(Unconfined) {
-    val rawValue = levelDB[key.toArrayUnsafe()]
+    val rawValue = db[key.toArrayUnsafe()]
     if (rawValue == null) {
       null
     } else {
@@ -35,6 +44,11 @@ class LevelDBKeyValueStore(private val levelDB: DB) : KeyValueStore {
   }
 
   override suspend fun put(key: Bytes, value: Bytes) = withContext(Unconfined) {
-    levelDB.put(key.toArrayUnsafe(), value.toArrayUnsafe())
+    db.put(key.toArrayUnsafe(), value.toArrayUnsafe())
   }
+
+  /**
+   * Closes the underlying LevelDB instance.
+   */
+  override fun close() = db.close()
 }

@@ -6,13 +6,16 @@ dependencies {
   compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
 
   compileOnly 'org.fusesource.leveldbjni:leveldbjni-all'
+  compileOnly 'org.mapdb:mapdb'
 
   testCompile project(':concurrent')
+  testCompile project(':junit')
   testCompile 'com.winterbe:expekt'
   testCompile 'org.fusesource.leveldbjni:leveldbjni-all'
   testCompile 'org.jetbrains.spek:spek-api'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testCompile 'org.junit.jupiter:junit-jupiter-params'
+  testCompile 'org.mapdb:mapdb'
 
   testRuntime 'org.jetbrains.spek:spek-junit-platform-engine'
   testRuntime 'org.junit.jupiter:junit-jupiter-engine'
