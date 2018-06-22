@@ -12,7 +12,6 @@
  */
 package net.consensys.cava.launcher;
 
-import static net.consensys.cava.launcher.Launcher.args;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -36,10 +35,10 @@ class LauncherTest {
   @Test
   void testLaunchWithNoHandler() {
     assertThrows(
-        LaunchException.class,
-        () -> new Launcher().loggerProvider(LoggerProvider.nullProvider()).launchExceptionHandler((l, e, o, t) -> {
+        IllegalStateException.class,
+        () -> new Launcher().loggerProvider(LoggerProvider.nullProvider()).exceptionHandler((l, e, o, t) -> {
           throw (LaunchException) t;
-        }).run());
+        }).launch());
   }
 
   @Test
@@ -47,7 +46,7 @@ class LauncherTest {
     new Launcher()
         .loggerProvider(LoggerProvider.nullProvider())
         .handle((logger, out, err, args) -> called = true)
-        .run();
+        .launch();
     assertTrue(called);
   }
 
@@ -56,8 +55,8 @@ class LauncherTest {
     new Launcher()
         .loggerProvider(LoggerProvider.nullProvider())
         .handle("-v", (logger, out, err, args) -> called = true)
-        .handle((logger, out, err, args) -> out.println("started"))
-        .run("-v");
+        .handle((logger, out, err, args) -> {})
+        .launch("-v");
     assertTrue(called);
   }
 
@@ -65,9 +64,9 @@ class LauncherTest {
   void testLaunchShowVersionSeveralFlags() {
     new Launcher()
         .loggerProvider(LoggerProvider.nullProvider())
-        .handle(args("-v", "--version", "-h"), (logger, out, err, args) -> called = true)
-        .handle((logger, out, err, args) -> out.println("started"))
-        .run("-h");
+        .handle(new String[] { "-v", "--version", "-h" }, (logger, out, err, args) -> called = true)
+        .handle((logger, out, err, args) -> {})
+        .launch("-h");
     assertTrue(called);
   }
 
@@ -93,9 +92,9 @@ class LauncherTest {
         IllegalArgumentException.class,
         () -> new Launcher().loggerProvider(LoggerProvider.nullProvider()).handle((logger, out, err, args) -> {
           throw new IllegalArgumentException("no");
-        }).launchExceptionHandler((logger, err, out, t) -> {
+        }).exceptionHandler((logger, err, out, t) -> {
           throw (IllegalArgumentException) t;
-        }).run());
+        }).launch());
     assertEquals("no", e.getMessage());
   }
 
@@ -106,7 +105,7 @@ class LauncherTest {
         .loggerProvider(LoggerProvider.nullProvider())
         .syserr(mySysErr)
         .handle((logger, out, err, args) -> called = err == mySysErr)
-        .run();
+        .launch();
     assertTrue(called);
   }
 
@@ -117,13 +116,13 @@ class LauncherTest {
         .loggerProvider(LoggerProvider.nullProvider())
         .sysout(mySysOut)
         .handle((logger, out, err, args) -> called = out == mySysOut)
-        .run();
+        .launch();
     assertTrue(called);
   }
 
   @Test
   void noLoggerProviderConfigured() {
-    Exception e = assertThrows(IllegalArgumentException.class, () -> new Launcher().run("foo"));
-    assertEquals("No logger provider configured", e.getMessage());
+    Exception e = assertThrows(IllegalStateException.class, () -> new Launcher().launch("foo"));
+    assertEquals("Logger provider has not been set", e.getMessage());
   }
 }

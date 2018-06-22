@@ -23,31 +23,18 @@ import org.logl.Logger;
 import org.logl.LoggerProvider;
 
 /**
- * Launches a program, allowing to create handlers for specific set of arguments.
- * <p>
- * It is used to configure the behavior of the program at startup.
+ * Provides common application bootstrapping.
  *
+ * <p>
+ * Used to configure the behavior of the program at startup and provide handlers for command line arguments.
  */
 public final class Launcher {
-
-  /**
-   * Syntactic sugar to cast a varags String array to a native String array.
-   *
-   * @param arguments the varargs arguments
-   * @return the native array of varargs arguments
-   */
-  public static String[] args(String... arguments) {
-    return arguments;
-  }
 
   private final Map<String, LauncherHandler> handlerMap = new HashMap<>();
 
   private LoggerProvider loggerProvider = null;
-
-  private LauncherHandler defaultHandler;
-
+  private LauncherHandler defaultHandler = null;
   private PrintStream sysout = System.out;
-
   private PrintStream syserr = System.err;
 
   private LaunchExceptionHandler launchExceptionHandler = (logger, syserr, sysout, t) -> {
@@ -58,11 +45,14 @@ public final class Launcher {
   /**
    * Runs the application with the arguments provided.
    *
-   * @param args the arguments passed to the main method.
+   * @param args The command line arguments.
    */
-  public void run(String... args) {
+  public void launch(String... args) {
     if (loggerProvider == null) {
-      throw new IllegalArgumentException("No logger provider configured");
+      throw new IllegalStateException("Logger provider has not been set");
+    }
+    if (defaultHandler == null) {
+      throw new IllegalStateException("Default handler has not been set");
     }
     Logger logger = loggerProvider.getLogger("launch");
     try {
@@ -72,33 +62,29 @@ public final class Launcher {
           handler.handle(logger, sysout, syserr, args);
         }
       }
-      if (defaultHandler != null) {
-        defaultHandler.handle(logger, sysout, syserr, args);
-      } else {
-        throw new LaunchException("No default handler is defined");
-      }
-    } catch (Throwable t) {
+      defaultHandler.handle(logger, sysout, syserr, args);
+    } catch (Exception t) {
       launchExceptionHandler.handle(logger, syserr, sysout, t);
     }
   }
 
   /**
-   * Adds a new handler for the launcher for one argument.
+   * Adds a new command line argument handler.
    *
-   * @param arg the argument.
-   * @param handler the handler to execute if this argument is present.
-   * @return the launcher itself.
+   * @param arg The arguments to handle.
+   * @param handler The handler to execute if the argument is present.
+   * @return This launcher.
    */
   public Launcher handle(String arg, LauncherHandler handler) {
-    return handle(args(arg), handler);
+    return handle(new String[] { arg }, handler);
   }
 
   /**
-   * Adds a new handler for the launcher for a set of arguments.
+   * Adds a new command line argument handler.
    *
-   * @param args the arguments.
-   * @param handler the handler to execute if those arguments are present.
-   * @return the launcher itself.
+   * @param args The arguments to handle.
+   * @param handler The handler to execute if any of the arguments are present.
+   * @return This launcher.
    */
   public Launcher handle(String[] args, LauncherHandler handler) {
     checkNotNull(args);
@@ -115,8 +101,8 @@ public final class Launcher {
   /**
    * Adds a default handler to execute after all other handlers.
    *
-   * @param handler the default handler
-   * @return the launcher itself.
+   * @param handler The default handler.
+   * @return This launcher.
    */
   public Launcher handle(LauncherHandler handler) {
     this.defaultHandler = handler;
@@ -126,8 +112,8 @@ public final class Launcher {
   /**
    * Configures the logger provider to use for the launcher logger.
    *
-   * @param provider the logger provider.
-   * @return the launcher itself.
+   * @param provider The logger provider.
+   * @return This launcher.
    */
   public Launcher loggerProvider(LoggerProvider provider) {
     this.loggerProvider = provider;
@@ -137,8 +123,8 @@ public final class Launcher {
   /**
    * Configures the syserr output provided to the handler during execution.
    *
-   * @param printStream the print stream to use as syserr.
-   * @return the launcher itself.
+   * @param printStream The print stream to use for standard error output.
+   * @return This launcher.
    */
   public Launcher syserr(PrintStream printStream) {
     this.syserr = printStream;
@@ -148,8 +134,8 @@ public final class Launcher {
   /**
    * Configures the sysout output provided to the handler during execution.
    *
-   * @param printStream the print stream to use as sysout.
-   * @return the launcher itself.
+   * @param printStream The print stream to use for standard output.
+   * @return This launcher.
    */
   public Launcher sysout(PrintStream printStream) {
     this.sysout = printStream;
@@ -160,10 +146,10 @@ public final class Launcher {
    * Configures the handler to manage exceptions arising during the initial handling. The default handler will print the
    * exception message to syserr and exit with an exit code of 1.
    *
-   * @param launchExceptionHandler the new launch exception handler.
-   * @return the launcher itself.
+   * @param launchExceptionHandler The handler.
+   * @return This launcher.
    */
-  public Launcher launchExceptionHandler(LaunchExceptionHandler launchExceptionHandler) {
+  public Launcher exceptionHandler(LaunchExceptionHandler launchExceptionHandler) {
     this.launchExceptionHandler = launchExceptionHandler;
     return this;
   }
@@ -177,7 +163,7 @@ public final class Launcher {
     /**
      * Executes with a given set of arguments.
      * 
-     * @param logger the logger to use for normal logging.
+     * @param logger The logger to use for normal logging.
      * @param out The standard output stream.
      * @param err The standard error stream.
      * @param args the set of arguments provided to the program.
@@ -195,13 +181,11 @@ public final class Launcher {
     /**
      * Handles an exception thrown during launch.
      *
-     * @param logger the logger to use for normal logging.
+     * @param logger The logger to use for normal logging.
      * @param out The standard output stream.
      * @param err The standard error stream.
-     * @param throwable the exception thrown.
+     * @param e The exception thrown during launch.
      */
-    void handle(Logger logger, PrintStream out, PrintStream err, Throwable throwable);
+    void handle(Logger logger, PrintStream out, PrintStream err, Exception e);
   }
-
-
 }

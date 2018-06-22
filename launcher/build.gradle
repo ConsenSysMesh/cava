@@ -4,9 +4,6 @@ dependencies {
   compile 'org.logl:logl-api:0.1.0'
   compile 'com.google.guava:guava'
 
-  compileOnly 'org.logl:logl-slf4j:0.1.0'
-  compileOnly 'org.logl:logl-log4j2:0.1.0'
-
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testCompile 'org.junit.jupiter:junit-jupiter-params'
 
