@@ -136,6 +136,7 @@ final class FingerprintRepository {
         // write any new fingerprints at the end
         for (String identifier : updatedIdentifiers) {
           Bytes fingerprint = updatedFingerprints.get(identifier);
+          fingerprints.put(identifier, fingerprint);
           writer.write(identifier);
           writer.write(' ');
           writer.write(fingerprint.toHexString().substring(2).toLowerCase());
@@ -156,9 +157,6 @@ final class FingerprintRepository {
     }
     String identifier = segments[0].toLowerCase();
     String fingerprintString = segments[1].trim().replace(":", "");
-    if (fingerprintString.length() != 64) {
-      throw new IOException("Invalid fingerprint");
-    }
     Bytes fingerprint;
     try {
       fingerprint = Bytes.fromHexString(fingerprintString);
