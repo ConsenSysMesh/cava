@@ -323,7 +323,7 @@ public final class SchemaBuilder {
       String key,
       @Nullable List<String> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super String>> validator) {
+      @Nullable PropertyValidator<? super List<? extends String>> validator) {
     requireNonNull(key);
     return addList(String.class, "string", key, defaultValue, description, validator);
   }
@@ -351,7 +351,7 @@ public final class SchemaBuilder {
       String key,
       @Nullable List<? extends Integer> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super Integer>> validator) {
+      @Nullable PropertyValidator<? super List<? extends Integer>> validator) {
     requireNonNull(key);
 
     if (defaultValue != null) {
@@ -441,7 +441,7 @@ public final class SchemaBuilder {
       String key,
       @Nullable List<? extends Long> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super Long>> validator) {
+      @Nullable PropertyValidator<? super List<? extends Long>> validator) {
     requireNonNull(key);
 
     if (defaultValue != null) {
@@ -523,7 +523,7 @@ public final class SchemaBuilder {
       String key,
       @Nullable List<? extends Double> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super Double>> validator) {
+      @Nullable PropertyValidator<? super List<? extends Double>> validator) {
     requireNonNull(key);
     return addList(Double.class, "double", key, defaultValue, description, validator);
   }
@@ -550,7 +550,7 @@ public final class SchemaBuilder {
       String key,
       @Nullable List<? extends Boolean> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super Boolean>> validator) {
+      @Nullable PropertyValidator<? super List<? extends Boolean>> validator) {
     requireNonNull(key);
     return addList(Boolean.class, "boolean", key, defaultValue, description, validator);
   }
@@ -573,13 +573,14 @@ public final class SchemaBuilder {
    * @return This builder.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
+  @SuppressWarnings("rawtypes")
   public SchemaBuilder addListOfMap(
       String key,
-      @Nullable List<? extends Map<? extends String, ?>> defaultValue,
+      @Nullable List<? extends Map> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super Map<? super String, Object>>> validator) {
+      @Nullable PropertyValidator<? super List<? extends Map>> validator) {
     requireNonNull(key);
-    return addList(Map.class, "map", key, defaultValue, description, validator);
+    return this.addList(Map.class, "map", key, defaultValue, description, validator);
   }
 
   /**
@@ -624,7 +625,7 @@ public final class SchemaBuilder {
       String key,
       @Nullable List<? extends T> defaultValue,
       @Nullable String description,
-      @Nullable PropertyValidator<? super List<? super T>> validator) {
+      @Nullable PropertyValidator<? super List<? extends T>> validator) {
 
     if (defaultValue != null) {
       if (defaultValue.stream().anyMatch(Objects::isNull)) {

@@ -39,9 +39,8 @@ public interface Configuration {
    *
    * @param toml A TOML-formatted string.
    * @return A Configuration loaded from the TOML file.
-   * @throws IOException If an IO error occurs.
    */
-  static Configuration fromToml(String toml) throws IOException {
+  static Configuration fromToml(String toml) {
     return fromToml(toml, null);
   }
 
@@ -51,9 +50,8 @@ public interface Configuration {
    * @param toml A TOML-formatted string.
    * @param schema The validation schema for the configuration.
    * @return A Configuration loaded from the TOML file.
-   * @throws IOException If an IO error occurs.
    */
-  static Configuration fromToml(String toml, Schema schema) throws IOException {
+  static Configuration fromToml(String toml, Schema schema) {
     requireNonNull(toml);
     return new TomlBackedConfiguration(Toml.parse(toml), schema);
   }
