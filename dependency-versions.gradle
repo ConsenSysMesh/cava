@@ -21,5 +21,6 @@ dependencyManagement {
     dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core:0.23.3')
     dependency('org.jetbrains.spek:spek-api:1.1.5')
     dependency('org.jetbrains.spek:spek-junit-platform-engine:1.1.5')
+    dependency('org.mapdb:mapdb:3.0.7')
   }
 }

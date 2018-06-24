@@ -18,13 +18,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.junit.TempDirectory;
+import net.consensys.cava.junit.TempDirectoryExtension;
 
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(TempDirectoryExtension.class)
 class KeyValueStoreTest {
 
   @Test
@@ -44,5 +49,16 @@ class KeyValueStoreTest {
     Map<Bytes, Bytes> map = new HashMap<>();
     KeyValueStore store = new MapKeyValueStore(map);
     assertFalse(store.getAsync(Bytes.of(123)).get().isPresent());
+  }
+
+  @Test
+  void testLevelDBWithoutOptions(@TempDirectory Path tempDirectory) throws Exception {
+    try (LevelDBKeyValueStore leveldb = new LevelDBKeyValueStore(tempDirectory)) {
+      AsyncCompletion completion = leveldb.putAsync(Bytes.of(123), Bytes.of(10, 12, 13));
+      completion.join();
+      Optional<Bytes> value = leveldb.getAsync(Bytes.of(123)).get();
+      assertTrue(value.isPresent());
+      assertEquals(Bytes.of(10, 12, 13), value.get());
+    }
   }
 }

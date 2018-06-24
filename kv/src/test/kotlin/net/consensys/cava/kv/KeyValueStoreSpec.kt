@@ -22,8 +22,7 @@ import kotlinx.coroutines.experimental.runBlocking
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.kv.Vars.foo
 import net.consensys.cava.kv.Vars.foobar
-import org.fusesource.leveldbjni.JniDBFactory
-import org.iq80.leveldb.Options
+import org.iq80.leveldb.DBException
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
@@ -62,22 +61,11 @@ object KeyValueStoreSpec : Spek({
   }
 })
 
-object LevelDBKeyValueStoreSpec : Spek({
-  val path = Files.createTempDirectory("leveldb")
-  val db = JniDBFactory.factory.open(path.toFile(), Options().createIfMissing(true))
-  val kv = LevelDBKeyValueStore(db)
-  afterGroup {
-    db.close()
-    MoreFiles.deleteRecursively(path, RecursiveDeleteOption.ALLOW_INSECURE)
-  }
-  describe("a levelDB-backed key value store") {
+object MapDBKeyValueStoreSpec : Spek({
+  val testDir = Files.createTempDirectory("data")
+  val kv = MapDBKeyValueStore(testDir.resolve("data.db"))
 
-    it("should allow to store values") {
-      runBlocking {
-        kv.put(foo, foo)
-        Bytes.wrap(db.get(foo.toArrayUnsafe())).should.equal(foo)
-      }
-    }
+  describe("a MapDB-backed key value store") {
 
     it("should allow to retrieve values") {
       runBlocking {
@@ -89,6 +77,63 @@ object LevelDBKeyValueStoreSpec : Spek({
     it("should return an empty optional when no value is present") {
       runBlocking {
         kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
+      }
+    }
+
+    it("should not allow usage after the DB is closed") {
+      val kv2 = MapDBKeyValueStore(testDir.resolve("data2.db"))
+      kv2.close()
+      runBlocking {
+        var caught = false
+        try {
+          kv2.put(foobar, foo)
+        } catch (e: IllegalAccessError) {
+          caught = true
+        }
+        caught.should.be.`true`
+      }
+    }
+
+    afterGroup {
+      kv.close()
+      MoreFiles.deleteRecursively(testDir, RecursiveDeleteOption.ALLOW_INSECURE)
+    }
+  }
+})
+
+object LevelDBKeyValueStoreSpec : Spek({
+  val path = Files.createTempDirectory("leveldb")
+  val kv = LevelDBKeyValueStore(path)
+  afterGroup {
+    kv.close()
+    MoreFiles.deleteRecursively(path, RecursiveDeleteOption.ALLOW_INSECURE)
+  }
+  describe("a levelDB-backed key value store") {
+
+    it("should allow to retrieve values") {
+      runBlocking {
+        kv.put(foobar, foo)
+        kv.get(foobar).should.equal(foo)
+      }
+    }
+
+    it("should return an empty optional when no value is present") {
+      runBlocking {
+        kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
+      }
+    }
+
+    it("should not allow usage after the DB is closed") {
+      val kv2 = LevelDBKeyValueStore(path.resolve("subdb"))
+      kv2.close()
+      runBlocking {
+        var caught = false
+        try {
+          kv2.put(foobar, foo)
+        } catch (e: DBException) {
+          caught = true
+        }
+        caught.should.be.`true`
       }
     }
   }
