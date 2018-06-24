@@ -62,7 +62,6 @@ class SchemaBuilderTest {
     assertEquals(1, config.errors().size());
   }
 
-  @SuppressWarnings("rawtypes")
   @Test
   void validateListOfMaps() {
     SchemaBuilder schemaBuilder = new SchemaBuilder();
