@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.config;
 
+import static net.consensys.cava.config.ConfigurationErrors.noErrors;
+import static net.consensys.cava.config.ConfigurationErrors.singleError;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.Arrays;
@@ -45,4 +48,32 @@ class SchemaBuilderTest {
             .addListOfMap("maps", Arrays.asList(Collections.emptyMap(), null, Collections.emptyMap()), null, null));
   }
 
+  @Test
+  void validateListOfStrings() {
+    SchemaBuilder schemaBuilder = new SchemaBuilder();
+    schemaBuilder.addListOfString("key", Collections.emptyList(), "Some description here", (key, pos, value) -> {
+      if (value.size() == 2 && value.get(0).startsWith("no")) {
+        return singleError("This won't work out");
+      }
+      return noErrors();
+    });
+    Configuration config = Configuration.fromToml("key=[\"no\",\"yes\"]", schemaBuilder.toSchema());
+
+    assertEquals(1, config.errors().size());
+  }
+
+  @SuppressWarnings("rawtypes")
+  @Test
+  void validateListOfMaps() {
+    SchemaBuilder schemaBuilder = new SchemaBuilder();
+    schemaBuilder.addListOfMap("key", Collections.emptyList(), "Some description here", (key, pos, value) -> {
+      if (value.size() == 2 && value.get(0).size() == 1 && (Long) value.get(0).get("a") == 1L) {
+        return singleError("This won't work out");
+      }
+      return noErrors();
+    });
+    Configuration config = Configuration.fromToml("key=[{a = 1},{a = 2}]", schemaBuilder.toSchema());
+
+    assertEquals(1, config.errors().size());
+  }
 }
