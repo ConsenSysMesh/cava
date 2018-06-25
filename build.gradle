@@ -216,19 +216,30 @@ allprojects {
           artifactId project.jar.baseName
           version project.version
 
+          pom {
+            name = project.jar.baseName
+            description = project.description
+            url = 'https://github.com/ConsenSys/cava'
+            licenses {
+              license {
+                name = "The Apache License, Version 2.0"
+                url = "http://www.apache.org/licenses/LICENSE-2.0.txt"
+              }
+            }
+            scm {
+              connection = 'scm:https://github.com/ConsenSys/cava.git'
+              developerConnection = 'scm:git@github.com:ConsenSys/cava.git'
+              url = 'https://github.com/ConsenSys/cava'
+            }
+          }
           pom.withXml {
-            def root = asNode()
-            root.appendNode('description', project.description)
-            root.appendNode('name', project.jar.baseName)
-            root.appendNode('url', 'https://github.com/ConsenSys/cava')
-            def license = root.appendNode('licenses').appendNode('license')
-            license.appendNode('name', 'The Apache Software License, Version 2.0')
-            license.appendNode('url', 'http://www.apache.org/licenses/LICENSE-2.0.txt')
-            license.appendNode('distribution', 'repo')
-            def scm = root.appendNode('scm')
-            scm.appendNode('url', 'https://github.com/ConsenSys/cava')
-            scm.appendNode('connection', 'scm:https://github.com/ConsenSys/cava.git')
-            scm.appendNode('developerConnection', 'scm:git@github.com:ConsenSys/cava.git')
+            def dependenciesNode = asNode().appendNode('dependencies')
+            configurations.compile.allDependencies.each {
+              def dependencyNode = dependenciesNode.appendNode('dependency')
+              dependencyNode.appendNode('groupId', it.group)
+              dependencyNode.appendNode('artifactId', it.name)
+              dependencyNode.appendNode('version', it.version)
+            }
           }
         }
       }
