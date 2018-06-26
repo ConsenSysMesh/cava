@@ -20,7 +20,6 @@ import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
 import org.fusesource.leveldbjni.JniDBFactory
 import org.iq80.leveldb.Options
-import java.io.Closeable
 import java.nio.file.Path
 
 /**
@@ -30,7 +29,7 @@ class LevelDBKeyValueStore
 @JvmOverloads constructor(
   databasePath: Path,
   options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong())
-) : KeyValueStore, Closeable {
+) : KeyValueStore {
 
   private val db = JniDBFactory.factory.open(databasePath.toFile(), options)
 
