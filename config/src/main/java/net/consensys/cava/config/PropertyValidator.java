@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -104,7 +105,7 @@ public interface PropertyValidator<T> {
    * @return A validator that ensures a property, if present, is within a given set.
    */
   static PropertyValidator<String> anyOf(String... values) {
-    return anyOf(Arrays.asList(values));
+    return anyOf(Arrays.asList(values), String::compareTo);
   }
 
   /**
@@ -114,6 +115,37 @@ public interface PropertyValidator<T> {
    * @return A validator that ensures a property, if present, is within a given set.
    */
   static PropertyValidator<String> anyOf(Collection<String> values) {
+    return anyOf(values, String::compareTo);
+  }
+
+  /**
+   * A validator that ensures a property, if present, has a value within a given set.
+   *
+   * @param values The acceptable values.
+   * @return A validator that ensures a property, if present, is within a given set.
+   */
+  static PropertyValidator<String> anyOfIgnoreCase(String... values) {
+    return anyOf(Arrays.asList(values), String::compareToIgnoreCase);
+  }
+
+  /**
+   * A validator that ensures a property, if present, has a value within a given set.
+   *
+   * @param values The acceptable values.
+   * @return A validator that ensures a property, if present, is within a given set.
+   */
+  static PropertyValidator<String> anyOfIgnoreCase(Collection<String> values) {
+    return anyOf(values, String::compareToIgnoreCase);
+  }
+
+  /**
+   * A validator that ensures a property, if present, has a comparable value within a given set.
+   *
+   * @param values The acceptable values.
+   * @param comparator A comparator between values.
+   * @return A validator that ensures a property, if present, has a comparable value within a given set.
+   */
+  static PropertyValidator<String> anyOf(Collection<String> values, Comparator<String> comparator) {
     StringBuilder builder = new StringBuilder();
     int count = values.size();
     int i = 0;
@@ -133,7 +165,7 @@ public interface PropertyValidator<T> {
     }
     String expected = builder.toString();
     return (key, position, value) -> {
-      if (value != null && !values.contains(value)) {
+      if (value != null && values.stream().noneMatch(p -> comparator.compare(p, value) == 0)) {
         return singleError(position, "Value of property '" + key + "' should be " + expected);
       }
       return noErrors();

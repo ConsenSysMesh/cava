@@ -69,4 +69,16 @@ class PropertyValidatorTest {
     assertEquals(1, errors.size());
     assertEquals("Value of property 'foo' should be \"one\", \"two\", or \"three \"", errors.get(0).getMessage());
   }
+
+  @Test
+  void validatesInSetIgnoreCase() {
+    PropertyValidator<String> inSetValidator = PropertyValidator.anyOfIgnoreCase("one", "two", "three ");
+    assertTrue(inSetValidator.validate("foo", null, "OnE").isEmpty());
+    assertTrue(inSetValidator.validate("foo", null, "TWo").isEmpty());
+    assertTrue(inSetValidator.validate("foo", null, "THree ").isEmpty());
+    assertEquals(1, inSetValidator.validate("foo", null, "three").size());
+    List<ConfigurationError> errors = inSetValidator.validate("foo", null, "foobar");
+    assertEquals(1, errors.size());
+    assertEquals("Value of property 'foo' should be \"one\", \"two\", or \"three \"", errors.get(0).getMessage());
+  }
 }
