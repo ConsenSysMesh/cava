@@ -16,18 +16,32 @@
 package net.consensys.cava.kv
 
 import net.consensys.cava.bytes.Bytes
+import org.mapdb.DB
 import org.mapdb.DBMaker
 import org.mapdb.DataInput2
 import org.mapdb.DataOutput2
+import org.mapdb.HTreeMap
+import java.io.IOException
+import java.nio.file.Files
 import java.nio.file.Path
 
 /**
  * A key-value store backed by a MapDB instance.
  */
-class MapDBKeyValueStore(databasePath: Path) : KeyValueStore {
+class MapDBKeyValueStore
+@Throws(IOException::class)
+constructor(
+  databasePath: Path
+) : KeyValueStore {
 
-  private val db = DBMaker.fileDB(databasePath.toFile()).transactionEnable().closeOnJvmShutdown().make()
-  private val storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()
+  private val db: DB
+  private val storageData: HTreeMap<Bytes, Bytes>
+
+  init {
+    Files.createDirectories(databasePath.parent)
+    db = DBMaker.fileDB(databasePath.toFile()).transactionEnable().closeOnJvmShutdown().make()
+    storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()
+  }
 
   override suspend fun get(key: Bytes): Bytes? {
     return storageData[key]

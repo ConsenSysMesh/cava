@@ -53,7 +53,7 @@ class KeyValueStoreTest {
 
   @Test
   void testLevelDBWithoutOptions(@TempDirectory Path tempDirectory) throws Exception {
-    try (LevelDBKeyValueStore leveldb = new LevelDBKeyValueStore(tempDirectory)) {
+    try (LevelDBKeyValueStore leveldb = new LevelDBKeyValueStore(tempDirectory.resolve("foo").resolve("bar"))) {
       AsyncCompletion completion = leveldb.putAsync(Bytes.of(123), Bytes.of(10, 12, 13));
       completion.join();
       Optional<Bytes> value = leveldb.getAsync(Bytes.of(123)).get();

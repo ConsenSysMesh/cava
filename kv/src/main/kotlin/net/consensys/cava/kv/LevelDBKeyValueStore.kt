@@ -19,19 +19,29 @@ import kotlinx.coroutines.experimental.Unconfined
 import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
 import org.fusesource.leveldbjni.JniDBFactory
+import org.iq80.leveldb.DB
 import org.iq80.leveldb.Options
+import java.io.IOException
+import java.nio.file.Files
 import java.nio.file.Path
 
 /**
  * A key-value store backed by LevelDB.
  */
 class LevelDBKeyValueStore
-@JvmOverloads constructor(
+@Throws(IOException::class)
+@JvmOverloads
+constructor(
   databasePath: Path,
   options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong())
 ) : KeyValueStore {
 
-  private val db = JniDBFactory.factory.open(databasePath.toFile(), options)
+  private val db: DB
+
+  init {
+    Files.createDirectories(databasePath)
+    db = JniDBFactory.factory.open(databasePath.toFile(), options)
+  }
 
   override suspend fun get(key: Bytes): Bytes? = withContext(Unconfined) {
     val rawValue = db[key.toArrayUnsafe()]
