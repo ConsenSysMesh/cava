@@ -20,12 +20,13 @@ import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.coroutines.experimental.asyncCompletion
 import net.consensys.cava.concurrent.coroutines.experimental.asyncResult
+import java.io.Closeable
 import java.util.Optional
 
 /**
  * A key-value store.
  */
-interface KeyValueStore {
+interface KeyValueStore : Closeable {
 
   /**
    * Retrieves data from the store.

@@ -19,13 +19,12 @@ import net.consensys.cava.bytes.Bytes
 import org.mapdb.DBMaker
 import org.mapdb.DataInput2
 import org.mapdb.DataOutput2
-import java.io.Closeable
 import java.nio.file.Path
 
 /**
  * A key-value store backed by a MapDB instance.
  */
-class MapDBKeyValueStore(databasePath: Path) : KeyValueStore, Closeable {
+class MapDBKeyValueStore(databasePath: Path) : KeyValueStore {
 
   private val db = DBMaker.fileDB(databasePath.toFile()).transactionEnable().closeOnJvmShutdown().make()
   private val storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()

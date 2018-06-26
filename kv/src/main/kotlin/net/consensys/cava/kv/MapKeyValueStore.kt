@@ -27,4 +27,9 @@ class MapKeyValueStore(private val map: MutableMap<Bytes, Bytes>) : KeyValueStor
   override suspend fun put(key: Bytes, value: Bytes) {
     map[key] = value
   }
+
+  /**
+   * Has no effect in this KeyValueStore implementation.
+   */
+  override fun close() {}
 }
