@@ -15,13 +15,59 @@ package net.consensys.cava.config;
 import static net.consensys.cava.config.ConfigurationErrors.noErrors;
 import static net.consensys.cava.config.ConfigurationErrors.singleError;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 
 /**
  * A validator associated with a specific configuration property.
  */
 public interface PropertyValidator<T> {
+
+  /**
+   * Returns a single validator that combines the results of several validators.
+   *
+   * @param first The first validator.
+   * @param second The second validator.
+   * @param <T> The validator type.
+   * @return A single validator that combines the results of evaluating the provided validators.
+   */
+  static <T> PropertyValidator<T> combine(PropertyValidator<? super T> first, PropertyValidator<? super T> second) {
+    return combine(Arrays.<PropertyValidator<? super T>>asList(first, second));
+  }
+
+  /**
+   * Returns a single validator that combines the results of several validators.
+   *
+   * @param validators The validators to be evaluated.
+   * @param <T> The validator type.
+   * @return A single validator that combines the results of evaluating the provided validators.
+   */
+  static <T> PropertyValidator<T> combine(List<PropertyValidator<? super T>> validators) {
+    return (key, position, value) -> validators
+        .stream()
+        .flatMap(validator -> validator.validate(key, position, value).stream())
+        .collect(Collectors.toList());
+  }
+
+
+  /**
+   * A validator that applies a validator to all elements of list, if the list is present.
+   *
+   * @return A validator that applies a validator to all elements of list, if the list is present.
+   */
+  static <T> PropertyValidator<List<T>> allInList(PropertyValidator<? super T> validator) {
+    return (key, position, value) -> {
+      if (value != null) {
+        return value.stream().flatMap(elem -> validator.validate(key, position, elem).stream()).collect(
+            Collectors.toList());
+      }
+      return noErrors();
+    };
+  }
 
   /**
    * A validator that ensures a property is present.
@@ -33,16 +79,34 @@ public interface PropertyValidator<T> {
   }
 
   /**
-   * A validator that ensures a property is within a long integer range.
+   * A validator that ensures a property, if present, is within a long integer range.
    *
    * @param from The lower bound of the range (inclusive).
    * @param to The upper bound of the range (exclusive).
-   * @return A validator that ensures a property is within an integer range.
+   * @return A validator that ensures a property, if present, is within an integer range.
    */
   static PropertyValidator<Number> inRange(long from, long to) {
     return (key, position, value) -> {
-      if (value == null || value.longValue() < from || value.longValue() >= to) {
+      if (value != null && (value.longValue() < from || value.longValue() >= to)) {
         return singleError(position, "Value of property '" + key + "' is outside range [" + from + "," + to + ")");
+      }
+      return noErrors();
+    };
+  }
+
+  /**
+   * A validator that ensures a property, if present, is a well-formed URL.
+   *
+   * @return A validator that ensures a property, if present, is a well-formed URL.
+   */
+  static PropertyValidator<String> isURL() {
+    return (key, position, value) -> {
+      if (value != null) {
+        try {
+          new URL(value);
+        } catch (MalformedURLException e) {
+          return singleError(position, "Value of property '" + key + "' is not a valid URL", e);
+        }
       }
       return noErrors();
     };
