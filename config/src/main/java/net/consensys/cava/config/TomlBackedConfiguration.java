@@ -40,7 +40,7 @@ final class TomlBackedConfiguration implements Configuration {
   private final Schema schema;
   private final List<ConfigurationError> errors;
 
-  TomlBackedConfiguration(TomlParseResult toml, Schema schema) {
+  TomlBackedConfiguration(TomlParseResult toml, @Nullable Schema schema) {
     List<ConfigurationError> errors = new ArrayList<>();
     toml.errors().forEach(
         err -> errors.add(new ConfigurationError(documentPosition(err.position()), err.getMessage(), err)));
@@ -246,12 +246,12 @@ final class TomlBackedConfiguration implements Configuration {
     if (value != null) {
       return value;
     }
-    String canonicalPath = joinKeyPath(keyPath);
-    value = defaultGet.apply(canonicalPath);
+    String canonicalKey = joinKeyPath(keyPath);
+    value = defaultGet.apply(canonicalKey);
     if (value != null) {
       return value;
     }
-    throw new NoConfigurationPropertyException("No value for property '" + canonicalPath + "'");
+    throw new NoConfigurationPropertyException("No value for property '" + canonicalKey + "'");
   }
 
   private <T> List<T> getList(

@@ -51,7 +51,7 @@ public interface Configuration {
    * @param schema The validation schema for the configuration.
    * @return A Configuration loaded from the TOML file.
    */
-  static Configuration fromToml(String toml, Schema schema) {
+  static Configuration fromToml(String toml, @Nullable Schema schema) {
     requireNonNull(toml);
     return new TomlBackedConfiguration(Toml.parse(toml), schema);
   }
@@ -77,7 +77,7 @@ public interface Configuration {
    * @throws NoSuchFileException If the file could not be found.
    * @throws IOException If an IO error occurs.
    */
-  static Configuration fromToml(Path file, Schema schema) throws IOException {
+  static Configuration fromToml(Path file, @Nullable Schema schema) throws IOException {
     requireNonNull(file);
     return new TomlBackedConfiguration(Toml.parse(file), schema);
   }
@@ -101,9 +101,28 @@ public interface Configuration {
    * @return A Configuration loaded from the TOML file.
    * @throws IOException If an IO error occurs.
    */
-  static Configuration fromToml(InputStream is, Schema schema) throws IOException {
+  static Configuration fromToml(InputStream is, @Nullable Schema schema) throws IOException {
     requireNonNull(is);
     return new TomlBackedConfiguration(Toml.parse(is), schema);
+  }
+
+  /**
+   * Get an empty configuration, with no values.
+   *
+   * @return An empty configuration, with no values.
+   */
+  static Configuration empty() {
+    return EmptyConfiguration.EMPTY;
+  }
+
+  /**
+   * Get an empty configuration, associated with a validation schema.
+   *
+   * @param schema The validation schema for the configuration.
+   * @return An empty configuration.
+   */
+  static Configuration empty(@Nullable Schema schema) {
+    return new EmptyConfiguration(schema);
   }
 
   /**
