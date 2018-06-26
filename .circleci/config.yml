@@ -124,10 +124,9 @@ jobs:
           command: |
             if [ "${CIRCLE_BRANCH}" == "master" ]; then
               echo "Start deployment"
-              ./gradlew deploy
+              BINTRAY_DEPLOY=true ./gradlew deploy
             else
               echo "Start dry run deployment"
-              export BINTRAY_DRYRUN=true
               ./gradlew deploy
             fi
 
