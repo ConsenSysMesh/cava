@@ -25,10 +25,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.google.common.base.Splitter;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 
 final class TomlSerializer {
+
+  private static final Splitter LINE_SPLITTER = Splitter.onPattern("\\r?\\n");
 
   private final Configuration configuration;
   private final Schema schema;
@@ -167,9 +170,12 @@ final class TomlSerializer {
 
   private void writeDocumentation(String key, Appendable appendable) throws IOException {
     String description = schema.description(canonicalKey(key));
-    if (description != null) {
+    if (description == null) {
+      return;
+    }
+    for (String line : LINE_SPLITTER.split(description)) {
       appendable.append("## ");
-      appendable.append(description);
+      appendable.append(line);
       appendable.append(System.lineSeparator());
     }
   }
