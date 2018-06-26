@@ -57,4 +57,16 @@ class PropertyValidatorTest {
     assertEquals(1, errors.size());
     assertTrue(errors.get(0).getMessage().contains("not a valid URL"));
   }
+
+  @Test
+  void validatesInSet() {
+    PropertyValidator<String> inSetValidator = PropertyValidator.anyOf("one", "two", "three ");
+    assertTrue(inSetValidator.validate("foo", null, "one").isEmpty());
+    assertTrue(inSetValidator.validate("foo", null, "two").isEmpty());
+    assertTrue(inSetValidator.validate("foo", null, "three ").isEmpty());
+    assertEquals(1, inSetValidator.validate("foo", null, "three").size());
+    List<ConfigurationError> errors = inSetValidator.validate("foo", null, "foobar");
+    assertEquals(1, errors.size());
+    assertEquals("Value of property 'foo' should be \"one\", \"two\", or \"three \"", errors.get(0).getMessage());
+  }
 }
