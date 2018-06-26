@@ -20,7 +20,10 @@ import net.consensys.cava.bytes.Bytes
 /**
  * A key-value store backed by an in-memory Map.
  */
-class MapKeyValueStore(private val map: MutableMap<Bytes, Bytes>) : KeyValueStore {
+class MapKeyValueStore
+@JvmOverloads constructor(
+  private val map: MutableMap<Bytes, Bytes> = HashMap()
+) : KeyValueStore {
 
   override suspend fun get(key: Bytes): Bytes? = map[key]
 
