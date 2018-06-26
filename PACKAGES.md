@@ -24,6 +24,8 @@ These classes are included in the standard Cava distribution, or separately when
 
 Extensions for mapping [AsyncResult][net.consensys.cava.concurrent.AsyncResult] and [AsyncCompletion][net.consensys.cava.concurrent.AsyncCompletion] objects to and from Kotlin coroutines.
 
+Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
+
 # Package net.consensys.cava.crypto
 
 Classes and utilities for working with cryptography.
@@ -103,6 +105,8 @@ These classes are included in the standard Cava distribution, or separately when
 # Package net.consensys.cava.trie.experimental
 
 Merkle Trie implementations using Kotlin coroutines.
+
+Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
 
 # Package net.consensys.cava.units
 
