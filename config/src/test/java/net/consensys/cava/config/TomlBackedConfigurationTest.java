@@ -507,7 +507,7 @@ class TomlBackedConfigurationTest {
   void writeConfigurationToTomlIncludesDefaults() throws Exception {
     SchemaBuilder builder = SchemaBuilder.create();
     builder.addString("farewell", "goodbye", "a farewell", null);
-    builder.addInteger("xxx", 10, null, null);
+    builder.addInteger("xxx", 10, "documentation\n  over multiple lines!", null);
     builder.addInteger("zzz", 10, null, null);
     Schema schema = builder.toSchema();
 
@@ -529,6 +529,8 @@ class TomlBackedConfigurationTest {
       + "#farewell = \"goodbye\"\n"
       + "foo = \"12\"\n"
       + "foobar = 156.34\n"
+      + "## documentation\n"
+      + "##   over multiple lines!\n"
       + "#xxx = 10\n"
       + "#zzz = 10\n"
       + "zzz = 5\n"
@@ -536,7 +538,7 @@ class TomlBackedConfigurationTest {
       + "[boo]\n"
       + "baz = [1, 2, 3]\n";
     // @formatter:on
-    assertEquals(expected, config.toToml());
+    assertEquals(expected.replace("\n", System.lineSeparator()), config.toToml());
   }
 
   @Test
@@ -559,6 +561,6 @@ class TomlBackedConfigurationTest {
       + "## Got milk\n"
       + "#somekey = \"somevalue\"\n";
     // @formatter:on
-    assertEquals(expected, config.toToml());
+    assertEquals(expected.replace("\n", System.lineSeparator()), config.toToml());
   }
 }
