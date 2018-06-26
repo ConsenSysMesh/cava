@@ -18,6 +18,7 @@ import static net.consensys.cava.config.ConfigurationErrors.singleError;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -57,6 +58,8 @@ public interface PropertyValidator<T> {
   /**
    * A validator that applies a validator to all elements of list, if the list is present.
    *
+   * @param validator The validator to apply to elements of the list.
+   * @param <T> The type of list elements.
    * @return A validator that applies a validator to all elements of list, if the list is present.
    */
   static <T> PropertyValidator<List<T>> allInList(PropertyValidator<? super T> validator) {
@@ -89,6 +92,49 @@ public interface PropertyValidator<T> {
     return (key, position, value) -> {
       if (value != null && (value.longValue() < from || value.longValue() >= to)) {
         return singleError(position, "Value of property '" + key + "' is outside range [" + from + "," + to + ")");
+      }
+      return noErrors();
+    };
+  }
+
+  /**
+   * A validator that ensures a property, if present, has a value within a given set.
+   *
+   * @param values The acceptable values.
+   * @return A validator that ensures a property, if present, is within a given set.
+   */
+  static PropertyValidator<String> anyOf(String... values) {
+    return anyOf(Arrays.asList(values));
+  }
+
+  /**
+   * A validator that ensures a property, if present, has a value within a given set.
+   *
+   * @param values The acceptable values.
+   * @return A validator that ensures a property, if present, is within a given set.
+   */
+  static PropertyValidator<String> anyOf(Collection<String> values) {
+    StringBuilder builder = new StringBuilder();
+    int count = values.size();
+    int i = 0;
+    for (String value : values) {
+      builder.append('"');
+      builder.append(value);
+      builder.append('"');
+      if (i < (count - 2)) {
+        builder.append(", ");
+      } else if (i == (count - 2)) {
+        if (count >= 3) {
+          builder.append(',');
+        }
+        builder.append(" or ");
+      }
+      ++i;
+    }
+    String expected = builder.toString();
+    return (key, position, value) -> {
+      if (value != null && !values.contains(value)) {
+        return singleError(position, "Value of property '" + key + "' should be " + expected);
       }
       return noErrors();
     };
