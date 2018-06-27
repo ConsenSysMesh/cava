@@ -12,8 +12,8 @@
  */
 package net.consensys.cava.net.tls;
 
-import static net.consensys.cava.crypto.Hash.sha2_256;
 import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
+import static net.consensys.cava.net.tls.TLS.certificateHexFingerprint;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.junit.TempDirectory;
@@ -28,7 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.ClientAuth;
 import io.vertx.core.http.HttpClient;
@@ -69,8 +68,7 @@ class ServerCaOrRecordTest {
             caClientCert.keyCertOptions()));
 
     SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
-    fooFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
+    fooFingerprint = certificateHexFingerprint(Paths.get(fooCert.keyCertOptions().getCertPath()));
     HttpClientOptions fooClientOptions = new HttpClientOptions();
     fooClientOptions
         .setSsl(true)
@@ -82,8 +80,7 @@ class ServerCaOrRecordTest {
     fooClient = vertx.createHttpClient(fooClientOptions);
 
     SelfSignedCertificate barCert = SelfSignedCertificate.create("bar.com");
-    barFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(barCert.keyCertOptions().getCertPath()))));
+    barFingerprint = certificateHexFingerprint(Paths.get(barCert.keyCertOptions().getCertPath()));
     HttpClientOptions barClientOptions = new HttpClientOptions();
     barClientOptions
         .setSsl(true)
@@ -95,8 +92,7 @@ class ServerCaOrRecordTest {
     barClient = vertx.createHttpClient(barClientOptions);
 
     SelfSignedCertificate foobarCert = SelfSignedCertificate.create("foobar.com");
-    foobarFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(foobarCert.keyCertOptions().getCertPath()))));
+    foobarFingerprint = certificateHexFingerprint(Paths.get(foobarCert.keyCertOptions().getCertPath()));
     HttpClientOptions foobarClientOptions = new HttpClientOptions();
     foobarClientOptions
         .setSsl(true)

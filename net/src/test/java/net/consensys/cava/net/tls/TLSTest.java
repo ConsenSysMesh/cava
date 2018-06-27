@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.net.tls;
 
+import static net.consensys.cava.net.tls.TLS.readPemFile;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -87,7 +88,7 @@ class TLSTest {
   }
 
   private void checkKeyPair(Path key, Path cert) throws Exception {
-    PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(SecurityTestUtils.loadPEM(key));
+    PKCS8EncodedKeySpec pkcs8KeySpec = new PKCS8EncodedKeySpec(readPemFile(key));
     CertificateFactory cf = CertificateFactory.getInstance("X.509");
     Certificate certificate = cf.generateCertificate(new ByteArrayInputStream(Files.readAllBytes(cert)));
     KeyFactory kf = KeyFactory.getInstance("RSA");

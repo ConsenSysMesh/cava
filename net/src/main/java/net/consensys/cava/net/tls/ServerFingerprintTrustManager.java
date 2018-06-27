@@ -13,7 +13,7 @@
 package net.consensys.cava.net.tls;
 
 import static java.lang.String.format;
-import static net.consensys.cava.crypto.Hash.sha2_256;
+import static net.consensys.cava.net.tls.TLS.certificateFingerprint;
 
 import net.consensys.cava.bytes.Bytes;
 
@@ -88,7 +88,7 @@ final class ServerFingerprintTrustManager extends X509ExtendedTrustManager {
   private void checkTrusted(X509Certificate[] chain, String host, int port) throws CertificateException {
     X509Certificate cert = chain[0];
     String identifier = hostIdentifier(host, port);
-    Bytes fingerprint = Bytes.wrap(sha2_256(cert.getEncoded()));
+    Bytes fingerprint = Bytes.wrap(certificateFingerprint(cert));
     if (repository.contains(identifier, fingerprint)) {
       return;
     }
