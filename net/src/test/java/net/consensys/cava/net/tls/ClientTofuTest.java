@@ -12,9 +12,9 @@
  */
 package net.consensys.cava.net.tls;
 
-import static net.consensys.cava.crypto.Hash.sha2_256;
 import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
 import static net.consensys.cava.net.tls.SecurityTestUtils.startServer;
+import static net.consensys.cava.net.tls.TLS.certificateHexFingerprint;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -34,7 +34,6 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import javax.net.ssl.SSLException;
 
-import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
@@ -66,24 +65,21 @@ class ClientTofuTest {
   static void startServers(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
     SelfSignedCertificate caSignedCert = SelfSignedCertificate.create("localhost");
     SecurityTestUtils.configureJDKTrustStore(tempDir, caSignedCert);
-    caValidFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(caSignedCert.keyCertOptions().getCertPath()))));
+    caValidFingerprint = certificateHexFingerprint(Paths.get(caSignedCert.keyCertOptions().getCertPath()));
     caValidServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(caSignedCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(caValidServer);
 
     SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
-    fooFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
+    fooFingerprint = certificateHexFingerprint(Paths.get(fooCert.keyCertOptions().getCertPath()));
     fooServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(fooCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));
     startServer(fooServer);
 
     SelfSignedCertificate foobarCert = SelfSignedCertificate.create("foobar.com");
-    foobarFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(foobarCert.keyCertOptions().getCertPath()))));
+    foobarFingerprint = certificateHexFingerprint(Paths.get(foobarCert.keyCertOptions().getCertPath()));
     foobarServer = vertx
         .createHttpServer(new HttpServerOptions().setSsl(true).setPemKeyCertOptions(foobarCert.keyCertOptions()))
         .requestHandler(context -> context.response().end("OK"));

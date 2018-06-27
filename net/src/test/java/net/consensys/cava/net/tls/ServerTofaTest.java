@@ -12,8 +12,8 @@
  */
 package net.consensys.cava.net.tls;
 
-import static net.consensys.cava.crypto.Hash.sha2_256;
 import static net.consensys.cava.net.tls.SecurityTestUtils.DUMMY_FINGERPRINT;
+import static net.consensys.cava.net.tls.TLS.certificateHexFingerprint;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -31,7 +31,6 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 
-import io.netty.util.internal.StringUtil;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.ClientAuth;
 import io.vertx.core.http.HttpClient;
@@ -64,16 +63,14 @@ class ServerTofaTest {
   @BeforeAll
   static void setupClients(@TempDirectory Path tempDir, @VertxInstance Vertx vertx) throws Exception {
     SelfSignedCertificate caClientCert = SelfSignedCertificate.create("example.com");
-    caFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(caClientCert.keyCertOptions().getCertPath()))));
+    caFingerprint = certificateHexFingerprint(Paths.get(caClientCert.keyCertOptions().getCertPath()));
     SecurityTestUtils.configureJDKTrustStore(tempDir, caClientCert);
     caClient = vertx.createHttpClient(
         new HttpClientOptions().setTrustOptions(InsecureTrustOptions.INSTANCE).setSsl(true).setKeyCertOptions(
             caClientCert.keyCertOptions()));
 
     SelfSignedCertificate fooCert = SelfSignedCertificate.create("foo.com");
-    fooFingerprint = StringUtil
-        .toHexStringPadded(sha2_256(SecurityTestUtils.loadPEM(Paths.get(fooCert.keyCertOptions().getCertPath()))));
+    fooFingerprint = certificateHexFingerprint(Paths.get(fooCert.keyCertOptions().getCertPath()));
     HttpClientOptions fooClientOptions = new HttpClientOptions();
     fooClientOptions
         .setSsl(true)

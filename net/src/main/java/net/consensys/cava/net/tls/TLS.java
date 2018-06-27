@@ -14,7 +14,11 @@ package net.consensys.cava.net.tls;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.createDirectories;
+import static net.consensys.cava.crypto.Hash.sha2_256;
 
+import net.consensys.cava.bytes.Bytes;
+
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -25,6 +29,8 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.cert.Certificate;
+import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Calendar;
@@ -38,6 +44,7 @@ import org.bouncycastle.operator.ContentSigner;
 import org.bouncycastle.operator.OperatorCreationException;
 import org.bouncycastle.operator.jcajce.JcaContentSignerBuilder;
 import org.bouncycastle.util.io.pem.PemObject;
+import org.bouncycastle.util.io.pem.PemReader;
 import org.bouncycastle.util.io.pem.PemWriter;
 
 /**
@@ -124,5 +131,64 @@ public final class TLS {
         PemWriter pemWriter = new PemWriter(writer)) {
       pemWriter.writeObject(new PemObject("CERTIFICATE", x509Certificate.getEncoded()));
     }
+  }
+
+  /**
+   * Read a PEM-encoded file.
+   *
+   * @param certificate The path to a PEM-encoded file.
+   * @return The bytes for the PEM content.
+   * @throws IOException If an IO error occurs.
+   */
+  public static byte[] readPemFile(Path certificate) throws IOException {
+    try (BufferedReader reader = Files.newBufferedReader(certificate, UTF_8);
+        PemReader pemReader = new PemReader(reader)) {
+      PemObject pemObject = pemReader.readPemObject();
+      return pemObject.getContent();
+    }
+  }
+
+  /**
+   * Calculate the fingerprint for a PEM-encoded certificate.
+   *
+   * @param certificate The path to a PEM-encoded certificate.
+   * @return The fingerprint bytes for the certificate.
+   * @throws IOException If an IO error occurs.
+   */
+  public static byte[] certificateFingerprint(Path certificate) throws IOException {
+    return sha2_256(readPemFile(certificate));
+  }
+
+  /**
+   * Calculate the fingerprint for a PEM-encoded certificate.
+   *
+   * @param certificate The path to a PEM-encoded certificate.
+   * @return The fingerprint hex-string for the certificate.
+   * @throws IOException If an IO error occurs.
+   */
+  public static String certificateHexFingerprint(Path certificate) throws IOException {
+    return Bytes.wrap(certificateFingerprint(certificate)).toHexString().substring(2).toLowerCase();
+  }
+
+  /**
+   * Calculate the fingerprint for certificate.
+   *
+   * @param certificate The certificate.
+   * @return The fingerprint bytes for the certificate.
+   * @throws CertificateEncodingException If the certificate cannot be encoded.
+   */
+  public static byte[] certificateFingerprint(Certificate certificate) throws CertificateEncodingException {
+    return sha2_256(certificate.getEncoded());
+  }
+
+  /**
+   * Calculate the fingerprint for certificate.
+   *
+   * @param certificate The certificate.
+   * @return The fingerprint hex-string for the certificate.
+   * @throws CertificateEncodingException If the certificate cannot be encoded.
+   */
+  public static String certificateHexFingerprint(Certificate certificate) throws CertificateEncodingException {
+    return Bytes.wrap(certificateFingerprint(certificate)).toHexString().substring(2).toLowerCase();
   }
 }

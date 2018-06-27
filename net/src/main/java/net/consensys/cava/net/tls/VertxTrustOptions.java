@@ -254,7 +254,7 @@ public final class VertxTrustOptions {
    * Trust client certificates on first access.
    *
    * <p>
-   * on first connection to this server the common name and fingerprint of the presented certificate will be recorded.
+   * On first connection to this server the common name and fingerprint of the presented certificate will be recorded.
    * On subsequent connections, the client will be rejected if the fingerprint has changed.
    *
    * <p>
