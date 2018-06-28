@@ -19,10 +19,11 @@ import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.trie.CompactEncoding.bytesToPath
 import java.util.function.Function
+import kotlin.text.Charsets.UTF_8
 
 internal fun bytesIdentity(b: Bytes): Bytes = b
-internal fun stringSerializer(s: String): Bytes = Bytes.wrap(s.toByteArray(Charsets.UTF_8))
-internal fun stringDeserializer(b: Bytes): String = String(b.toArrayUnsafe(), Charsets.UTF_8)
+internal fun stringSerializer(s: String): Bytes = Bytes.wrap(s.toByteArray(UTF_8))
+internal fun stringDeserializer(b: Bytes): String = String(b.toArrayUnsafe(), UTF_8)
 
 /**
  * An in-memory [MerkleTrie].

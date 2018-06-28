@@ -13,6 +13,7 @@
 package net.consensys.cava.rlp;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
@@ -23,7 +24,6 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import com.google.common.base.Charsets;
 
 /**
  * Recursive Length Prefix (RLP) encoding and decoding.
@@ -121,7 +121,7 @@ public final class RLP {
    */
   public static Bytes encodeString(String str) {
     requireNonNull(str);
-    return encodeByteArray(str.getBytes(Charsets.UTF_8));
+    return encodeByteArray(str.getBytes(UTF_8));
   }
 
   /**

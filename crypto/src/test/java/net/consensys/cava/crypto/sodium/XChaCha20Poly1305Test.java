@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -19,7 +20,6 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -35,8 +35,8 @@ class XChaCha20Poly1305Test {
     XChaCha20Poly1305.Key key = XChaCha20Poly1305.Key.random();
     XChaCha20Poly1305.Nonce nonce = XChaCha20Poly1305.Nonce.random().increment();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
-    byte[] data = "123456".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
+    byte[] data = "123456".getBytes(UTF_8);
 
     byte[] cipherText = XChaCha20Poly1305.encrypt(message, data, key, nonce);
     byte[] clearText = XChaCha20Poly1305.decrypt(cipherText, data, key, nonce);
@@ -52,8 +52,8 @@ class XChaCha20Poly1305Test {
     XChaCha20Poly1305.Key key = XChaCha20Poly1305.Key.random();
     XChaCha20Poly1305.Nonce nonce = XChaCha20Poly1305.Nonce.random().increment();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
-    byte[] data = "123456".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
+    byte[] data = "123456".getBytes(UTF_8);
 
     DetachedEncryptionResult result = XChaCha20Poly1305.encryptDetached(message, data, key, nonce);
     byte[] clearText = XChaCha20Poly1305.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce);
@@ -70,9 +70,9 @@ class XChaCha20Poly1305Test {
   void checkStreamEncryptDecrypt() {
     XChaCha20Poly1305.Key key = XChaCha20Poly1305.Key.random();
 
-    byte[] message1 = "This is the first message".getBytes(Charsets.UTF_8);
-    byte[] message2 = "This is the second message".getBytes(Charsets.UTF_8);
-    byte[] message3 = "This is the third message".getBytes(Charsets.UTF_8);
+    byte[] message1 = "This is the first message".getBytes(UTF_8);
+    byte[] message2 = "This is the second message".getBytes(UTF_8);
+    byte[] message3 = "This is the third message".getBytes(UTF_8);
 
     SecretEncryptionStream ses = XChaCha20Poly1305.openEncryptionStream(key);
     byte[] header = ses.headerArray();

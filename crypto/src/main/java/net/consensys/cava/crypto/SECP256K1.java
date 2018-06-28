@@ -14,6 +14,7 @@ package net.consensys.cava.crypto;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.consensys.cava.crypto.Hash.keccak256;
 import static net.consensys.cava.io.file.Files.atomicReplace;
 
@@ -24,7 +25,6 @@ import net.consensys.cava.units.bigints.UInt256;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
@@ -392,7 +392,7 @@ public final class SECP256K1 {
      * @throws IOException On a filesystem error.
      */
     public void store(Path file) throws IOException {
-      atomicReplace(file, encoded.toString().getBytes(StandardCharsets.UTF_8));
+      atomicReplace(file, encoded.toString().getBytes(UTF_8));
     }
 
     @Override

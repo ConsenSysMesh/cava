@@ -12,11 +12,11 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.google.common.base.Charsets;
 import jnr.ffi.Pointer;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -37,7 +37,7 @@ class SodiumTest {
 
   @Test
   void checkCryptoHashSha512MultiPart() {
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
     byte[] hash = new byte[(int) Sodium.crypto_hash_sha512_bytes()];
     int rc = Sodium.crypto_hash_sha512(hash, message, message.length);
     assertEquals(0, rc);
@@ -47,9 +47,9 @@ class SodiumTest {
       rc = Sodium.crypto_hash_sha512_init(state);
       assertEquals(0, rc);
 
-      byte[] message1 = "This is ".getBytes(Charsets.UTF_8);
+      byte[] message1 = "This is ".getBytes(UTF_8);
       Sodium.crypto_hash_sha512_update(state, message1, message1.length);
-      byte[] message2 = "a test message".getBytes(Charsets.UTF_8);
+      byte[] message2 = "a test message".getBytes(UTF_8);
       Sodium.crypto_hash_sha512_update(state, message2, message2.length);
 
       byte[] hash2 = new byte[(int) Sodium.crypto_hash_sha512_bytes()];
@@ -63,7 +63,7 @@ class SodiumTest {
 
   @Test
   void checkCryptoHashSha256MultiPart() {
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
     byte[] hash = new byte[(int) Sodium.crypto_hash_sha256_bytes()];
     int rc = Sodium.crypto_hash_sha256(hash, message, message.length);
     assertEquals(0, rc);
@@ -73,9 +73,9 @@ class SodiumTest {
       rc = Sodium.crypto_hash_sha256_init(state);
       assertEquals(0, rc);
 
-      byte[] message1 = "This is ".getBytes(Charsets.UTF_8);
+      byte[] message1 = "This is ".getBytes(UTF_8);
       Sodium.crypto_hash_sha256_update(state, message1, message1.length);
-      byte[] message2 = "a test message".getBytes(Charsets.UTF_8);
+      byte[] message2 = "a test message".getBytes(UTF_8);
       Sodium.crypto_hash_sha256_update(state, message2, message2.length);
 
       byte[] hash2 = new byte[(int) Sodium.crypto_hash_sha256_bytes()];

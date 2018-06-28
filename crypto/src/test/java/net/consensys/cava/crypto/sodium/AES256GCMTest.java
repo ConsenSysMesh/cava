@@ -12,12 +12,12 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -41,8 +41,8 @@ class AES256GCMTest {
   void checkCombinedEncryptDecrypt() {
     AES256GCM.Key key = AES256GCM.Key.random();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
-    byte[] data = "123456".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
+    byte[] data = "123456".getBytes(UTF_8);
 
     byte[] cipherText = AES256GCM.encrypt(message, data, key, nonce);
     byte[] clearText = AES256GCM.decrypt(cipherText, data, key, nonce);
@@ -56,8 +56,8 @@ class AES256GCMTest {
   @Test
   void checkCombinedPrecomputedEncryptDecrypt() {
     try (AES256GCM precomputed = AES256GCM.forKey(AES256GCM.Key.random())) {
-      byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
-      byte[] data = "123456".getBytes(Charsets.UTF_8);
+      byte[] message = "This is a test message".getBytes(UTF_8);
+      byte[] data = "123456".getBytes(UTF_8);
 
       byte[] cipherText = precomputed.encrypt(message, data, nonce);
       byte[] clearText = precomputed.decrypt(cipherText, data, nonce);
@@ -73,8 +73,8 @@ class AES256GCMTest {
   void checkDetachedEncryptDecrypt() {
     AES256GCM.Key key = AES256GCM.Key.random();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
-    byte[] data = "123456".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
+    byte[] data = "123456".getBytes(UTF_8);
 
     DetachedEncryptionResult result = AES256GCM.encryptDetached(message, data, key, nonce);
     byte[] clearText = AES256GCM.decryptDetached(result.cipherTextArray(), result.macArray(), data, key, nonce);
@@ -89,8 +89,8 @@ class AES256GCMTest {
   @Test
   void checkDetachedPrecomputedEncryptDecrypt() {
     try (AES256GCM precomputed = AES256GCM.forKey(AES256GCM.Key.random())) {
-      byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
-      byte[] data = "123456".getBytes(Charsets.UTF_8);
+      byte[] message = "This is a test message".getBytes(UTF_8);
+      byte[] data = "123456".getBytes(UTF_8);
 
       DetachedEncryptionResult result = precomputed.encryptDetached(message, data, nonce);
       byte[] clearText = precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), data, nonce);

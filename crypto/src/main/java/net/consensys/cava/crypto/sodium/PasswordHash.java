@@ -12,9 +12,10 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import net.consensys.cava.bytes.Bytes;
 
-import com.google.common.base.Charsets;
 import jnr.ffi.Pointer;
 
 // Documentation copied under the ISC License, from
@@ -248,7 +249,7 @@ public final class PasswordHash {
     }
     byte[] out = new byte[length];
 
-    byte[] pwbytes = password.getBytes(Charsets.UTF_8);
+    byte[] pwbytes = password.getBytes(UTF_8);
     int rc = Sodium.crypto_pwhash(out, length, pwbytes, pwbytes.length, salt.ptr, opsLimit, memLimit, algorithm.id);
     if (rc != 0) {
       throw new SodiumException("crypto_pwhash: failed with result " + rc);
@@ -337,7 +338,7 @@ public final class PasswordHash {
 
     byte[] out = new byte[hashStringLength()];
 
-    byte[] pwbytes = password.getBytes(Charsets.UTF_8);
+    byte[] pwbytes = password.getBytes(UTF_8);
     int rc = Sodium.crypto_pwhash_str(out, pwbytes, pwbytes.length, opsLimit, memLimit);
     if (rc != 0) {
       throw new SodiumException("crypto_pwhash_str: failed with result " + rc);
@@ -347,7 +348,7 @@ public final class PasswordHash {
     while (i < out.length && out[i] != 0) {
       ++i;
     }
-    return new String(out, 0, i, Charsets.UTF_8);
+    return new String(out, 0, i, UTF_8);
   }
 
   /**
@@ -431,7 +432,7 @@ public final class PasswordHash {
     assertOpsLimit(opsLimit);
     assertMemLimit(memLimit);
 
-    byte[] hashBytes = hash.getBytes(Charsets.UTF_8);
+    byte[] hashBytes = hash.getBytes(UTF_8);
 
     int strbytes = hashStringLength();
     if (hashBytes.length >= strbytes) {
@@ -443,7 +444,7 @@ public final class PasswordHash {
       str.put(0, hashBytes, 0, hashBytes.length);
       str.putByte(hashBytes.length, (byte) 0);
 
-      byte[] pwbytes = password.getBytes(Charsets.UTF_8);
+      byte[] pwbytes = password.getBytes(UTF_8);
       int rc = Sodium.crypto_pwhash_str_verify(str, pwbytes, pwbytes.length);
       if (rc != 0) {
         return VerificationResult.FAILED;
@@ -467,7 +468,7 @@ public final class PasswordHash {
    * @return <tt>true</tt> if the password matches the hash.
    */
   public static boolean verifyOnly(String hash, String password) {
-    byte[] hashBytes = hash.getBytes(Charsets.UTF_8);
+    byte[] hashBytes = hash.getBytes(UTF_8);
 
     int strbytes = hashStringLength();
     if (hashBytes.length >= strbytes) {
@@ -479,7 +480,7 @@ public final class PasswordHash {
       str.put(0, hashBytes, 0, hashBytes.length);
       str.putByte(hashBytes.length, (byte) 0);
 
-      byte[] pwbytes = password.getBytes(Charsets.UTF_8);
+      byte[] pwbytes = password.getBytes(UTF_8);
       int rc = Sodium.crypto_pwhash_str_verify(str, pwbytes, pwbytes.length);
       return (rc == 0);
     } finally {
@@ -543,7 +544,7 @@ public final class PasswordHash {
     assertOpsLimit(opsLimit);
     assertMemLimit(memLimit);
 
-    byte[] hashBytes = hash.getBytes(Charsets.UTF_8);
+    byte[] hashBytes = hash.getBytes(UTF_8);
 
     int strbytes = hashStringLength();
     if (hashBytes.length >= strbytes) {

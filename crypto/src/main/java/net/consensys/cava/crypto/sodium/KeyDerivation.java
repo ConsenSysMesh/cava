@@ -12,11 +12,12 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Arrays;
 
-import com.google.common.base.Charsets;
 import jnr.ffi.Pointer;
 
 /**
@@ -180,7 +181,7 @@ public final class KeyDerivation {
    */
   public static byte[] deriveKeyArray(int length, long subkeyId, String context, Key key) {
     int contextLen = contextLength();
-    byte[] contextBytes = context.getBytes(Charsets.UTF_8);
+    byte[] contextBytes = context.getBytes(UTF_8);
     if (context.length() > contextLen) {
       throw new IllegalArgumentException("context must be " + contextLen + " bytes, got " + context.length());
     }

@@ -12,12 +12,12 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,7 +51,7 @@ class BoxTest {
     Box.KeyPair aliceKeyPair = Box.KeyPair.random();
     Box.KeyPair bobKeyPair = Box.KeyPair.fromSeed(seed);
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
 
     byte[] cipherText = Box.encrypt(message, aliceKeyPair.publicKey(), bobKeyPair.secretKey(), nonce);
     byte[] clearText = Box.decrypt(cipherText, bobKeyPair.publicKey(), aliceKeyPair.secretKey(), nonce);
@@ -72,7 +72,7 @@ class BoxTest {
     Box.KeyPair aliceKeyPair = Box.KeyPair.random();
     Box.KeyPair bobKeyPair = Box.KeyPair.random();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
     byte[] cipherText;
 
     try (Box precomputed = Box.forKeys(aliceKeyPair.publicKey(), bobKeyPair.secretKey())) {
@@ -104,7 +104,7 @@ class BoxTest {
     Box.KeyPair aliceKeyPair = Box.KeyPair.random();
     Box.KeyPair bobKeyPair = Box.KeyPair.random();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
 
     DetachedEncryptionResult result =
         Box.encryptDetached(message, aliceKeyPair.publicKey(), bobKeyPair.secretKey(), nonce);
@@ -141,7 +141,7 @@ class BoxTest {
     Box.KeyPair aliceKeyPair = Box.KeyPair.random();
     Box.KeyPair bobKeyPair = Box.KeyPair.random();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
     DetachedEncryptionResult result;
 
     try (Box precomputed = Box.forKeys(aliceKeyPair.publicKey(), bobKeyPair.secretKey())) {

@@ -12,13 +12,14 @@
  */
 package net.consensys.cava.rlp;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
 import java.util.function.Consumer;
 
-import com.google.common.base.Charsets;
 
 /**
  * A writer for encoding values to RLP.
@@ -101,7 +102,7 @@ public interface RLPWriter {
    * @param str The string to write.
    */
   default void writeString(String str) {
-    writeByteArray(str.getBytes(Charsets.UTF_8));
+    writeByteArray(str.getBytes(UTF_8));
   }
 
   /**

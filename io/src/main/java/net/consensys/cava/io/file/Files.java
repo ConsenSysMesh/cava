@@ -13,6 +13,7 @@
 package net.consensys.cava.io.file;
 
 import static com.google.common.base.Preconditions.checkNotNull;
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.delete;
 import static java.nio.file.Files.walkFileTree;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
@@ -32,7 +33,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 
-import com.google.common.base.Charsets;
 
 /**
  * Utility methods for working with files.
@@ -91,7 +91,7 @@ public final class Files {
    * @throws IOException If an I/O error occurs.
    */
   public static long copy(Path source, Writer out) throws IOException {
-    return copy(source, out, Charsets.UTF_8);
+    return copy(source, out, UTF_8);
   }
 
   /**
@@ -153,7 +153,7 @@ public final class Files {
    * @throws IOException If an I/O error occurs.
    */
   public static void atomicReplace(Path path, IOConsumer<Writer> fn) throws IOException {
-    atomicReplace(path, Charsets.UTF_8, fn);
+    atomicReplace(path, UTF_8, fn);
   }
 
   /**

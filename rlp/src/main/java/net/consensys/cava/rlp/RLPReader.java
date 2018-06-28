@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.rlp;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
@@ -23,7 +24,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-import com.google.common.base.Charsets;
 
 /**
  * A reader for consuming values from an RLP encoded source.
@@ -111,7 +111,7 @@ public interface RLPReader {
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   default String readString() {
-    return new String(readValue().toArrayUnsafe(), Charsets.UTF_8);
+    return new String(readValue().toArrayUnsafe(), UTF_8);
   }
 
   /**

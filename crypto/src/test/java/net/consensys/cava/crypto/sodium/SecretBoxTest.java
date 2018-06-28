@@ -12,12 +12,12 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
-import com.google.common.base.Charsets;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -33,7 +33,7 @@ class SecretBoxTest {
     SecretBox.Key key = SecretBox.Key.random();
     SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
 
     byte[] cipherText = SecretBox.encrypt(message, key, nonce);
     byte[] clearText = SecretBox.decrypt(cipherText, key, nonce);
@@ -51,7 +51,7 @@ class SecretBoxTest {
     SecretBox.Key key = SecretBox.Key.random();
     SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
 
-    byte[] message = "This is a test message".getBytes(Charsets.UTF_8);
+    byte[] message = "This is a test message".getBytes(UTF_8);
 
     DetachedEncryptionResult result = SecretBox.encryptDetached(message, key, nonce);
     byte[] clearText = SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), key, nonce);
