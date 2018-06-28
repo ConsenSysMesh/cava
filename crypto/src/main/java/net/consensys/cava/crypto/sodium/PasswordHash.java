@@ -95,8 +95,8 @@ public final class PasswordHash {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Salt forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Salt fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -108,7 +108,7 @@ public final class PasswordHash {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Salt forBytes(byte[] bytes) {
+    public static Salt fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_pwhash_saltbytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_pwhash_saltbytes() + " bytes, got " + bytes.length);

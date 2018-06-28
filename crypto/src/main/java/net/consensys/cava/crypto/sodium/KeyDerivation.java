@@ -56,8 +56,8 @@ public final class KeyDerivation {
      * @param bytes The bytes for the key.
      * @return A key, based on the supplied bytes.
      */
-    public static Key forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Key fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -69,7 +69,7 @@ public final class KeyDerivation {
      * @param bytes The bytes for the key.
      * @return A key, based on the supplied bytes.
      */
-    public static Key forBytes(byte[] bytes) {
+    public static Key fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_kdf_keybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_kdf_keybytes() + " bytes, got " + bytes.length);

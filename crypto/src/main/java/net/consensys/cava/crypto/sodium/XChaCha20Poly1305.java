@@ -70,8 +70,8 @@ public final class XChaCha20Poly1305 {
      * @param bytes The bytes for the key.
      * @return A key, based on the supplied bytes.
      */
-    public static Key forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Key fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -83,7 +83,7 @@ public final class XChaCha20Poly1305 {
      * @param bytes The bytes for the key.
      * @return A key, based on the supplied bytes.
      */
-    public static Key forBytes(byte[] bytes) {
+    public static Key fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_aead_xchacha20poly1305_ietf_keybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_aead_xchacha20poly1305_ietf_keybytes() + " bytes, got " + bytes.length);
@@ -159,8 +159,8 @@ public final class XChaCha20Poly1305 {
      * @param bytes The bytes for the nonce.
      * @return A nonce, based on these bytes.
      */
-    public static Nonce forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Nonce fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -172,7 +172,7 @@ public final class XChaCha20Poly1305 {
      * @param bytes The bytes for the nonce.
      * @return A nonce, based on these bytes.
      */
-    public static Nonce forBytes(byte[] bytes) {
+    public static Nonce fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_aead_xchacha20poly1305_ietf_npubbytes()) {
         throw new IllegalArgumentException(
             "nonce must be " + Sodium.crypto_aead_xchacha20poly1305_ietf_npubbytes() + " bytes, got " + bytes.length);

@@ -91,8 +91,8 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static PublicKey fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -104,7 +104,7 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey forBytes(byte[] bytes) {
+    public static PublicKey fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_box_publickeybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_box_publickeybytes() + " bytes, got " + bytes.length);
@@ -164,8 +164,8 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the secret key.
      * @return A secret key.
      */
-    public static SecretKey forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static SecretKey fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -177,7 +177,7 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the secret key.
      * @return A secret key.
      */
-    public static SecretKey forBytes(byte[] bytes) {
+    public static SecretKey fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_box_secretkeybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_box_secretkeybytes() + " bytes, got " + bytes.length);
@@ -237,8 +237,8 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Seed forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Seed fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -250,7 +250,7 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Seed forBytes(byte[] bytes) {
+    public static Seed fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_box_seedbytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_box_seedbytes() + " bytes, got " + bytes.length);
@@ -430,8 +430,8 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the nonce.
      * @return A nonce, based on these bytes.
      */
-    public static Nonce forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Nonce fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -443,7 +443,7 @@ public final class Box implements AutoCloseable {
      * @param bytes The bytes for the nonce.
      * @return A nonce, based on these bytes.
      */
-    public static Nonce forBytes(byte[] bytes) {
+    public static Nonce fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_box_noncebytes()) {
         throw new IllegalArgumentException(
             "nonce must be " + Sodium.crypto_box_noncebytes() + " bytes, got " + bytes.length);

@@ -48,8 +48,8 @@ public final class KeyExchange {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static PublicKey fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -61,7 +61,7 @@ public final class KeyExchange {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey forBytes(byte[] bytes) {
+    public static PublicKey fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_kx_publickeybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_kx_publickeybytes() + " bytes, got " + bytes.length);
@@ -121,8 +121,8 @@ public final class KeyExchange {
      * @param bytes The bytes for the secret key.
      * @return A secret key.
      */
-    public static SecretKey forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static SecretKey fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -134,7 +134,7 @@ public final class KeyExchange {
      * @param bytes The bytes for the secret key.
      * @return A secret key.
      */
-    public static SecretKey forBytes(byte[] bytes) {
+    public static SecretKey fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_kx_secretkeybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_kx_secretkeybytes() + " bytes, got " + bytes.length);
@@ -194,8 +194,8 @@ public final class KeyExchange {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Seed forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static Seed fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -207,7 +207,7 @@ public final class KeyExchange {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Seed forBytes(byte[] bytes) {
+    public static Seed fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_kx_seedbytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_kx_seedbytes() + " bytes, got " + bytes.length);
@@ -387,8 +387,8 @@ public final class KeyExchange {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey forBytes(Bytes bytes) {
-      return forBytes(bytes.toArrayUnsafe());
+    public static PublicKey fromBytes(Bytes bytes) {
+      return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
@@ -400,7 +400,7 @@ public final class KeyExchange {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey forBytes(byte[] bytes) {
+    public static PublicKey fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_kx_sessionkeybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_kx_sessionkeybytes() + " bytes, got " + bytes.length);
