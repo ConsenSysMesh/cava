@@ -153,7 +153,7 @@ class ClientCaOrWhitelistTest {
     Throwable e = assertThrows(CompletionException.class, statusCode::join);
     e = e.getCause();
     while (!(e instanceof CertificateException)) {
-      assertTrue(e instanceof SSLException);
+      assertTrue(e instanceof SSLException, "Expected SSLException, but got " + e.getClass());
       e = e.getCause();
     }
     assertTrue(e.getMessage().contains("has unknown fingerprint " + barFingerprint));
