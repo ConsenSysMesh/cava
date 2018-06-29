@@ -99,6 +99,46 @@ public final class Sodium {
     }
   }
 
+  /**
+   * Search for, then load and initialize the native libsodium shared library.
+   *
+   * <p>
+   * The library will be searched for in all the provided locations, using the library name {@code "sodium"}. If this
+   * method returns successfully (without throwing a {@link LinkageError}), then all future calls to methods provided by
+   * this class will use the loaded library.
+   *
+   * @param paths A set of directories to search for the library in.
+   * @throws LinkageError If the library cannot be found, dependent libraries are missing, or cannot be initialized.
+   */
+  public static void searchLibrary(Path... paths) {
+    searchLibrary(LIBRARY_NAME, paths);
+  }
+
+  /**
+   * Search for, then load and initialize the native libsodium shared library.
+   *
+   * <p>
+   * The library will be searched for in all the provided locations, using the provided library name. If this method
+   * returns successfully (without throwing a {@link LinkageError}), then all future calls to methods provided by this
+   * class will use the loaded library.
+   *
+   * @param libraryName The name of the library (e.g. {@code "sodium"}).
+   * @param paths A set of directories to search for the library in.
+   * @throws LinkageError If the library cannot be found, dependent libraries are missing, or cannot be initialized.
+   */
+  public static void searchLibrary(String libraryName, Path... paths) {
+    LibraryLoader<LibSodium> loader = LibraryLoader.create(LibSodium.class);
+    for (Path path : paths) {
+      loader = loader.search(path.toFile().getAbsolutePath());
+    }
+    LibSodium lib = loader.load(libraryName);
+    initializeLibrary(lib);
+
+    synchronized (LibSodium.class) {
+      Sodium.libSodium = lib;
+    }
+  }
+
   private static LibSodium libSodium() {
     if (libSodium == null) {
       synchronized (LibSodium.class) {
@@ -107,7 +147,7 @@ public final class Sodium {
               .create(LibSodium.class)
               .search("/usr/local/lib")
               .search("/opt/local/lib")
-              .search("lib")
+              .search("/lib")
               .load(LIBRARY_NAME);
           libSodium = initializeLibrary(lib);
         }
