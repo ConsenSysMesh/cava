@@ -220,7 +220,7 @@ public final class PasswordHash {
    * @return The derived key.
    */
   public static Bytes hash(String password, int length, Salt salt, long opsLimit, long memLimit, Algorithm algorithm) {
-    return Bytes.wrap(hashToArray(password, length, salt, opsLimit, memLimit, algorithm));
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt, opsLimit, memLimit, algorithm));
   }
 
   /**
@@ -234,13 +234,22 @@ public final class PasswordHash {
    * @param algorithm The algorithm to use.
    * @return The derived key.
    */
-  public static byte[] hashToArray(
-      String password,
-      int length,
-      Salt salt,
-      long opsLimit,
-      long memLimit,
-      Algorithm algorithm) {
+  public static Bytes hash(Bytes password, int length, Salt salt, long opsLimit, long memLimit, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt, opsLimit, memLimit, algorithm));
+  }
+
+  /**
+   * Compute a specific length key from a password.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param opsLimit The operations limit, which must be in the range {@link #minOpsLimit()} to {@link #maxOpsLimit()}.
+   * @param memLimit The memory limit, which must be in the range {@link #minMemLimit()} to {@link #maxMemLimit()}.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static byte[] hash(byte[] password, int length, Salt salt, long opsLimit, long memLimit, Algorithm algorithm) {
     assertHashLength(length);
     assertOpsLimit(opsLimit);
     assertMemLimit(memLimit);
@@ -249,8 +258,7 @@ public final class PasswordHash {
     }
     byte[] out = new byte[length];
 
-    byte[] pwbytes = password.getBytes(UTF_8);
-    int rc = Sodium.crypto_pwhash(out, length, pwbytes, pwbytes.length, salt.ptr, opsLimit, memLimit, algorithm.id);
+    int rc = Sodium.crypto_pwhash(out, length, password, password.length, salt.ptr, opsLimit, memLimit, algorithm.id);
     if (rc != 0) {
       throw new SodiumException("crypto_pwhash: failed with result " + rc);
     }
