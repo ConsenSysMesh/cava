@@ -63,4 +63,95 @@ class SecretBoxTest {
     SecretBox.Key otherKey = SecretBox.Key.random();
     assertNull(SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), otherKey, nonce));
   }
+
+  @Test
+  void checkCombinedEncryptDecryptWithPassword() {
+    String password = "a random password";
+    SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
+
+    byte[] message = "This is a test message".getBytes(UTF_8);
+
+    byte[] cipherText = SecretBox.encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+    byte[] clearText = SecretBox.decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
+
+    assertNull(
+        SecretBox.decrypt(
+            cipherText,
+            password,
+            nonce.increment(),
+            PasswordHash.interactiveOpsLimit(),
+            PasswordHash.interactiveMemLimit(),
+            PasswordHash.Algorithm.recommended()));
+    String otherPassword = "a different password";
+    assertNull(
+        SecretBox.decrypt(
+            cipherText,
+            otherPassword,
+            nonce,
+            PasswordHash.interactiveOpsLimit(),
+            PasswordHash.interactiveMemLimit(),
+            PasswordHash.Algorithm.recommended()));
+  }
+
+  @Test
+  void checkDetachedEncryptDecryptWithPassword() {
+    String password = "a random password";
+    SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
+
+    byte[] message = "This is a test message".getBytes(UTF_8);
+
+    DetachedEncryptionResult result = SecretBox.encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+    byte[] clearText = SecretBox.decryptDetached(
+        result.cipherTextArray(),
+        result.macArray(),
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+
+    assertNotNull(clearText);
+    assertArrayEquals(message, clearText);
+
+    assertNull(
+        SecretBox.decryptDetached(
+            result.cipherTextArray(),
+            result.macArray(),
+            password,
+            nonce.increment(),
+            PasswordHash.interactiveOpsLimit(),
+            PasswordHash.interactiveMemLimit(),
+            PasswordHash.Algorithm.recommended()));
+    String otherPassword = "a different password";
+    assertNull(
+        SecretBox.decryptDetached(
+            result.cipherTextArray(),
+            result.macArray(),
+            otherPassword,
+            nonce,
+            PasswordHash.interactiveOpsLimit(),
+            PasswordHash.interactiveMemLimit(),
+            PasswordHash.Algorithm.recommended()));
+  }
 }

@@ -12,8 +12,11 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 import net.consensys.cava.bytes.Bytes;
 
+import java.util.Arrays;
 import javax.annotation.Nullable;
 
 import jnr.ffi.Pointer;
@@ -232,10 +235,10 @@ public final class SecretBox {
   }
 
   /**
-   * Encrypt a message for a given key.
+   * Encrypt a message with a key.
    *
    * @param message The message to encrypt.
-   * @param key The key to encrypt for.
+   * @param key The key to use for encryption.
    * @param nonce A unique nonce.
    * @return The encrypted data.
    */
@@ -244,10 +247,10 @@ public final class SecretBox {
   }
 
   /**
-   * Encrypt a message for a given key.
+   * Encrypt a message with a key.
    *
    * @param message The message to encrypt.
-   * @param key The key to encrypt for.
+   * @param key The key to use for encryption.
    * @param nonce A unique nonce.
    * @return The encrypted data.
    */
@@ -271,10 +274,10 @@ public final class SecretBox {
   }
 
   /**
-   * Encrypt a message for a given key, generating a detached message authentication code.
+   * Encrypt a message with a key, generating a detached message authentication code.
    *
    * @param message The message to encrypt.
-   * @param key The key to encrypt for.
+   * @param key The key to use for encryption.
    * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
@@ -283,10 +286,10 @@ public final class SecretBox {
   }
 
   /**
-   * Encrypt a message for a given key, generating a detached message authentication code.
+   * Encrypt a message with a key, generating a detached message authentication code.
    *
    * @param message The message to encrypt.
-   * @param key The key to encrypt for.
+   * @param key The key to use for encryption.
    * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
@@ -307,7 +310,7 @@ public final class SecretBox {
   }
 
   /**
-   * Decrypt a message using a given key.
+   * Decrypt a message using a key.
    *
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
@@ -321,7 +324,7 @@ public final class SecretBox {
   }
 
   /**
-   * Decrypt a message using a given key.
+   * Decrypt a message using a key.
    *
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
@@ -355,7 +358,7 @@ public final class SecretBox {
   }
 
   /**
-   * Decrypt a message using a given key and a detached message authentication code.
+   * Decrypt a message using a key and a detached message authentication code.
    *
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
@@ -370,7 +373,7 @@ public final class SecretBox {
   }
 
   /**
-   * Decrypt a message using a given key and a detached message authentication code.
+   * Decrypt a message using a key and a detached message authentication code.
    *
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
@@ -398,5 +401,1302 @@ public final class SecretBox {
     }
 
     return clearText;
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
+  public static Bytes encrypt(Bytes message, String password, Nonce nonce) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
+  public static byte[] encrypt(byte[] message, String password, Nonce nonce) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with limits on operations and
+   * memory that are suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static Bytes encrypt(Bytes message, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with limits on operations and
+   * memory that are suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static byte[] encrypt(byte[] message, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
+  public static Bytes encryptInteractive(Bytes message, String password, Nonce nonce) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
+  public static byte[] encryptInteractive(byte[] message, String password, Nonce nonce) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with limits on operations and
+   * memory that are suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static Bytes encryptInteractive(
+      Bytes message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with limits on operations and
+   * memory that are suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static byte[] encryptInteractive(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
+  public static Bytes encryptSensitive(Bytes message, String password, Nonce nonce) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
+  public static byte[] encryptSensitive(byte[] message, String password, Nonce nonce) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with limits on operations and
+   * memory that are suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static Bytes encryptSensitive(Bytes message, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation (with limits on operations and
+   * memory that are suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static byte[] encryptSensitive(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encrypt(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation.
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
+   *        {@link PasswordHash#maxOpsLimit()}.
+   * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
+   *        {@link PasswordHash#maxMemLimit()}.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static Bytes encrypt(
+      Bytes message,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    return Bytes.wrap(encrypt(message.toArrayUnsafe(), password, nonce, opsLimit, memLimit, algorithm));
+  }
+
+  /**
+   * Encrypt a message with a password, using {@link PasswordHash} for the key generation.
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
+   *        {@link PasswordHash#maxOpsLimit()}.
+   * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
+   *        {@link PasswordHash#maxMemLimit()}.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data.
+   */
+  public static byte[] encrypt(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    return encrypt(message, key, nonce);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with the currently recommended algorithm and limits on operations and memory that are
+   * suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptDetached(Bytes message, String password, Nonce nonce) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with the currently recommended algorithm and limits on operations and memory that are
+   * suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptDetached(byte[] message, String password, Nonce nonce) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptDetached(
+      Bytes message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptDetached(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with the currently recommended algorithm and limits on operations and memory that are
+   * suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptInteractiveDetached(Bytes message, String password, Nonce nonce) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with the currently recommended algorithm and limits on operations and memory that are
+   * suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptInteractiveDetached(byte[] message, String password, Nonce nonce) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptInteractiveDetached(
+      Bytes message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptInteractiveDetached(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with the currently recommended algorithm and limits on operations and memory that are
+   * suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptSensitiveDetached(Bytes message, String password, Nonce nonce) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with the currently recommended algorithm and limits on operations and memory that are
+   * suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptSensitiveDetached(byte[] message, String password, Nonce nonce) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptSensitiveDetached(
+      Bytes message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation (with limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptSensitiveDetached(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(
+        message,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
+   *        {@link PasswordHash#maxOpsLimit()}.
+   * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
+   *        {@link PasswordHash#maxMemLimit()}.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptDetached(
+      Bytes message,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    return encryptDetached(message.toArrayUnsafe(), password, nonce, opsLimit, memLimit, algorithm);
+  }
+
+  /**
+   * Encrypt a message with a password, generating a detached message authentication code, using {@link PasswordHash}
+   * for the key generation.
+   *
+   * @param message The message to encrypt.
+   * @param password The password to use for encryption.
+   * @param nonce A unique nonce.
+   * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
+   *        {@link PasswordHash#maxOpsLimit()}.
+   * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
+   *        {@link PasswordHash#maxMemLimit()}.
+   * @param algorithm The algorithm to use.
+   * @return The encrypted data and message authentication code.
+   */
+  public static DetachedEncryptionResult encryptDetached(
+      byte[] message,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    return encryptDetached(message, key, nonce);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, String password, Nonce nonce) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, String password, Nonce nonce) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with limits on operations
+   * and memory that are suitable for most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decrypt(Bytes cipherText, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with limits on operations
+   * and memory that are suitable for most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decrypt(byte[] cipherText, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptInteractive(Bytes cipherText, String password, Nonce nonce) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptInteractive(byte[] cipherText, String password, Nonce nonce) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with limits on operations
+   * and memory that are suitable for interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptInteractive(
+      Bytes cipherText,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with limits on operations
+   * and memory that are suitable for interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptInteractive(
+      byte[] cipherText,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptSensitive(Bytes cipherText, String password, Nonce nonce) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with the currently
+   * recommended algorithm and limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptSensitive(byte[] cipherText, String password, Nonce nonce) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with limits on operations
+   * and memory that are suitable for sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptSensitive(
+      Bytes cipherText,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation (with limits on operations
+   * and memory that are suitable for sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptSensitive(
+      byte[] cipherText,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decrypt(
+        cipherText,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation.
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param opsLimit The opsLimit that was used for encryption.
+   * @param memLimit The memLimit that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decrypt(
+      Bytes cipherText,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), password, nonce, opsLimit, memLimit, algorithm);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
+  }
+
+  /**
+   * Decrypt a message using a password, using {@link PasswordHash} for the key generation.
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param opsLimit The opsLimit that was used for encryption.
+   * @param memLimit The memLimit that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decrypt(
+      byte[] cipherText,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    return decrypt(cipherText, key, nonce);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for
+   * most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, String password, Nonce nonce) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for
+   * most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, String password, Nonce nonce) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptDetached(
+      Bytes cipherText,
+      Bytes mac,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with limits on operations and memory that are suitable for most use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptDetached(
+      byte[] cipherText,
+      byte[] mac,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.moderateOpsLimit(),
+        PasswordHash.moderateMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for
+   * interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptInteractiveDetached(Bytes cipherText, Bytes mac, String password, Nonce nonce) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for
+   * interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptInteractiveDetached(byte[] cipherText, byte[] mac, String password, Nonce nonce) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptInteractiveDetached(
+      Bytes cipherText,
+      Bytes mac,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with limits on operations and memory that are suitable for interactive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptInteractiveDetached(
+      byte[] cipherText,
+      byte[] mac,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for
+   * sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptSensitiveDetached(Bytes cipherText, Bytes mac, String password, Nonce nonce) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for
+   * sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptSensitiveDetached(byte[] cipherText, byte[] mac, String password, Nonce nonce) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptSensitiveDetached(
+      Bytes cipherText,
+      Bytes mac,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation (with limits on operations and memory that are suitable for sensitive use-cases).
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptSensitiveDetached(
+      byte[] cipherText,
+      byte[] mac,
+      String password,
+      Nonce nonce,
+      PasswordHash.Algorithm algorithm) {
+    return decryptDetached(
+        cipherText,
+        mac,
+        password,
+        nonce,
+        PasswordHash.sensitiveOpsLimit(),
+        PasswordHash.sensitiveMemLimit(),
+        algorithm);
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation.
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param opsLimit The opsLimit that was used for encryption.
+   * @param memLimit The memLimit that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static Bytes decryptDetached(
+      Bytes cipherText,
+      Bytes mac,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    byte[] bytes = decryptDetached(
+        cipherText.toArrayUnsafe(),
+        mac.toArrayUnsafe(),
+        password,
+        nonce,
+        opsLimit,
+        memLimit,
+        algorithm);
+    return (bytes != null) ? Bytes.wrap(bytes) : null;
+  }
+
+  /**
+   * Decrypt a message using a password and a detached message authentication code, using {@link PasswordHash} for the
+   * key generation.
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param mac The message authentication code.
+   * @param password The password that was used for encryption.
+   * @param nonce The nonce that was used for encryption.
+   * @param opsLimit The opsLimit that was used for encryption.
+   * @param memLimit The memLimit that was used for encryption.
+   * @param algorithm The algorithm that was used for encryption.
+   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   */
+  @Nullable
+  public static byte[] decryptDetached(
+      byte[] cipherText,
+      byte[] mac,
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    return decryptDetached(cipherText, mac, key, nonce);
+  }
+
+  private static Key deriveKeyFromPassword(
+      String password,
+      Nonce nonce,
+      long opsLimit,
+      long memLimit,
+      PasswordHash.Algorithm algorithm) {
+    assert Nonce.length() >= PasswordHash.Salt
+        .length() : "SecretBox.Nonce has insufficient length for deriving a PasswordHash.Salt ("
+            + Nonce.length()
+            + " < "
+            + PasswordHash.Salt.length()
+            + ")";
+    PasswordHash.Salt salt =
+        PasswordHash.Salt.fromBytes(Arrays.copyOfRange(nonce.bytesArray(), 0, PasswordHash.Salt.length()));
+    return Key
+        .fromBytes(PasswordHash.hash(password.getBytes(UTF_8), Key.length(), salt, opsLimit, memLimit, algorithm));
   }
 }
