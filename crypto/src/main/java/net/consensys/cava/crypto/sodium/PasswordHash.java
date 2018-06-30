@@ -157,10 +157,27 @@ public final class PasswordHash {
    * A PasswordHash algorithm.
    */
   public static final class Algorithm {
+
+    private static Algorithm ARGON2I13 = new Algorithm("argon2i13", Sodium.crypto_pwhash_alg_argon2i13(), 3);
+    private static Algorithm ARGON2ID13 = new Algorithm("argon2id13", Sodium.crypto_pwhash_alg_argon2id13(), 1);
+    private static Algorithm RECOMMENDED;
+
+    static {
+      if (Sodium.crypto_pwhash_alg_default() == ARGON2I13.id) {
+        RECOMMENDED = ARGON2I13;
+      } else if (Sodium.crypto_pwhash_alg_default() == ARGON2ID13.id) {
+        RECOMMENDED = ARGON2ID13;
+      } else {
+        throw new IllegalStateException("Unknown value from crypto_pwhash_alg_default");
+      }
+    }
+
+    private final String name;
     private final int id;
     private final long minOps;
 
-    private Algorithm(int id, long minOps) {
+    private Algorithm(String name, int id, long minOps) {
+      this.name = name;
       this.id = id;
       this.minOps = minOps;
     }
@@ -169,21 +186,25 @@ public final class PasswordHash {
      * @return The currently recommended algorithm.
      */
     public static Algorithm recommended() {
-      return new Algorithm(Sodium.crypto_pwhash_alg_default(), 1);
+      return RECOMMENDED;
     }
 
     /**
      * @return Version 1.3 of the Argon2i algorithm.
      */
     public static Algorithm argon2i13() {
-      return new Algorithm(Sodium.crypto_pwhash_alg_argon2i13(), 3);
+      return ARGON2I13;
     }
 
     /**
      * @return Version 1.3 of the Argon2id algorithm.
      */
     public static Algorithm argon2id13() {
-      return new Algorithm(Sodium.crypto_pwhash_alg_argon2id13(), 1);
+      return ARGON2ID13;
+    }
+
+    public String name() {
+      return name;
     }
 
     private long minOps() {
@@ -206,10 +227,249 @@ public final class PasswordHash {
     public int hashCode() {
       return Integer.hashCode(id);
     }
+
+    @Override
+    public String toString() {
+      return name;
+    }
   }
 
   /**
-   * Compute a specific length key from a password.
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for most use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static Bytes hash(String password, int length, Salt salt) {
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt));
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for most use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static Bytes hash(Bytes password, int length, Salt salt) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt));
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for most use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static byte[] hash(byte[] password, int length, Salt salt) {
+    return hash(password, length, salt, moderateOpsLimit(), moderateMemLimit(), Algorithm.recommended());
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for most use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static Bytes hash(String password, int length, Salt salt, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt, algorithm));
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for most use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static Bytes hash(Bytes password, int length, Salt salt, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt, algorithm));
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for most use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static byte[] hash(byte[] password, int length, Salt salt, Algorithm algorithm) {
+    return hash(password, length, salt, moderateOpsLimit(), moderateMemLimit(), algorithm);
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for interactive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static Bytes hashInteractive(String password, int length, Salt salt) {
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt, Algorithm.recommended()));
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for interactive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static Bytes hashInteractive(Bytes password, int length, Salt salt) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt, Algorithm.recommended()));
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for interactive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static byte[] hashInteractive(byte[] password, int length, Salt salt) {
+    return hash(password, length, salt, interactiveOpsLimit(), interactiveMemLimit(), Algorithm.recommended());
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for interactive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static Bytes hashInteractive(String password, int length, Salt salt, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt, algorithm));
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for interactive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static Bytes hashInteractive(Bytes password, int length, Salt salt, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt, algorithm));
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for interactive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static byte[] hashInteractive(byte[] password, int length, Salt salt, Algorithm algorithm) {
+    return hash(password, length, salt, interactiveOpsLimit(), interactiveMemLimit(), algorithm);
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for sensitive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static Bytes hashSensitive(String password, int length, Salt salt) {
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt, Algorithm.recommended()));
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for sensitive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static Bytes hashSensitive(Bytes password, int length, Salt salt) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt, Algorithm.recommended()));
+  }
+
+  /**
+   * Compute a key from a password, using the currently recommended algorithm and limits on operations and memory that
+   * are suitable for sensitive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @return The derived key.
+   */
+  public static byte[] hashSensitive(byte[] password, int length, Salt salt) {
+    return hash(password, length, salt, sensitiveOpsLimit(), sensitiveMemLimit(), Algorithm.recommended());
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for sensitive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static Bytes hashSensitive(String password, int length, Salt salt, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.getBytes(UTF_8), length, salt, algorithm));
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for sensitive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static Bytes hashSensitive(Bytes password, int length, Salt salt, Algorithm algorithm) {
+    return Bytes.wrap(hash(password.toArrayUnsafe(), length, salt, algorithm));
+  }
+
+  /**
+   * Compute a key from a password, using limits on operations and memory that are suitable for sensitive use-cases.
+   *
+   * @param password The password to hash.
+   * @param length The key length to generate.
+   * @param salt A salt.
+   * @param algorithm The algorithm to use.
+   * @return The derived key.
+   */
+  public static byte[] hashSensitive(byte[] password, int length, Salt salt, Algorithm algorithm) {
+    return hash(password, length, salt, sensitiveOpsLimit(), sensitiveMemLimit(), algorithm);
+  }
+
+  /**
+   * Compute a key from a password.
    *
    * @param password The password to hash.
    * @param length The key length to generate.
@@ -224,7 +484,7 @@ public final class PasswordHash {
   }
 
   /**
-   * Compute a specific length key from a password.
+   * Compute a key from a password.
    *
    * @param password The password to hash.
    * @param length The key length to generate.
@@ -239,7 +499,7 @@ public final class PasswordHash {
   }
 
   /**
-   * Compute a specific length key from a password.
+   * Compute a key from a password.
    *
    * @param password The password to hash.
    * @param length The key length to generate.
@@ -320,7 +580,7 @@ public final class PasswordHash {
   }
 
   /**
-   * Compute a hash using limits on operations and memory that are suitable for sensitive use-cases.
+   * Compute a hash from a password, using limits on operations and memory that are suitable for sensitive use-cases.
    *
    * <p>
    * Equivalent to {@code hash(password, sensitiveOpsLimit(), sensitiveMemLimit())}.
