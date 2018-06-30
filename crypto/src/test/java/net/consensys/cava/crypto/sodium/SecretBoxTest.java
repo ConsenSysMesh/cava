@@ -14,6 +14,7 @@ package net.consensys.cava.crypto.sodium;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -47,6 +48,18 @@ class SecretBoxTest {
   }
 
   @Test
+  void checkCombinedEncryptDecryptEmptyMessage() {
+    SecretBox.Key key = SecretBox.Key.random();
+    SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
+
+    byte[] cipherText = SecretBox.encrypt(new byte[0], key, nonce);
+    byte[] clearText = SecretBox.decrypt(cipherText, key, nonce);
+
+    assertNotNull(clearText);
+    assertEquals(0, clearText.length);
+  }
+
+  @Test
   void checkDetachedEncryptDecrypt() {
     SecretBox.Key key = SecretBox.Key.random();
     SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
@@ -65,23 +78,32 @@ class SecretBoxTest {
   }
 
   @Test
+  void checkDetachedEncryptDecryptEmptyMessage() {
+    SecretBox.Key key = SecretBox.Key.random();
+    SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
+
+    DetachedEncryptionResult result = SecretBox.encryptDetached(new byte[0], key, nonce);
+    byte[] clearText = SecretBox.decryptDetached(result.cipherTextArray(), result.macArray(), key, nonce);
+
+    assertNotNull(clearText);
+    assertEquals(0, clearText.length);
+  }
+
+  @Test
   void checkCombinedEncryptDecryptWithPassword() {
     String password = "a random password";
-    SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
 
     byte[] message = "This is a test message".getBytes(UTF_8);
 
     byte[] cipherText = SecretBox.encrypt(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
     byte[] clearText = SecretBox.decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -89,36 +111,46 @@ class SecretBoxTest {
     assertNotNull(clearText);
     assertArrayEquals(message, clearText);
 
-    assertNull(
-        SecretBox.decrypt(
-            cipherText,
-            password,
-            nonce.increment(),
-            PasswordHash.interactiveOpsLimit(),
-            PasswordHash.interactiveMemLimit(),
-            PasswordHash.Algorithm.recommended()));
     String otherPassword = "a different password";
     assertNull(
         SecretBox.decrypt(
             cipherText,
             otherPassword,
-            nonce,
             PasswordHash.interactiveOpsLimit(),
             PasswordHash.interactiveMemLimit(),
             PasswordHash.Algorithm.recommended()));
   }
 
   @Test
+  void checkCombinedEncryptDecryptEmptyMessageWithPassword() {
+    String password = "a random password";
+
+    byte[] cipherText = SecretBox.encrypt(
+        new byte[0],
+        password,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+    byte[] clearText = SecretBox.decrypt(
+        cipherText,
+        password,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+
+    assertNotNull(clearText);
+    assertEquals(0, clearText.length);
+  }
+
+  @Test
   void checkDetachedEncryptDecryptWithPassword() {
     String password = "a random password";
-    SecretBox.Nonce nonce = SecretBox.Nonce.random().increment();
 
     byte[] message = "This is a test message".getBytes(UTF_8);
 
     DetachedEncryptionResult result = SecretBox.encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -126,7 +158,6 @@ class SecretBoxTest {
         result.cipherTextArray(),
         result.macArray(),
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -134,24 +165,36 @@ class SecretBoxTest {
     assertNotNull(clearText);
     assertArrayEquals(message, clearText);
 
-    assertNull(
-        SecretBox.decryptDetached(
-            result.cipherTextArray(),
-            result.macArray(),
-            password,
-            nonce.increment(),
-            PasswordHash.interactiveOpsLimit(),
-            PasswordHash.interactiveMemLimit(),
-            PasswordHash.Algorithm.recommended()));
     String otherPassword = "a different password";
     assertNull(
         SecretBox.decryptDetached(
             result.cipherTextArray(),
             result.macArray(),
             otherPassword,
-            nonce,
             PasswordHash.interactiveOpsLimit(),
             PasswordHash.interactiveMemLimit(),
             PasswordHash.Algorithm.recommended()));
+  }
+
+  @Test
+  void checkDetachedEncryptDecryptEmptyMessageWithPassword() {
+    String password = "a random password";
+
+    DetachedEncryptionResult result = SecretBox.encryptDetached(
+        new byte[0],
+        password,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+    byte[] clearText = SecretBox.decryptDetached(
+        result.cipherTextArray(),
+        result.macArray(),
+        password,
+        PasswordHash.interactiveOpsLimit(),
+        PasswordHash.interactiveMemLimit(),
+        PasswordHash.Algorithm.recommended());
+
+    assertNotNull(clearText);
+    assertEquals(0, clearText.length);
   }
 }

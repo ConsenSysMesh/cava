@@ -255,22 +255,15 @@ public final class SecretBox {
    * @return The encrypted data.
    */
   public static byte[] encrypt(byte[] message, Key key, Nonce nonce) {
-    byte[] cipherText = new byte[combinedCypherTextLength(message)];
+    int macbytes = macLength();
 
+    byte[] cipherText = new byte[macbytes + message.length];
     int rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_easy: failed with result " + rc);
     }
 
     return cipherText;
-  }
-
-  private static int combinedCypherTextLength(byte[] message) {
-    long macbytes = Sodium.crypto_secretbox_macbytes();
-    if (macbytes > Integer.MAX_VALUE) {
-      throw new IllegalStateException("crypto_secretbox_macbytes: " + macbytes + " is too large");
-    }
-    return (int) macbytes + message.length;
   }
 
   /**
@@ -294,13 +287,10 @@ public final class SecretBox {
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, Key key, Nonce nonce) {
-    byte[] cipherText = new byte[message.length];
-    long macbytes = Sodium.crypto_secretbox_macbytes();
-    if (macbytes > Integer.MAX_VALUE) {
-      throw new IllegalStateException("crypto_secretbox_macbytes: " + macbytes + " is too large");
-    }
-    byte[] mac = new byte[(int) macbytes];
+    int macbytes = macLength();
 
+    byte[] cipherText = new byte[message.length];
+    byte[] mac = new byte[macbytes];
     int rc = Sodium.crypto_secretbox_detached(cipherText, mac, message, message.length, nonce.ptr, key.ptr);
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_detached: failed with result " + rc);
@@ -333,8 +323,12 @@ public final class SecretBox {
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
-    byte[] clearText = new byte[clearTextLength(cipherText)];
+    int macLength = macLength();
+    if (macLength > cipherText.length) {
+      throw new IllegalArgumentException("cipherText is too short");
+    }
 
+    byte[] clearText = new byte[cipherText.length - macLength];
     int rc = Sodium.crypto_secretbox_open_easy(clearText, cipherText, cipherText.length, nonce.ptr, key.ptr);
     if (rc == -1) {
       return null;
@@ -342,19 +336,7 @@ public final class SecretBox {
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_open_easy: failed with result " + rc);
     }
-
     return clearText;
-  }
-
-  private static int clearTextLength(byte[] cipherText) {
-    long macbytes = Sodium.crypto_secretbox_macbytes();
-    if (macbytes > Integer.MAX_VALUE) {
-      throw new IllegalStateException("crypto_secretbox_macbytes: " + macbytes + " is too large");
-    }
-    if (macbytes > cipherText.length) {
-      throw new IllegalArgumentException("cipherText is too short");
-    }
-    return cipherText.length - ((int) macbytes);
   }
 
   /**
@@ -383,12 +365,9 @@ public final class SecretBox {
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
-    long macbytes = Sodium.crypto_secretbox_macbytes();
-    if (macbytes > Integer.MAX_VALUE) {
-      throw new IllegalStateException("crypto_secretbox_macbytes: " + macbytes + " is too large");
-    }
-    if (mac.length != macbytes) {
-      throw new IllegalArgumentException("mac must be " + macbytes + " bytes, got " + mac.length);
+    int macLength = macLength();
+    if (macLength != mac.length) {
+      throw new IllegalArgumentException("mac must be " + macLength + " bytes, got " + mac.length);
     }
 
     byte[] clearText = new byte[cipherText.length];
@@ -399,7 +378,6 @@ public final class SecretBox {
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_open_detached: failed with result " + rc);
     }
-
     return clearText;
   }
 
@@ -409,14 +387,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data.
    */
-  public static Bytes encrypt(Bytes message, String password, Nonce nonce) {
+  public static Bytes encrypt(Bytes message, String password) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -428,14 +404,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data.
    */
-  public static byte[] encrypt(byte[] message, String password, Nonce nonce) {
+  public static byte[] encrypt(byte[] message, String password) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -447,18 +421,11 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
    */
-  public static Bytes encrypt(Bytes message, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
-    return encrypt(
-        message,
-        password,
-        nonce,
-        PasswordHash.moderateOpsLimit(),
-        PasswordHash.moderateMemLimit(),
-        algorithm);
+  public static Bytes encrypt(Bytes message, String password, PasswordHash.Algorithm algorithm) {
+    return encrypt(message, password, PasswordHash.moderateOpsLimit(), PasswordHash.moderateMemLimit(), algorithm);
   }
 
   /**
@@ -467,18 +434,11 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
    */
-  public static byte[] encrypt(byte[] message, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
-    return encrypt(
-        message,
-        password,
-        nonce,
-        PasswordHash.moderateOpsLimit(),
-        PasswordHash.moderateMemLimit(),
-        algorithm);
+  public static byte[] encrypt(byte[] message, String password, PasswordHash.Algorithm algorithm) {
+    return encrypt(message, password, PasswordHash.moderateOpsLimit(), PasswordHash.moderateMemLimit(), algorithm);
   }
 
   /**
@@ -487,14 +447,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data.
    */
-  public static Bytes encryptInteractive(Bytes message, String password, Nonce nonce) {
+  public static Bytes encryptInteractive(Bytes message, String password) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -506,14 +464,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data.
    */
-  public static byte[] encryptInteractive(byte[] message, String password, Nonce nonce) {
+  public static byte[] encryptInteractive(byte[] message, String password) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -525,19 +481,13 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
    */
-  public static Bytes encryptInteractive(
-      Bytes message,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
+  public static Bytes encryptInteractive(Bytes message, String password, PasswordHash.Algorithm algorithm) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -549,19 +499,13 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
    */
-  public static byte[] encryptInteractive(
-      byte[] message,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
+  public static byte[] encryptInteractive(byte[] message, String password, PasswordHash.Algorithm algorithm) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -573,14 +517,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data.
    */
-  public static Bytes encryptSensitive(Bytes message, String password, Nonce nonce) {
+  public static Bytes encryptSensitive(Bytes message, String password) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -592,14 +534,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data.
    */
-  public static byte[] encryptSensitive(byte[] message, String password, Nonce nonce) {
+  public static byte[] encryptSensitive(byte[] message, String password) {
     return encrypt(
         message,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -611,18 +551,11 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
    */
-  public static Bytes encryptSensitive(Bytes message, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
-    return encrypt(
-        message,
-        password,
-        nonce,
-        PasswordHash.sensitiveOpsLimit(),
-        PasswordHash.sensitiveMemLimit(),
-        algorithm);
+  public static Bytes encryptSensitive(Bytes message, String password, PasswordHash.Algorithm algorithm) {
+    return encrypt(message, password, PasswordHash.sensitiveOpsLimit(), PasswordHash.sensitiveMemLimit(), algorithm);
   }
 
   /**
@@ -631,22 +564,11 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
    */
-  public static byte[] encryptSensitive(
-      byte[] message,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
-    return encrypt(
-        message,
-        password,
-        nonce,
-        PasswordHash.sensitiveOpsLimit(),
-        PasswordHash.sensitiveMemLimit(),
-        algorithm);
+  public static byte[] encryptSensitive(byte[] message, String password, PasswordHash.Algorithm algorithm) {
+    return encrypt(message, password, PasswordHash.sensitiveOpsLimit(), PasswordHash.sensitiveMemLimit(), algorithm);
   }
 
   /**
@@ -654,7 +576,6 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
    *        {@link PasswordHash#maxOpsLimit()}.
    * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
@@ -665,11 +586,10 @@ public final class SecretBox {
   public static Bytes encrypt(
       Bytes message,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
-    return Bytes.wrap(encrypt(message.toArrayUnsafe(), password, nonce, opsLimit, memLimit, algorithm));
+    return Bytes.wrap(encrypt(message.toArrayUnsafe(), password, opsLimit, memLimit, algorithm));
   }
 
   /**
@@ -677,7 +597,6 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
    *        {@link PasswordHash#maxOpsLimit()}.
    * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
@@ -688,12 +607,20 @@ public final class SecretBox {
   public static byte[] encrypt(
       byte[] message,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    int macLength = macLength();
+
+    Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    return encrypt(message, key, nonce);
+
+    byte[] cipherText = new byte[macLength + message.length];
+    int rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
+    if (rc != 0) {
+      throw new SodiumException("crypto_secretbox_easy: failed with result " + rc);
+    }
+    return prependNonce(nonce, cipherText);
   }
 
   /**
@@ -703,14 +630,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
-  public static DetachedEncryptionResult encryptDetached(Bytes message, String password, Nonce nonce) {
+  public static DetachedEncryptionResult encryptDetached(Bytes message, String password) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -723,14 +648,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
-  public static DetachedEncryptionResult encryptDetached(byte[] message, String password, Nonce nonce) {
+  public static DetachedEncryptionResult encryptDetached(byte[] message, String password) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -742,19 +665,16 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptDetached(
       Bytes message,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         algorithm);
@@ -766,19 +686,16 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptDetached(
       byte[] message,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         algorithm);
@@ -791,14 +708,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
-  public static DetachedEncryptionResult encryptInteractiveDetached(Bytes message, String password, Nonce nonce) {
+  public static DetachedEncryptionResult encryptInteractiveDetached(Bytes message, String password) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -811,14 +726,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
-  public static DetachedEncryptionResult encryptInteractiveDetached(byte[] message, String password, Nonce nonce) {
+  public static DetachedEncryptionResult encryptInteractiveDetached(byte[] message, String password) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -830,19 +743,16 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptInteractiveDetached(
       Bytes message,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -854,19 +764,16 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptInteractiveDetached(
       byte[] message,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -879,14 +786,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
-  public static DetachedEncryptionResult encryptSensitiveDetached(Bytes message, String password, Nonce nonce) {
+  public static DetachedEncryptionResult encryptSensitiveDetached(Bytes message, String password) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -899,14 +804,12 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
    */
-  public static DetachedEncryptionResult encryptSensitiveDetached(byte[] message, String password, Nonce nonce) {
+  public static DetachedEncryptionResult encryptSensitiveDetached(byte[] message, String password) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -918,19 +821,16 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptSensitiveDetached(
       Bytes message,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         algorithm);
@@ -942,19 +842,16 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param algorithm The algorithm to use.
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptSensitiveDetached(
       byte[] message,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return encryptDetached(
         message,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         algorithm);
@@ -966,7 +863,6 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
    *        {@link PasswordHash#maxOpsLimit()}.
    * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
@@ -977,11 +873,10 @@ public final class SecretBox {
   public static DetachedEncryptionResult encryptDetached(
       Bytes message,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
-    return encryptDetached(message.toArrayUnsafe(), password, nonce, opsLimit, memLimit, algorithm);
+    return encryptDetached(message.toArrayUnsafe(), password, opsLimit, memLimit, algorithm);
   }
 
   /**
@@ -990,7 +885,6 @@ public final class SecretBox {
    *
    * @param message The message to encrypt.
    * @param password The password to use for encryption.
-   * @param nonce A unique nonce.
    * @param opsLimit The operations limit, which must be in the range {@link PasswordHash#minOpsLimit()} to
    *        {@link PasswordHash#maxOpsLimit()}.
    * @param memLimit The memory limit, which must be in the range {@link PasswordHash#minMemLimit()} to
@@ -1001,12 +895,21 @@ public final class SecretBox {
   public static DetachedEncryptionResult encryptDetached(
       byte[] message,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    int macLength = macLength();
+
+    Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    return encryptDetached(message, key, nonce);
+
+    byte[] cipherText = new byte[message.length];
+    byte[] mac = new byte[macLength];
+    int rc = Sodium.crypto_secretbox_detached(cipherText, mac, message, message.length, nonce.ptr, key.ptr);
+    if (rc != 0) {
+      throw new SodiumException("crypto_secretbox_detached: failed with result " + rc);
+    }
+    return new DefaultDetachedEncryptionResult(cipherText, prependNonce(nonce, mac));
   }
 
   /**
@@ -1015,15 +918,13 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decrypt(Bytes cipherText, String password, Nonce nonce) {
+  public static Bytes decrypt(Bytes cipherText, String password) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1035,15 +936,13 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decrypt(byte[] cipherText, String password, Nonce nonce) {
+  public static byte[] decrypt(byte[] cipherText, String password) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1055,19 +954,12 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decrypt(Bytes cipherText, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
-    return decrypt(
-        cipherText,
-        password,
-        nonce,
-        PasswordHash.moderateOpsLimit(),
-        PasswordHash.moderateMemLimit(),
-        algorithm);
+  public static Bytes decrypt(Bytes cipherText, String password, PasswordHash.Algorithm algorithm) {
+    return decrypt(cipherText, password, PasswordHash.moderateOpsLimit(), PasswordHash.moderateMemLimit(), algorithm);
   }
 
   /**
@@ -1076,19 +968,12 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decrypt(byte[] cipherText, String password, Nonce nonce, PasswordHash.Algorithm algorithm) {
-    return decrypt(
-        cipherText,
-        password,
-        nonce,
-        PasswordHash.moderateOpsLimit(),
-        PasswordHash.moderateMemLimit(),
-        algorithm);
+  public static byte[] decrypt(byte[] cipherText, String password, PasswordHash.Algorithm algorithm) {
+    return decrypt(cipherText, password, PasswordHash.moderateOpsLimit(), PasswordHash.moderateMemLimit(), algorithm);
   }
 
   /**
@@ -1097,15 +982,13 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptInteractive(Bytes cipherText, String password, Nonce nonce) {
+  public static Bytes decryptInteractive(Bytes cipherText, String password) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1117,15 +1000,13 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptInteractive(byte[] cipherText, String password, Nonce nonce) {
+  public static byte[] decryptInteractive(byte[] cipherText, String password) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1137,20 +1018,14 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptInteractive(
-      Bytes cipherText,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
+  public static Bytes decryptInteractive(Bytes cipherText, String password, PasswordHash.Algorithm algorithm) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -1162,20 +1037,14 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptInteractive(
-      byte[] cipherText,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
+  public static byte[] decryptInteractive(byte[] cipherText, String password, PasswordHash.Algorithm algorithm) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -1187,15 +1056,13 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptSensitive(Bytes cipherText, String password, Nonce nonce) {
+  public static Bytes decryptSensitive(Bytes cipherText, String password) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1207,15 +1074,13 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptSensitive(byte[] cipherText, String password, Nonce nonce) {
+  public static byte[] decryptSensitive(byte[] cipherText, String password) {
     return decrypt(
         cipherText,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1227,23 +1092,12 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptSensitive(
-      Bytes cipherText,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
-    return decrypt(
-        cipherText,
-        password,
-        nonce,
-        PasswordHash.sensitiveOpsLimit(),
-        PasswordHash.sensitiveMemLimit(),
-        algorithm);
+  public static Bytes decryptSensitive(Bytes cipherText, String password, PasswordHash.Algorithm algorithm) {
+    return decrypt(cipherText, password, PasswordHash.sensitiveOpsLimit(), PasswordHash.sensitiveMemLimit(), algorithm);
   }
 
   /**
@@ -1252,23 +1106,12 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptSensitive(
-      byte[] cipherText,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
-    return decrypt(
-        cipherText,
-        password,
-        nonce,
-        PasswordHash.sensitiveOpsLimit(),
-        PasswordHash.sensitiveMemLimit(),
-        algorithm);
+  public static byte[] decryptSensitive(byte[] cipherText, String password, PasswordHash.Algorithm algorithm) {
+    return decrypt(cipherText, password, PasswordHash.sensitiveOpsLimit(), PasswordHash.sensitiveMemLimit(), algorithm);
   }
 
   /**
@@ -1276,7 +1119,6 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
@@ -1286,11 +1128,10 @@ public final class SecretBox {
   public static Bytes decrypt(
       Bytes cipherText,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
-    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), password, nonce, opsLimit, memLimit, algorithm);
+    byte[] bytes = decrypt(cipherText.toArrayUnsafe(), password, opsLimit, memLimit, algorithm);
     return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
@@ -1299,7 +1140,6 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
@@ -1309,12 +1149,32 @@ public final class SecretBox {
   public static byte[] decrypt(
       byte[] cipherText,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    int noncebytes = Nonce.length();
+    int macLength = macLength();
+    if ((noncebytes + macLength) > cipherText.length) {
+      throw new IllegalArgumentException("cipherText is too short");
+    }
+
+    Nonce nonce = Nonce.fromBytes(Arrays.copyOf(cipherText, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    return decrypt(cipherText, key, nonce);
+
+    byte[] clearText = new byte[cipherText.length - noncebytes - macLength];
+    int rc = Sodium.crypto_secretbox_open_easy(
+        clearText,
+        Arrays.copyOfRange(cipherText, noncebytes, cipherText.length),
+        cipherText.length - noncebytes,
+        nonce.ptr,
+        key.ptr);
+    if (rc == -1) {
+      return null;
+    }
+    if (rc != 0) {
+      throw new SodiumException("crypto_secretbox_open_easy: failed with result " + rc);
+    }
+    return clearText;
   }
 
   /**
@@ -1325,16 +1185,14 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, String password, Nonce nonce) {
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, String password) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1348,16 +1206,14 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, String password, Nonce nonce) {
+  public static byte[] decryptDetached(byte[] cipherText, byte[] mac, String password) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1370,22 +1226,15 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptDetached(
-      Bytes cipherText,
-      Bytes mac,
-      String password,
-      Nonce nonce,
-      PasswordHash.Algorithm algorithm) {
+  public static Bytes decryptDetached(Bytes cipherText, Bytes mac, String password, PasswordHash.Algorithm algorithm) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         algorithm);
@@ -1398,7 +1247,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
@@ -1407,13 +1255,11 @@ public final class SecretBox {
       byte[] cipherText,
       byte[] mac,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.moderateOpsLimit(),
         PasswordHash.moderateMemLimit(),
         algorithm);
@@ -1427,16 +1273,14 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptInteractiveDetached(Bytes cipherText, Bytes mac, String password, Nonce nonce) {
+  public static Bytes decryptInteractiveDetached(Bytes cipherText, Bytes mac, String password) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1450,16 +1294,14 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptInteractiveDetached(byte[] cipherText, byte[] mac, String password, Nonce nonce) {
+  public static byte[] decryptInteractiveDetached(byte[] cipherText, byte[] mac, String password) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1472,7 +1314,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
@@ -1481,13 +1322,11 @@ public final class SecretBox {
       Bytes cipherText,
       Bytes mac,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -1500,7 +1339,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
@@ -1509,13 +1347,11 @@ public final class SecretBox {
       byte[] cipherText,
       byte[] mac,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.interactiveOpsLimit(),
         PasswordHash.interactiveMemLimit(),
         algorithm);
@@ -1529,16 +1365,14 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static Bytes decryptSensitiveDetached(Bytes cipherText, Bytes mac, String password, Nonce nonce) {
+  public static Bytes decryptSensitiveDetached(Bytes cipherText, Bytes mac, String password) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1552,16 +1386,14 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
   @Nullable
-  public static byte[] decryptSensitiveDetached(byte[] cipherText, byte[] mac, String password, Nonce nonce) {
+  public static byte[] decryptSensitiveDetached(byte[] cipherText, byte[] mac, String password) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         PasswordHash.Algorithm.recommended());
@@ -1574,7 +1406,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
@@ -1583,13 +1414,11 @@ public final class SecretBox {
       Bytes cipherText,
       Bytes mac,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         algorithm);
@@ -1602,7 +1431,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
    */
@@ -1611,13 +1439,11 @@ public final class SecretBox {
       byte[] cipherText,
       byte[] mac,
       String password,
-      Nonce nonce,
       PasswordHash.Algorithm algorithm) {
     return decryptDetached(
         cipherText,
         mac,
         password,
-        nonce,
         PasswordHash.sensitiveOpsLimit(),
         PasswordHash.sensitiveMemLimit(),
         algorithm);
@@ -1630,7 +1456,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
@@ -1641,18 +1466,11 @@ public final class SecretBox {
       Bytes cipherText,
       Bytes mac,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
-    byte[] bytes = decryptDetached(
-        cipherText.toArrayUnsafe(),
-        mac.toArrayUnsafe(),
-        password,
-        nonce,
-        opsLimit,
-        memLimit,
-        algorithm);
+    byte[] bytes =
+        decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), password, opsLimit, memLimit, algorithm);
     return (bytes != null) ? Bytes.wrap(bytes) : null;
   }
 
@@ -1663,7 +1481,6 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @param nonce The nonce that was used for encryption.
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
@@ -1674,12 +1491,42 @@ public final class SecretBox {
       byte[] cipherText,
       byte[] mac,
       String password,
-      Nonce nonce,
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    int noncebytes = Nonce.length();
+    int macLength = macLength();
+    if ((noncebytes + macLength) != mac.length) {
+      throw new IllegalArgumentException("mac must be " + (noncebytes + macLength) + " bytes, got " + mac.length);
+    }
+
+    Nonce nonce = Nonce.fromBytes(Arrays.copyOf(mac, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    return decryptDetached(cipherText, mac, key, nonce);
+
+    byte[] clearText = new byte[cipherText.length];
+    int rc = Sodium.crypto_secretbox_open_detached(
+        clearText,
+        cipherText,
+        Arrays.copyOfRange(mac, noncebytes, mac.length),
+        cipherText.length,
+        nonce.ptr,
+        key.ptr);
+    if (rc == -1) {
+      return null;
+    }
+    if (rc != 0) {
+      throw new SodiumException("crypto_secretbox_open_detached: failed with result " + rc);
+    }
+
+    return clearText;
+  }
+
+  private static int macLength() {
+    long macbytes = Sodium.crypto_secretbox_macbytes();
+    if (macbytes > Integer.MAX_VALUE) {
+      throw new IllegalStateException("crypto_secretbox_macbytes: " + macbytes + " is too large");
+    }
+    return (int) macbytes;
   }
 
   private static Key deriveKeyFromPassword(
@@ -1698,5 +1545,13 @@ public final class SecretBox {
         PasswordHash.Salt.fromBytes(Arrays.copyOfRange(nonce.bytesArray(), 0, PasswordHash.Salt.length()));
     return Key
         .fromBytes(PasswordHash.hash(password.getBytes(UTF_8), Key.length(), salt, opsLimit, memLimit, algorithm));
+  }
+
+  private static byte[] prependNonce(Nonce nonce, byte[] bytes) {
+    int nonceLength = Nonce.length();
+    byte[] data = new byte[nonceLength + bytes.length];
+    nonce.ptr.get(0, data, 0, nonceLength);
+    System.arraycopy(bytes, 0, data, nonceLength, bytes.length);
+    return data;
   }
 }
