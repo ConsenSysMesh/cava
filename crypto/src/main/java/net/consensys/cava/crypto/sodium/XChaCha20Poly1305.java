@@ -47,6 +47,52 @@ public final class XChaCha20Poly1305 {
   private static final byte[] EMPTY_BYTES = new byte[0];
 
   /**
+   * Check if Sodium and the XChaCha20Poly1305 algorithm is available.
+   *
+   * <p>
+   * XChaCha20Poly1305 is supported in sodium native library version &gt;= 10.0.12.
+   *
+   * @return <tt>true</tt> if Sodium and the XChaCha20Poly1305 algorithm is available.
+   */
+  public static boolean isAvailable() {
+    try {
+      return Sodium.supportsVersion(Sodium.VERSION_10_0_12);
+    } catch (UnsatisfiedLinkError e) {
+      return false;
+    }
+  }
+
+  private static void assertAvailable() {
+    if (!isAvailable()) {
+      throw new UnsupportedOperationException(
+          "Sodium XChaCha20Poly1305 is not available (requires sodium native library >= 10.0.12)");
+    }
+  }
+
+  /**
+   * Check if Sodium and the XChaCha20Poly1305 secret stream algorithm is available.
+   *
+   * <p>
+   * XChaCha20Poly1305 secret stream is supported in sodium native library version &gt;= 10.0.14.
+   *
+   * @return <tt>true</tt> if Sodium and the XChaCha20Poly1305 secret stream algorithm is available.
+   */
+  public static boolean isSecretStreamAvailable() {
+    try {
+      return Sodium.supportsVersion(Sodium.VERSION_10_0_14);
+    } catch (UnsatisfiedLinkError e) {
+      return false;
+    }
+  }
+
+  private static void assertSecretStreamAvailable() {
+    if (!isSecretStreamAvailable()) {
+      throw new UnsupportedOperationException(
+          "Sodium XChaCha20Poly1305 secret stream is not available (requires sodium native library >= 10.0.14)");
+    }
+  }
+
+  /**
    * A XChaCha20-Poly1305 key.
    */
   public static final class Key {
@@ -82,8 +128,10 @@ public final class XChaCha20Poly1305 {
      *
      * @param bytes The bytes for the key.
      * @return A key, based on the supplied bytes.
+     * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
      */
     public static Key fromBytes(byte[] bytes) {
+      assertAvailable();
       if (bytes.length != Sodium.crypto_aead_xchacha20poly1305_ietf_keybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_aead_xchacha20poly1305_ietf_keybytes() + " bytes, got " + bytes.length);
@@ -95,8 +143,10 @@ public final class XChaCha20Poly1305 {
      * Obtain the length of the key in bytes (32).
      *
      * @return The length of the key in bytes (32).
+     * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
      */
     public static int length() {
+      assertAvailable();
       long keybytes = Sodium.crypto_aead_xchacha20poly1305_ietf_keybytes();
       if (keybytes > Integer.MAX_VALUE) {
         throw new SodiumException("crypto_aead_xchacha20poly1305_ietf_keybytes: " + keybytes + " is too large");
@@ -108,11 +158,16 @@ public final class XChaCha20Poly1305 {
      * Generate a new key using a random generator.
      *
      * @return A randomly generated key.
+     * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
      */
     public static Key random() {
-      Pointer ptr = Sodium.malloc(length());
+      assertAvailable();
+      int length = length();
+      Pointer ptr = Sodium.malloc(length);
       try {
-        Sodium.crypto_aead_xchacha20poly1305_ietf_keygen(ptr);
+        Sodium.randombytes_buf(ptr, length);
+        // When support for 10.0.11 is dropped, use this instead
+        //Sodium.crypto_aead_xchacha20poly1305_ietf_keygen(ptr);
         return new Key(ptr);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
@@ -171,8 +226,10 @@ public final class XChaCha20Poly1305 {
      *
      * @param bytes The bytes for the nonce.
      * @return A nonce, based on these bytes.
+     * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
      */
     public static Nonce fromBytes(byte[] bytes) {
+      assertAvailable();
       if (bytes.length != Sodium.crypto_aead_xchacha20poly1305_ietf_npubbytes()) {
         throw new IllegalArgumentException(
             "nonce must be " + Sodium.crypto_aead_xchacha20poly1305_ietf_npubbytes() + " bytes, got " + bytes.length);
@@ -184,8 +241,10 @@ public final class XChaCha20Poly1305 {
      * Obtain the length of the nonce in bytes (24).
      *
      * @return The length of the nonce in bytes (24).
+     * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
      */
     public static int length() {
+      assertAvailable();
       long npubbytes = Sodium.crypto_aead_xchacha20poly1305_ietf_npubbytes();
       if (npubbytes > Integer.MAX_VALUE) {
         throw new SodiumException("crypto_aead_xchacha20poly1305_ietf_npubbytes: " + npubbytes + " is too large");
@@ -197,8 +256,10 @@ public final class XChaCha20Poly1305 {
      * Generate a new {@link Nonce} using a random generator.
      *
      * @return A randomly generated nonce.
+     * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
      */
     public static Nonce random() {
+      assertAvailable();
       return Sodium.randomBytes(length(), Nonce::new);
     }
 
@@ -275,8 +336,10 @@ public final class XChaCha20Poly1305 {
    * @param key The key to encrypt for.
    * @param nonce A unique nonce.
    * @return The encrypted data.
+   * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
    */
   public static byte[] encrypt(byte[] message, byte[] data, Key key, Nonce nonce) {
+    assertAvailable();
     byte[] cipherText = new byte[maxCypherTextLength(message)];
 
     LongLongByReference cipherTextLen = new LongLongByReference();
@@ -350,8 +413,10 @@ public final class XChaCha20Poly1305 {
    * @param key The key to encrypt for.
    * @param nonce A unique nonce.
    * @return The encrypted data.
+   * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, byte[] data, Key key, Nonce nonce) {
+    assertAvailable();
     byte[] cipherText = new byte[message.length];
     long abytes = Sodium.crypto_aead_xchacha20poly1305_ietf_abytes();
     if (abytes > Integer.MAX_VALUE) {
@@ -462,8 +527,10 @@ public final class XChaCha20Poly1305 {
    *
    * @param key The key to encrypt for.
    * @return The input stream.
+   * @throws UnsupportedOperationException If XChaCha20Poly1305 secret stream support is not available.
    */
   public static SecretEncryptionStream openEncryptionStream(Key key) {
+    assertSecretStreamAvailable();
     return new SSEncrypt(key);
   }
 
@@ -517,9 +584,11 @@ public final class XChaCha20Poly1305 {
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
+    assertAvailable();
     byte[] clearText = new byte[maxClearTextLength(cipherText)];
 
     LongLongByReference clearTextLen = new LongLongByReference();
@@ -607,9 +676,11 @@ public final class XChaCha20Poly1305 {
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
+    assertAvailable();
     long abytes = Sodium.crypto_aead_xchacha20poly1305_ietf_abytes();
     if (abytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_aead_xchacha20poly1305_ietf_abytes: " + abytes + " is too large");
@@ -723,8 +794,10 @@ public final class XChaCha20Poly1305 {
    * @param key The key to use for decryption.
    * @param header The header for the stream.
    * @return The input stream.
+   * @throws UnsupportedOperationException If XChaCha20Poly1305 secret stream support is not available.
    */
   public static SecretDecryptionStream openDecryptionStream(Key key, byte[] header) {
+    assertSecretStreamAvailable();
     return new SSDecrypt(key, header);
   }
 

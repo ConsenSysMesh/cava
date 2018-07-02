@@ -68,7 +68,7 @@ public final class AES256GCM implements AutoCloseable {
 
   private static void assertAvailable() {
     if (!isAvailable()) {
-      throw new IllegalStateException("AES256-GCM is not available");
+      throw new UnsupportedOperationException("Sodium AES256-GCM is not available");
     }
   }
 
@@ -108,8 +108,10 @@ public final class AES256GCM implements AutoCloseable {
      *
      * @param bytes The bytes for the key.
      * @return A key, based on the supplied bytes.
+     * @throws UnsupportedOperationException If AES256-GSM support is not available.
      */
     public static Key fromBytes(byte[] bytes) {
+      assertAvailable();
       if (bytes.length != Sodium.crypto_aead_aes256gcm_keybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_aead_aes256gcm_keybytes() + " bytes, got " + bytes.length);
@@ -121,8 +123,10 @@ public final class AES256GCM implements AutoCloseable {
      * Obtain the length of the key in bytes (32).
      *
      * @return The length of the key in bytes (32).
+     * @throws UnsupportedOperationException If AES256-GSM support is not available.
      */
     public static int length() {
+      assertAvailable();
       long keybytes = Sodium.crypto_aead_aes256gcm_keybytes();
       if (keybytes > Integer.MAX_VALUE) {
         throw new SodiumException("crypto_aead_aes256gcm_keybytes: " + keybytes + " is too large");
@@ -134,12 +138,16 @@ public final class AES256GCM implements AutoCloseable {
      * Generate a new key using a random generator.
      *
      * @return A randomly generated key.
+     * @throws UnsupportedOperationException If AES256-GSM support is not available.
      */
     public static Key random() {
       assertAvailable();
-      Pointer ptr = Sodium.malloc(length());
+      int length = length();
+      Pointer ptr = Sodium.malloc(length);
       try {
-        Sodium.crypto_aead_aes256gcm_keygen(ptr);
+        Sodium.randombytes_buf(ptr, length);
+        // When support for 10.0.11 is dropped, use this instead
+        //Sodium.crypto_aead_aes256gcm_keygen(ptr);
         return new Key(ptr);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
@@ -198,8 +206,10 @@ public final class AES256GCM implements AutoCloseable {
      *
      * @param bytes The bytes for the nonce.
      * @return A nonce, based on these bytes.
+     * @throws UnsupportedOperationException If AES256-GSM support is not available.
      */
     public static Nonce fromBytes(byte[] bytes) {
+      assertAvailable();
       if (bytes.length != Sodium.crypto_aead_aes256gcm_npubbytes()) {
         throw new IllegalArgumentException(
             "nonce must be " + Sodium.crypto_aead_aes256gcm_npubbytes() + " bytes, got " + bytes.length);
@@ -211,8 +221,10 @@ public final class AES256GCM implements AutoCloseable {
      * Obtain the length of the nonce in bytes (12).
      *
      * @return The length of the nonce in bytes (12).
+     * @throws UnsupportedOperationException If AES256-GSM support is not available.
      */
     public static int length() {
+      assertAvailable();
       long npubbytes = Sodium.crypto_aead_aes256gcm_npubbytes();
       if (npubbytes > Integer.MAX_VALUE) {
         throw new SodiumException("crypto_aead_aes256gcm_npubbytes: " + npubbytes + " is too large");
@@ -282,6 +294,7 @@ public final class AES256GCM implements AutoCloseable {
    *
    * @param key The key to precompute an expansion for.
    * @return A {@link AES256GCM} instance.
+   * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   public static AES256GCM forKey(Key key) {
     requireNonNull(key);
@@ -334,6 +347,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param key The key to encrypt for.
    * @param nonce A unique nonce.
    * @return The encrypted data.
+   * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   public static byte[] encrypt(byte[] message, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
@@ -476,6 +490,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param key The key to encrypt for.
    * @param nonce A unique nonce.
    * @return The encrypted data and message authentication code.
+   * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
@@ -631,6 +646,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
@@ -798,6 +814,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
@@ -882,6 +899,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   @Nullable
   public byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Nonce nonce) {

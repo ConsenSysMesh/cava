@@ -158,14 +158,18 @@ public final class PasswordHash {
    */
   public static final class Algorithm {
 
-    private static Algorithm ARGON2I13 = new Algorithm("argon2i13", Sodium.crypto_pwhash_alg_argon2i13(), 3);
-    private static Algorithm ARGON2ID13 = new Algorithm("argon2id13", Sodium.crypto_pwhash_alg_argon2id13(), 1);
+    private static Algorithm ARGON2I13;
+    private static Algorithm ARGON2ID13;
     private static Algorithm RECOMMENDED;
 
     static {
+      ARGON2I13 = new Algorithm("argon2i13", Sodium.crypto_pwhash_alg_argon2i13(), 3);
+      ARGON2ID13 = (Sodium.supportsVersion(Sodium.VERSION_10_0_13))
+          ? new Algorithm("argon2id13", Sodium.crypto_pwhash_alg_argon2id13(), 1)
+          : null;
       if (Sodium.crypto_pwhash_alg_default() == ARGON2I13.id) {
         RECOMMENDED = ARGON2I13;
-      } else if (Sodium.crypto_pwhash_alg_default() == ARGON2ID13.id) {
+      } else if (ARGON2ID13 != null && Sodium.crypto_pwhash_alg_default() == ARGON2ID13.id) {
         RECOMMENDED = ARGON2ID13;
       } else {
         throw new IllegalStateException("Unknown value from crypto_pwhash_alg_default");
@@ -200,15 +204,14 @@ public final class PasswordHash {
      * @return Version 1.3 of the Argon2id algorithm.
      */
     public static Algorithm argon2id13() {
+      if (ARGON2ID13 == null) {
+        throw new UnsupportedOperationException("Sodium argon2id13 algorithm is not available");
+      }
       return ARGON2ID13;
     }
 
     public String name() {
       return name;
-    }
-
-    private long minOps() {
-      return minOps;
     }
 
     @Override
@@ -513,8 +516,8 @@ public final class PasswordHash {
     assertHashLength(length);
     assertOpsLimit(opsLimit);
     assertMemLimit(memLimit);
-    if (opsLimit < algorithm.minOps()) {
-      throw new IllegalArgumentException("opsLimit too low for specified algorithm");
+    if (opsLimit < algorithm.minOps) {
+      throw new IllegalArgumentException("opsLimit " + opsLimit + " too low for specified algorithm");
     }
     byte[] out = new byte[length];
 
@@ -529,26 +532,34 @@ public final class PasswordHash {
    * @return The minimum hash length (16).
    */
   public static int minHashLength() {
-    long len = Sodium.crypto_pwhash_bytes_min();
-    if (len > Integer.MAX_VALUE) {
-      throw new IllegalStateException("crypto_pwhash_bytes_min: " + len + " is too large");
-    }
-    return (int) len;
+    // When support for 10.0.11 is dropped, use this instead
+    //long len = Sodium.crypto_pwhash_bytes_min();
+    //if (len > Integer.MAX_VALUE) {
+    //  throw new IllegalStateException("crypto_pwhash_bytes_min: " + len + " is too large");
+    //}
+    //return (int) len;
+    return 16;
   }
 
   /**
    * @return The maximum hash length.
    */
   public static int maxHashLength() {
-    long len = Sodium.crypto_pwhash_bytes_max();
-    if (len > Integer.MAX_VALUE) {
-      return Integer.MAX_VALUE;
-    }
-    return (int) len;
+    // When support for 10.0.11 is dropped, use this instead
+    //long len = Sodium.crypto_pwhash_bytes_max();
+    //if (len > Integer.MAX_VALUE) {
+    //  return Integer.MAX_VALUE;
+    //}
+    //return (int) len;
+    return Integer.MAX_VALUE;
   }
 
   private static void assertHashLength(int length) {
-    if (length < Sodium.crypto_pwhash_bytes_min() || length > Sodium.crypto_pwhash_bytes_max()) {
+    // When support for 10.0.11 is dropped, use this instead
+    //if (length < Sodium.crypto_pwhash_bytes_min() || length > Sodium.crypto_pwhash_bytes_max()) {
+    //  throw new IllegalArgumentException("length out of range");
+    //}
+    if (length < 16) {
       throw new IllegalArgumentException("length out of range");
     }
   }
@@ -627,7 +638,12 @@ public final class PasswordHash {
     FAILED,
     /** The hash verification passed. */
     PASSED,
-    /** The hash verification passed, but the hash is out-of-date and should be regenerated. */
+    /**
+     * The hash verification passed, but the hash is out-of-date and should be regenerated.
+     *
+     * <p>
+     * Note: this is only supported by the sodium native library version &gt;= 10.0.14.
+     */
     NEEDS_REHASH;
 
     /**
@@ -716,6 +732,10 @@ public final class PasswordHash {
       int rc = Sodium.crypto_pwhash_str_verify(str, pwbytes, pwbytes.length);
       if (rc != 0) {
         return VerificationResult.FAILED;
+      }
+
+      if (!Sodium.supportsVersion(Sodium.VERSION_10_0_14)) {
+        return VerificationResult.PASSED;
       }
 
       rc = Sodium.crypto_pwhash_str_needs_rehash(str, opsLimit, memLimit);
@@ -846,6 +866,10 @@ public final class PasswordHash {
    * @return The minimum operations limit (1).
    */
   public static long minOpsLimit() {
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      return 3;
+    }
     return Sodium.crypto_pwhash_opslimit_min();
   }
 
@@ -874,6 +898,10 @@ public final class PasswordHash {
    * @return The maximum operations limit (4294967295).
    */
   public static long maxOpsLimit() {
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      return 4294967295L;
+    }
     return Sodium.crypto_pwhash_opslimit_max();
   }
 
@@ -887,6 +915,10 @@ public final class PasswordHash {
    * @return The minimum memory limit (8192).
    */
   public static long minMemLimit() {
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      return 8192;
+    }
     return Sodium.crypto_pwhash_memlimit_min();
   }
 
@@ -912,9 +944,13 @@ public final class PasswordHash {
   }
 
   /**
-   * @return The maximum memory limit.
+   * @return The maximum memory limit (4398046510080).
    */
   public static long maxMemLimit() {
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      return 4398046510080L;
+    }
     return Sodium.crypto_pwhash_memlimit_max();
   }
 

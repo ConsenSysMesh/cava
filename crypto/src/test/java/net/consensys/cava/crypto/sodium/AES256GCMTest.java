@@ -28,7 +28,8 @@ class AES256GCMTest {
 
   @BeforeAll
   static void checkAvailable() {
-    assumeTrue(AES256GCM.isAvailable());
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+    assumeTrue(AES256GCM.isAvailable(), "AES256-GSM support is not available");
     nonce = AES256GCM.Nonce.random();
   }
 

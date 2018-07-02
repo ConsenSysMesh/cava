@@ -26,7 +26,7 @@ class SecretBoxTest {
 
   @BeforeAll
   static void checkAvailable() {
-    assumeTrue(Sodium.isAvailable());
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
   }
 
   @Test

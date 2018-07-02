@@ -113,9 +113,12 @@ public final class Auth {
      * @return A randomly generated key.
      */
     public static Key random() {
-      Pointer ptr = Sodium.malloc(length());
+      int length = length();
+      Pointer ptr = Sodium.malloc(length);
       try {
-        Sodium.crypto_auth_keygen(ptr);
+        Sodium.randombytes_buf(ptr, length);
+        // When support for 10.0.11 is dropped, use this instead
+        //Sodium.crypto_auth_keygen(ptr);
         return new Key(ptr);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
