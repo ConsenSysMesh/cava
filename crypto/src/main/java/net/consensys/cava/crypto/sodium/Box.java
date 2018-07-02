@@ -14,6 +14,7 @@ package net.consensys.cava.crypto.sodium;
 
 import net.consensys.cava.bytes.Bytes;
 
+import java.util.Objects;
 import javax.annotation.Nullable;
 
 import jnr.ffi.Pointer;
@@ -72,9 +73,11 @@ public final class Box implements AutoCloseable {
    */
   public static final class PublicKey {
     private final Pointer ptr;
+    private final int length;
 
-    private PublicKey(Pointer ptr) {
+    private PublicKey(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -125,6 +128,23 @@ public final class Box implements AutoCloseable {
       return (int) keybytes;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof PublicKey)) {
+        return false;
+      }
+      PublicKey other = (PublicKey) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this key.
      */
@@ -136,7 +156,7 @@ public final class Box implements AutoCloseable {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -145,9 +165,11 @@ public final class Box implements AutoCloseable {
    */
   public static final class SecretKey {
     private final Pointer ptr;
+    private final int length;
 
-    private SecretKey(Pointer ptr) {
+    private SecretKey(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -198,6 +220,23 @@ public final class Box implements AutoCloseable {
       return (int) keybytes;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof SecretKey)) {
+        return false;
+      }
+      SecretKey other = (SecretKey) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this key.
      */
@@ -209,7 +248,7 @@ public final class Box implements AutoCloseable {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -218,9 +257,11 @@ public final class Box implements AutoCloseable {
    */
   public static final class Seed {
     private final Pointer ptr;
+    private final int length;
 
-    private Seed(Pointer ptr) {
+    private Seed(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -280,6 +321,23 @@ public final class Box implements AutoCloseable {
       return Sodium.randomBytes(length(), Seed::new);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Seed)) {
+        return false;
+      }
+      Seed other = (Seed) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this seed.
      */
@@ -291,7 +349,7 @@ public final class Box implements AutoCloseable {
      * @return The bytes of this seed.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -322,11 +380,12 @@ public final class Box implements AutoCloseable {
      */
     public static KeyPair forSecretKey(SecretKey secretKey) {
       return Sodium.scalarMultBase(secretKey.ptr, SecretKey.length(), (ptr, len) -> {
-        if (len != PublicKey.length()) {
+        int publicKeyLength = PublicKey.length();
+        if (len != publicKeyLength) {
           throw new IllegalStateException(
-              "Public key length " + PublicKey.length() + " is not same as generated key length " + len);
+              "Public key length " + publicKeyLength + " is not same as generated key length " + len);
         }
-        return new KeyPair(new PublicKey(ptr), secretKey);
+        return new KeyPair(new PublicKey(ptr, publicKeyLength), secretKey);
       });
     }
 
@@ -336,17 +395,19 @@ public final class Box implements AutoCloseable {
      * @return A randomly generated key pair.
      */
     public static KeyPair random() {
-      Pointer publicKey = Sodium.malloc(PublicKey.length());
+      int publicKeyLength = PublicKey.length();
+      Pointer publicKey = Sodium.malloc(publicKeyLength);
       Pointer secretKey = null;
       try {
-        secretKey = Sodium.malloc(SecretKey.length());
+        int secretKeyLength = SecretKey.length();
+        secretKey = Sodium.malloc(secretKeyLength);
         int rc = Sodium.crypto_box_keypair(publicKey, secretKey);
         if (rc != 0) {
           throw new SodiumException("crypto_box_keypair: failed with result " + rc);
         }
-        PublicKey pk = new PublicKey(publicKey);
+        PublicKey pk = new PublicKey(publicKey, publicKeyLength);
         publicKey = null;
-        SecretKey sk = new SecretKey(secretKey);
+        SecretKey sk = new SecretKey(secretKey, secretKeyLength);
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
@@ -367,17 +428,19 @@ public final class Box implements AutoCloseable {
      * @return The generated key pair.
      */
     public static KeyPair fromSeed(Seed seed) {
-      Pointer publicKey = Sodium.malloc(PublicKey.length());
+      int publicKeyLength = PublicKey.length();
+      Pointer publicKey = Sodium.malloc(publicKeyLength);
       Pointer secretKey = null;
       try {
-        secretKey = Sodium.malloc(SecretKey.length());
+        int secretKeyLength = SecretKey.length();
+        secretKey = Sodium.malloc(secretKeyLength);
         int rc = Sodium.crypto_box_seed_keypair(publicKey, secretKey, seed.ptr);
         if (rc != 0) {
           throw new SodiumException("crypto_box_keypair: failed with result " + rc);
         }
-        PublicKey pk = new PublicKey(publicKey);
+        PublicKey pk = new PublicKey(publicKey, publicKeyLength);
         publicKey = null;
-        SecretKey sk = new SecretKey(secretKey);
+        SecretKey sk = new SecretKey(secretKey, secretKeyLength);
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
@@ -404,6 +467,23 @@ public final class Box implements AutoCloseable {
     public SecretKey secretKey() {
       return secretKey;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof KeyPair)) {
+        return false;
+      }
+      KeyPair other = (KeyPair) obj;
+      return this.publicKey.equals(other.publicKey) && this.secretKey.equals(other.secretKey);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(publicKey, secretKey);
+    }
   }
 
   /**
@@ -411,9 +491,11 @@ public final class Box implements AutoCloseable {
    */
   public static final class Nonce {
     private final Pointer ptr;
+    private final int length;
 
-    private Nonce(Pointer ptr) {
+    private Nonce(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -483,7 +565,24 @@ public final class Box implements AutoCloseable {
      * @return A new {@link Nonce}.
      */
     public Nonce increment() {
-      return Sodium.dupAndIncrement(ptr, length(), Nonce::new);
+      return Sodium.dupAndIncrement(ptr, length, Nonce::new);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Nonce)) {
+        return false;
+      }
+      Nonce other = (Nonce) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
     }
 
     /**
@@ -497,7 +596,7 @@ public final class Box implements AutoCloseable {
      * @return The bytes of this nonce.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 

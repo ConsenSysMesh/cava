@@ -97,9 +97,11 @@ public final class XChaCha20Poly1305 {
    */
   public static final class Key {
     private final Pointer ptr;
+    private final int length;
 
-    private Key(Pointer ptr) {
+    private Key(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -168,11 +170,28 @@ public final class XChaCha20Poly1305 {
         // When support for 10.0.11 is dropped, use this instead
         //Sodium.crypto_aead_xchacha20poly1305_ietf_keygen(ptr);
         Sodium.randombytes_buf(ptr, length);
-        return new Key(ptr);
+        return new Key(ptr, length);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
         throw e;
       }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Key)) {
+        return false;
+      }
+      Key other = (Key) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
     }
 
     /**
@@ -186,7 +205,7 @@ public final class XChaCha20Poly1305 {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -195,9 +214,11 @@ public final class XChaCha20Poly1305 {
    */
   public static final class Nonce {
     private final Pointer ptr;
+    private final int length;
 
-    private Nonce(Pointer ptr) {
+    private Nonce(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -273,7 +294,24 @@ public final class XChaCha20Poly1305 {
      * @return A new {@link Nonce}.
      */
     public Nonce increment() {
-      return Sodium.dupAndIncrement(ptr, length(), Nonce::new);
+      return Sodium.dupAndIncrement(ptr, length, Nonce::new);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Nonce)) {
+        return false;
+      }
+      Nonce other = (Nonce) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
     }
 
     /**
@@ -287,7 +325,7 @@ public final class XChaCha20Poly1305 {
      * @return The bytes of this nonce.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 

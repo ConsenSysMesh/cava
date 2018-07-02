@@ -60,9 +60,11 @@ public final class KeyDerivation {
    */
   public static final class MasterKey {
     private final Pointer ptr;
+    private final int length;
 
-    private MasterKey(Pointer ptr) {
+    private MasterKey(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -131,25 +133,11 @@ public final class KeyDerivation {
         // When support for 10.0.11 is dropped, use this instead
         //Sodium.crypto_kdf_keygen(ptr);
         Sodium.randombytes_buf(ptr, length);
-        return new MasterKey(ptr);
+        return new MasterKey(ptr, length);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
         throw e;
       }
-    }
-
-    /**
-     * @return The bytes of this key.
-     */
-    public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
-    }
-
-    /**
-     * @return The bytes of this key.
-     */
-    public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
     }
 
     /**
@@ -220,6 +208,37 @@ public final class KeyDerivation {
       }
 
       return deriveKeyArray(length, subkeyId, ctx);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof MasterKey)) {
+        return false;
+      }
+      MasterKey other = (MasterKey) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
+    /**
+     * @return The bytes of this key.
+     */
+    public Bytes bytes() {
+      return Bytes.wrap(bytesArray());
+    }
+
+    /**
+     * @return The bytes of this key.
+     */
+    public byte[] bytesArray() {
+      return Sodium.reify(ptr, length);
     }
   }
 

@@ -54,9 +54,11 @@ public final class Auth {
    */
   public static final class Key {
     private final Pointer ptr;
+    private final int length;
 
-    private Key(Pointer ptr) {
+    private Key(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -119,11 +121,28 @@ public final class Auth {
         // When support for 10.0.11 is dropped, use this instead
         //Sodium.crypto_auth_keygen(ptr);
         Sodium.randombytes_buf(ptr, length);
-        return new Key(ptr);
+        return new Key(ptr, length);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
         throw e;
       }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Key)) {
+        return false;
+      }
+      Key other = (Key) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
     }
 
     /**
@@ -137,7 +156,7 @@ public final class Auth {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 

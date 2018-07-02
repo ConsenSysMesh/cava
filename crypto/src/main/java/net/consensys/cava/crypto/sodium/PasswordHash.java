@@ -76,9 +76,11 @@ public final class PasswordHash {
    */
   public static final class Salt {
     private final Pointer ptr;
+    private final int length;
 
-    private Salt(Pointer ptr) {
+    private Salt(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -138,6 +140,23 @@ public final class PasswordHash {
       return Sodium.randomBytes(length(), Salt::new);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Salt)) {
+        return false;
+      }
+      Salt other = (Salt) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this salt.
      */
@@ -149,7 +168,7 @@ public final class PasswordHash {
      * @return The bytes of this salt.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 

@@ -17,7 +17,6 @@ import static java.util.Objects.requireNonNull;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.BiFunction;
-import java.util.function.Function;
 import javax.annotation.Nullable;
 
 import jnr.ffi.LibraryLoader;
@@ -226,7 +225,7 @@ public final class Sodium {
     return ptr;
   }
 
-  static Pointer dup(Pointer src, long length) {
+  static Pointer dup(Pointer src, int length) {
     Pointer ptr = malloc(length);
     try {
       ptr.transferFrom(0, src, 0, length);
@@ -237,17 +236,7 @@ public final class Sodium {
     }
   }
 
-  static <T> T dup(Pointer src, long length, Function<Pointer, T> ctr) {
-    Pointer ptr = Sodium.dup(src, length);
-    try {
-      return ctr.apply(ptr);
-    } catch (Throwable e) {
-      sodium_free(ptr);
-      throw e;
-    }
-  }
-
-  static Pointer dupAndIncrement(Pointer src, long length) {
+  static Pointer dupAndIncrement(Pointer src, int length) {
     Pointer ptr = dup(src, length);
     try {
       sodium_increment(ptr, length);
@@ -258,10 +247,10 @@ public final class Sodium {
     }
   }
 
-  static <T> T dupAndIncrement(Pointer src, long length, Function<Pointer, T> ctr) {
+  static <T> T dupAndIncrement(Pointer src, int length, BiFunction<Pointer, Integer, T> ctr) {
     Pointer ptr = Sodium.dupAndIncrement(src, length);
     try {
-      return ctr.apply(ptr);
+      return ctr.apply(ptr, length);
     } catch (Throwable e) {
       sodium_free(ptr);
       throw e;
@@ -279,10 +268,10 @@ public final class Sodium {
     }
   }
 
-  static <T> T dup(byte[] bytes, Function<Pointer, T> ctr) {
+  static <T> T dup(byte[] bytes, BiFunction<Pointer, Integer, T> ctr) {
     Pointer ptr = Sodium.dup(bytes);
     try {
-      return ctr.apply(ptr);
+      return ctr.apply(ptr, bytes.length);
     } catch (Throwable e) {
       sodium_free(ptr);
       throw e;
@@ -306,14 +295,22 @@ public final class Sodium {
     }
   }
 
-  static <T> T randomBytes(int length, Function<Pointer, T> ctr) {
+  static <T> T randomBytes(int length, BiFunction<Pointer, Integer, T> ctr) {
     Pointer ptr = Sodium.randomBytes(length);
     try {
-      return ctr.apply(ptr);
+      return ctr.apply(ptr, length);
     } catch (Throwable e) {
       sodium_free(ptr);
       throw e;
     }
+  }
+
+  static int hashCode(Pointer ptr, int length) {
+    int result = 1;
+    for (int i = 0; i < length; ++i) {
+      result = 31 * result + ((int) ptr.getByte(i));
+    }
+    return result;
   }
 
   static <T> T scalarMultBase(Pointer src, long length, BiFunction<Pointer, Long, T> ctr) {

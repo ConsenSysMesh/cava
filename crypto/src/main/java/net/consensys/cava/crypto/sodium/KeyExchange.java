@@ -14,6 +14,8 @@ package net.consensys.cava.crypto.sodium;
 
 import net.consensys.cava.bytes.Bytes;
 
+import java.util.Objects;
+
 import jnr.ffi.Pointer;
 
 /**
@@ -29,9 +31,11 @@ public final class KeyExchange {
    */
   public static final class PublicKey {
     private final Pointer ptr;
+    private final int length;
 
-    private PublicKey(Pointer ptr) {
+    private PublicKey(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -82,6 +86,23 @@ public final class KeyExchange {
       return (int) keybytes;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof PublicKey)) {
+        return false;
+      }
+      PublicKey other = (PublicKey) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this key.
      */
@@ -93,7 +114,7 @@ public final class KeyExchange {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -102,9 +123,11 @@ public final class KeyExchange {
    */
   public static final class SecretKey {
     private final Pointer ptr;
+    private final int length;
 
-    private SecretKey(Pointer ptr) {
+    private SecretKey(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -155,6 +178,23 @@ public final class KeyExchange {
       return (int) keybytes;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof SecretKey)) {
+        return false;
+      }
+      SecretKey other = (SecretKey) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this key.
      */
@@ -166,7 +206,7 @@ public final class KeyExchange {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -175,9 +215,11 @@ public final class KeyExchange {
    */
   public static final class Seed {
     private final Pointer ptr;
+    private final int length;
 
-    private Seed(Pointer ptr) {
+    private Seed(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -237,6 +279,23 @@ public final class KeyExchange {
       return Sodium.randomBytes(length(), Seed::new);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof Seed)) {
+        return false;
+      }
+      Seed other = (Seed) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this seed.
      */
@@ -248,7 +307,7 @@ public final class KeyExchange {
      * @return The bytes of this seed.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -279,11 +338,12 @@ public final class KeyExchange {
      */
     public static KeyPair forSecretKey(SecretKey secretKey) {
       return Sodium.scalarMultBase(secretKey.ptr, SecretKey.length(), (ptr, len) -> {
-        if (len != PublicKey.length()) {
+        int publicKeyLength = PublicKey.length();
+        if (len != publicKeyLength) {
           throw new IllegalStateException(
-              "Public key length " + PublicKey.length() + " is not same as generated key length " + len);
+              "Public key length " + publicKeyLength + " is not same as generated key length " + len);
         }
-        return new KeyPair(new PublicKey(ptr), secretKey);
+        return new KeyPair(new PublicKey(ptr, publicKeyLength), secretKey);
       });
     }
 
@@ -293,17 +353,19 @@ public final class KeyExchange {
      * @return A randomly generated key pair.
      */
     public static KeyPair random() {
-      Pointer publicKey = Sodium.malloc(PublicKey.length());
+      int publicKeyLength = PublicKey.length();
+      Pointer publicKey = Sodium.malloc(publicKeyLength);
       Pointer secretKey = null;
       try {
-        secretKey = Sodium.malloc(SecretKey.length());
+        int secretKeyLength = SecretKey.length();
+        secretKey = Sodium.malloc(secretKeyLength);
         int rc = Sodium.crypto_kx_keypair(publicKey, secretKey);
         if (rc != 0) {
           throw new SodiumException("crypto_kx_keypair: failed with result " + rc);
         }
-        PublicKey pk = new PublicKey(publicKey);
+        PublicKey pk = new PublicKey(publicKey, publicKeyLength);
         publicKey = null;
-        SecretKey sk = new SecretKey(secretKey);
+        SecretKey sk = new SecretKey(secretKey, secretKeyLength);
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
@@ -324,17 +386,19 @@ public final class KeyExchange {
      * @return The generated key pair.
      */
     public static KeyPair fromSeed(Seed seed) {
-      Pointer publicKey = Sodium.malloc(PublicKey.length());
+      int publicKeyLength = PublicKey.length();
+      Pointer publicKey = Sodium.malloc(publicKeyLength);
       Pointer secretKey = null;
       try {
-        secretKey = Sodium.malloc(SecretKey.length());
+        int secretKeyLength = SecretKey.length();
+        secretKey = Sodium.malloc(secretKeyLength);
         int rc = Sodium.crypto_kx_seed_keypair(publicKey, secretKey, seed.ptr);
         if (rc != 0) {
           throw new SodiumException("crypto_kx_seed_keypair: failed with result " + rc);
         }
-        PublicKey pk = new PublicKey(publicKey);
+        PublicKey pk = new PublicKey(publicKey, publicKeyLength);
         publicKey = null;
-        SecretKey sk = new SecretKey(secretKey);
+        SecretKey sk = new SecretKey(secretKey, secretKeyLength);
         secretKey = null;
         return new KeyPair(pk, sk);
       } catch (Throwable e) {
@@ -361,6 +425,23 @@ public final class KeyExchange {
     public SecretKey secretKey() {
       return secretKey;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof KeyPair)) {
+        return false;
+      }
+      KeyPair other = (KeyPair) obj;
+      return this.publicKey.equals(other.publicKey) && this.secretKey.equals(other.secretKey);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(publicKey, secretKey);
+    }
   }
 
   /**
@@ -368,9 +449,11 @@ public final class KeyExchange {
    */
   public static final class SessionKey {
     private final Pointer ptr;
+    private final int length;
 
-    private SessionKey(Pointer ptr) {
+    private SessionKey(Pointer ptr, int length) {
       this.ptr = ptr;
+      this.length = length;
     }
 
     @Override
@@ -379,7 +462,7 @@ public final class KeyExchange {
     }
 
     /**
-     * Create a {@link PublicKey} from an array of bytes.
+     * Create a {@link SessionKey} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -387,7 +470,7 @@ public final class KeyExchange {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey fromBytes(Bytes bytes) {
+    public static SessionKey fromBytes(Bytes bytes) {
       return fromBytes(bytes.toArrayUnsafe());
     }
 
@@ -400,12 +483,12 @@ public final class KeyExchange {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static PublicKey fromBytes(byte[] bytes) {
+    public static SessionKey fromBytes(byte[] bytes) {
       if (bytes.length != Sodium.crypto_kx_sessionkeybytes()) {
         throw new IllegalArgumentException(
             "key must be " + Sodium.crypto_kx_sessionkeybytes() + " bytes, got " + bytes.length);
       }
-      return Sodium.dup(bytes, PublicKey::new);
+      return Sodium.dup(bytes, SessionKey::new);
     }
 
     /**
@@ -421,6 +504,23 @@ public final class KeyExchange {
       return (int) keybytes;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof SessionKey)) {
+        return false;
+      }
+      SessionKey other = (SessionKey) obj;
+      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+    }
+
+    @Override
+    public int hashCode() {
+      return Sodium.hashCode(ptr, length);
+    }
+
     /**
      * @return The bytes of this key.
      */
@@ -432,7 +532,7 @@ public final class KeyExchange {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length());
+      return Sodium.reify(ptr, length);
     }
   }
 
@@ -440,7 +540,6 @@ public final class KeyExchange {
    * A KeyExchange session key pair.
    */
   public static final class SessionKeyPair {
-
     private final SessionKey rxKey;
     private final SessionKey txKey;
 
@@ -464,6 +563,23 @@ public final class KeyExchange {
     public SessionKey tx() {
       return txKey;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+      if (obj == this) {
+        return true;
+      }
+      if (!(obj instanceof SessionKeyPair)) {
+        return false;
+      }
+      SessionKeyPair other = (SessionKeyPair) obj;
+      return this.rxKey.equals(other.rxKey) && this.txKey.equals(other.txKey);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(rxKey, txKey);
+    }
   }
 
   /**
@@ -475,6 +591,9 @@ public final class KeyExchange {
    */
   public static SessionKeyPair client(KeyPair clientKeys, PublicKey serverKey) {
     long sessionkeybytes = Sodium.crypto_kx_sessionkeybytes();
+    if (sessionkeybytes > Integer.MAX_VALUE) {
+      throw new SodiumException("crypto_kx_sessionkeybytes: " + sessionkeybytes + " is too large");
+    }
     Pointer rxPtr = null;
     Pointer txPtr = null;
     try {
@@ -489,9 +608,9 @@ public final class KeyExchange {
       if (rc != 0) {
         throw new SodiumException("crypto_kx_client_session_keys: failed with result " + rc);
       }
-      SessionKey rxKey = new SessionKey(rxPtr);
+      SessionKey rxKey = new SessionKey(rxPtr, (int) sessionkeybytes);
       rxPtr = null;
-      SessionKey txKey = new SessionKey(txPtr);
+      SessionKey txKey = new SessionKey(txPtr, (int) sessionkeybytes);
       txPtr = null;
       return new SessionKeyPair(rxKey, txKey);
     } catch (Throwable e) {
@@ -514,6 +633,9 @@ public final class KeyExchange {
    */
   public static SessionKeyPair server(KeyPair serverKeys, PublicKey clientKey) {
     long sessionkeybytes = Sodium.crypto_kx_sessionkeybytes();
+    if (sessionkeybytes > Integer.MAX_VALUE) {
+      throw new SodiumException("crypto_kx_sessionkeybytes: " + sessionkeybytes + " is too large");
+    }
     Pointer rxPtr = null;
     Pointer txPtr = null;
     try {
@@ -528,9 +650,9 @@ public final class KeyExchange {
       if (rc != 0) {
         throw new SodiumException("crypto_kx_client_session_keys: failed with result " + rc);
       }
-      SessionKey rxKey = new SessionKey(rxPtr);
+      SessionKey rxKey = new SessionKey(rxPtr, (int) sessionkeybytes);
       rxPtr = null;
-      SessionKey txKey = new SessionKey(txPtr);
+      SessionKey txKey = new SessionKey(txPtr, (int) sessionkeybytes);
       txPtr = null;
       return new SessionKeyPair(rxKey, txKey);
     } catch (Throwable e) {
