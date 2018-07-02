@@ -145,9 +145,9 @@ public final class AES256GCM implements AutoCloseable {
       int length = length();
       Pointer ptr = Sodium.malloc(length);
       try {
-        Sodium.randombytes_buf(ptr, length);
         // When support for 10.0.11 is dropped, use this instead
         //Sodium.crypto_aead_aes256gcm_keygen(ptr);
+        Sodium.randombytes_buf(ptr, length);
         return new Key(ptr);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);

@@ -117,9 +117,9 @@ public final class SecretBox {
       int length = length();
       Pointer ptr = Sodium.malloc(length);
       try {
-        Sodium.randombytes_buf(ptr, length);
         // When support for 10.0.11 is dropped, use this instead
         //Sodium.crypto_secretbox_keygen(ptr);
+        Sodium.randombytes_buf(ptr, length);
         return new Key(ptr);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);

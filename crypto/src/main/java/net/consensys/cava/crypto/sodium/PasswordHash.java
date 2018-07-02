@@ -532,34 +532,41 @@ public final class PasswordHash {
    * @return The minimum hash length (16).
    */
   public static int minHashLength() {
-    // When support for 10.0.11 is dropped, use this instead
-    //long len = Sodium.crypto_pwhash_bytes_min();
-    //if (len > Integer.MAX_VALUE) {
-    //  throw new IllegalStateException("crypto_pwhash_bytes_min: " + len + " is too large");
-    //}
-    //return (int) len;
-    return 16;
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      return 16;
+    }
+    long len = Sodium.crypto_pwhash_bytes_min();
+    if (len > Integer.MAX_VALUE) {
+      throw new IllegalStateException("crypto_pwhash_bytes_min: " + len + " is too large");
+    }
+    return (int) len;
   }
 
   /**
    * @return The maximum hash length.
    */
   public static int maxHashLength() {
-    // When support for 10.0.11 is dropped, use this instead
-    //long len = Sodium.crypto_pwhash_bytes_max();
-    //if (len > Integer.MAX_VALUE) {
-    //  return Integer.MAX_VALUE;
-    //}
-    //return (int) len;
-    return Integer.MAX_VALUE;
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      return Integer.MAX_VALUE;
+    }
+    long len = Sodium.crypto_pwhash_bytes_max();
+    if (len > Integer.MAX_VALUE) {
+      return Integer.MAX_VALUE;
+    }
+    return (int) len;
   }
 
   private static void assertHashLength(int length) {
-    // When support for 10.0.11 is dropped, use this instead
-    //if (length < Sodium.crypto_pwhash_bytes_min() || length > Sodium.crypto_pwhash_bytes_max()) {
-    //  throw new IllegalArgumentException("length out of range");
-    //}
-    if (length < 16) {
+    // When support for 10.0.11 is dropped, remove this
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_12)) {
+      if (length < 16) {
+        throw new IllegalArgumentException("length out of range");
+      }
+      return;
+    }
+    if (length < Sodium.crypto_pwhash_bytes_min() || length > Sodium.crypto_pwhash_bytes_max()) {
       throw new IllegalArgumentException("length out of range");
     }
   }

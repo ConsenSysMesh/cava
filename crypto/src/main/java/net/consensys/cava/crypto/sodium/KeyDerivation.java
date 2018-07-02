@@ -128,9 +128,9 @@ public final class KeyDerivation {
       int length = length();
       Pointer ptr = Sodium.malloc(length);
       try {
-        Sodium.randombytes_buf(ptr, length);
-        // TODO: When support for 10.0.11 is dropped, use this instead
+        // When support for 10.0.11 is dropped, use this instead
         //Sodium.crypto_kdf_keygen(ptr);
+        Sodium.randombytes_buf(ptr, length);
         return new MasterKey(ptr);
       } catch (Throwable e) {
         Sodium.sodium_free(ptr);
