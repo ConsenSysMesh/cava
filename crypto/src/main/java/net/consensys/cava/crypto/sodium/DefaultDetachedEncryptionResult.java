@@ -19,7 +19,7 @@ final class DefaultDetachedEncryptionResult implements DetachedEncryptionResult 
   private final byte[] cipherText;
   private final byte[] mac;
 
-  public DefaultDetachedEncryptionResult(byte[] cipherText, byte[] mac) {
+  DefaultDetachedEncryptionResult(byte[] cipherText, byte[] mac) {
     this.cipherText = cipherText;
     this.mac = mac;
   }

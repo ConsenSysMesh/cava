@@ -25,7 +25,7 @@ class SodiumTest {
 
   @BeforeAll
   static void checkSodium() {
-    assumeTrue(Sodium.isAvailable());
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
   }
 
   @Test

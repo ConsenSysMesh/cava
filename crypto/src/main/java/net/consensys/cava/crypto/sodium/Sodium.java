@@ -35,21 +35,50 @@ import jnr.ffi.byref.LongLongByReference;
 public final class Sodium {
   private Sodium() {}
 
-  private static final int SUPPORTED_MAJOR_VERSION = 10;
-  private static final int SUPPORTED_MIN_MINOR_VERSION = 1;
+  static final SodiumVersion VERSION_10_0_11 = new SodiumVersion(9, 3, "10.0.11");
+  static final SodiumVersion VERSION_10_0_12 = new SodiumVersion(9, 4, "10.0.12");
+  static final SodiumVersion VERSION_10_0_13 = new SodiumVersion(9, 5, "10.0.13");
+  static final SodiumVersion VERSION_10_0_14 = new SodiumVersion(9, 6, "10.0.14");
+  static final SodiumVersion VERSION_10_0_15 = new SodiumVersion(10, 0, "10.0.15");
+  static final SodiumVersion VERSION_10_0_16 = new SodiumVersion(10, 1, "10.0.16");
 
   /**
-   * @return The major version of the sodium native library that this binding is based on.
+   * The minimum version of the sodium native library that this binding supports.
+   *
+   * @return The minimum version of the sodium native library that this binding supports.
    */
-  public static int supportedMajorVersion() {
-    return SUPPORTED_MAJOR_VERSION;
+  public static SodiumVersion minSupportedVersion() {
+    return VERSION_10_0_11;
   }
 
   /**
-   * @return The minor version of the sodium native library that this binding is based on.
+   * The version of the loaded sodium native library.
+   *
+   * @return The version of the loaded sodium library.
    */
-  public static int supportedMinMinorVersion() {
-    return SUPPORTED_MIN_MINOR_VERSION;
+  public static SodiumVersion version() {
+    return version(libSodium());
+  }
+
+  private static SodiumVersion version(LibSodium lib) {
+    return new SodiumVersion(
+        lib.sodium_library_version_major(),
+        lib.sodium_library_version_minor(),
+        lib.sodium_version_string());
+  }
+
+  /**
+   * Check if the loaded sodium native library is the same or later than the specified version.
+   *
+   * @param requiredVersion The version to compare to.
+   * @return <tt>true</tt> if the loaded sodium native library is the same or a later version.
+   */
+  public static boolean supportsVersion(SodiumVersion requiredVersion) {
+    return supportsVersion(requiredVersion, libSodium());
+  }
+
+  private static boolean supportsVersion(SodiumVersion requiredVersion, LibSodium lib) {
+    return version(lib).compareTo(requiredVersion) >= 0;
   }
 
   private static final String LIBRARY_NAME;
@@ -157,9 +186,13 @@ public final class Sodium {
   }
 
   private static LibSodium initializeLibrary(LibSodium lib) {
-    if (SUPPORTED_MAJOR_VERSION != lib.sodium_library_version_major()
-        || SUPPORTED_MIN_MINOR_VERSION > lib.sodium_library_version_minor()) {
-      throw new LinkageError("Unsupported libsodium version " + lib.sodium_version_string());
+    if (!supportsVersion(minSupportedVersion(), lib)) {
+      throw new LinkageError(
+          String.format(
+              "Unsupported libsodium version %s (%s:%s)",
+              lib.sodium_version_string(),
+              lib.sodium_library_version_major(),
+              lib.sodium_library_version_minor()));
     }
     int result = lib.sodium_init();
     if (result == -1) {

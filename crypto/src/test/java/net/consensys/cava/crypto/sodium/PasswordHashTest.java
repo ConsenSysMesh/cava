@@ -31,7 +31,7 @@ class PasswordHashTest {
 
   @BeforeAll
   static void checkAvailable() {
-    assumeTrue(Sodium.isAvailable());
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
   }
 
   @Test
@@ -83,8 +83,8 @@ class PasswordHashTest {
           "A very insecure password",
           20,
           Salt.random(),
-          PasswordHash.interactiveOpsLimit(),
-          PasswordHash.interactiveMemLimit(),
+          1,
+          PasswordHash.moderateMemLimit(),
           Algorithm.argon2i13());
     });
   }
@@ -103,8 +103,14 @@ class PasswordHashTest {
     result = PasswordHash.verifyInteractive(hash, "Bad password");
     assertEquals(VerificationResult.FAILED, result);
     assertFalse(result.passed());
+  }
 
-    result = PasswordHash.verify(hash, password);
+  @Test
+  void checkHashAndVerifyNeedingRehash() {
+    assumeTrue(Sodium.supportsVersion(Sodium.VERSION_10_0_14), "Requires sodium native library >= 10.0.14");
+    String password = "A very insecure password";
+    String hash = PasswordHash.hashInteractive(password);
+    VerificationResult result = PasswordHash.verify(hash, password);
     assertEquals(VerificationResult.NEEDS_REHASH, result);
     assertTrue(result.passed());
   }

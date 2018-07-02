@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -25,17 +26,18 @@ class KeyDerivationTest {
 
   @BeforeAll
   static void checkAvailable() {
-    assumeTrue(Sodium.isAvailable());
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+    assumeTrue(KeyDerivation.isAvailable(), "KeyDerivation support is not available (requires >= 10.0.12");
   }
 
   @Test
   void differentIdsShouldGenerateDifferentKeys() {
-    KeyDerivation.Key masterKey = KeyDerivation.Key.random();
+    MasterKey masterKey = MasterKey.random();
 
-    Bytes subKey1 = KeyDerivation.deriveKey(40, 1, "abcdefg", masterKey);
-    assertEquals(subKey1, KeyDerivation.deriveKey(40, 1, "abcdefg", masterKey));
+    Bytes subKey1 = masterKey.deriveKey(40, 1, "abcdefg");
+    assertEquals(subKey1, masterKey.deriveKey(40, 1, "abcdefg"));
 
-    assertNotEquals(subKey1, KeyDerivation.deriveKey(40, 2, "abcdefg", masterKey));
-    assertNotEquals(subKey1, KeyDerivation.deriveKey(40, 1, new byte[KeyDerivation.contextLength()], masterKey));
+    assertNotEquals(subKey1, masterKey.deriveKey(40, 2, "abcdefg"));
+    assertNotEquals(subKey1, masterKey.deriveKey(40, 1, new byte[KeyDerivation.contextLength()]));
   }
 }

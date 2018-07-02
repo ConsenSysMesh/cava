@@ -27,7 +27,8 @@ class XChaCha20Poly1305Test {
 
   @BeforeAll
   static void checkAvailable() {
-    assumeTrue(Sodium.isAvailable());
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+    assumeTrue(XChaCha20Poly1305.isAvailable(), "XChaCha20Poly1305 support is not available (requires >= 10.0.12");
   }
 
   @Test
@@ -68,6 +69,8 @@ class XChaCha20Poly1305Test {
 
   @Test
   void checkStreamEncryptDecrypt() {
+    assumeTrue(XChaCha20Poly1305.isSecretStreamAvailable());
+
     XChaCha20Poly1305.Key key = XChaCha20Poly1305.Key.random();
 
     byte[] message1 = "This is the first message".getBytes(UTF_8);
