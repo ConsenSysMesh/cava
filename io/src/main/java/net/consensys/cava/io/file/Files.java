@@ -23,11 +23,13 @@ import static java.util.Objects.requireNonNull;
 import net.consensys.cava.io.IOConsumer;
 
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -83,34 +85,36 @@ public final class Files {
   }
 
   /**
-   * Copies all characters from a file to an writer.
+   * Copies the content of a resource to a file.
    *
-   * @param source The source file.
-   * @param out The output writer.
-   * @return The total characters written.
+   * @param resourceName The resource name.
+   * @param destination The destination file.
+   * @param options Options specifying how the destination file should be opened.
+   * @return The destination file.
    * @throws IOException If an I/O error occurs.
    */
-  public static long copy(Path source, Writer out) throws IOException {
-    return copy(source, out, UTF_8);
+  public static Path copyResource(String resourceName, Path destination, OpenOption... options) throws IOException {
+    requireNonNull(resourceName);
+    requireNonNull(destination);
+
+    try (OutputStream out = java.nio.file.Files.newOutputStream(destination, options)) {
+      copyResource(resourceName, out);
+    }
+    return destination;
   }
 
   /**
-   * Copies all characters from a file to an writer.
+   * Copies the content of a resource to an output stream.
    *
-   * @param source The source file.
-   * @param out The output writer.
-   * @param charset The charset of the source file.
-   * @return The total characters written.
+   * @param resourceName The resource name.
+   * @param out The output stream.
+   * @return The total bytes written.
    * @throws IOException If an I/O error occurs.
    */
-  public static long copy(Path source, Writer out, Charset charset) throws IOException {
-    requireNonNull(source);
-    requireNonNull(out);
-    requireNonNull(charset);
-
-    try (Reader in = java.nio.file.Files.newBufferedReader(source, charset)) {
+  public static long copyResource(String resourceName, OutputStream out) throws IOException {
+    try (InputStream in = Files.class.getClassLoader().getResourceAsStream(resourceName)) {
       long total = 0L;
-      char[] buf = new char[4096];
+      byte[] buf = new byte[4096];
       int n;
       while ((n = in.read(buf)) > 0) {
         out.write(buf, 0, n);

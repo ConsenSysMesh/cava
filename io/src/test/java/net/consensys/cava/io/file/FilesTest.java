@@ -12,15 +12,22 @@
  */
 package net.consensys.cava.io.file;
 
+import static net.consensys.cava.io.file.Files.copyResource;
 import static net.consensys.cava.io.file.Files.deleteRecursively;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import net.consensys.cava.junit.TempDirectory;
+import net.consensys.cava.junit.TempDirectoryExtension;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
+@ExtendWith(TempDirectoryExtension.class)
 class FilesTest {
 
   @Test
@@ -45,5 +52,12 @@ class FilesTest {
     assertFalse(Files.exists(testData));
     assertFalse(Files.exists(testDir));
     assertFalse(Files.exists(testData2));
+  }
+
+  @Test
+  void canCopyResources(@TempDirectory Path tempDir) throws Exception {
+    Path file = copyResource("net/consensys/cava/io/file/test.txt", tempDir.resolve("test.txt"));
+    assertTrue(Files.exists(file));
+    assertEquals(81, Files.size(file));
   }
 }
