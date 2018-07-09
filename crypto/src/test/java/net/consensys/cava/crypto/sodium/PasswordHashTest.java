@@ -94,13 +94,13 @@ class PasswordHashTest {
     String password = "A very insecure password";
 
     String hash = PasswordHash.hashInteractive(password);
-    assertTrue(PasswordHash.verifyOnly(hash, password));
-    VerificationResult result = PasswordHash.verifyInteractive(hash, password);
+    assertTrue(PasswordHash.verify(hash, password));
+    VerificationResult result = PasswordHash.checkHashForInteractive(hash, password);
     assertEquals(VerificationResult.PASSED, result);
     assertTrue(result.passed());
 
-    assertFalse(PasswordHash.verifyOnly(hash, "Bad password"));
-    result = PasswordHash.verifyInteractive(hash, "Bad password");
+    assertFalse(PasswordHash.verify(hash, "Bad password"));
+    result = PasswordHash.checkHashForInteractive(hash, "Bad password");
     assertEquals(VerificationResult.FAILED, result);
     assertFalse(result.passed());
   }
@@ -110,7 +110,8 @@ class PasswordHashTest {
     assumeTrue(Sodium.supportsVersion(Sodium.VERSION_10_0_14), "Requires sodium native library >= 10.0.14");
     String password = "A very insecure password";
     String hash = PasswordHash.hashInteractive(password);
-    VerificationResult result = PasswordHash.verify(hash, password);
+    assertTrue(PasswordHash.needsRehash(hash));
+    VerificationResult result = PasswordHash.checkHash(hash, password);
     assertEquals(VerificationResult.NEEDS_REHASH, result);
     assertTrue(result.passed());
   }

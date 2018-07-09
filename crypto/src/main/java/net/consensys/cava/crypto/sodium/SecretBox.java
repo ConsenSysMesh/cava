@@ -644,6 +644,8 @@ public final class SecretBox {
    *        {@link PasswordHash#maxMemLimit()}.
    * @param algorithm The algorithm to use.
    * @return The encrypted data.
+   * @throws UnsupportedOperationException If the specified algorithm is not supported by the currently loaded sodium
+   *         native library.
    */
   public static byte[] encrypt(
       byte[] message,
@@ -651,6 +653,11 @@ public final class SecretBox {
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    if (!algorithm.isSupported()) {
+      throw new UnsupportedOperationException(
+          algorithm.name() + " is not supported by the currently loaded sodium native library");
+    }
+
     int macLength = macLength();
 
     Nonce nonce = Nonce.random();
@@ -1185,6 +1192,8 @@ public final class SecretBox {
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
    * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @throws UnsupportedOperationException If the specified algorithm is not supported by the currently loaded sodium
+   *         native library.
    */
   @Nullable
   public static byte[] decrypt(
@@ -1193,6 +1202,11 @@ public final class SecretBox {
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    if (!algorithm.isSupported()) {
+      throw new UnsupportedOperationException(
+          algorithm.name() + " is not supported by the currently loaded sodium native library");
+    }
+
     int noncebytes = Nonce.length();
     int macLength = macLength();
     if ((noncebytes + macLength) > cipherText.length) {

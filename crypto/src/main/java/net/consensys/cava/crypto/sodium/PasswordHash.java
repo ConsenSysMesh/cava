@@ -16,6 +16,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import net.consensys.cava.bytes.Bytes;
 
+import javax.annotation.Nullable;
+
 import jnr.ffi.Pointer;
 
 // Documentation copied under the ISC License, from
@@ -124,11 +126,11 @@ public final class PasswordHash {
      * @return The length of the salt in bytes (32).
      */
     public static int length() {
-      long saltbytes = Sodium.crypto_pwhash_saltbytes();
-      if (saltbytes > Integer.MAX_VALUE) {
-        throw new SodiumException("crypto_pwhash_saltbytes: " + saltbytes + " is too large");
+      long saltLength = Sodium.crypto_pwhash_saltbytes();
+      if (saltLength > Integer.MAX_VALUE) {
+        throw new SodiumException("crypto_pwhash_saltbytes: " + saltLength + " is too large");
       }
-      return (int) saltbytes;
+      return (int) saltLength;
     }
 
     /**
@@ -177,39 +179,27 @@ public final class PasswordHash {
    */
   public static final class Algorithm {
 
-    private static Algorithm ARGON2I13;
-    private static Algorithm ARGON2ID13;
-    private static Algorithm RECOMMENDED;
-
-    static {
-      ARGON2I13 = new Algorithm("argon2i13", Sodium.crypto_pwhash_alg_argon2i13(), 3);
-      ARGON2ID13 = (Sodium.supportsVersion(Sodium.VERSION_10_0_13))
-          ? new Algorithm("argon2id13", Sodium.crypto_pwhash_alg_argon2id13(), 1)
-          : null;
-      if (Sodium.crypto_pwhash_alg_default() == ARGON2I13.id) {
-        RECOMMENDED = ARGON2I13;
-      } else if (ARGON2ID13 != null && Sodium.crypto_pwhash_alg_default() == ARGON2ID13.id) {
-        RECOMMENDED = ARGON2ID13;
-      } else {
-        throw new IllegalStateException("Unknown value from crypto_pwhash_alg_default");
-      }
-    }
+    private static Algorithm ARGON2I13 = new Algorithm("argon2i13", 1, 3, true);
+    private static Algorithm ARGON2ID13 =
+        new Algorithm("argon2id13", 2, 1, Sodium.supportsVersion(Sodium.VERSION_10_0_13));
 
     private final String name;
     private final int id;
     private final long minOps;
+    private final boolean supported;
 
-    private Algorithm(String name, int id, long minOps) {
+    private Algorithm(String name, int id, long minOps, boolean supported) {
       this.name = name;
       this.id = id;
       this.minOps = minOps;
+      this.supported = supported;
     }
 
     /**
      * @return The currently recommended algorithm.
      */
     public static Algorithm recommended() {
-      return RECOMMENDED;
+      return ARGON2ID13.isSupported() ? ARGON2ID13 : ARGON2I13;
     }
 
     /**
@@ -223,14 +213,29 @@ public final class PasswordHash {
      * @return Version 1.3 of the Argon2id algorithm.
      */
     public static Algorithm argon2id13() {
-      if (ARGON2ID13 == null) {
-        throw new UnsupportedOperationException("Sodium argon2id13 algorithm is not available");
-      }
       return ARGON2ID13;
+    }
+
+    @Nullable
+    static Algorithm fromId(int id) {
+      if (ARGON2ID13.id == id) {
+        return ARGON2ID13;
+      } else if (ARGON2I13.id == id) {
+        return ARGON2I13;
+      }
+      return null;
     }
 
     public String name() {
       return name;
+    }
+
+    int id() {
+      return id;
+    }
+
+    public boolean isSupported() {
+      return supported;
     }
 
     @Override
@@ -530,6 +535,9 @@ public final class PasswordHash {
    * @param memLimit The memory limit, which must be in the range {@link #minMemLimit()} to {@link #maxMemLimit()}.
    * @param algorithm The algorithm to use.
    * @return The derived key.
+   * @throws IllegalArgumentException If the opsLimit is too low for the specified algorithm.
+   * @throws UnsupportedOperationException If the specified algorithm is not supported by the currently loaded sodium
+   *         native library.
    */
   public static byte[] hash(byte[] password, int length, Salt salt, long opsLimit, long memLimit, Algorithm algorithm) {
     assertHashLength(length);
@@ -537,6 +545,10 @@ public final class PasswordHash {
     assertMemLimit(memLimit);
     if (opsLimit < algorithm.minOps) {
       throw new IllegalArgumentException("opsLimit " + opsLimit + " too low for specified algorithm");
+    }
+    if (!algorithm.isSupported()) {
+      throw new UnsupportedOperationException(
+          algorithm.name() + " is not supported by the currently loaded sodium native library");
     }
     byte[] out = new byte[length];
 
@@ -643,8 +655,8 @@ public final class PasswordHash {
 
     byte[] out = new byte[hashStringLength()];
 
-    byte[] pwbytes = password.getBytes(UTF_8);
-    int rc = Sodium.crypto_pwhash_str(out, pwbytes, pwbytes.length, opsLimit, memLimit);
+    byte[] pwBytes = password.getBytes(UTF_8);
+    int rc = Sodium.crypto_pwhash_str(out, pwBytes, pwBytes.length, opsLimit, memLimit);
     if (rc != 0) {
       throw new SodiumException("crypto_pwhash_str: failed with result " + rc);
     }
@@ -657,7 +669,45 @@ public final class PasswordHash {
   }
 
   /**
+   * Verify a password against a hash.
+   *
+   * @param hash The hash.
+   * @param password The password to verify.
+   * @return <tt>true</tt> if the password matches the hash.
+   */
+  public static boolean verify(String hash, String password) {
+    byte[] hashBytes = hash.getBytes(UTF_8);
+
+    int hashLength = hashStringLength();
+    if (hashBytes.length >= hashLength) {
+      return false;
+    }
+
+    Pointer str = Sodium.malloc(hashLength);
+    try {
+      str.put(0, hashBytes, 0, hashBytes.length);
+      str.putByte(hashBytes.length, (byte) 0);
+
+      byte[] pwBytes = password.getBytes(UTF_8);
+      return Sodium.crypto_pwhash_str_verify(str, pwBytes, pwBytes.length) == 0;
+    } finally {
+      Sodium.sodium_free(str);
+    }
+  }
+
+  private static void assertCheckRehashAvailable() {
+    if (!Sodium.supportsVersion(Sodium.VERSION_10_0_14)) {
+      throw new UnsupportedOperationException(
+          "Sodium re-hash checking is not available (requires sodium native library version >= 10.0.14)");
+    }
+  }
+
+  /**
    * A hash verification result.
+   *
+   * <p>
+   * Note: methods returning this result are only supported when the sodium native library version &gt;= 10.0.14 is
+   * available.
    */
   public enum VerificationResult {
     /** The hash verification failed. */
@@ -666,9 +716,6 @@ public final class PasswordHash {
     PASSED,
     /**
      * The hash verification passed, but the hash is out-of-date and should be regenerated.
-     *
-     * <p>
-     * Note: this is only supported by the sodium native library version &gt;= 10.0.14.
      */
     NEEDS_REHASH;
 
@@ -688,49 +735,61 @@ public final class PasswordHash {
   }
 
   /**
-   * Verify a password against a hash using limits on operations and memory that are suitable for most use-cases.
+   * Verify a password against a hash and check the hash is suitable for normal use-cases.
    *
    * <p>
    * Equivalent to {@code verify(hash, password, moderateOpsLimit(), moderateMemLimit())}.
    *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
+   *
    * @param hash The hash.
    * @param password The password to verify.
    * @return The result of verification.
    */
-  public static VerificationResult verify(String hash, String password) {
-    return verify(hash, password, moderateOpsLimit(), moderateMemLimit());
+  public static VerificationResult checkHash(String hash, String password) {
+    return checkHash(hash, password, moderateOpsLimit(), moderateMemLimit());
   }
 
   /**
-   * Verify a password against a hash using limits on operations and memory that are suitable for interactive use-cases.
+   * Verify a password against a hash and check the hash is suitable for interactive use-cases.
    *
    * <p>
    * Equivalent to {@code verify(hash, password, interactiveOpsLimit(), interactiveMemLimit())}.
    *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
+   *
    * @param hash The hash.
    * @param password The password to verify.
    * @return The result of verification.
    */
-  public static VerificationResult verifyInteractive(String hash, String password) {
-    return verify(hash, password, interactiveOpsLimit(), interactiveMemLimit());
+  public static VerificationResult checkHashForInteractive(String hash, String password) {
+    return checkHash(hash, password, interactiveOpsLimit(), interactiveMemLimit());
   }
 
   /**
-   * Verify a password against a hash using limits on operations and memory that are suitable for sensitive use-cases.
+   * Verify a password against a hash and check the hash is suitable for sensitive use-cases.
    *
    * <p>
    * Equivalent to {@code verify(hash, password, sensitiveOpsLimit(), sensitiveMemLimit())}.
    *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
+   *
    * @param hash The hash.
    * @param password The password to verify.
    * @return The result of verification.
    */
-  public static VerificationResult verifySensitive(String hash, String password) {
-    return verify(hash, password, sensitiveOpsLimit(), sensitiveMemLimit());
+  public static VerificationResult checkHashForSensitive(String hash, String password) {
+    return checkHash(hash, password, sensitiveOpsLimit(), sensitiveMemLimit());
   }
 
   /**
    * Verify a password against a hash.
+   *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
    *
    * @param hash The hash.
    * @param password The password to verify.
@@ -738,33 +797,29 @@ public final class PasswordHash {
    * @param memLimit The memory limit, which must be in the range {@link #minMemLimit()} to {@link #maxMemLimit()}.
    * @return The result of verification.
    */
-  public static VerificationResult verify(String hash, String password, long opsLimit, long memLimit) {
+  public static VerificationResult checkHash(String hash, String password, long opsLimit, long memLimit) {
+    assertCheckRehashAvailable();
     assertOpsLimit(opsLimit);
     assertMemLimit(memLimit);
 
     byte[] hashBytes = hash.getBytes(UTF_8);
 
-    int strbytes = hashStringLength();
-    if (hashBytes.length >= strbytes) {
-      throw new IllegalArgumentException("hash is too long");
+    int hashLength = hashStringLength();
+    if (hashBytes.length >= hashLength) {
+      return VerificationResult.FAILED;
     }
 
-    Pointer str = Sodium.malloc(strbytes);
+    Pointer str = Sodium.malloc(hashLength);
     try {
       str.put(0, hashBytes, 0, hashBytes.length);
       str.putByte(hashBytes.length, (byte) 0);
 
-      byte[] pwbytes = password.getBytes(UTF_8);
-      int rc = Sodium.crypto_pwhash_str_verify(str, pwbytes, pwbytes.length);
-      if (rc != 0) {
+      byte[] pwBytes = password.getBytes(UTF_8);
+      if (Sodium.crypto_pwhash_str_verify(str, pwBytes, pwBytes.length) != 0) {
         return VerificationResult.FAILED;
       }
 
-      if (!Sodium.supportsVersion(Sodium.VERSION_10_0_14)) {
-        return VerificationResult.PASSED;
-      }
-
-      rc = Sodium.crypto_pwhash_str_needs_rehash(str, opsLimit, memLimit);
+      int rc = Sodium.crypto_pwhash_str_needs_rehash(str, opsLimit, memLimit);
       if (rc < 0) {
         throw new SodiumException("crypto_pwhash_str_needs_rehash: failed with result " + rc);
       }
@@ -775,38 +830,13 @@ public final class PasswordHash {
   }
 
   /**
-   * Verify a password against a hash.
-   *
-   * @param hash The hash.
-   * @param password The password to verify.
-   * @return <tt>true</tt> if the password matches the hash.
-   */
-  public static boolean verifyOnly(String hash, String password) {
-    byte[] hashBytes = hash.getBytes(UTF_8);
-
-    int strbytes = hashStringLength();
-    if (hashBytes.length >= strbytes) {
-      throw new IllegalArgumentException("hash is too long");
-    }
-
-    Pointer str = Sodium.malloc(strbytes);
-    try {
-      str.put(0, hashBytes, 0, hashBytes.length);
-      str.putByte(hashBytes.length, (byte) 0);
-
-      byte[] pwbytes = password.getBytes(UTF_8);
-      int rc = Sodium.crypto_pwhash_str_verify(str, pwbytes, pwbytes.length);
-      return (rc == 0);
-    } finally {
-      Sodium.sodium_free(str);
-    }
-  }
-
-  /**
    * Check if a hash needs to be regenerated using limits on operations and memory that are suitable for most use-cases.
    *
    * <p>
    * Equivalent to {@code needsRehash(hash, moderateOpsLimit(), moderateMemLimit())}.
+   *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
    *
    * @param hash The hash.
    * @return <tt>true</tt> if the hash should be regenerated.
@@ -822,10 +852,13 @@ public final class PasswordHash {
    * <p>
    * Equivalent to {@code needsRehash(hash, interactiveOpsLimit(), interactiveMemLimit())}.
    *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
+   *
    * @param hash The hash.
    * @return <tt>true</tt> if the hash should be regenerated.
    */
-  public static boolean needsRehashInteractive(String hash) {
+  public static boolean needsRehashForInteractive(String hash) {
     return needsRehash(hash, interactiveOpsLimit(), interactiveMemLimit());
   }
 
@@ -836,10 +869,13 @@ public final class PasswordHash {
    * <p>
    * Equivalent to {@code needsRehash(hash, sensitiveOpsLimit(), sensitiveMemLimit())}.
    *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
+   *
    * @param hash The hash.
    * @return <tt>true</tt> if the hash should be regenerated.
    */
-  public static boolean needsRehashSensitive(String hash) {
+  public static boolean needsRehashForSensitive(String hash) {
     return needsRehash(hash, sensitiveOpsLimit(), sensitiveMemLimit());
   }
 
@@ -849,23 +885,27 @@ public final class PasswordHash {
    * <p>
    * Check if a hash matches the parameters opslimit and memlimit, and the current default algorithm.
    *
+   * <p>
+   * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
+   *
    * @param hash The hash.
    * @param opsLimit The operations limit, which must be in the range {@link #minOpsLimit()} to {@link #maxOpsLimit()}.
    * @param memLimit The memory limit, which must be in the range {@link #minMemLimit()} to {@link #maxMemLimit()}.
    * @return <tt>true</tt> if the hash should be regenerated.
    */
   public static boolean needsRehash(String hash, long opsLimit, long memLimit) {
+    assertCheckRehashAvailable();
     assertOpsLimit(opsLimit);
     assertMemLimit(memLimit);
 
     byte[] hashBytes = hash.getBytes(UTF_8);
 
-    int strbytes = hashStringLength();
-    if (hashBytes.length >= strbytes) {
+    int hashLength = hashStringLength();
+    if (hashBytes.length >= hashLength) {
       throw new IllegalArgumentException("hash is too long");
     }
 
-    Pointer str = Sodium.malloc(strbytes);
+    Pointer str = Sodium.malloc(hashLength);
     try {
       str.put(0, hashBytes, 0, hashBytes.length);
       str.putByte(hashBytes.length, (byte) 0);
@@ -874,18 +914,18 @@ public final class PasswordHash {
       if (rc < 0) {
         throw new SodiumException("crypto_pwhash_str_needs_rehash: failed with result " + rc);
       }
-      return (rc == 0);
+      return (rc != 0);
     } finally {
       Sodium.sodium_free(str);
     }
   }
 
   private static int hashStringLength() {
-    long strbytes = Sodium.crypto_pwhash_strbytes();
-    if (strbytes > Integer.MAX_VALUE) {
-      throw new IllegalStateException("crypto_pwhash_strbytes: " + strbytes + " is too large");
+    long hashLength = Sodium.crypto_pwhash_strbytes();
+    if (hashLength > Integer.MAX_VALUE) {
+      throw new IllegalStateException("crypto_pwhash_strbytes: " + hashLength + " is too large");
     }
-    return (int) strbytes;
+    return (int) hashLength;
   }
 
   /**
