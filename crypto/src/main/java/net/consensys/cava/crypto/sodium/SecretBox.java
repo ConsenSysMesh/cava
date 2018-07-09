@@ -1598,8 +1598,17 @@ public final class SecretBox {
             + ")";
     PasswordHash.Salt salt =
         PasswordHash.Salt.fromBytes(Arrays.copyOfRange(nonce.bytesArray(), 0, PasswordHash.Salt.length()));
-    return Key
-        .fromBytes(PasswordHash.hash(password.getBytes(UTF_8), Key.length(), salt, opsLimit, memLimit, algorithm));
+    byte[] passwordBytes = password.getBytes(UTF_8);
+    try {
+      byte[] keyBytes = PasswordHash.hash(passwordBytes, Key.length(), salt, opsLimit, memLimit, algorithm);
+      try {
+        return Key.fromBytes(keyBytes);
+      } finally {
+        Arrays.fill(keyBytes, (byte) 0);
+      }
+    } finally {
+      Arrays.fill(passwordBytes, (byte) 0);
+    }
   }
 
   private static byte[] prependNonce(Nonce nonce, byte[] bytes) {
