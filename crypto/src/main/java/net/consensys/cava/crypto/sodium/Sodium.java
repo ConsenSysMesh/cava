@@ -175,6 +175,7 @@ public final class Sodium {
               .create(LibSodium.class)
               .search("/usr/local/lib")
               .search("/opt/local/lib")
+              .search("/usr/lib")
               .search("/lib")
               .load(LIBRARY_NAME);
           libSodium = initializeLibrary(lib);
