@@ -29,7 +29,7 @@ class RedisServerExtensionTest {
   @Test
   void shouldHaveAccessToARedisServer(@RedisPort Integer port) {
     assertNotNull(port);
-    assertTrue(port > 32768);
+    assertTrue(port >= 32768, "Port must be more than 32768, was:" + port);
     RedisClient client = RedisClient.create(RedisURI.create(InetAddress.getLoopbackAddress().getHostAddress(), port));
     try (StatefulRedisConnection<String, String> conn = client.connect()) {
       assertTrue(conn.isOpen());
