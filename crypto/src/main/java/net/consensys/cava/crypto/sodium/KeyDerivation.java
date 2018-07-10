@@ -12,11 +12,14 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static com.google.common.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Arrays;
+import javax.annotation.Nullable;
+import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
 
@@ -58,8 +61,9 @@ public final class KeyDerivation {
   /**
    * A KeyDerivation master key.
    */
-  public static final class MasterKey {
-    private final Pointer ptr;
+  public static final class MasterKey implements Destroyable {
+    @Nullable
+    private Pointer ptr;
     private final int length;
 
     private MasterKey(Pointer ptr, int length) {
@@ -69,7 +73,21 @@ public final class KeyDerivation {
 
     @Override
     protected void finalize() {
-      Sodium.sodium_free(ptr);
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (ptr != null) {
+        Pointer p = ptr;
+        ptr = null;
+        Sodium.sodium_free(p);
+      }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return ptr == null;
     }
 
     /**
@@ -163,6 +181,7 @@ public final class KeyDerivation {
      * @return The derived sub key.
      */
     public byte[] deriveKeyArray(int length, long subkeyId, byte[] context) {
+      checkState(ptr != null, "MasterKey has been destroyed");
       assertSubKeyLength(length);
       assertContextLength(context);
 
@@ -218,12 +237,14 @@ public final class KeyDerivation {
       if (!(obj instanceof MasterKey)) {
         return false;
       }
+      checkState(ptr != null, "MasterKey has been destroyed");
       MasterKey other = (MasterKey) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
     }
 
     @Override
     public int hashCode() {
+      checkState(ptr != null, "MasterKey has been destroyed");
       return Sodium.hashCode(ptr, length);
     }
 
@@ -238,6 +259,7 @@ public final class KeyDerivation {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
+      checkState(ptr != null, "MasterKey has been destroyed");
       return Sodium.reify(ptr, length);
     }
   }

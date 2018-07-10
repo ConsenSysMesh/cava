@@ -12,9 +12,14 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Objects;
+import javax.annotation.Nullable;
+import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
 
@@ -121,8 +126,9 @@ public final class KeyExchange {
   /**
    * A KeyExchange secret key.
    */
-  public static final class SecretKey {
-    private final Pointer ptr;
+  public static final class SecretKey implements Destroyable {
+    @Nullable
+    private Pointer ptr;
     private final int length;
 
     private SecretKey(Pointer ptr, int length) {
@@ -132,7 +138,21 @@ public final class KeyExchange {
 
     @Override
     protected void finalize() {
-      Sodium.sodium_free(ptr);
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (ptr != null) {
+        Pointer p = ptr;
+        ptr = null;
+        Sodium.sodium_free(p);
+      }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return ptr == null;
     }
 
     /**
@@ -186,12 +206,14 @@ public final class KeyExchange {
       if (!(obj instanceof SecretKey)) {
         return false;
       }
+      checkState(ptr != null, "SecretKey has been destroyed");
       SecretKey other = (SecretKey) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
     }
 
     @Override
     public int hashCode() {
+      checkState(ptr != null, "SecretKey has been destroyed");
       return Sodium.hashCode(ptr, length);
     }
 
@@ -206,6 +228,7 @@ public final class KeyExchange {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
+      checkState(ptr != null, "SecretKey has been destroyed");
       return Sodium.reify(ptr, length);
     }
   }
@@ -337,6 +360,7 @@ public final class KeyExchange {
      * @return A {@link KeyPair}.
      */
     public static KeyPair forSecretKey(SecretKey secretKey) {
+      checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
       return Sodium.scalarMultBase(secretKey.ptr, SecretKey.length(), (ptr, len) -> {
         int publicKeyLength = PublicKey.length();
         if (len != publicKeyLength) {
@@ -590,6 +614,7 @@ public final class KeyExchange {
    * @return A pair of session keys.
    */
   public static SessionKeyPair client(KeyPair clientKeys, PublicKey serverKey) {
+    checkArgument(clientKeys.secretKey.ptr != null, "SecretKey has been destroyed");
     long sessionkeybytes = Sodium.crypto_kx_sessionkeybytes();
     if (sessionkeybytes > Integer.MAX_VALUE) {
       throw new SodiumException("crypto_kx_sessionkeybytes: " + sessionkeybytes + " is too large");
@@ -632,6 +657,7 @@ public final class KeyExchange {
    * @return A pair of session keys.
    */
   public static SessionKeyPair server(KeyPair serverKeys, PublicKey clientKey) {
+    checkArgument(serverKeys.secretKey.ptr != null, "SecretKey has been destroyed");
     long sessionkeybytes = Sodium.crypto_kx_sessionkeybytes();
     if (sessionkeybytes > Integer.MAX_VALUE) {
       throw new SodiumException("crypto_kx_sessionkeybytes: " + sessionkeybytes + " is too large");

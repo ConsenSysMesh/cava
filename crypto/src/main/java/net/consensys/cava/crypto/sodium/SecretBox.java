@@ -12,12 +12,16 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Arrays;
 import javax.annotation.Nullable;
+import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
 
@@ -53,8 +57,9 @@ public final class SecretBox {
   /**
    * A SecretBox key.
    */
-  public static final class Key {
-    private final Pointer ptr;
+  public static final class Key implements Destroyable {
+    @Nullable
+    private Pointer ptr;
     private final int length;
 
     private Key(Pointer ptr, int length) {
@@ -64,7 +69,21 @@ public final class SecretBox {
 
     @Override
     protected void finalize() {
-      Sodium.sodium_free(ptr);
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (ptr != null) {
+        Pointer p = ptr;
+        ptr = null;
+        Sodium.sodium_free(p);
+      }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return ptr == null;
     }
 
     /**
@@ -137,12 +156,14 @@ public final class SecretBox {
       if (!(obj instanceof Key)) {
         return false;
       }
+      checkState(ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
     }
 
     @Override
     public int hashCode() {
+      checkState(ptr != null, "Key has been destroyed");
       return Sodium.hashCode(ptr, length);
     }
 
@@ -157,6 +178,7 @@ public final class SecretBox {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
+      checkState(ptr != null, "Key has been destroyed");
       return Sodium.reify(ptr, length);
     }
   }
@@ -296,6 +318,7 @@ public final class SecretBox {
    * @return The encrypted data.
    */
   public static byte[] encrypt(byte[] message, Key key, Nonce nonce) {
+    checkArgument(key.ptr != null, "Key has been destroyed");
     int macbytes = macLength();
 
     byte[] cipherText = new byte[macbytes + message.length];
@@ -328,6 +351,7 @@ public final class SecretBox {
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, Key key, Nonce nonce) {
+    checkArgument(key.ptr != null, "Key has been destroyed");
     int macbytes = macLength();
 
     byte[] cipherText = new byte[message.length];
@@ -364,6 +388,7 @@ public final class SecretBox {
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
+    checkArgument(key.ptr != null, "Key has been destroyed");
     int macLength = macLength();
     if (macLength > cipherText.length) {
       throw new IllegalArgumentException("cipherText is too short");
@@ -406,6 +431,7 @@ public final class SecretBox {
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
+    checkArgument(key.ptr != null, "Key has been destroyed");
     int macLength = macLength();
     if (macLength != mac.length) {
       throw new IllegalArgumentException("mac must be " + macLength + " bytes, got " + mac.length);
@@ -653,6 +679,8 @@ public final class SecretBox {
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    requireNonNull(message);
+    requireNonNull(password);
     if (!algorithm.isSupported()) {
       throw new UnsupportedOperationException(
           algorithm.name() + " is not supported by the currently loaded sodium native library");
@@ -662,6 +690,7 @@ public final class SecretBox {
 
     Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    assert key.ptr != null;
 
     byte[] cipherText = new byte[macLength + message.length];
     int rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
@@ -946,10 +975,17 @@ public final class SecretBox {
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    requireNonNull(message);
+    requireNonNull(password);
+    if (!algorithm.isSupported()) {
+      throw new UnsupportedOperationException(
+          algorithm.name() + " is not supported by the currently loaded sodium native library");
+    }
     int macLength = macLength();
 
     Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    assert key.ptr != null;
 
     byte[] cipherText = new byte[message.length];
     byte[] mac = new byte[macLength];
@@ -1202,6 +1238,8 @@ public final class SecretBox {
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    requireNonNull(cipherText);
+    requireNonNull(password);
     if (!algorithm.isSupported()) {
       throw new UnsupportedOperationException(
           algorithm.name() + " is not supported by the currently loaded sodium native library");
@@ -1215,6 +1253,7 @@ public final class SecretBox {
 
     Nonce nonce = Nonce.fromBytes(Arrays.copyOf(cipherText, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    assert key.ptr != null;
 
     byte[] clearText = new byte[cipherText.length - noncebytes - macLength];
     int rc = Sodium.crypto_secretbox_open_easy(
@@ -1549,6 +1588,14 @@ public final class SecretBox {
       long opsLimit,
       long memLimit,
       PasswordHash.Algorithm algorithm) {
+    requireNonNull(cipherText);
+    requireNonNull(mac);
+    requireNonNull(password);
+    if (!algorithm.isSupported()) {
+      throw new UnsupportedOperationException(
+          algorithm.name() + " is not supported by the currently loaded sodium native library");
+    }
+
     int noncebytes = Nonce.length();
     int macLength = macLength();
     if ((noncebytes + macLength) != mac.length) {
@@ -1557,6 +1604,7 @@ public final class SecretBox {
 
     Nonce nonce = Nonce.fromBytes(Arrays.copyOf(mac, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
+    assert key.ptr != null;
 
     byte[] clearText = new byte[cipherText.length];
     int rc = Sodium.crypto_secretbox_open_detached(

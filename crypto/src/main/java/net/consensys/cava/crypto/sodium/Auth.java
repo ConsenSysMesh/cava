@@ -12,7 +12,13 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
 import net.consensys.cava.bytes.Bytes;
+
+import javax.annotation.Nullable;
+import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
 
@@ -52,8 +58,9 @@ public final class Auth {
   /**
    * An Auth key.
    */
-  public static final class Key {
-    private final Pointer ptr;
+  public static final class Key implements Destroyable {
+    @Nullable
+    private Pointer ptr;
     private final int length;
 
     private Key(Pointer ptr, int length) {
@@ -63,7 +70,21 @@ public final class Auth {
 
     @Override
     protected void finalize() {
-      Sodium.sodium_free(ptr);
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (ptr != null) {
+        Pointer p = ptr;
+        ptr = null;
+        Sodium.sodium_free(p);
+      }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return ptr == null;
     }
 
     /**
@@ -136,12 +157,14 @@ public final class Auth {
       if (!(obj instanceof Key)) {
         return false;
       }
+      checkState(ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
     }
 
     @Override
     public int hashCode() {
+      checkState(ptr != null, "Key has been destroyed");
       return Sodium.hashCode(ptr, length);
     }
 
@@ -156,6 +179,7 @@ public final class Auth {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
+      checkState(ptr != null, "Key has been destroyed");
       return Sodium.reify(ptr, length);
     }
   }
@@ -179,6 +203,7 @@ public final class Auth {
    * @return The authentication tag.
    */
   public static byte[] auth(byte[] input, Key key) {
+    checkArgument(key.ptr != null, "Key has been destroyed");
     long abytes = Sodium.crypto_auth_bytes();
     if (abytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_auth_bytes: " + abytes + " is too large");
@@ -213,6 +238,7 @@ public final class Auth {
    * @return <tt>true</tt> if the tag correction authenticates the input (using the specified key).
    */
   public static boolean verify(byte[] tag, byte[] input, Key key) {
+    checkArgument(key.ptr != null, "Key has been destroyed");
     long abytes = Sodium.crypto_auth_bytes();
     if (tag.length != abytes) {
       throw new IllegalArgumentException("tag must be " + abytes + " bytes, got " + tag.length);

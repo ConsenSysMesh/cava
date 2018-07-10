@@ -12,10 +12,14 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkState;
+
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Objects;
 import javax.annotation.Nullable;
+import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
 
@@ -163,8 +167,9 @@ public final class Box implements AutoCloseable {
   /**
    * A Box secret key.
    */
-  public static final class SecretKey {
-    private final Pointer ptr;
+  public static final class SecretKey implements Destroyable {
+    @Nullable
+    private Pointer ptr;
     private final int length;
 
     private SecretKey(Pointer ptr, int length) {
@@ -174,7 +179,21 @@ public final class Box implements AutoCloseable {
 
     @Override
     protected void finalize() {
-      Sodium.sodium_free(ptr);
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (ptr != null) {
+        Pointer p = ptr;
+        ptr = null;
+        Sodium.sodium_free(p);
+      }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return ptr == null;
     }
 
     /**
@@ -228,12 +247,14 @@ public final class Box implements AutoCloseable {
       if (!(obj instanceof SecretKey)) {
         return false;
       }
+      checkState(ptr != null, "SecretKey has been destroyed");
       SecretKey other = (SecretKey) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
     }
 
     @Override
     public int hashCode() {
+      checkState(ptr != null, "SecretKey has been destroyed");
       return Sodium.hashCode(ptr, length);
     }
 
@@ -248,6 +269,7 @@ public final class Box implements AutoCloseable {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
+      checkState(ptr != null, "SecretKey has been destroyed");
       return Sodium.reify(ptr, length);
     }
   }
@@ -379,6 +401,7 @@ public final class Box implements AutoCloseable {
      * @return A {@link KeyPair}.
      */
     public static KeyPair forSecretKey(SecretKey secretKey) {
+      checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
       return Sodium.scalarMultBase(secretKey.ptr, SecretKey.length(), (ptr, len) -> {
         int publicKeyLength = PublicKey.length();
         if (len != publicKeyLength) {
@@ -603,6 +626,7 @@ public final class Box implements AutoCloseable {
   private Pointer ctx;
 
   private Box(PublicKey publicKey, SecretKey secretKey) {
+    checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
     ctx = Sodium.malloc(Sodium.crypto_box_beforenmbytes());
     try {
       int rc = Sodium.crypto_box_beforenm(ctx, publicKey.ptr, secretKey.ptr);
@@ -654,6 +678,7 @@ public final class Box implements AutoCloseable {
    * @return The encrypted data.
    */
   public static byte[] encrypt(byte[] message, PublicKey receiver, SecretKey sender, Nonce nonce) {
+    checkArgument(sender.ptr != null, "SecretKey has been destroyed");
     byte[] cipherText = new byte[combinedCypherTextLength(message)];
 
     int rc = Sodium.crypto_box_easy(cipherText, message, message.length, nonce.ptr, receiver.ptr, sender.ptr);
@@ -797,6 +822,7 @@ public final class Box implements AutoCloseable {
       PublicKey receiver,
       SecretKey sender,
       Nonce nonce) {
+    checkArgument(sender.ptr != null, "SecretKey has been destroyed");
     byte[] cipherText = new byte[message.length];
     long macbytes = Sodium.crypto_box_macbytes();
     if (macbytes > Integer.MAX_VALUE) {
@@ -874,6 +900,7 @@ public final class Box implements AutoCloseable {
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
+    checkArgument(receiver.ptr != null, "SecretKey has been destroyed");
     byte[] clearText = new byte[clearTextLength(cipherText)];
 
     int rc = Sodium.crypto_box_open_easy(clearText, cipherText, cipherText.length, nonce.ptr, sender.ptr, receiver.ptr);
@@ -959,6 +986,7 @@ public final class Box implements AutoCloseable {
    */
   @Nullable
   public static byte[] decryptSealed(byte[] cipherText, PublicKey sender, SecretKey receiver) {
+    checkArgument(receiver.ptr != null, "SecretKey has been destroyed");
     long sealbytes = Sodium.crypto_box_sealbytes();
     if (sealbytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_box_sealbytes: " + sealbytes + " is too large");
@@ -1012,6 +1040,7 @@ public final class Box implements AutoCloseable {
       PublicKey sender,
       SecretKey receiver,
       Nonce nonce) {
+    checkArgument(receiver.ptr != null, "SecretKey has been destroyed");
     long macbytes = Sodium.crypto_box_macbytes();
     if (macbytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_box_macbytes: " + macbytes + " is too large");
