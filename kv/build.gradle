@@ -5,12 +5,15 @@ dependencies {
   compileOnly project(':concurrent')
   compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
 
+  compileOnly 'io.lettuce:lettuce-core'
   compileOnly 'org.fusesource.leveldbjni:leveldbjni-all'
   compileOnly 'org.mapdb:mapdb'
 
   testCompile project(':concurrent')
   testCompile project(':junit')
+  testCompile 'com.github.kstyrc:embedded-redis'
   testCompile 'com.winterbe:expekt'
+  testCompile 'io.lettuce:lettuce-core'
   testCompile 'org.fusesource.leveldbjni:leveldbjni-all'
   testCompile 'org.jetbrains.spek:spek-api'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
