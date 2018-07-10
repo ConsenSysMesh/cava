@@ -14,10 +14,12 @@ package net.consensys.cava.crypto.sodium;
 
 import net.consensys.cava.bytes.Bytes;
 
+import javax.security.auth.Destroyable;
+
 /**
  * Used to decrypt a sequence of messages, or a single message split into arbitrary chunks.
  */
-public interface SecretDecryptionStream {
+public interface SecretDecryptionStream extends Destroyable {
 
   /**
    * Pull a message from this secret stream.

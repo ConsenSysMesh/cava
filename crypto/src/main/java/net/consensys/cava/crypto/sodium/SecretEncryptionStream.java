@@ -14,10 +14,12 @@ package net.consensys.cava.crypto.sodium;
 
 import net.consensys.cava.bytes.Bytes;
 
+import javax.security.auth.Destroyable;
+
 /**
  * Used to encrypt a sequence of messages, or a single message split into arbitrary chunks.
  */
-public interface SecretEncryptionStream {
+public interface SecretEncryptionStream extends Destroyable {
 
   /** @return The header for the stream. */
   default Bytes header() {

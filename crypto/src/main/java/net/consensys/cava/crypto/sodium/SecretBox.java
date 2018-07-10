@@ -688,12 +688,17 @@ public final class SecretBox {
 
     int macLength = macLength();
 
+    byte[] cipherText = new byte[macLength + message.length];
     Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
     assert key.ptr != null;
 
-    byte[] cipherText = new byte[macLength + message.length];
-    int rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
+    int rc;
+    try {
+      rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
+    } finally {
+      key.destroy();
+    }
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_easy: failed with result " + rc);
     }
@@ -983,13 +988,18 @@ public final class SecretBox {
     }
     int macLength = macLength();
 
+    byte[] cipherText = new byte[message.length];
+    byte[] mac = new byte[macLength];
     Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
     assert key.ptr != null;
 
-    byte[] cipherText = new byte[message.length];
-    byte[] mac = new byte[macLength];
-    int rc = Sodium.crypto_secretbox_detached(cipherText, mac, message, message.length, nonce.ptr, key.ptr);
+    int rc;
+    try {
+      rc = Sodium.crypto_secretbox_detached(cipherText, mac, message, message.length, nonce.ptr, key.ptr);
+    } finally {
+      key.destroy();
+    }
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_detached: failed with result " + rc);
     }
@@ -1251,17 +1261,22 @@ public final class SecretBox {
       throw new IllegalArgumentException("cipherText is too short");
     }
 
+    byte[] clearText = new byte[cipherText.length - noncebytes - macLength];
     Nonce nonce = Nonce.fromBytes(Arrays.copyOf(cipherText, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
     assert key.ptr != null;
 
-    byte[] clearText = new byte[cipherText.length - noncebytes - macLength];
-    int rc = Sodium.crypto_secretbox_open_easy(
-        clearText,
-        Arrays.copyOfRange(cipherText, noncebytes, cipherText.length),
-        cipherText.length - noncebytes,
-        nonce.ptr,
-        key.ptr);
+    int rc;
+    try {
+      rc = Sodium.crypto_secretbox_open_easy(
+          clearText,
+          Arrays.copyOfRange(cipherText, noncebytes, cipherText.length),
+          cipherText.length - noncebytes,
+          nonce.ptr,
+          key.ptr);
+    } finally {
+      key.destroy();
+    }
     if (rc == -1) {
       return null;
     }
@@ -1602,18 +1617,23 @@ public final class SecretBox {
       throw new IllegalArgumentException("mac must be " + (noncebytes + macLength) + " bytes, got " + mac.length);
     }
 
+    byte[] clearText = new byte[cipherText.length];
     Nonce nonce = Nonce.fromBytes(Arrays.copyOf(mac, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
     assert key.ptr != null;
 
-    byte[] clearText = new byte[cipherText.length];
-    int rc = Sodium.crypto_secretbox_open_detached(
-        clearText,
-        cipherText,
-        Arrays.copyOfRange(mac, noncebytes, mac.length),
-        cipherText.length,
-        nonce.ptr,
-        key.ptr);
+    int rc;
+    try {
+      rc = Sodium.crypto_secretbox_open_detached(
+          clearText,
+          cipherText,
+          Arrays.copyOfRange(mac, noncebytes, mac.length),
+          cipherText.length,
+          nonce.ptr,
+          key.ptr);
+    } finally {
+      key.destroy();
+    }
     if (rc == -1) {
       return null;
     }

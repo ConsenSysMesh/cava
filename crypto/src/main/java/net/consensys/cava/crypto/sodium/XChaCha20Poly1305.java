@@ -512,6 +512,7 @@ public final class XChaCha20Poly1305 {
   private static final class SSEncrypt implements SecretEncryptionStream {
     private final int abytes;
     private final byte[] header;
+    @Nullable
     private Pointer state;
     private boolean complete = false;
 
@@ -545,10 +546,21 @@ public final class XChaCha20Poly1305 {
 
     @Override
     protected void finalize() {
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
       if (state != null) {
-        Sodium.sodium_free(this.state);
-        this.state = null;
+        Pointer p = state;
+        state = null;
+        Sodium.sodium_free(p);
       }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return state == null;
     }
 
     @Override
@@ -558,9 +570,8 @@ public final class XChaCha20Poly1305 {
 
     @Override
     public byte[] push(byte[] clearText, boolean isFinal) {
-      if (complete) {
-        throw new IllegalStateException("stream already completed");
-      }
+      checkState(!complete, "stream already completed");
+      checkState(state != null, "stream has been destroyed");
       byte[] cipherText = new byte[abytes + clearText.length];
       byte tag = isFinal ? TAG_FINAL : 0;
       int rc = Sodium.crypto_secretstream_xchacha20poly1305_push(
@@ -577,9 +588,8 @@ public final class XChaCha20Poly1305 {
       }
       if (isFinal) {
         complete = true;
-        // free state before finalization, as it will not be re-used
-        Sodium.sodium_free(this.state);
-        this.state = null;
+        // destroy state before finalization, as it will not be re-used
+        destroy();
       }
       return cipherText;
     }
@@ -777,6 +787,7 @@ public final class XChaCha20Poly1305 {
 
   private static final class SSDecrypt implements SecretDecryptionStream {
     private final int abytes;
+    @Nullable
     private Pointer state;
     private boolean complete = false;
 
@@ -811,17 +822,27 @@ public final class XChaCha20Poly1305 {
 
     @Override
     protected void finalize() {
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
       if (state != null) {
-        Sodium.sodium_free(this.state);
-        this.state = null;
+        Pointer p = state;
+        state = null;
+        Sodium.sodium_free(p);
       }
     }
 
     @Override
+    public boolean isDestroyed() {
+      return state == null;
+    }
+
+    @Override
     public byte[] pull(byte[] cipherText) {
-      if (complete) {
-        throw new IllegalStateException("stream already completed");
-      }
+      checkState(!complete, "stream already completed");
+      checkState(state != null, "stream has been destroyed");
       if (abytes > cipherText.length) {
         throw new IllegalArgumentException("cipherText is too short");
       }
@@ -841,9 +862,8 @@ public final class XChaCha20Poly1305 {
       }
       if (tag.byteValue() == TAG_FINAL) {
         complete = true;
-        // free state before finalization, as it will not be re-used
-        Sodium.sodium_free(this.state);
-        this.state = null;
+        // destroy state before finalization, as it will not be re-used
+        destroy();
       }
       return clearText;
     }
