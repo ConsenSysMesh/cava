@@ -20,6 +20,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 import com.google.common.collect.DiscreteDomain;
 
@@ -85,15 +86,16 @@ public final class AtomicSlotMap<K extends Comparable, V> {
    * @param value The value.
    * @return The previous value in the slot, if present.
    */
-  public Optional<V> put(K slot, V value) {
+  @Nullable
+  public V put(K slot, V value) {
     requireNonNull(slot);
     requireNonNull(value);
     Optional<V> previous = slots.put(slot, Optional.of(value));
     if (previous == null || !previous.isPresent()) {
       size.incrementAndGet();
-      return Optional.empty();
+      return null;
     }
-    return previous;
+    return previous.get();
   }
 
   /**
@@ -155,13 +157,14 @@ public final class AtomicSlotMap<K extends Comparable, V> {
    * @param slot The slot.
    * @return The value, if present.
    */
-  public Optional<V> get(K slot) {
+  @Nullable
+  public V get(K slot) {
     requireNonNull(slot);
     Optional<V> value = slots.get(slot);
     if (value == null) {
-      return Optional.empty();
+      return null;
     }
-    return value;
+    return value.orElse(null);
   }
 
   /**
@@ -170,14 +173,15 @@ public final class AtomicSlotMap<K extends Comparable, V> {
    * @param slot The slot.
    * @return The value that was in the slot, if any.
    */
-  public Optional<V> remove(K slot) {
+  @Nullable
+  public V remove(K slot) {
     requireNonNull(slot);
     Optional<V> previous = slots.remove(slot);
-    if (previous == null) {
-      return Optional.empty();
+    if (previous == null || !previous.isPresent()) {
+      return null;
     }
     size.decrementAndGet();
-    return previous;
+    return previous.get();
   }
 
   /**

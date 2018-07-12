@@ -22,13 +22,14 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.junit.jupiter.api.Test;
 
 class AtomicSlotMapTest {
 
   @Test
-  void shouldUseSlotsIncrementally() throws Exception {
+  void shouldUseSlotsIncrementally() {
     AtomicSlotMap<Integer, String> slotMap = AtomicSlotMap.positiveIntegerSlots();
 
     assertEquals(1, (int) slotMap.add("value"));
@@ -38,7 +39,7 @@ class AtomicSlotMapTest {
   }
 
   @Test
-  void shouldReuseSlotsIncrementally() throws Exception {
+  void shouldReuseSlotsIncrementally() {
     AtomicSlotMap<Integer, String> slotMap = AtomicSlotMap.positiveIntegerSlots();
 
     assertEquals(1, (int) slotMap.add("value"));
@@ -49,6 +50,29 @@ class AtomicSlotMapTest {
     slotMap.remove(4);
     assertEquals(2, (int) slotMap.add("value"));
     assertEquals(4, (int) slotMap.add("value"));
+  }
+
+  @Test
+  void maintainsCountWhenConcurrentlyRemoving() {
+    AtomicSlotMap<Integer, String> slotMap = AtomicSlotMap.positiveIntegerSlots();
+    int firstSlot = slotMap.add("foo");
+
+    CompletableAsyncResult<String> result = AsyncResult.incomplete();
+    AtomicInteger secondSlot = new AtomicInteger();
+    slotMap.computeAsync(s -> {
+      secondSlot.set(s);
+      return result;
+    });
+    assertEquals(1, slotMap.size());
+
+    slotMap.remove(secondSlot.get());
+    assertEquals(1, slotMap.size());
+
+    result.complete("bar");
+    assertEquals(1, slotMap.size());
+
+    slotMap.remove(firstSlot);
+    assertEquals(0, slotMap.size());
   }
 
   @Test
