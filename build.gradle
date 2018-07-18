@@ -43,6 +43,7 @@ static String buildTag() {
 defaultTasks 'checkLicenses', 'spotlessCheck', 'jar', 'test', ':javadoc'
 
 def buildAliases = ['dev': [
+    ':skipSlowTests',
     'spotlessApply',
     'checkLicenses',
     ':jar',
@@ -68,6 +69,8 @@ spotless {
   }
 }
 
+task skipSlowTests() {}
+
 task deploy() {}
 
 allprojects {
@@ -91,8 +94,17 @@ allprojects {
   //////
   // Use JUnit5 for testing
 
-  test { useJUnitPlatform() { includeEngines 'spek', 'junit-jupiter' } }
+  test {
+    useJUnitPlatform() {
 
+      gradle.taskGraph.whenReady {
+        if (gradle.taskGraph.hasTask(':skipSlowTests')) {
+          excludeTags 'slow'
+        }
+      }
+      includeEngines 'spek', 'junit-jupiter'
+    }
+  }
 
   //////
   // Compiler arguments

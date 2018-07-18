@@ -12,12 +12,16 @@
  */
 package net.consensys.cava.io.file;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.nio.file.Files.delete;
 import static java.nio.file.Files.walkFileTree;
 import static java.nio.file.StandardCopyOption.ATOMIC_MOVE;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
+import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.io.IOConsumer;
@@ -28,12 +32,20 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.nio.charset.Charset;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
+import java.nio.file.WatchEvent;
+import java.nio.file.WatchEvent.Kind;
+import java.nio.file.WatchKey;
+import java.nio.file.WatchService;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 
 /**
@@ -196,5 +208,58 @@ public final class Files {
       }
       throw e;
     }
+  }
+
+  private static volatile WatchService watchService;
+
+  /**
+   * Listens to changes made to a file outside the program on the file system.
+   *
+   * @param file the file to watch for changes
+   * @param changeListener the function called when changes are detected
+   * @param modifiers modifiers that configure the polling period for file changes.
+   * @throws IOException If an I/O error occurs.
+   */
+  @SuppressWarnings("unchecked")
+  public static void listenToFileChanges(Path file, Consumer<Path> changeListener, WatchEvent.Modifier... modifiers)
+      throws IOException {
+    Objects.requireNonNull(file);
+    checkArgument(!file.toFile().isDirectory());
+    if (watchService == null) {
+      synchronized (Files.class) {
+        if (watchService == null) {
+          watchService = FileSystems.getDefault().newWatchService();
+        }
+      }
+    }
+    WatchKey registration =
+        file.getParent().register(watchService, new Kind<?>[] {ENTRY_CREATE, ENTRY_MODIFY}, modifiers);
+
+    CompletableFuture.runAsync(() -> {
+      while (true) {
+        WatchKey key;
+        try {
+          key = watchService.take();
+        } catch (InterruptedException e) {
+          break;
+        }
+
+        for (WatchEvent<?> ev : key.pollEvents()) {
+          if (ev.kind() == OVERFLOW) {
+            continue;
+          }
+          WatchEvent<Path> event = (WatchEvent<Path>) ev;
+          Path filename = event.context();
+          if (file.equals(file.getParent().resolve(filename))) {
+            changeListener.accept(file);
+          }
+        }
+
+        if (!key.reset()) {
+          break;
+        }
+      }
+      registration.cancel();
+    });
   }
 }
