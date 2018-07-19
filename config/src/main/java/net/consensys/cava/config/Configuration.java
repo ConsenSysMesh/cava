@@ -13,9 +13,11 @@
 package net.consensys.cava.config;
 
 import static java.util.Objects.requireNonNull;
+import static net.consensys.cava.io.file.Files.listenToFileChanges;
 import static net.consensys.cava.toml.Toml.canonicalDottedKey;
 
 import net.consensys.cava.toml.Toml;
+import net.consensys.cava.toml.TomlParseResult;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +29,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Consumer;
 import javax.annotation.Nullable;
 
 /**
@@ -65,7 +68,7 @@ public interface Configuration {
    * @throws IOException If an IO error occurs.
    */
   static Configuration fromToml(Path file) throws IOException {
-    return fromToml(file, null);
+    return fromToml(file, (Schema) null);
   }
 
   /**
@@ -80,6 +83,46 @@ public interface Configuration {
   static Configuration fromToml(Path file, @Nullable Schema schema) throws IOException {
     requireNonNull(file);
     return new TomlBackedConfiguration(Toml.parse(file), schema);
+  }
+
+  /**
+   * Loads a configuration from a file, associated with a function to reload the configuration if the file changes.
+   *
+   * @param file The path of the TOML-formatted configuration file.
+   * @param reloader The function called with new configuration when file changes are detected.
+   * @return A Configuration loaded from the TOML file.
+   * @throws NoSuchFileException If the file could not be found.
+   * @throws IOException If an IO error occurs.
+   */
+  static Configuration fromToml(Path file, Consumer<Configuration> reloader) throws IOException {
+    return fromToml(file, null, reloader);
+  }
+
+  /**
+   * Loads a configuration from a file, associated with a validation schema and a function to reload the configuration
+   * if it changes.
+   *
+   * @param file The path of the TOML-formatted configuration file.
+   * @param schema The validation schema for the configuration.
+   * @param reloader The function called with new configuration when file changes are detected.
+   * @return A Configuration loaded from the TOML file.
+   * @throws NoSuchFileException If the file could not be found.
+   * @throws IOException If an IO error occurs.
+   */
+  static Configuration fromToml(Path file, @Nullable Schema schema, Consumer<Configuration> reloader)
+      throws IOException {
+    requireNonNull(file);
+    listenToFileChanges(file, (path) -> {
+      TomlParseResult result;
+      try {
+        result = Toml.parse(path);
+      } catch (IOException e) {
+        throw new UncheckedIOException(e);
+      }
+      Configuration configuration = new TomlBackedConfiguration(result, schema);
+      reloader.accept(configuration);
+    });
+    return fromToml(file, schema);
   }
 
   /**
