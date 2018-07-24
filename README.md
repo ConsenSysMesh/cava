@@ -2,7 +2,7 @@
 
 [![Build Status](https://circleci.com/gh/ConsenSys/cava.svg?style=shield&circle-token=440c81af8cae3c059b516a8e375471258d7e0229)](https://circleci.com/gh/ConsenSys/cava)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/consensys/cava/blob/master/LICENSE)
-[![Download](https://api.bintray.com/packages/consensys/consensys/cava/images/download.svg?version=0.1.0) ](https://bintray.com/consensys/consensys/cava/0.1.0)
+[![Download](https://api.bintray.com/packages/consensys/consensys/cava/images/download.svg?version=0.2.0) ](https://bintray.com/consensys/consensys/cava/0.2.0)
 
 In the spirit of [Google Guava](https://github.com/google/guava/), Cava is a set of libraries and other tools to aid development of blockchain and other decentralized software in Java and other JVM languages.
 
@@ -23,11 +23,11 @@ With Maven:
 <dependency>
   <groupId>net.consensys.cava</groupId>
   <artifactId>cava</artifactId>
-  <version>0.1.0</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
-With Gradle: `compile 'net.consensys.cava:cava:0.1.0'`
+With Gradle: `compile 'net.consensys.cava:cava:0.2.0'`
 
 [PACKAGES.md](PACKAGES.md) contains the list of modules and instructions to import them separately.
 
