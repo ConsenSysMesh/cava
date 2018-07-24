@@ -59,10 +59,9 @@ chmod og-rwx /root/.gnupg
 export JAVA_TOOL_OPTIONS="-Dfile.encoding=UTF8"
 export GPG_TTY=/dev/console
 export TMPDIR=/tmp
-git tag -a $tag_name -m "$tag_comment" -s
 ./gradlew build :dokka :javadoc
-./gradlew sign
-./gradlew deploy publishSite
+git tag -a $tag_name -m "$tag_comment" -s
+BINTRAY_DEPLOY=true ./gradlew sign deploy publishSite
 git push origin $git_branch --tags
 EOF
 chmod +x $builddir/run_release.sh
