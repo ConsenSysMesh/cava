@@ -28,12 +28,8 @@ class BoxTest {
   private static Box.Nonce nonce;
 
   @BeforeAll
-  static void checkAvailable() {
-    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
-  }
-
-  @BeforeAll
   static void setup() {
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
     nonce = Box.Nonce.random();
     // @formatter:off
     seed = Box.Seed.fromBytes(new byte[] {
