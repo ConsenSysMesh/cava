@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.slice - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./slice.html">slice</a><br/>
+<br/>
+<h1>slice</h1>
+<a name="net.consensys.cava.bytes.Bytes$slice(kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">slice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$slice(kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L910">(source)</a>
+<p>Create a new value representing (a view of) a slice of the bytes of this value. 
+<p> Please note that the resulting slice is only a view and as such maintains a link to the underlying full value. So holding a reference to the returned slice may hold more memory than the slide represents. Use <code><a href="copy.html">#copy</a></code> on the returned slice if that is not what you want.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="i"></a>
+<code>i</code> - The start index for the slice.</p>
+<h3>Exceptions</h3>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>i &amp;lt; 0</code>.</p>
+<p><strong>Return</strong><br/>
+A new value providing a view over the bytes from index <code>i</code> (included) to the end.</p>
+<a name="net.consensys.cava.bytes.Bytes$slice(kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">slice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$slice(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$slice(kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L933">(source)</a>
+<p>Create a new value representing (a view of) a slice of the bytes of this value. 
+<p> Please note that the resulting slice is only a view and as such maintains a link to the underlying full value. So holding a reference to the returned slice may hold more memory than the slide represents. Use <code><a href="copy.html">#copy</a></code> on the returned slice if that is not what you want.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="i"></a>
+<code>i</code> - The start index for the slice.</p>
+<p><a name="length"></a>
+<code>length</code> - The length of the resulting value.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>length &amp;lt; 0</code>.</p>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>i &amp;lt; 0</code> or {i &gt;= size()} or {i + length &gt; size()} .</p>
+<p><strong>Return</strong><br/>
+A new value providing a view over the bytes from index <code>i</code> (included) to <code>i + length</code> (excluded).</p>
+</BODY>
+</HTML>

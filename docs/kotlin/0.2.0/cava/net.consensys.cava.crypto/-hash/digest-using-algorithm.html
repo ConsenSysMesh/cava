@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Hash.digestUsingAlgorithm - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto</a>&nbsp;/&nbsp;<a href="index.html">Hash</a>&nbsp;/&nbsp;<a href="./digest-using-algorithm.html">digestUsingAlgorithm</a><br/>
+<br/>
+<h1>digestUsingAlgorithm</h1>
+<a name="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(kotlin.ByteArray, kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">digestUsingAlgorithm</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(kotlin.ByteArray, kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(kotlin.ByteArray, kotlin.String)/alg">alg</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/Hash.java#L53">(source)</a><br/>
+<a name="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(net.consensys.cava.bytes.Bytes, kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">digestUsingAlgorithm</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(net.consensys.cava.bytes.Bytes, kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(net.consensys.cava.bytes.Bytes, kotlin.String)/alg">alg</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/Hash.java#L70">(source)</a>
+<p>Helper method to generate a digest using the provided algorithm.</p>
+<h3>Parameters</h3>
+<p><a name="input"></a>
+<code>input</code> - The input bytes to produce the digest for.</p>
+<p><a name="alg"></a>
+<code>alg</code> - The name of the digest algorithm to use.</p>
+<h3>Exceptions</h3>
+<p><a name="NoSuchAlgorithmException"></a>
+<code>NoSuchAlgorithmException</code> - If no Provider supports a MessageDigestSpi implementation for the specified algorithm.</p>
+<p><strong>Return</strong><br/>
+A digest.</p>
+</BODY>
+</HTML>

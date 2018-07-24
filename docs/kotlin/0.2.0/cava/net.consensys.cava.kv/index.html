@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.kv - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.kv</a><br/>
+<br/>
+<h2>Package net.consensys.cava.kv</h2>
+<p>Classes and utilities for working with key/value stores.</p>
+<p>These classes are included in the standard Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-kv</code> (<code>cava-kv.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-key-value-store/index.html">KeyValueStore</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">KeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Closeable.html"><span class="identifier">Closeable</span></a></code>
+<p>A key-value store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-level-d-b-key-value-store/index.html">LevelDBKeyValueStore</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">LevelDBKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code>
+<p>A key-value store backed by LevelDB.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-map-d-b-key-value-store/index.html">MapDBKeyValueStore</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">MapDBKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code>
+<p>A key-value store backed by a MapDB instance.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-map-key-value-store/index.html">MapKeyValueStore</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">MapKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code>
+<p>A key-value store backed by an in-memory Map.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-redis-key-value-store/index.html">RedisKeyValueStore</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RedisKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

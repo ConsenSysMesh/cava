@@ -1,0 +1,83 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MapDBKeyValueStore - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kv</a>&nbsp;/&nbsp;<a href="./index.html">MapDBKeyValueStore</a><br/>
+<br/>
+<h1>MapDBKeyValueStore</h1>
+<code><span class="keyword">class </span><span class="identifier">MapDBKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/MapDBKeyValueStore.kt#L28">(source)</a>
+<p>A key-value store backed by a MapDB instance.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">MapDBKeyValueStore</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.MapDBKeyValueStore$<init>(java.nio.file.Path)/databasePath">databasePath</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span></code>
+<p>A key-value store backed by a MapDB instance.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Closes the underlying MapDB instance.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.MapDBKeyValueStore$get(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code>
+<p>Retrieves data from the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.MapDBKeyValueStore$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.MapDBKeyValueStore$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Puts data into the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-key-value-store/get-async.html">getAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Retrieves data from the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-key-value-store/put-async.html">putAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Puts data into the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

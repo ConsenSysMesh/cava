@@ -1,0 +1,19 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.toArrayUnsafe - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./to-array-unsafe.html">toArrayUnsafe</a><br/>
+<br/>
+<h1>toArrayUnsafe</h1>
+<a name="net.consensys.cava.bytes.Bytes$toArrayUnsafe()"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toArrayUnsafe</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L1102">(source)</a>
+<p>Get the bytes represented by this value as byte array. 
+<p> Contrarily to <code><a href="to-array.html">#toArray()</a></code>, this may avoid allocating a new array and directly return the backing array of this value if said value is array backed and doing so is possible. As such, modifications to the returned array may or may not impact this value. As such, this method should be used with care and hence the "unsafe" moniker.</p>
+</p>
+<p><strong>Return</strong><br/>
+A byte array with the same content than this value, which may or may not be the direct backing of this value.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,91 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RedisKeyValueStore - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kv</a>&nbsp;/&nbsp;<a href="./index.html">RedisKeyValueStore</a><br/>
+<br/>
+<h1>RedisKeyValueStore</h1>
+<code><span class="keyword">class </span><span class="identifier">RedisKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/RedisKeyValueStore.kt#L24">(source)</a>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-bytes-redis-codec/index.html">BytesRedisCodec</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">BytesRedisCodec</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">RedisKeyValueStore</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.RedisKeyValueStore$<init>(kotlin.Int, java.net.InetAddress)/port">port</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;6379<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.RedisKeyValueStore$<init>(kotlin.Int, java.net.InetAddress)/networkInterface">networkInterface</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetAddress.html"><span class="identifier">InetAddress</span></a>&nbsp;<span class="symbol">=</span>&nbsp;InetAddress.getLoopbackAddress()<span class="symbol">)</span></code><br/>
+<code><span class="identifier">RedisKeyValueStore</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.RedisKeyValueStore$<init>(kotlin.String)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.RedisKeyValueStore$get(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code>
+<p>Retrieves data from the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.RedisKeyValueStore$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.RedisKeyValueStore$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Puts data into the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-key-value-store/get-async.html">getAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Retrieves data from the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-key-value-store/put-async.html">putAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Puts data into the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

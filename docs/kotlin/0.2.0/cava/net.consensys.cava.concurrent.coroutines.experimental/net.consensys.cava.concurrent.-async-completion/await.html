@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>await - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent.coroutines.experimental</a>&nbsp;/&nbsp;<a href="index.html">net.consensys.cava.concurrent.AsyncCompletion</a>&nbsp;/&nbsp;<a href="./await.html">await</a><br/>
+<br/>
+<h1>await</h1>
+<a name="net.consensys.cava.concurrent.coroutines.experimental$await(net.consensys.cava.concurrent.AsyncCompletion)"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a><span class="symbol">.</span><span class="identifier">await</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/kotlin/net/consensys/cava/concurrent/coroutines/experimental/AsyncCompletion.kt#L167">(source)</a>
+<p>Awaits for completion of the <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> without blocking a thread.</p>
+<p>This suspending function is cancellable. If the <a href="https://atoulme.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.experimental/-job/index.html">Job</a> of the current coroutine is cancelled or completed while this
+suspending function is waiting, this function stops waiting for the <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> and immediately resumes with
+<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CancellationException.html">CancellationException</a>.</p>
+<p>Note, that <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> does not support prompt removal of listeners, so on cancellation of this wait a few
+small objects will remain in the <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> stack of completion actions until it completes itself. However,
+care is taken to clear the reference to the waiting coroutine itself, so that its memory can be released even if the
+<a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> never completes.</p>
+</BODY>
+</HTML>

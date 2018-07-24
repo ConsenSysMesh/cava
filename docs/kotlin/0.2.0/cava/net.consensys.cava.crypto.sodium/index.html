@@ -1,0 +1,219 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.crypto.sodium - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.crypto.sodium</a><br/>
+<br/>
+<h2>Package net.consensys.cava.crypto.sodium</h2>
+<p>Classes and utilities for working with the sodium native library.</p>
+<p>Classes and utilities in this package provide an interface to the native Sodium crypto library (https://www.libsodium.org/), which must be installed on the same system as the JVM. It will be searched for in common library locations, or its it can be loaded explicitly using <a href="-sodium/load-library.html">net.consensys.cava.crypto.sodium.Sodium.loadLibrary</a>.</p>
+<p>Classes in this package also depend upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency <code>com.github.jnr:jnr-ffi</code>.</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-a-e-s256-g-c-m/index.html">AES256GCM</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AES256GCM</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html"><span class="identifier">AutoCloseable</span></a></code>
+<p>Authenticated Encryption with Additional Data using AES-GCM. 
+<p> WARNING: Despite being the most popular AEAD construction due to its use in TLS, safely using AES-GCM in a different context is tricky. </p>
+<p> No more than ~350 GB of input data should be encrypted with a given key. This is for ~16 KB messages -- Actual figures vary according to message sizes. </p>
+<p> In addition, nonces are short and repeated nonces would totally destroy the security of this scheme. Nonces should thus come from atomic counters, which can be difficult to set up in a distributed environment. </p>
+<p> Unless you absolutely need AES-GCM, use XChaCha20Poly1305 instead. It doesn't have any of these limitations. Or, if you don't need to authenticate additional data, just stick to <code><a href="#">Sodium#crypto_box(byte[], byte[], long, byte[], byte[], byte[])</a></code>. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-auth/index.html">Auth</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Auth</span></code>
+<p>Secret-key authentication. 
+<p> These operations computes an authentication tag for a message and a secret key, and provides a way to verify that a given tag is valid for a given message and a key. </p>
+<p> The function computing the tag is deterministic: the same (message, key) tuple will always produce the same output. </p>
+<p> However, even if the message is public, knowing the key is required in order to be able to compute a valid tag. Therefore, the key should remain confidential. The tag, however, can be public. </p>
+<p> A typical use case is: </p>
+<ul> <li><code>A</code> prepares a message, add an authentication tag, sends it to <code>B</code></li>
+ <li><code>A</code> doesn't store the message</li>
+ <li>Later on, <code>B</code> sends the message and the authentication tag to <code>A</code></li>
+ <li><code>A</code> uses the authentication tag to verify that it created this message.</li>
+ </ul>
+ 
+<p> This operation does not encrypt the message. It only computes and verifies an authentication tag.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-box/index.html">Box</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Box</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/AutoCloseable.html"><span class="identifier">AutoCloseable</span></a></code>
+<p>Public-key authenticated encryption. 
+<p> Using public-key authenticated encryption, Bob can encrypt a confidential message specifically for Alice, using Alice's public key. </p>
+<p> Using Bob's public key, Alice can compute a shared secret key. Using Alice's public key and his secret key, Bob can compute the exact same shared secret key. That shared secret key can be used to verify that the encrypted message was not tampered with, before eventually decrypting it. </p>
+<p> Alice only needs Bob's public key, the nonce and the ciphertext. Bob should never ever share his secret key, even with Alice. </p>
+<p> And in order to send messages to Alice, Bob only needs Alice's public key. Alice should never ever share her secret key either, even with Bob. </p>
+<p> Alice can reply to Bob using the same system, without having to generate a distinct key pair. </p>
+<p> The nonce doesn't have to be confidential, but it should be used with just one encryption for a particular pair of public and secret keys. </p>
+<p> One easy way to generate a nonce is to use <code><a href="-box/-nonce/random.html">Nonce#random()</a></code>, considering the size of the nonces the risk of any random collisions is negligible. For some applications, if you wish to use nonces to detect missing messages or to ignore replayed messages, it is also acceptable to use an incrementing counter as a nonce. </p>
+<p> When doing so you must ensure that the same value can never be re-used (for example you may have multiple threads or even hosts generating messages using the same key pairs). </p>
+<p> As stated above, senders can decrypt their own messages, and compute a valid authentication tag for any messages encrypted with a given shared secret key. This is generally not an issue for online protocols. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-detached-encryption-result/index.html">DetachedEncryptionResult</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">DetachedEncryptionResult</span></code>
+<p>The result from a detached encryption.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-key-derivation/index.html">KeyDerivation</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">KeyDerivation</span></code>
+<p>Key derivation. 
+<p> Multiple secret subkeys can be derived from a single master key. </p>
+<p> Given the master key and a key identifier, a subkey can be deterministically computed. However, given a subkey, an attacker cannot compute the master key nor any other subkeys.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-key-exchange/index.html">KeyExchange</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">KeyExchange</span></code>
+<p>Key exchange. 
+<p> Allows two parties can securely compute a set of shared keys using their peer's public key and their own secret key.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-lib-sodium/index.html">LibSodium</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">LibSodium</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-password-hash/index.html">PasswordHash</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">PasswordHash</span></code>
+<p>The Argon2 memory-hard hashing function. 
+<p> Argon2 summarizes the state of the art in the design of memory-hard functions. </p>
+<p> It aims at the highest memory filling rate and effective use of multiple computing units, while still providing defense against tradeoff attacks. </p>
+<p> It prevents ASICs from having a significant advantage over software implementations. </p>
+Guidelines for choosing the parameters 
+<p> Start by determining how much memory the function can use. What will be the highest number of threads/processes evaluating the function simultaneously (ideally, no more than 1 per CPU core)? How much physical memory is guaranteed to be available? </p>
+<p> Set memlimit to the amount of memory you want to reserve for password hashing. </p>
+<p> Then, set opslimit to 3 and measure the time it takes to hash a password. </p>
+<p> If this it is way too long for your application, reduce memlimit, but keep opslimit set to 3. </p>
+<p> If the function is so fast that you can afford it to be more computationally intensive without any usability issues, increase opslimit. </p>
+<p> For online use (e.g. login in on a website), a 1 second computation is likely to be the acceptable maximum. </p>
+<p> For interactive use (e.g. a desktop application), a 5 second pause after having entered a password is acceptable if the password doesn't need to be entered more than once per session. </p>
+<p> For non-interactive use and infrequent use (e.g. restoring an encrypted backup), an even slower computation can be an option. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-secret-box/index.html">SecretBox</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SecretBox</span></code>
+<p>Secret-key authenticated encryption. 
+<p> Encrypts a message with a key and a nonce to keep it confidential, and computes an authentication tag. The tag is used to make sure that the message hasn't been tampered with before decrypting it. </p>
+<p> A single key is used both to encrypt/sign and verify/decrypt messages. For this reason, it is critical to keep the key confidential. </p>
+<p> The nonce doesn't have to be confidential, but it should never ever be reused with the same key. The easiest way to generate a nonce is to use randombytes_buf(). </p>
+<p> Messages encrypted are assumed to be independent. If multiple messages are sent using this API and random nonces, there will be no way to detect if a message has been received twice, or if messages have been reordered. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-secret-decryption-stream/index.html">SecretDecryptionStream</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">SecretDecryptionStream</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/security/auth/Destroyable.html"><span class="identifier">Destroyable</span></a></code>
+<p>Used to decrypt a sequence of messages, or a single message split into arbitrary chunks.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-secret-encryption-stream/index.html">SecretEncryptionStream</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">SecretEncryptionStream</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/security/auth/Destroyable.html"><span class="identifier">Destroyable</span></a></code>
+<p>Used to encrypt a sequence of messages, or a single message split into arbitrary chunks.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-sodium/index.html">Sodium</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Sodium</span></code>
+<p>Access to the sodium native library. 
+<p> This class provides static methods for checking or loading the sodium native library.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-sodium-version/index.html">SodiumVersion</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SodiumVersion</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html"><span class="identifier">Comparable</span></a><span class="symbol">&lt;</span><a href="-sodium-version/index.html"><span class="identifier">SodiumVersion</span></a><span class="symbol">&gt;</span></code>
+<p>Details of a sodium native library version.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-x-cha-cha20-poly1305/index.html">XChaCha20Poly1305</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">XChaCha20Poly1305</span></code>
+<p>Authenticated Encryption with Additional Data using XChaCha20-Poly1305. 
+<p> The XChaCha20-Poly1305 construction can safely encrypt a practically unlimited number of messages with the same key, without any practical limit to the size of a message (up to ~ 2^64 bytes). </p>
+<p> As an alternative to counters, its large nonce size (192-bit) allows random nonces to be safely used. </p>
+<p> For this reason, and if interoperability with other libraries is not a concern, this is the recommended AEAD construction. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-sodium-exception/index.html">SodiumException</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SodiumException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>An exception that is thrown when an error occurs using the native sodium library.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

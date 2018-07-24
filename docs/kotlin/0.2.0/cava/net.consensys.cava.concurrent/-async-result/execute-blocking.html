@@ -1,0 +1,58 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.executeBlocking - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./execute-blocking.html">executeBlocking</a><br/>
+<br/>
+<h1>executeBlocking</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$executeBlocking(java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L191">(source)</a>
+<p>Returns a result that, after the given blocking function executes asynchronously on <code><a href="#">ForkJoinPool#commonPool()</a></code> and returns a result, completes when the returned result completes, with the same value or exception.</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - The function returning a result.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the returned result's value.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+<a name="net.consensys.cava.concurrent.AsyncResult$executeBlocking(java.util.concurrent.Executor, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(java.util.concurrent.Executor, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/executor">executor</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html"><span class="identifier">Executor</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(java.util.concurrent.Executor, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L213">(source)</a>
+<p>Returns a result that, after the given blocking function executes asynchronously on an Executor and returns a result, completes when the returned result completes, with the same value or exception.</p>
+<h3>Parameters</h3>
+<p><a name="executor"></a>
+<code>executor</code> - The executor.</p>
+<p><a name="fn"></a>
+<code>fn</code> - The function returning a result.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the returned result's value.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+<a name="net.consensys.cava.concurrent.AsyncResult$executeBlocking(Vertx, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(Vertx, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(Vertx, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L235">(source)</a>
+<p>Returns a result that, after the given blocking function executes asynchronously on a vertx context and returns a result, completes when the returned result completes, with the same value or exception.</p>
+<h3>Parameters</h3>
+<p><a name="vertx"></a>
+<code>vertx</code> - The vertx context.</p>
+<p><a name="fn"></a>
+<code>fn</code> - The function returning a result.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the returned result's value.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+<a name="net.consensys.cava.concurrent.AsyncResult$executeBlocking(WorkerExecutor, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(WorkerExecutor, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/executor">executor</span><span class="symbol">:</span>&nbsp;<span class="identifier">WorkerExecutor</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$executeBlocking(WorkerExecutor, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult.executeBlocking.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="execute-blocking.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L257">(source)</a>
+<p>Returns a result that, after the given blocking function executes asynchronously on a vertx executor and returns a result, completes when the returned result completes, with the same value or exception.</p>
+<h3>Parameters</h3>
+<p><a name="executor"></a>
+<code>executor</code> - A vertx executor.</p>
+<p><a name="fn"></a>
+<code>fn</code> - The function returning a result.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the returned result's value.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

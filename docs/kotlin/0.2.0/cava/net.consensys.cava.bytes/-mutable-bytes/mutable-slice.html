@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MutableBytes.mutableSlice - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">MutableBytes</a>&nbsp;/&nbsp;<a href="./mutable-slice.html">mutableSlice</a><br/>
+<br/>
+<h1>mutableSlice</h1>
+<a name="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">mutableSlice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">MutableBytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/MutableBytes.java#L275">(source)</a>
+<p>Create a mutable slice of the bytes of this value. 
+<p> Note: the resulting slice is only a view over the original value. Holding a reference to the returned slice may hold more memory than the slide represents. Use <code><a href="../-bytes/copy.html">#copy</a></code> on the returned slice to avoid this.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="i"></a>
+<code>i</code> - The start index for the slice.</p>
+<p><a name="length"></a>
+<code>length</code> - The length of the resulting value.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>length &amp;lt; 0</code>.</p>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>i &amp;lt; 0</code> or {i &gt;= size()} or {i + length &gt; size()} .</p>
+<p><strong>Return</strong><br/>
+A new mutable view over the bytes of this value from index <code>i</code> (included) to index <code>i + length</code> (excluded).</p>
+</BODY>
+</HTML>

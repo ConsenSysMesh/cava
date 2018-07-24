@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLP.decode - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="index.html">RLP</a>&nbsp;/&nbsp;<a href="./decode.html">decode</a><br/>
+<br/>
+<h1>decode</h1>
+<a name="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLP.java#L138">(source)</a>
+<p>Read and decode RLP from a Bytes value. 
+<p> Important: this method does not consume any list prefix from the source data. If you are reading a RLP encoded list of values, you usually want to use <code><a href="#">#decodeList(Bytes, Function)</a></code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="source"></a>
+<code>source</code> - The RLP encoded bytes.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided a RLPReader.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The result type of the reading function.</p>
+<p><strong>Return</strong><br/>
+The result from the reading function.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.allOf - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./all-of.html">allOf</a><br/>
+<br/>
+<h1>allOf</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$allOf(kotlin.Array((net.consensys.cava.concurrent.AsyncResult((kotlin.Any)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">allOf</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$allOf(kotlin.Array((net.consensys.cava.concurrent.AsyncResult((kotlin.Any)))))/rs">rs</span><span class="symbol">:</span>&nbsp;<a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L81">(source)</a><br/>
+<a name="net.consensys.cava.concurrent.AsyncResult$allOf(kotlin.collections.MutableCollection((net.consensys.cava.concurrent.AsyncResult((kotlin.Any)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">allOf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$allOf(kotlin.collections.MutableCollection((net.consensys.cava.concurrent.AsyncResult((kotlin.Any)))))/rs">rs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-collection/index.html"><span class="identifier">MutableCollection</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L92">(source)</a><br/>
+<a name="net.consensys.cava.concurrent.AsyncResult$allOf(java.util.stream.Stream((net.consensys.cava.concurrent.AsyncResult((kotlin.Any)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">allOf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$allOf(java.util.stream.Stream((net.consensys.cava.concurrent.AsyncResult((kotlin.Any)))))/rs">rs</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L103">(source)</a>
+<p>Returns an AsyncCompletion that completes when all of the given results complete. If any results complete exceptionally, then the resulting completion also completes exceptionally.</p>
+<h3>Parameters</h3>
+<p><a name="rs"></a>
+<code>rs</code> - The results to combine.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+</BODY>
+</HTML>
