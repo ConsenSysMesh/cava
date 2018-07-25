@@ -58,14 +58,14 @@ class TomlTest {
 
   @Test
   void shouldParseDottedKey() {
-    TomlParseResult result = Toml.parse(" foo  . \" bar\\t\" . -baz = 0x000a", TomlVersion.HEAD);
+    TomlParseResult result = Toml.parse(" foo  . \" bar\\t\" . -baz = 0x000a");
     assertFalse(result.hasErrors(), () -> joinErrors(result));
     assertEquals(Long.valueOf(10), result.getLong(Arrays.asList("foo", " bar\t", "-baz")));
   }
 
   @Test
   void shouldNotParseDottedKeysAtV0_4_0OrEarlier() {
-    TomlParseResult result = Toml.parse("[foo]\n bar.baz = 1");
+    TomlParseResult result = Toml.parse("[foo]\n bar.baz = 1", TomlVersion.V0_4_0);
     assertTrue(result.hasErrors());
     TomlParseError error = result.errors().get(0);
     assertEquals("Dotted keys are not supported", error.getMessage());
@@ -171,7 +171,13 @@ class TomlTest {
         Arguments.of("foo = -0.0E999999999999999999999999999999999999999", -0D),
         Arguments.of("foo = 1.0", 1D),
         Arguments.of("foo = 43.55E34", 43.55E34D),
-        Arguments.of("foo = 43.557_654E-34", 43.557654E-34D)
+        Arguments.of("foo = 43.557_654E-34", 43.557654E-34D),
+        Arguments.of("foo = inf", Double.POSITIVE_INFINITY),
+        Arguments.of("foo = +inf", Double.POSITIVE_INFINITY),
+        Arguments.of("foo = -inf", Double.NEGATIVE_INFINITY),
+        Arguments.of("foo = nan", Double.NaN),
+        Arguments.of("foo = +nan", Double.NaN),
+        Arguments.of("foo = -nan", Double.NaN)
     );
     // @formatter:on
   }
@@ -506,6 +512,33 @@ class TomlTest {
     assertEquals("Ýôú'ℓℓ λáƭè ₥è áƒƭèř ƭλïƨ - #", result.getString("the.test_string"));
     assertEquals(" Âñδ ωλèñ \"'ƨ ářè ïñ ƭλè ƨƭřïñϱ, áℓôñϱ ωïƭλ # \"", result.getString("the.hard.harder_test_string"));
     assertEquals("]", result.getArray("the.hard.'βïƭ#'.multi_line_array").getString(0));
+  }
+
+  @Test
+  void testSpecExample() throws Exception {
+    InputStream is = this.getClass().getResourceAsStream("/net/consensys/cava/toml/toml-v0.5.0-spec-example.toml");
+    assertNotNull(is);
+    TomlParseResult result = Toml.parse(is, TomlVersion.V0_4_0);
+    assertFalse(result.hasErrors(), () -> joinErrors(result));
+
+    assertEquals("Tom Preston-Werner", result.getString("owner.name"));
+    assertEquals(OffsetDateTime.parse("1979-05-27T07:32:00-08:00"), result.getOffsetDateTime("owner.dob"));
+
+    assertEquals("10.0.0.2", result.getString("servers.beta.ip"));
+    TomlArray clientHosts = result.getArray("clients.hosts");
+    assertNotNull(clientHosts);
+    assertTrue(clientHosts.containsStrings());
+    assertEquals(Arrays.asList("alpha", "omega"), clientHosts.toList());
+  }
+
+  @Test
+  void testDottedKeyOrder() throws Exception {
+    TomlParseResult result1 = Toml.parse("[dog.\"tater.man\"]\ntype.name = \"pug\"");
+    assertFalse(result1.hasErrors(), () -> joinErrors(result1));
+    TomlParseResult result2 = Toml.parse("a.b.c = 1\na.d = 2\n");
+    assertFalse(result2.hasErrors(), () -> joinErrors(result2));
+    TomlParseResult result3 = Toml.parse("# THIS IS INVALID\na.b = 1\na.b.c = 2\n");
+    assertTrue(result3.hasErrors());
   }
 
   private String joinErrors(TomlParseResult result) {

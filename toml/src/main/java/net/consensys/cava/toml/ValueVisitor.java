@@ -26,6 +26,8 @@ import net.consensys.cava.toml.internal.TomlParser.LocalTimeContext;
 import net.consensys.cava.toml.internal.TomlParser.OctIntContext;
 import net.consensys.cava.toml.internal.TomlParser.OffsetDateTimeContext;
 import net.consensys.cava.toml.internal.TomlParser.RegularFloatContext;
+import net.consensys.cava.toml.internal.TomlParser.RegularFloatInfContext;
+import net.consensys.cava.toml.internal.TomlParser.RegularFloatNaNContext;
 import net.consensys.cava.toml.internal.TomlParser.StringContext;
 import net.consensys.cava.toml.internal.TomlParser.TrueBoolContext;
 import net.consensys.cava.toml.internal.TomlParserBaseVisitor;
@@ -79,6 +81,16 @@ final class ValueVisitor extends TomlParserBaseVisitor<Object> {
   @Override
   public Object visitRegularFloat(RegularFloatContext ctx) {
     return toDouble(ctx.getText().replaceAll("_", ""), ctx);
+  }
+
+  @Override
+  public Object visitRegularFloatInf(RegularFloatInfContext ctx) {
+    return (ctx.getText().startsWith("-")) ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY;
+  }
+
+  @Override
+  public Object visitRegularFloatNaN(RegularFloatNaNContext ctx) {
+    return Double.NaN;
   }
 
   private Double toDouble(String s, ParserRuleContext ctx) {
