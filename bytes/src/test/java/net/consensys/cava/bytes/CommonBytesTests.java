@@ -20,12 +20,14 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.function.Function;
 
+import io.netty.buffer.Unpooled;
 import io.vertx.core.buffer.Buffer;
 import org.junit.jupiter.api.Test;
 
@@ -571,5 +573,65 @@ abstract class CommonBytesTests {
     Bytes b = w(key).slice(16, 16);
     Bytes b2 = w(key).slice(16, 16);
     assertEquals(b.hashCode(), b2.hashCode());
+  }
+
+  @Test
+  void testHashCodeWithByteBufferWrappingBytes() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes other = Bytes.wrapByteBuffer(ByteBuffer.wrap(key));
+    assertEquals(b.hashCode(), other.hashCode());
+  }
+
+  @Test
+  void testEqualsWithByteBufferWrappingBytes() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes other = Bytes.wrapByteBuffer(ByteBuffer.wrap(key));
+    assertEquals(b, other);
+  }
+
+  @Test
+  void testHashCodeWithBufferWrappingBytes() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes other = Bytes.wrapBuffer(Buffer.buffer(key));
+    assertEquals(b.hashCode(), other.hashCode());
+  }
+
+  @Test
+  void testEqualsWithBufferWrappingBytes() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes other = Bytes.wrapBuffer(Buffer.buffer(key));
+    assertEquals(b, other);
+  }
+
+  @Test
+  void testHashCodeWithByteBufWrappingBytes() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes other = Bytes.wrapByteBuf(Unpooled.copiedBuffer(key));
+    assertEquals(b.hashCode(), other.hashCode());
+  }
+
+  @Test
+  void testEqualsWithByteBufWrappingBytes() {
+    SecureRandom random = new SecureRandom();
+    byte[] key = new byte[32];
+    random.nextBytes(key);
+    Bytes b = w(key);
+    Bytes other = Bytes.wrapByteBuf(Unpooled.copiedBuffer(key));
+    assertEquals(b, other);
   }
 }
