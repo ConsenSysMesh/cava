@@ -86,23 +86,6 @@ class BufferWrappingBytes extends AbstractBytes {
     return new BufferWrappingBytes(buffer.slice(i, i + length));
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (!(obj instanceof BufferWrappingBytes)) {
-      return super.equals(obj);
-    }
-    BufferWrappingBytes other = (BufferWrappingBytes) obj;
-    return buffer.equals(other.buffer);
-  }
-
-  @Override
-  public int hashCode() {
-    return buffer.hashCode();
-  }
-
   // MUST be overridden by mutable implementations
   @Override
   public Bytes copy() {
