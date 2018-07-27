@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.toml;
 
+import javax.annotation.Nullable;
+
 /**
  * Supported TOML specification versions.
  */
@@ -25,9 +27,17 @@ public enum TomlVersion {
    */
   V0_4_0(null),
   /**
+   * The 0.5.0 version of TOML.
+   *
+   * <p>
+   * This specification can be found at <a href=
+   * "https://github.com/toml-lang/toml/blob/master/versions/en/toml-v0.5.0.md">https://github.com/toml-lang/toml/blob/master/versions/en/toml-v0.5.0.md</a>.
+   */
+  V0_5_0(null),
+  /**
    * The latest stable specification of TOML.
    */
-  LATEST(V0_4_0),
+  LATEST(V0_5_0),
   /**
    * The head (development) specification of TOML.
    *
@@ -42,7 +52,7 @@ public enum TomlVersion {
 
   final TomlVersion canonical;
 
-  TomlVersion(TomlVersion canonical) {
+  TomlVersion(@Nullable TomlVersion canonical) {
     this.canonical = canonical != null ? canonical : this;
   }
 

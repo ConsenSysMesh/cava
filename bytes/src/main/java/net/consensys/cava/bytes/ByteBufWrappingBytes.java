@@ -87,23 +87,6 @@ class ByteBufWrappingBytes extends AbstractBytes {
     return new ByteBufWrappingBytes(byteBuf.slice(i, length));
   }
 
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == this) {
-      return true;
-    }
-    if (!(obj instanceof ByteBufWrappingBytes)) {
-      return super.equals(obj);
-    }
-    ByteBufWrappingBytes other = (ByteBufWrappingBytes) obj;
-    return byteBuf.equals(other.byteBuf);
-  }
-
-  @Override
-  public int hashCode() {
-    return byteBuf.hashCode();
-  }
-
   // MUST be overridden by mutable implementations
   @Override
   public Bytes copy() {
