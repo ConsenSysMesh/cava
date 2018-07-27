@@ -76,7 +76,7 @@ public final class AES256GCM implements AutoCloseable {
   }
 
   /**
-   * A AES256-GSM key.
+   * An AES256-GSM key.
    */
   public static final class Key implements Destroyable {
     @Nullable
@@ -211,7 +211,7 @@ public final class AES256GCM implements AutoCloseable {
   }
 
   /**
-   * A AES256-GSM nonce.
+   * An AES256-GSM nonce.
    */
   public static final class Nonce {
     private final Pointer ptr;
@@ -346,7 +346,7 @@ public final class AES256GCM implements AutoCloseable {
   }
 
   /**
-   * Precompute the expansion for the key.
+   * Pre-compute the expansion for the key.
    *
    * <p>
    * Note that the returned instance of {@link AES256GCM} should be closed using {@link #close()} (or
