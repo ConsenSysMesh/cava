@@ -713,7 +713,7 @@ public final class SECP256K1 {
       MutableBytes encoded = MutableBytes.create(65);
       UInt256.valueOf(r).toBytes().copyTo(encoded, 0);
       UInt256.valueOf(s).toBytes().copyTo(encoded, 32);
-      encoded.set(64, v);
+      encoded.set(64, v == 27 || v == 28 ? (byte) (v - 27) : v);
       return encoded;
     }
 

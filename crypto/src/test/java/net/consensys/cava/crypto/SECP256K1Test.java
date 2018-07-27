@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
+import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.crypto.SECP256K1.Signature;
 import net.consensys.cava.junit.BouncyCastleExtension;
@@ -312,5 +313,13 @@ class SECP256K1Test {
     Path tempFile = tempDir.resolve("tempId");
     Files.write(tempFile, "not\n\nvalid".getBytes(UTF_8));
     assertThrows(InvalidSEC256K1PrivateKeyStoreException.class, () -> SECP256K1.PrivateKey.load(tempFile));
+  }
+
+  @Test
+  void testEncodedBytes() {
+    KeyPair kp = SECP256K1.KeyPair.random();
+    Signature sig = SECP256K1.sign(Bytes.of(1, 2, 3), kp);
+    assertEquals(65, sig.encodedBytes().size());
+    assertTrue(sig.encodedBytes().get(64) <= 3 && sig.encodedBytes().get(64) >= 0);
   }
 }
