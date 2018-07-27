@@ -46,8 +46,8 @@ After a successful build, libraries will be available in `build/libs`.
 ## Links
 
 - [GitHub project](https://github.com/consensys/cava)
-- [Online Kotlin documentation](https://consensys.github.io/cava/docs/kotlin/latest/cava)
-- [Online Java documentation](https://consensys.github.io/cava/docs/java/latest)
+- [Online Kotlin documentation](https://consensys.github.io/cava/docs/kotlin/0.2.0/cava)
+- [Online Java documentation](https://consensys.github.io/cava/docs/java/0.2.0)
 - [Issue tracker: Report a defect or feature request](https://github.com/google/cava/issues/new)
 - [StackOverflow: Ask "how-to" and "why-didn't-it-work" questions](https://stackoverflow.com/questions/ask?tags=cava+java)
 - [cava-discuss: For open-ended questions and discussion](http://groups.google.com/group/cava-discuss)
