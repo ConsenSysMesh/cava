@@ -214,6 +214,20 @@ allprojects {
               developerConnection = 'scm:git@github.com:ConsenSys/cava.git'
               url = 'https://github.com/ConsenSys/cava'
             }
+            developers {
+              developer {
+                name = 'Chris Leishman'
+                email = 'chris@leishman.org'
+                organization = 'ConsenSys'
+                organizationUrl = 'https://www.consensys.net'
+              }
+              developer {
+                name = 'Antoine Toulme'
+                email = 'antoine@lunar-ocean.com'
+                organization = 'ConsenSys'
+                organizationUrl = 'https://www.consensys.net'
+              }
+            }
           }
           pom.withXml {
             def dependenciesNode = asNode().appendNode('dependencies')
@@ -309,12 +323,6 @@ subprojects {
 
   task allDependencies(type: DependencyReportTask) {}
 }
-
-//////
-// Deploy the site
-
-task publishSite(type: Exec) { commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}" }
-
 
 //////
 // Bundle all subprojects
