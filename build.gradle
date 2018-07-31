@@ -325,12 +325,6 @@ subprojects {
 }
 
 //////
-// Deploy the site
-
-task publishSite(type: Exec) { commandLine "${rootProject.projectDir}/site/deploy.sh", "${versionNumber}" }
-
-
-//////
 // Bundle all subprojects
 
 subprojects.each { evaluationDependsOn(it.path) }
