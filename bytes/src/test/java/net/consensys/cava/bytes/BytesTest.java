@@ -276,7 +276,7 @@ class BytesTest extends CommonBytesTests {
   @Test
   void fromHexStringLenientInvalidInput() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexStringLenient("foo"));
-    assertEquals("Illegal character 'o' found at index 1 in hex binary representation 'foo'", exception.getMessage());
+    assertEquals("Illegal character 'o' found at index 1 in hex binary representation", exception.getMessage());
   }
 
   @Test
@@ -303,13 +303,13 @@ class BytesTest extends CommonBytesTests {
   @Test
   void fromHexStringLenientLeftPaddingInvalidInput() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexStringLenient("foo", 10));
-    assertEquals("Illegal character 'o' found at index 1 in hex binary representation 'foo'", exception.getMessage());
+    assertEquals("Illegal character 'o' found at index 1 in hex binary representation", exception.getMessage());
   }
 
   @Test
   void fromHexStringLenientLeftPaddingInvalidSize() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexStringLenient("0x001F34", 2));
-    assertEquals("Hex value 0x001F34 is too big: expected at most 2 bytes but got 3", exception.getMessage());
+    assertEquals("Hex value is too large: expected at most 2 bytes but got 3", exception.getMessage());
   }
 
   @Test
@@ -327,13 +327,13 @@ class BytesTest extends CommonBytesTests {
   @Test
   void fromHexStringInvalidInput() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexString("fooo"));
-    assertEquals("Illegal character 'o' found at index 1 in hex binary representation 'fooo'", exception.getMessage());
+    assertEquals("Illegal character 'o' found at index 1 in hex binary representation", exception.getMessage());
   }
 
   @Test
   void fromHexStringNotLenient() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexString("0x100"));
-    assertEquals("Invalid odd-length hex binary representation '0x100'", exception.getMessage());
+    assertEquals("Invalid odd-length hex binary representation", exception.getMessage());
   }
 
   @Test
@@ -353,18 +353,18 @@ class BytesTest extends CommonBytesTests {
   @Test
   void fromHexStringLeftPaddingInvalidInput() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexString("fooo", 4));
-    assertEquals("Illegal character 'o' found at index 1 in hex binary representation 'fooo'", exception.getMessage());
+    assertEquals("Illegal character 'o' found at index 1 in hex binary representation", exception.getMessage());
   }
 
   @Test
   void fromHexStringLeftPaddingNotLenient() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexString("0x100", 4));
-    assertEquals("Invalid odd-length hex binary representation '0x100'", exception.getMessage());
+    assertEquals("Invalid odd-length hex binary representation", exception.getMessage());
   }
 
   @Test
   void fromHexStringLeftPaddingInvalidSize() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexStringLenient("0x001F34", 2));
-    assertEquals("Hex value 0x001F34 is too big: expected at most 2 bytes but got 3", exception.getMessage());
+    assertEquals("Hex value is too large: expected at most 2 bytes but got 3", exception.getMessage());
   }
 }

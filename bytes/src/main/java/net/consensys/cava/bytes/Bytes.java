@@ -17,6 +17,7 @@ import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 
+import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
@@ -343,7 +344,7 @@ public interface Bytes {
    * @return The value corresponding to {@code str}.
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation.
    */
-  static Bytes fromHexStringLenient(String str) {
+  static Bytes fromHexStringLenient(CharSequence str) {
     checkNotNull(str);
     return BytesValues.fromHexString(str, -1, true);
   }
@@ -363,7 +364,7 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, represents
    *         more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
    */
-  static Bytes fromHexStringLenient(String str, int destinationSize) {
+  static Bytes fromHexStringLenient(CharSequence str, int destinationSize) {
     checkNotNull(str);
     checkArgument(destinationSize >= 0, "Invalid negative destination size %s", destinationSize);
     return BytesValues.fromHexString(str, destinationSize, true);
@@ -380,7 +381,7 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, or is of
    *         an odd length.
    */
-  static Bytes fromHexString(String str) {
+  static Bytes fromHexString(CharSequence str) {
     checkNotNull(str);
     return BytesValues.fromHexString(str, -1, false);
   }
@@ -401,7 +402,7 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, or is of
    *         an odd length, or represents more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
    */
-  static Bytes fromHexString(String str, int destinationSize) {
+  static Bytes fromHexString(CharSequence str, int destinationSize) {
     checkNotNull(str);
     checkArgument(destinationSize >= 0, "Invalid negative destination size %s", destinationSize);
     return BytesValues.fromHexString(str, destinationSize, false);
@@ -1021,6 +1022,24 @@ public interface Bytes {
   }
 
   /**
+   * Append this value as a sequence of hexadecimal characters.
+   *
+   * @param appendable The appendable
+   * @param <T> The appendable type.
+   * @return The appendable.
+   * @throws IOException If an IO error occurs.
+   */
+  default <T extends Appendable> T appendHexTo(T appendable) throws IOException {
+    int size = size();
+    for (int i = 0; i < size; i++) {
+      byte b = get(i);
+      appendable.append(AbstractBytes.HEX_CODE[b >> 4 & 15]);
+      appendable.append(AbstractBytes.HEX_CODE[b & 15]);
+    }
+    return appendable;
+  }
+
+  /**
    * Return the number of bytes in common between this set of bytes and another.
    *
    * @param other The bytes to compare to.
@@ -1115,27 +1134,25 @@ public interface Bytes {
    * @return This value represented as hexadecimal, starting with "0x".
    */
   default String toHexString() {
-    int size = size();
-    StringBuilder r = new StringBuilder(2 + size * 2);
-    r.append("0x");
-
-    for (int i = 0; i < size; i++) {
-      byte b = get(i);
-      r.append(AbstractBytes.HEX_CODE[b >> 4 & 15]);
-      r.append(AbstractBytes.HEX_CODE[b & 15]);
+    try {
+      return appendHexTo(new StringBuilder("0x")).toString();
+    } catch (IOException e) {
+      // not thrown
+      throw new RuntimeException(e);
     }
-
-    return r.toString();
   }
 
   /** @return This value represented as a minimal hexadecimal string (without any leading zero). */
   default String toShortHexString() {
-    String hex = toString();
-    // Skipping '0x'
-    if (hex.charAt(2) != '0')
-      return hex;
+    StringBuilder hex;
+    try {
+      hex = appendHexTo(new StringBuilder());
+    } catch (IOException e) {
+      // not thrown
+      throw new RuntimeException(e);
+    }
 
-    int i = 3;
+    int i = 0;
     while (i < hex.length() && hex.charAt(i) == '0') {
       i++;
     }

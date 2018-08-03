@@ -20,21 +20,22 @@ final class BytesValues {
   static final int MAX_UNSIGNED_SHORT = (1 << 16) - 1;
   static final long MAX_UNSIGNED_INT = (1L << 32) - 1;
 
-  static Bytes fromHexString(String str, int destSize, boolean lenient) {
+  static Bytes fromHexString(CharSequence str, int destSize, boolean lenient) {
     return Bytes.wrap(fromRawHexString(str, destSize, lenient));
   }
 
-  static byte[] fromRawHexString(String str, int destSize, boolean lenient) {
-    String hex = str;
-    if (str.startsWith("0x")) {
-      hex = str.substring(2);
+  static byte[] fromRawHexString(CharSequence str, int destSize, boolean lenient) {
+    int len = str.length();
+    CharSequence hex = str;
+    if (len >= 2 && str.charAt(0) == '0' && str.charAt(1) == 'x') {
+      hex = str.subSequence(2, len);
+      len -= 2;
     }
 
-    int len = hex.length();
     int idxShift = 0;
     if (len % 2 != 0) {
       if (!lenient) {
-        throw new IllegalArgumentException("Invalid odd-length hex binary representation '" + str + "'");
+        throw new IllegalArgumentException("Invalid odd-length hex binary representation");
       }
 
       hex = "0" + hex;
@@ -46,12 +47,7 @@ final class BytesValues {
     if (destSize < 0) {
       destSize = size;
     } else {
-      checkArgument(
-          size <= destSize,
-          "Hex value %s is too big: expected at most %s bytes but got %s",
-          str,
-          destSize,
-          size);
+      checkArgument(size <= destSize, "Hex value is too large: expected at most %s bytes but got %s", destSize, size);
     }
 
     byte[] out = new byte[destSize];
@@ -63,18 +59,16 @@ final class BytesValues {
       if (h == -1) {
         throw new IllegalArgumentException(
             String.format(
-                "Illegal character '%c' found at index %d in hex binary representation '%s'",
+                "Illegal character '%c' found at index %d in hex binary representation",
                 hex.charAt(i),
-                i - idxShift,
-                str));
+                i - idxShift));
       }
       if (l == -1) {
         throw new IllegalArgumentException(
             String.format(
-                "Illegal character '%c' found at index %d in hex binary representation '%s'",
+                "Illegal character '%c' found at index %d in hex binary representation",
                 hex.charAt(i + 1),
-                i + 1 - idxShift,
-                str));
+                i + 1 - idxShift));
       }
 
       out[destOffset + (i / 2)] = (byte) (h * 16 + l);

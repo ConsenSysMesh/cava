@@ -142,7 +142,7 @@ public interface Bytes32 extends Bytes {
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation or contains
    *         more than 32 bytes.
    */
-  static Bytes32 fromHexStringLenient(String str) {
+  static Bytes32 fromHexStringLenient(CharSequence str) {
     checkNotNull(str);
     return wrap(BytesValues.fromRawHexString(str, SIZE, true));
   }
@@ -160,7 +160,7 @@ public interface Bytes32 extends Bytes {
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, is of an
    *         odd length, or contains more than 32 bytes.
    */
-  static Bytes32 fromHexString(String str) {
+  static Bytes32 fromHexString(CharSequence str) {
     checkNotNull(str);
     return wrap(BytesValues.fromRawHexString(str, SIZE, false));
   }
@@ -177,7 +177,7 @@ public interface Bytes32 extends Bytes {
    * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, is of an
    *         odd length or does not contain exactly 32 bytes.
    */
-  static Bytes32 fromHexStringStrict(String str) {
+  static Bytes32 fromHexStringStrict(CharSequence str) {
     checkNotNull(str);
     return wrap(BytesValues.fromRawHexString(str, -1, false));
   }
