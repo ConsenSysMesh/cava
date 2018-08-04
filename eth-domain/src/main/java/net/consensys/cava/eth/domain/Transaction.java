@@ -227,7 +227,7 @@ public final class Transaction {
       writer.writeValue(value().toMinimalBytes());
       writer.writeValue(payload());
     }), signature());
-    return Address.fromBytes(Hash.hash(publicKey.encodedBytes()).toBytes().slice(12, 20));
+    return Address.fromBytes(Hash.hash(publicKey.bytes()).toBytes().slice(12, 20));
   }
 
   @Override

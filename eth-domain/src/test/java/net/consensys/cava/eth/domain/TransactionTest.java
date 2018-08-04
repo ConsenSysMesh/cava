@@ -45,7 +45,7 @@ class TransactionTest {
         Address.fromBytes(Bytes.fromHexString("0x0102030405060708091011121314151617181920")),
         Wei.valueOf(10L),
         Bytes.of(1, 2, 3, 4),
-        Signature.create(randomBytes(65)));
+        Signature.fromBytes(randomBytes(65)));
   }
 
   @Test

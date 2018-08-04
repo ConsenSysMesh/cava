@@ -14,7 +14,8 @@ package net.consensys.cava.crypto;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static com.google.common.base.Preconditions.checkState;
+import static java.nio.file.StandardOpenOption.READ;
 import static net.consensys.cava.crypto.Hash.keccak256;
 import static net.consensys.cava.io.file.Files.atomicReplace;
 
@@ -25,7 +26,9 @@ import net.consensys.cava.units.bigints.UInt256;
 
 import java.io.IOException;
 import java.math.BigInteger;
-import java.nio.file.Files;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.channels.FileChannel;
 import java.nio.file.Path;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPairGenerator;
@@ -34,7 +37,7 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
-import java.util.List;
+import javax.security.auth.Destroyable;
 
 import com.google.common.base.Objects;
 import org.bouncycastle.asn1.sec.SECNamedCurves;
@@ -214,7 +217,7 @@ public final class SECP256K1 {
     ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
     ECPrivateKeyParameters privKey =
-        new ECPrivateKeyParameters(keyPair.getPrivateKey().encodedBytes().unsignedBigIntegerValue(), Parameters.CURVE);
+        new ECPrivateKeyParameters(keyPair.getSecretKey().bytes().unsignedBigIntegerValue(), Parameters.CURVE);
     signer.init(true, privKey);
 
     Bytes32 dataHash = keccak256(data);
@@ -240,7 +243,7 @@ public final class SECP256K1 {
 
     // Now we have to work backwards to figure out the recId needed to recover the signature.
     int recId = -1;
-    BigInteger publicKeyBI = keyPair.getPublicKey().encodedBytes().unsignedBigIntegerValue();
+    BigInteger publicKeyBI = keyPair.getPublicKey().bytes().unsignedBigIntegerValue();
     for (int i = 0; i < 4; i++) {
       BigInteger k = recoverFromSignature(i, r, s, dataHash);
       if (k.equals(publicKeyBI)) {
@@ -260,22 +263,19 @@ public final class SECP256K1 {
   /**
    * Verifies the given ECDSA signature against the message bytes using the public key bytes.
    *
-   * <p>
-   * When using native ECDSA verification, data must be 32 bytes, and no element may be larger than 520 bytes.
-   *
-   * @param data Hash of the data to verify.
-   * @param signature ASN.1 encoded signature.
-   * @param pub The public key bytes to use.
+   * @param message The message data to verify.
+   * @param signature The signature.
+   * @param publicKey The public key.
    * @return True if the verification is successful.
    */
-  public static boolean verify(Bytes data, Signature signature, PublicKey pub) {
+  public static boolean verify(Bytes message, Signature signature, PublicKey publicKey) {
     ECDSASigner signer = new ECDSASigner();
-    Bytes toDecode = Bytes.wrap(Bytes.of((byte) 4), pub.encodedBytes());
+    Bytes toDecode = Bytes.wrap(Bytes.of((byte) 4), publicKey.bytes());
     ECPublicKeyParameters params =
         new ECPublicKeyParameters(Parameters.CURVE.getCurve().decodePoint(toDecode.toArray()), Parameters.CURVE);
     signer.init(false, params);
     try {
-      Bytes32 dataHash = keccak256(data);
+      Bytes32 dataHash = keccak256(message);
       return signer.verifySignature(dataHash.toArrayUnsafe(), signature.r, signature.s);
     } catch (NullPointerException e) {
       // Bouncy Castle contains a bug that can cause NPEs given specially crafted signatures. Those
@@ -288,17 +288,21 @@ public final class SECP256K1 {
   /**
    * A SECP256K1 private key.
    */
-  public static class PrivateKey implements java.security.PrivateKey {
+  public static class SecretKey implements Destroyable {
 
-    private final Bytes32 encoded;
+    private Bytes32 keyBytes;
 
-    private static Bytes32 toBytes32(byte[] backing) {
-      if (backing.length == Bytes32.SIZE) {
-        return Bytes32.wrap(backing);
-      } else if (backing.length > Bytes32.SIZE) {
-        return Bytes32.wrap(backing, backing.length - Bytes32.SIZE);
-      } else {
-        return Bytes32.leftPad(Bytes.wrap(backing));
+    @Override
+    protected void finalize() {
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (keyBytes != null) {
+        byte[] b = keyBytes.toArrayUnsafe();
+        keyBytes = null;
+        Arrays.fill(b, (byte) 0);
       }
     }
 
@@ -307,20 +311,29 @@ public final class SECP256K1 {
      *
      * @param key The integer describing the key.
      * @return The private key.
+     * @throws IllegalArgumentException If the integer would overflow 32 bytes.
      */
-    public static PrivateKey create(BigInteger key) {
+    public static SecretKey fromInteger(BigInteger key) {
       checkNotNull(key);
-      return create(toBytes32(key.toByteArray()));
+      byte[] bytes = key.toByteArray();
+      int offset = 0;
+      while (bytes[offset] == 0) {
+        ++offset;
+      }
+      if ((bytes.length - offset) > Bytes32.SIZE) {
+        throw new IllegalArgumentException("key integer is too large");
+      }
+      return fromBytes(Bytes32.leftPad(Bytes.wrap(bytes, offset, bytes.length - offset)));
     }
 
     /**
-     * Create the private key from encoded bytes.
+     * Create the private key from bytes.
      *
-     * @param encoded The encoded key bytes.
+     * @param bytes The key bytes.
      * @return The private key.
      */
-    public static PrivateKey create(Bytes32 encoded) {
-      return new PrivateKey(encoded);
+    public static SecretKey fromBytes(Bytes32 bytes) {
+      return new SecretKey(bytes.copy());
     }
 
     /**
@@ -329,95 +342,116 @@ public final class SECP256K1 {
      * @param file The file to read the key from.
      * @return The private key.
      * @throws IOException On a filesystem error.
-     * @throws InvalidSEC256K1PrivateKeyStoreException If the file does not contain a valid key.
+     * @throws InvalidSEC256K1SecretKeyStoreException If the file does not contain a valid key.
      */
-    public static PrivateKey load(Path file) throws IOException, InvalidSEC256K1PrivateKeyStoreException {
+    public static SecretKey load(Path file) throws IOException, InvalidSEC256K1SecretKeyStoreException {
+      // use buffers for all secret key data transfer, so they can be overwritten on completion
+      ByteBuffer byteBuffer = ByteBuffer.allocate(65);
+      CharBuffer charBuffer = CharBuffer.allocate(64);
       try {
-        List<String> info = Files.readAllLines(file);
-        if (info.size() != 1) {
-          throw new InvalidSEC256K1PrivateKeyStoreException();
+        FileChannel channel = FileChannel.open(file, READ);
+        while (byteBuffer.hasRemaining() && channel.read(byteBuffer) > 0) {
+          // no body
         }
-        return SECP256K1.PrivateKey.create(Bytes32.fromHexString((info.get(0))));
+        channel.close();
+        if (byteBuffer.remaining() > 1) {
+          throw new InvalidSEC256K1SecretKeyStoreException();
+        }
+        byteBuffer.flip();
+        for (int i = 0; i < 64; ++i) {
+          charBuffer.put((char) byteBuffer.get());
+        }
+        if (byteBuffer.limit() == 65 && byteBuffer.get(64) != '\n' && byteBuffer.get(64) != '\r') {
+          throw new InvalidSEC256K1SecretKeyStoreException();
+        }
+        charBuffer.flip();
+        return SecretKey.fromBytes(Bytes32.fromHexString(charBuffer));
       } catch (IllegalArgumentException ex) {
-        throw new InvalidSEC256K1PrivateKeyStoreException();
+        throw new InvalidSEC256K1SecretKeyStoreException();
+      } finally {
+        Arrays.fill(byteBuffer.array(), (byte) 0);
+        Arrays.fill(charBuffer.array(), (char) 0);
       }
     }
 
-    private PrivateKey(Bytes32 encoded) {
-      checkNotNull(encoded);
-      this.encoded = encoded;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-      if (!(other instanceof PrivateKey)) {
-        return false;
-      }
-
-      PrivateKey that = (PrivateKey) other;
-      return this.encoded.equals(that.encoded);
-    }
-
-    @Override
-    public byte[] getEncoded() {
-      return encoded.toArrayUnsafe();
+    private SecretKey(Bytes32 bytes) {
+      checkNotNull(bytes);
+      this.keyBytes = bytes;
     }
 
     /**
-     * @return The encoded bytes of the key.
-     */
-    public Bytes32 encodedBytes() {
-      return encoded;
-    }
-
-    @Override
-    public String getAlgorithm() {
-      return ALGORITHM;
-    }
-
-    @Override
-    public String getFormat() {
-      return null;
-    }
-
-    @Override
-    public int hashCode() {
-      return encoded.hashCode();
-    }
-
-    /**
-     * Write the private key to a file.
+     * Write the secret key to a file.
      *
      * @param file The file to write to.
      * @throws IOException On a filesystem error.
      */
     public void store(Path file) throws IOException {
-      atomicReplace(file, encoded.toString().getBytes(UTF_8));
+      checkState(keyBytes != null, "SecretKey has been destroyed");
+      // use buffers for all secret key data transfer, so they can be overwritten on completion
+      byte[] bytes = new byte[64];
+      CharBuffer hexChars = keyBytes.appendHexTo(CharBuffer.allocate(64));
+      try {
+        hexChars.flip();
+        for (int i = 0; i < 64; ++i) {
+          bytes[i] = (byte) hexChars.get();
+        }
+        atomicReplace(file, bytes);
+      } finally {
+        Arrays.fill(bytes, (byte) 0);
+        Arrays.fill(hexChars.array(), (char) 0);
+      }
     }
 
     @Override
-    public String toString() {
-      return encoded.toString();
+    public boolean equals(Object obj) {
+      if (!(obj instanceof SecretKey)) {
+        return false;
+      }
+      checkState(keyBytes != null, "SecretKey has been destroyed");
+      SecretKey other = (SecretKey) obj;
+      return this.keyBytes.equals(other.keyBytes);
+    }
+
+    @Override
+    public int hashCode() {
+      checkState(keyBytes != null, "SecretKey has been destroyed");
+      return keyBytes.hashCode();
+    }
+
+    /**
+     * @return The bytes of the key.
+     */
+    public Bytes32 bytes() {
+      checkState(keyBytes != null, "SecretKey has been destroyed");
+      return keyBytes;
+    }
+
+    /**
+     * @return The bytes of the key.
+     */
+    public byte[] bytesArray() {
+      checkState(keyBytes != null, "SecretKey has been destroyed");
+      return keyBytes.toArrayUnsafe();
     }
   }
 
   /**
    * A SECP256K1 public key.
    */
-  public static class PublicKey implements java.security.PublicKey {
+  public static class PublicKey {
 
     private static final int BYTE_LENGTH = 64;
 
-    private final Bytes encoded;
+    private final Bytes keyBytes;
 
     /**
-     * Create the public key from a private key.
+     * Create the public key from a secret key.
      *
-     * @param privateKey The private key.
+     * @param secretKey The secret key.
      * @return The associated public key.
      */
-    public static PublicKey create(PrivateKey privateKey) {
-      BigInteger privKey = privateKey.encodedBytes().unsignedBigIntegerValue();
+    public static PublicKey fromSecretKey(SecretKey secretKey) {
+      BigInteger privKey = secretKey.bytes().unsignedBigIntegerValue();
 
       /*
        * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
@@ -428,7 +462,7 @@ public final class SECP256K1 {
       }
 
       ECPoint point = new FixedPointCombMultiplier().multiply(Parameters.CURVE.getG(), privKey);
-      return PublicKey.create(Bytes.wrap(Arrays.copyOfRange(point.getEncoded(false), 1, 65)));
+      return PublicKey.fromBytes(Bytes.wrap(Arrays.copyOfRange(point.getEncoded(false), 1, 65)));
     }
 
     private static Bytes toBytes64(byte[] backing) {
@@ -444,24 +478,24 @@ public final class SECP256K1 {
     }
 
     /**
-     * Create the public key from a private key.
+     * Create the public key from a secret key.
      *
-     * @param privateKey The private key.
+     * @param privateKey The secret key.
      * @return The associated public key.
      */
-    public static PublicKey create(BigInteger privateKey) {
+    public static PublicKey fromInteger(BigInteger privateKey) {
       checkNotNull(privateKey);
-      return create(toBytes64(privateKey.toByteArray()));
+      return fromBytes(toBytes64(privateKey.toByteArray()));
     }
 
     /**
-     * Create the public key from encoded bytes.
+     * Create the public key from bytes.
      *
-     * @param encoded The encoded key bytes.
+     * @param bytes The key bytes.
      * @return The public key.
      */
-    public static PublicKey create(Bytes encoded) {
-      return new PublicKey(encoded);
+    public static PublicKey fromBytes(Bytes bytes) {
+      return new PublicKey(bytes);
     }
 
     /**
@@ -482,17 +516,13 @@ public final class SECP256K1 {
       } catch (IllegalArgumentException e) {
         throw new SECP256K1KeyRecoveryException("Public key cannot be recovered: " + e.getMessage(), e);
       }
-      return create(publicKeyBI);
+      return fromInteger(publicKeyBI);
     }
 
-    private PublicKey(Bytes encoded) {
-      checkNotNull(encoded);
-      checkArgument(
-          encoded.size() == BYTE_LENGTH,
-          "Encoding must be %s bytes long, got %s",
-          BYTE_LENGTH,
-          encoded.size());
-      this.encoded = encoded;
+    private PublicKey(Bytes bytes) {
+      checkNotNull(bytes);
+      checkArgument(bytes.size() == BYTE_LENGTH, "Key must be %s bytes long, got %s", BYTE_LENGTH, bytes.size());
+      this.keyBytes = bytes;
     }
 
     @Override
@@ -502,39 +532,31 @@ public final class SECP256K1 {
       }
 
       PublicKey that = (PublicKey) other;
-      return this.encoded.equals(that.encoded);
-    }
-
-    @Override
-    public byte[] getEncoded() {
-      return encoded.toArrayUnsafe();
-    }
-
-    /**
-     * @return The encoded bytes of the key.
-     */
-    public Bytes encodedBytes() {
-      return encoded;
-    }
-
-    @Override
-    public String getAlgorithm() {
-      return ALGORITHM;
-    }
-
-    @Override
-    public String getFormat() {
-      return null;
+      return this.keyBytes.equals(that.keyBytes);
     }
 
     @Override
     public int hashCode() {
-      return encoded.hashCode();
+      return keyBytes.hashCode();
+    }
+
+    /**
+     * @return The bytes of the key.
+     */
+    public Bytes bytes() {
+      return keyBytes;
+    }
+
+    /**
+     * @return The bytes of the key.
+     */
+    public byte[] bytesArray() {
+      return keyBytes.toArrayUnsafe();
     }
 
     @Override
     public String toString() {
-      return encoded.toString();
+      return keyBytes.toString();
     }
   }
 
@@ -543,28 +565,28 @@ public final class SECP256K1 {
    */
   public static class KeyPair {
 
-    private final PrivateKey privateKey;
+    private final SecretKey secretKey;
     private final PublicKey publicKey;
 
     /**
      * Create a keypair from a private and public key.
      *
-     * @param privateKey The private key.
+     * @param secretKey The private key.
      * @param publicKey The public key.
      * @return The key pair.
      */
-    public static KeyPair create(PrivateKey privateKey, PublicKey publicKey) {
-      return new KeyPair(privateKey, publicKey);
+    public static KeyPair create(SecretKey secretKey, PublicKey publicKey) {
+      return new KeyPair(secretKey, publicKey);
     }
 
     /**
      * Create a keypair using only a private key.
      *
-     * @param privateKey The private key.
+     * @param secretKey The private key.
      * @return The key pair.
      */
-    public static KeyPair create(PrivateKey privateKey) {
-      return new KeyPair(privateKey, PublicKey.create(privateKey));
+    public static KeyPair fromSecretKey(SecretKey secretKey) {
+      return new KeyPair(secretKey, PublicKey.fromSecretKey(secretKey));
     }
 
     /**
@@ -587,31 +609,31 @@ public final class SECP256K1 {
       byte[] publicKeyBytes = publicKey.getQ().getEncoded(false);
       BigInteger publicKeyValue = new BigInteger(1, Arrays.copyOfRange(publicKeyBytes, 1, publicKeyBytes.length));
 
-      return new KeyPair(PrivateKey.create(privateKeyValue), PublicKey.create(publicKeyValue));
+      return new KeyPair(SecretKey.fromInteger(privateKeyValue), PublicKey.fromInteger(publicKeyValue));
     }
 
     /**
      * Load a key pair from a path.
      *
-     * @param file The file containing an encoded private key.
+     * @param file The file containing a private key.
      * @return The key pair.
      * @throws IOException On a filesystem error.
-     * @throws InvalidSEC256K1PrivateKeyStoreException If the file does not contain a valid key.
+     * @throws InvalidSEC256K1SecretKeyStoreException If the file does not contain a valid key.
      */
-    public static KeyPair load(Path file) throws IOException, InvalidSEC256K1PrivateKeyStoreException {
-      return create(PrivateKey.load(file));
+    public static KeyPair load(Path file) throws IOException, InvalidSEC256K1SecretKeyStoreException {
+      return fromSecretKey(SecretKey.load(file));
     }
 
-    private KeyPair(PrivateKey privateKey, PublicKey publicKey) {
-      checkNotNull(privateKey);
+    private KeyPair(SecretKey secretKey, PublicKey publicKey) {
+      checkNotNull(secretKey);
       checkNotNull(publicKey);
-      this.privateKey = privateKey;
+      this.secretKey = secretKey;
       this.publicKey = publicKey;
     }
 
     @Override
     public int hashCode() {
-      return Objects.hashCode(privateKey, publicKey);
+      return Objects.hashCode(secretKey, publicKey);
     }
 
     @Override
@@ -621,14 +643,14 @@ public final class SECP256K1 {
       }
 
       KeyPair that = (KeyPair) other;
-      return this.privateKey.equals(that.privateKey) && this.publicKey.equals(that.publicKey);
+      return this.secretKey.equals(that.secretKey) && this.publicKey.equals(that.publicKey);
     }
 
     /**
-     * @return The private key.
+     * @return The secret key.
      */
-    public PrivateKey getPrivateKey() {
-      return privateKey;
+    public SecretKey getSecretKey() {
+      return secretKey;
     }
 
     /**
@@ -645,7 +667,7 @@ public final class SECP256K1 {
      * @throws IOException On a filesystem error.
      */
     public void store(Path file) throws IOException {
-      privateKey.store(file);
+      secretKey.store(file);
     }
   }
 
@@ -658,19 +680,27 @@ public final class SECP256K1 {
     private final BigInteger s;
 
     /**
-     * Create a signature from encoded bytes.
+     * Create a signature from bytes.
      *
-     * @param encoded The encoded bytes.
+     * @param bytes The signature bytes.
      * @return The signature.
      */
-    public static Signature create(Bytes encoded) {
-      checkNotNull(encoded);
-      checkArgument(encoded.size() == 65, "encoded must be 65 bytes, but got %s instead", encoded.size());
-      BigInteger r = encoded.slice(0, 32).unsignedBigIntegerValue();
-      BigInteger s = encoded.slice(32, 32).unsignedBigIntegerValue();
-      return new Signature(r, s, encoded.get(64));
+    public static Signature fromBytes(Bytes bytes) {
+      checkNotNull(bytes);
+      checkArgument(bytes.size() == 65, "Signature must be 65 bytes, but got %s instead", bytes.size());
+      BigInteger r = bytes.slice(0, 32).unsignedBigIntegerValue();
+      BigInteger s = bytes.slice(32, 32).unsignedBigIntegerValue();
+      return new Signature(r, s, bytes.get(64));
     }
 
+    /**
+     * Create a signature from parameters.
+     *
+     * @param v The v-value.
+     * @param r The r-value.
+     * @param s The s-value.
+     * @return The signature
+     */
     public static Signature create(byte v, BigInteger r, BigInteger s) {
       return new Signature(r, s, v);
     }
@@ -707,14 +737,14 @@ public final class SECP256K1 {
     }
 
     /**
-     * @return The encoded bytes of the signature.
+     * @return The bytes of the signature.
      */
-    public Bytes encodedBytes() {
-      MutableBytes encoded = MutableBytes.create(65);
-      UInt256.valueOf(r).toBytes().copyTo(encoded, 0);
-      UInt256.valueOf(s).toBytes().copyTo(encoded, 32);
-      encoded.set(64, v == 27 || v == 28 ? (byte) (v - 27) : v);
-      return encoded;
+    public Bytes bytes() {
+      MutableBytes signature = MutableBytes.create(65);
+      UInt256.valueOf(r).toBytes().copyTo(signature, 0);
+      UInt256.valueOf(s).toBytes().copyTo(signature, 32);
+      signature.set(64, v == 27 || v == 28 ? (byte) (v - 27) : v);
+      return signature;
     }
 
     @Override
