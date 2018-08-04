@@ -24,6 +24,7 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
+import net.consensys.cava.crypto.SECP256K1.SecretKey;
 import net.consensys.cava.crypto.SECP256K1.Signature;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.junit.TempDirectory;
@@ -42,43 +43,43 @@ class SECP256K1Test {
 
   @Test
   void testCreatePrivateKey_NullEncoding() {
-    assertThrows(NullPointerException.class, () -> SECP256K1.PrivateKey.create((Bytes32) null));
+    assertThrows(NullPointerException.class, () -> SecretKey.fromBytes(null));
   }
 
   @Test
   void testPrivateKeyEquals() {
-    SECP256K1.PrivateKey privateKey1 = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    SECP256K1.PrivateKey privateKey2 = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    assertEquals(privateKey1, privateKey2);
+    SecretKey secretKey1 = SecretKey.fromInteger(BigInteger.TEN);
+    SecretKey secretKey2 = SecretKey.fromInteger(BigInteger.TEN);
+    assertEquals(secretKey1, secretKey2);
   }
 
   @Test
   void testPrivateHashCode() {
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    assertNotEquals(0, privateKey.hashCode());
+    SecretKey secretKey = SecretKey.fromInteger(BigInteger.TEN);
+    assertNotEquals(0, secretKey.hashCode());
   }
 
   @Test
   void testCreatePublicKey_NullEncoding() {
-    assertThrows(NullPointerException.class, () -> SECP256K1.PublicKey.create((Bytes) null));
+    assertThrows(NullPointerException.class, () -> SECP256K1.PublicKey.fromBytes(null));
   }
 
   @Test
   void testCreatePublicKey_EncodingTooShort() {
-    assertThrows(IllegalArgumentException.class, () -> SECP256K1.PublicKey.create(Bytes.wrap(new byte[63])));
+    assertThrows(IllegalArgumentException.class, () -> SECP256K1.PublicKey.fromBytes(Bytes.wrap(new byte[63])));
   }
 
   @Test
   void testCreatePublicKey_EncodingTooLong() {
-    assertThrows(IllegalArgumentException.class, () -> SECP256K1.PublicKey.create(Bytes.wrap(new byte[65])));
+    assertThrows(IllegalArgumentException.class, () -> SECP256K1.PublicKey.fromBytes(Bytes.wrap(new byte[65])));
   }
 
   @Test
   void testPublicKeyEquals() {
-    SECP256K1.PublicKey publicKey1 = SECP256K1.PublicKey.create(
+    SECP256K1.PublicKey publicKey1 = SECP256K1.PublicKey.fromBytes(
         fromHexString(
             "a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7893aba425419bc27a3b6c7e693a24c696f794c2ed877a1593cbee53b037368d7"));
-    SECP256K1.PublicKey publicKey2 = SECP256K1.PublicKey.create(
+    SECP256K1.PublicKey publicKey2 = SECP256K1.PublicKey.fromBytes(
         fromHexString(
             "a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7893aba425419bc27a3b6c7e693a24c696f794c2ed877a1593cbee53b037368d7"));
     assertEquals(publicKey1, publicKey2);
@@ -86,7 +87,7 @@ class SECP256K1Test {
 
   @Test
   void testPublicHashCode() {
-    SECP256K1.PublicKey publicKey = SECP256K1.PublicKey.create(
+    SECP256K1.PublicKey publicKey = SECP256K1.PublicKey.fromBytes(
         fromHexString(
             "a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7893aba425419bc27a3b6c7e693a24c696f794c2ed877a1593cbee53b037368d7"));
 
@@ -97,37 +98,37 @@ class SECP256K1Test {
   void testCreateKeyPair_PublicKeyNull() {
     assertThrows(
         NullPointerException.class,
-        () -> SECP256K1.KeyPair.create(null, SECP256K1.PublicKey.create(Bytes.wrap(new byte[64]))));
+        () -> SECP256K1.KeyPair.create(null, SECP256K1.PublicKey.fromBytes(Bytes.wrap(new byte[64]))));
   }
 
   @Test
   void testCreateKeyPair_PrivateKeyNull() {
     assertThrows(
         NullPointerException.class,
-        () -> SECP256K1.KeyPair.create(SECP256K1.PrivateKey.create(Bytes32.wrap(new byte[32])), null));
+        () -> SECP256K1.KeyPair.create(SecretKey.fromBytes(Bytes32.wrap(new byte[32])), null));
   }
 
   @Test
   void testKeyPairGeneration() {
     SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
     assertNotNull(keyPair);
-    assertNotNull(keyPair.getPrivateKey());
+    assertNotNull(keyPair.getSecretKey());
     assertNotNull(keyPair.getPublicKey());
   }
 
   @Test
   void testKeyPairEquals() {
-    SECP256K1.PrivateKey privateKey1 = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    SECP256K1.PrivateKey privateKey2 = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    SECP256K1.PublicKey publicKey1 = SECP256K1.PublicKey.create(
+    SecretKey secretKey1 = SecretKey.fromInteger(BigInteger.TEN);
+    SecretKey secretKey2 = SecretKey.fromInteger(BigInteger.TEN);
+    SECP256K1.PublicKey publicKey1 = SECP256K1.PublicKey.fromBytes(
         fromHexString(
             "a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7893aba425419bc27a3b6c7e693a24c696f794c2ed877a1593cbee53b037368d7"));
-    SECP256K1.PublicKey publicKey2 = SECP256K1.PublicKey.create(
+    SECP256K1.PublicKey publicKey2 = SECP256K1.PublicKey.fromBytes(
         fromHexString(
             "a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7893aba425419bc27a3b6c7e693a24c696f794c2ed877a1593cbee53b037368d7"));
 
-    SECP256K1.KeyPair keyPair1 = SECP256K1.KeyPair.create(privateKey1, publicKey1);
-    SECP256K1.KeyPair keyPair2 = SECP256K1.KeyPair.create(privateKey2, publicKey2);
+    SECP256K1.KeyPair keyPair1 = SECP256K1.KeyPair.create(secretKey1, publicKey1);
+    SECP256K1.KeyPair keyPair2 = SECP256K1.KeyPair.create(secretKey2, publicKey2);
 
     assertEquals(keyPair1, keyPair2);
   }
@@ -141,17 +142,17 @@ class SECP256K1Test {
   @Test
   void testKeyPairGeneration_PublicKeyRecovery() {
     SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
-    assertEquals(keyPair.getPublicKey(), SECP256K1.PublicKey.create(keyPair.getPrivateKey()));
+    assertEquals(keyPair.getPublicKey(), SECP256K1.PublicKey.fromSecretKey(keyPair.getSecretKey()));
   }
 
   @Test
   void testPublicKeyRecovery() {
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    SECP256K1.PublicKey expectedPublicKey = SECP256K1.PublicKey.create(
+    SecretKey secretKey = SecretKey.fromInteger(BigInteger.TEN);
+    SECP256K1.PublicKey expectedPublicKey = SECP256K1.PublicKey.fromBytes(
         fromHexString(
             "a0434d9e47f3c86235477c7b1ae6ae5d3442d49b1943c2b752a68e2a47e247c7893aba425419bc27a3b6c7e693a24c696f794c2ed877a1593cbee53b037368d7"));
 
-    SECP256K1.PublicKey publicKey = SECP256K1.PublicKey.create(privateKey);
+    SECP256K1.PublicKey publicKey = SECP256K1.PublicKey.fromSecretKey(secretKey);
     assertEquals(expectedPublicKey, publicKey);
   }
 
@@ -168,12 +169,12 @@ class SECP256K1Test {
     SECP256K1.Signature signature = new SECP256K1.Signature(BigInteger.ONE, BigInteger.TEN, (byte) 7);
     assertEquals(
         "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000A07",
-        signature.encodedBytes().toString());
+        signature.bytes().toString());
   }
 
   @Test
   void testCreateSignatureFromEncoding() {
-    SECP256K1.Signature signature = SECP256K1.Signature.create(
+    SECP256K1.Signature signature = SECP256K1.Signature.fromBytes(
         fromHexString(
             "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000A07"));
     assertEquals(BigInteger.ONE, signature.r());
@@ -231,9 +232,9 @@ class SECP256K1Test {
 
   @Test
   void testRecoverPublicKeyFromSignature() {
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey
-        .create(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
-    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.create(privateKey);
+    SecretKey secretKey =
+        SecretKey.fromInteger(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
+    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.fromSecretKey(secretKey);
 
     Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
     SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
@@ -247,16 +248,16 @@ class SECP256K1Test {
     SECP256K1.Signature signature = new Signature(BigInteger.ONE, BigInteger.valueOf(10), (byte) 3);
 
     SECP256K1KeyRecoveryException exception = assertThrows(SECP256K1KeyRecoveryException.class, () -> {
-      SECP256K1.PublicKey.recoverFromSignature(Bytes.of("This is not matching data".getBytes("UTF-8")), signature);
+      SECP256K1.PublicKey.recoverFromSignature(Bytes.of("This is not matching data".getBytes(UTF_8)), signature);
     });
     assertEquals("Public key cannot be recovered: Invalid point compression", exception.getMessage());
   }
 
   @Test
   void testSignatureGeneration() {
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey
-        .create(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
-    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.create(privateKey);
+    SecretKey secretKey =
+        SecretKey.fromInteger(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
+    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.fromSecretKey(secretKey);
 
     Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
     SECP256K1.Signature expectedSignature = new SECP256K1.Signature(
@@ -270,9 +271,9 @@ class SECP256K1Test {
 
   @Test
   void testSignatureVerification() {
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey
-        .create(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
-    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.create(privateKey);
+    SecretKey secretKey =
+        SecretKey.fromInteger(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
+    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.fromSecretKey(secretKey);
 
     Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
 
@@ -285,16 +286,14 @@ class SECP256K1Test {
   void testFileContainsValidPrivateKey(@TempDirectory Path tempDir) throws Exception {
     Path tempFile = tempDir.resolve("tempId");
     Files.write(tempFile, "000000000000000000000000000000000000000000000000000000000000000A".getBytes(UTF_8));
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey.load(tempFile);
-    assertEquals(
-        fromHexString("000000000000000000000000000000000000000000000000000000000000000A"),
-        privateKey.encodedBytes());
+    SecretKey secretKey = SecretKey.load(tempFile);
+    assertEquals(fromHexString("000000000000000000000000000000000000000000000000000000000000000A"), secretKey.bytes());
   }
 
   @Test
   void testReadWritePrivateKeyString(@TempDirectory Path tempDir) throws Exception {
-    SECP256K1.PrivateKey privateKey = SECP256K1.PrivateKey.create(BigInteger.TEN);
-    SECP256K1.KeyPair keyPair1 = SECP256K1.KeyPair.create(privateKey);
+    SecretKey secretKey = SecretKey.fromInteger(BigInteger.TEN);
+    SECP256K1.KeyPair keyPair1 = SECP256K1.KeyPair.fromSecretKey(secretKey);
     Path tempFile = tempDir.resolve("tempId");
     keyPair1.store(tempFile);
     SECP256K1.KeyPair keyPair2 = SECP256K1.KeyPair.load(tempFile);
@@ -305,21 +304,21 @@ class SECP256K1Test {
   void testInvalidFileThrowsInvalidKeyPairException(@TempDirectory Path tempDir) throws Exception {
     Path tempFile = tempDir.resolve("tempId");
     Files.write(tempFile, "not valid".getBytes(UTF_8));
-    assertThrows(InvalidSEC256K1PrivateKeyStoreException.class, () -> SECP256K1.PrivateKey.load(tempFile));
+    assertThrows(InvalidSEC256K1SecretKeyStoreException.class, () -> SecretKey.load(tempFile));
   }
 
   @Test
   void testInvalidMultiLineFileThrowsInvalidIdException(@TempDirectory Path tempDir) throws Exception {
     Path tempFile = tempDir.resolve("tempId");
     Files.write(tempFile, "not\n\nvalid".getBytes(UTF_8));
-    assertThrows(InvalidSEC256K1PrivateKeyStoreException.class, () -> SECP256K1.PrivateKey.load(tempFile));
+    assertThrows(InvalidSEC256K1SecretKeyStoreException.class, () -> SecretKey.load(tempFile));
   }
 
   @Test
   void testEncodedBytes() {
     KeyPair kp = SECP256K1.KeyPair.random();
     Signature sig = SECP256K1.sign(Bytes.of(1, 2, 3), kp);
-    assertEquals(65, sig.encodedBytes().size());
-    assertTrue(sig.encodedBytes().get(64) <= 3 && sig.encodedBytes().get(64) >= 0);
+    assertEquals(65, sig.bytes().size());
+    assertTrue(sig.bytes().get(64) <= 3 && sig.bytes().get(64) >= 0);
   }
 }
