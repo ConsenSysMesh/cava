@@ -228,12 +228,22 @@ allprojects {
             }
           }
           pom.withXml {
+            // restrict dependencyManagement dependencies to only those of the
+            // current module
+            def dm = asNode().dependencyManagement[0].dependencies[0]
+            dm.value = dm.dependency.findAll { node ->
+              def groupId = node.groupId[0].value()
+              def artifactId = node.artifactId[0].value()
+              configurations.compile.allDependencies.any { dep ->
+                dep.group == groupId && dep.name == artifactId
+              }
+            }
+
             def dependenciesNode = asNode().appendNode('dependencies')
             configurations.compile.allDependencies.each {
               def dependencyNode = dependenciesNode.appendNode('dependency')
               dependencyNode.appendNode('groupId', it.group)
               dependencyNode.appendNode('artifactId', it.name)
-              dependencyNode.appendNode('version', it.version)
             }
           }
         }
