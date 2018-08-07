@@ -234,7 +234,7 @@ allprojects {
             dm.value = dm.dependency.findAll { node ->
               def groupId = node.groupId[0].value()
               def artifactId = node.artifactId[0].value()
-              configurations.compile.allDependencies.any { dep ->
+              configurations.compileClasspath.allDependencies.any { dep ->
                 dep.group == groupId && dep.name == artifactId
               }
             }
@@ -244,6 +244,12 @@ allprojects {
               def dependencyNode = dependenciesNode.appendNode('dependency')
               dependencyNode.appendNode('groupId', it.group)
               dependencyNode.appendNode('artifactId', it.name)
+            }
+            configurations.compileOnly.allDependencies.each {
+              def dependencyNode = dependenciesNode.appendNode('dependency')
+              dependencyNode.appendNode('groupId', it.group)
+              dependencyNode.appendNode('artifactId', it.name)
+              dependencyNode.appendNode('optional', 'true')
             }
           }
         }
