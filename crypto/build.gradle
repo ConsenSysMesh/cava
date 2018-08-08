@@ -7,11 +7,10 @@ dependencies {
   compile project(':io')
   compile project(':units')
   compile 'com.google.guava:guava'
-  compileOnly 'com.github.jnr:jnr-ffi'
+  compile 'com.github.jnr:jnr-ffi'
   compileOnly 'org.bouncycastle:bcprov-jdk15on'
 
   testCompile project(':junit')
-  testCompile 'com.github.jnr:jnr-ffi'
   testCompile 'org.bouncycastle:bcprov-jdk15on'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testCompile 'org.junit.jupiter:junit-jupiter-params'

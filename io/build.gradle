@@ -1,8 +1,8 @@
 description = 'Classes and utilities for handling file and network IO.'
 
 dependencies {
-  compileOnly project(':units')
   compile 'com.google.guava:guava'
+  compileOnly project(':bytes')
 
   testCompile project(':bytes')
   testCompile project(':junit')

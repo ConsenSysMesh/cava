@@ -10,9 +10,16 @@ generateGrammarSource {
 
 javadoc { exclude '**/internal/**' }
 
+configurations {
+  compile {
+    extendsFrom = extendsFrom.findAll { it != configurations.antlr }
+  }
+}
+
 dependencies {
   antlr 'org.antlr:antlr4'
 
+  compile 'org.antlr:antlr4-runtime'
   compile 'com.google.code.findbugs:jsr305'
 
   testCompile 'org.junit.jupiter:junit-jupiter-api'
