@@ -190,8 +190,10 @@ allprojects {
     publishing {
       publications {
         MavenDeployment(MavenPublication) { publication ->
-          from components.java
-          artifact sourcesJar { classifier 'sources' }
+          if (project != rootProject) {
+            from components.java
+            artifact sourcesJar { classifier 'sources' }
+          }
           artifact dokkaJar { classifier 'javadoc' }
           groupId 'net.consensys.cava'
           artifactId project.jar.baseName
@@ -352,49 +354,36 @@ subprojects {
   task allDependencies(type: DependencyReportTask) {}
 }
 
+
 //////
-// Bundle all subprojects
-
-subprojects.each { evaluationDependsOn(it.path) }
-
-jar {
-  baseName = rootProject.name
-  manifest {
-    attributes('Implementation-Title': baseName,
-    'Implementation-Version': project.version)
-  }
-  subprojects.each {
-    from it.sourceSets.main.output
-    dependsOn it.classes
-  }
-}
+// Create a virtual package that depends on all components
 
 dependencies {
-  subprojects.each {
-    it.configurations.compile.allDependencies.each { d ->
-      if (d instanceof ExternalModuleDependency) {
-        add('compile', d)
-      }
-    }
-    it.configurations.runtime.allDependencies.each { d ->
-      if (d instanceof ExternalModuleDependency) {
-        add('runtime', d)
-      }
+  subprojects.each { p ->
+    switch (p.name) {
+      case 'eth-reference-tests':
+      // ignore
+        break
+      case 'crypto':
+        compile(p) {
+          exclude group: 'com.github.jnr', module: 'jnr-ffi'
+        }
+        break
+      case 'kv':
+      case 'merkle-trie':
+        compile(p) {
+          exclude group: 'org.jetbrains.kotlinx', module: 'kotlinx-coroutines-core'
+        }
+        break
+      default:
+        compile p
+        break
     }
   }
 }
 
-sourcesJar {
-  baseName = rootProject.name
-  manifest {
-    attributes('Implementation-Title': baseName,
-    'Implementation-Version': project.version)
-  }
-  subprojects.each {
-    from it.sourceSets.main.allSource
-    dependsOn it.classes
-  }
-}
+
+jar { enabled = false }
 
 javadoc {
   subprojects.each {

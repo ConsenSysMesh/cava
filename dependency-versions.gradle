@@ -9,6 +9,7 @@ dependencyManagement {
     dependency('io.vertx:vertx-core:3.5.3')
     dependency('com.google.code.findbugs:jsr305:3.0.2')
     dependency('org.antlr:antlr4:4.7.1')
+    dependency('org.antlr:antlr4-runtime:4.7.1')
     dependency('org.assertj:assertj-core:3.10.0')
     dependency('org.bouncycastle:bcpkix-jdk15on:1.60')
     dependency('org.bouncycastle:bcprov-jdk15on:1.60')
