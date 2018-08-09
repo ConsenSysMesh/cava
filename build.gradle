@@ -373,12 +373,6 @@ dependencies {
           exclude group: 'com.github.jnr', module: 'jnr-ffi'
         }
         break
-      case 'kv':
-      case 'merkle-trie':
-        compile(p) {
-          exclude group: 'org.jetbrains.kotlinx', module: 'kotlinx-coroutines-core'
-        }
-        break
       default:
         compile p
         break
