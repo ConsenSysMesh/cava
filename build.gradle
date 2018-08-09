@@ -247,11 +247,12 @@ allprojects {
             def dependenciesNode = asNode().appendNode('dependencies')
             def addDependencyNode = { dep, optional ->
               def dependencyNode = dependenciesNode.appendNode('dependency')
-              dependencyNode.appendNode('groupId', dep.group)
               if (dep instanceof ProjectDependency) {
+                dependencyNode.appendNode('groupId', 'net.consensys.cava')
                 dependencyNode.appendNode('artifactId', rootProject.name + '-' + dep.name)
                 dependencyNode.appendNode('version', dep.version)
               } else {
+                dependencyNode.appendNode('groupId', dep.group)
                 dependencyNode.appendNode('artifactId', dep.name)
               }
               if (optional) {
