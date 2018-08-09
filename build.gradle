@@ -230,19 +230,8 @@ allprojects {
             }
           }
           pom.withXml {
-            // restrict dependencyManagement dependencies to only those of the
-            // current module
-            def dm = asNode().dependencyManagement[0].dependencies[0]
-            dm.value = dm.dependency.findAll { node ->
-              def groupId = node.groupId[0].value()
-              def artifactId = node.artifactId[0].value()
-              configurations.compileClasspath.allDependencies.any { dep ->
-                dep.group == groupId && dep.name == artifactId
-              }
-            }
-            if (dm.value.isEmpty()) {
-              asNode().remove(asNode().dependencyManagement[0])
-            }
+            // use inline versions rather than pom dependency management
+            asNode().remove(asNode().dependencyManagement[0])
 
             def dependenciesNode = asNode().appendNode('dependencies')
             def addDependencyNode = { dep, optional ->
@@ -254,6 +243,12 @@ allprojects {
               } else {
                 dependencyNode.appendNode('groupId', dep.group)
                 dependencyNode.appendNode('artifactId', dep.name)
+                if (dep.version != null) {
+                  dependencyNode.appendNode('version', dep.version)
+                } else {
+                  def version = dependencyManagement.managedVersions["$dep.group:$dep.name"]
+                  dependencyNode.appendNode('version', version)
+                }
               }
               if (optional) {
                 dependencyNode.appendNode('optional', 'true')
