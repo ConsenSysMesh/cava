@@ -245,7 +245,11 @@ allprojects {
             def addDependencyNode = { dep, optional ->
               def dependencyNode = dependenciesNode.appendNode('dependency')
               dependencyNode.appendNode('groupId', dep.group)
-              dependencyNode.appendNode('artifactId', dep.name)
+              if (dep instanceof ProjectDependency) {
+                dependencyNode.appendNode('artifactId', rootProject.name + '-' + dep.name)
+              } else {
+                dependencyNode.appendNode('artifactId', dep.name)
+              }
               if (optional) {
                 dependencyNode.appendNode('optional', 'true')
               }
