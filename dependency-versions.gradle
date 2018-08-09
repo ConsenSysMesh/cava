@@ -8,22 +8,32 @@ dependencyManagement {
     dependency('io.lettuce:lettuce-core:5.1.0.M1')
     dependency('io.vertx:vertx-core:3.5.3')
     dependency('com.google.code.findbugs:jsr305:3.0.2')
-    dependency('org.antlr:antlr4:4.7.1')
-    dependency('org.antlr:antlr4-runtime:4.7.1')
+    dependencySet(group: 'org.antlr', version: '4.7.1') {
+      entry 'antlr4'
+      entry 'antlr4-runtime'
+    }
     dependency('org.assertj:assertj-core:3.10.0')
-    dependency('org.bouncycastle:bcpkix-jdk15on:1.60')
-    dependency('org.bouncycastle:bcprov-jdk15on:1.60')
+    dependencySet(group: 'org.bouncycastle', version: '1.60') {
+      entry 'bcpkix-jdk15on'
+      entry 'bcprov-jdk15on'
+    }
     dependency('org.fusesource.leveldbjni:leveldbjni-all:1.8')
-    dependency('org.junit.jupiter:junit-jupiter-api:5.2.0')
-    dependency('org.junit.jupiter:junit-jupiter-engine:5.2.0')
-    dependency('org.junit.jupiter:junit-jupiter-params:5.2.0')
+    dependencySet(group: 'org.junit.jupiter', version: '5.2.0') {
+      entry 'junit-jupiter-api'
+      entry 'junit-jupiter-engine'
+      entry 'junit-jupiter-params'
+    }
     dependency('org.jetbrains:annotations:16.0.2')
-    dependency('org.jetbrains.kotlin:kotlin-reflect:1.2.51')
-    dependency('org.jetbrains.kotlin:kotlin-stdlib:1.2.51')
-    dependency('org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.51')
+    dependencySet(group: 'org.jetbrains.kotlin', version: '1.2.51') {
+      entry 'kotlin-reflect'
+      entry 'kotlin-stdlib'
+      entry 'kotlin-stdlib-jdk8'
+    }
     dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core:0.24.0')
-    dependency('org.jetbrains.spek:spek-api:1.1.5')
-    dependency('org.jetbrains.spek:spek-junit-platform-engine:1.1.5')
+    dependencySet(group: 'org.jetbrains.spek', version: '1.1.5') {
+      entry 'spek-api'
+      entry 'spek-junit-platform-engine'
+    }
     dependency('org.mapdb:mapdb:3.0.7')
   }
 }
