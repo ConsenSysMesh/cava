@@ -12,7 +12,7 @@
  */
 package net.consensys.cava.kv
 
-import kotlinx.coroutines.experimental.Unconfined
+import kotlinx.coroutines.experimental.newFixedThreadPoolContext
 import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
 import org.fusesource.leveldbjni.JniDBFactory
@@ -21,6 +21,7 @@ import org.iq80.leveldb.Options
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.coroutines.experimental.CoroutineContext
 
 /**
  * A key-value store backed by LevelDB.
@@ -30,7 +31,9 @@ class LevelDBKeyValueStore
 @JvmOverloads
 constructor(
   databasePath: Path,
-  options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong())
+  options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong()),
+  // TODO: replace with IO context when https://github.com/Kotlin/kotlinx.coroutines/issues/79 is resolved
+  private val context: CoroutineContext = newFixedThreadPoolContext(4, "LevelDBKeyValueStore")
 ) : KeyValueStore {
 
   private val db: DB
@@ -40,7 +43,7 @@ constructor(
     db = JniDBFactory.factory.open(databasePath.toFile(), options)
   }
 
-  override suspend fun get(key: Bytes): Bytes? = withContext(Unconfined) {
+  override suspend fun get(key: Bytes): Bytes? = withContext(context) {
     val rawValue = db[key.toArrayUnsafe()]
     if (rawValue == null) {
       null
@@ -49,7 +52,7 @@ constructor(
     }
   }
 
-  override suspend fun put(key: Bytes, value: Bytes) = withContext(Unconfined) {
+  override suspend fun put(key: Bytes, value: Bytes) = withContext(context) {
     db.put(key.toArrayUnsafe(), value.toArrayUnsafe())
   }
 
