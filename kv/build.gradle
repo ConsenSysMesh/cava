@@ -3,6 +3,7 @@ description = 'Key value store implementations.'
 dependencies {
   compile project(':bytes')
   compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
+  compile 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8'
   compileOnly project(':concurrent')
   compileOnly 'io.lettuce:lettuce-core'
   compileOnly 'org.fusesource.leveldbjni:leveldbjni-all'

@@ -17,9 +17,11 @@ import io.lettuce.core.RedisURI
 import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.async.RedisAsyncCommands
 import io.lettuce.core.codec.RedisCodec
+import kotlinx.coroutines.experimental.future.await
 import net.consensys.cava.bytes.Bytes
 import java.net.InetAddress
 import java.nio.ByteBuffer
+import java.util.concurrent.CompletionStage
 
 class RedisKeyValueStore(uri: String)
   : KeyValueStore {
@@ -39,12 +41,11 @@ class RedisKeyValueStore(uri: String)
     asyncCommands = conn.async()
   }
 
-  override suspend fun get(key: Bytes): Bytes? {
-    return asyncCommands.get(key).get()
-  }
+  override suspend fun get(key: Bytes): Bytes? = asyncCommands.get(key).await()
 
   override suspend fun put(key: Bytes, value: Bytes) {
-    asyncCommands.set(key, value).get()
+    val future: CompletionStage<String> = asyncCommands.set(key, value)
+    future.await()
   }
 
   override fun close() {

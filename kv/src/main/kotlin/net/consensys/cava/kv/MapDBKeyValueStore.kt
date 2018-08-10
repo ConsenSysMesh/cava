@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.kv
 
+import kotlinx.coroutines.experimental.newFixedThreadPoolContext
+import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
 import org.mapdb.DB
 import org.mapdb.DBMaker
@@ -21,6 +23,7 @@ import org.mapdb.HTreeMap
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
+import kotlin.coroutines.experimental.CoroutineContext
 
 /**
  * A key-value store backed by a MapDB instance.
@@ -28,7 +31,9 @@ import java.nio.file.Path
 class MapDBKeyValueStore
 @Throws(IOException::class)
 constructor(
-  databasePath: Path
+  databasePath: Path,
+  // TODO: replace with IO context when https://github.com/Kotlin/kotlinx.coroutines/issues/79 is resolved
+  private val context: CoroutineContext = newFixedThreadPoolContext(4, "MapDBKeyValueStore")
 ) : KeyValueStore {
 
   private val db: DB
@@ -40,11 +45,11 @@ constructor(
     storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()
   }
 
-  override suspend fun get(key: Bytes): Bytes? {
-    return storageData[key]
+  override suspend fun get(key: Bytes): Bytes? = withContext(context) {
+    storageData[key]
   }
 
-  override suspend fun put(key: Bytes, value: Bytes) {
+  override suspend fun put(key: Bytes, value: Bytes) = withContext(context) {
     storageData[key] = value
     db.commit()
   }

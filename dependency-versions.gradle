@@ -29,7 +29,10 @@ dependencyManagement {
       entry 'kotlin-stdlib'
       entry 'kotlin-stdlib-jdk8'
     }
-    dependency('org.jetbrains.kotlinx:kotlinx-coroutines-core:0.24.0')
+    dependencySet(group: 'org.jetbrains.kotlinx', version: '0.24.0') {
+      entry 'kotlinx-coroutines-core'
+      entry 'kotlinx-coroutines-jdk8'
+    }
     dependencySet(group: 'org.jetbrains.spek', version: '1.1.5') {
       entry 'spek-api'
       entry 'spek-junit-platform-engine'
