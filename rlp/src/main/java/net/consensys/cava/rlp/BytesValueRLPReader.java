@@ -231,7 +231,7 @@ final class BytesValueRLPReader implements RLPReader {
 
     if (remaining < length) {
       throw new InvalidRLPEncodingException(
-          "Insufficient bytes in RLP encoding: expected " + lengthOfLength + " but have only " + remaining);
+          "Insufficient bytes in RLP encoding: expected " + length + " but have only " + remaining);
     }
 
     index += 1 + lengthOfLength;
