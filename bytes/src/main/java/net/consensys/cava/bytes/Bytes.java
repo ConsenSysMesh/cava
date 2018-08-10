@@ -738,7 +738,7 @@ public interface Bytes {
    * @return The result of a bit-wise XOR.
    */
   default Bytes xor(Bytes other) {
-    return or(other, MutableBytes.create(Math.max(size(), other.size())));
+    return xor(other, MutableBytes.create(Math.max(size(), other.size())));
   }
 
   /**
