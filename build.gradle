@@ -155,14 +155,16 @@ allprojects {
     }
   }
 
-  jar {
-    destinationDir = file("${rootProject.buildDir}/libs")
-  }
+  if (project != rootProject) {
+    jar {
+      destinationDir = file("${rootProject.buildDir}/libs")
+    }
 
-  task sourcesJar(type: Jar, dependsOn: classes) {
-    destinationDir = file("${rootProject.buildDir}/src")
-    classifier = 'sources'
-    from sourceSets.main.allSource
+    task sourcesJar(type: Jar, dependsOn: classes) {
+      destinationDir = file("${rootProject.buildDir}/src")
+      classifier = 'sources'
+      from sourceSets.main.allSource
+    }
   }
 
   task dokkaJar(type: Jar, dependsOn: dokka) {
@@ -172,18 +174,16 @@ allprojects {
   }
 
   if (project.name != 'eth-reference-tests') {
-    signing {
-      useGpgCmd()
-      sign configurations.archives
-    }
 
     tasks.withType(Sign) {
       onlyIf { System.getenv('ENABLE_SIGNING') == 'true' }
     }
 
     artifacts {
-      archives jar
-      archives sourcesJar
+      if (project != rootProject) {
+        archives jar
+        archives sourcesJar
+      }
       archives dokkaJar
     }
 
@@ -274,6 +274,11 @@ allprojects {
           }
         }
       }
+    }
+
+    signing {
+      useGpgCmd()
+      sign publishing.publications.MavenDeployment
     }
 
     def artifactIdMatcher = Pattern.compile("(.*)-\\d.*")
