@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.wrapBuffer - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./wrap-buffer.html">wrapBuffer</a><br/>
+<br/>
+<h1>wrapBuffer</h1>
+<a name="net.consensys.cava.bytes.Bytes$wrapBuffer(Buffer)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapBuffer(Buffer)/buffer">buffer</span><span class="symbol">:</span>&nbsp;<span class="identifier">Buffer</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L134">(source)</a>
+<p>Wrap a full Vert.x Buffer as a Bytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="buffer"></a>
+<code>buffer</code> - The buffer to wrap.</p>
+<p><strong>Return</strong><br/>
+A Bytes value.</p>
+<a name="net.consensys.cava.bytes.Bytes$wrapBuffer(Buffer, kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapBuffer(Buffer, kotlin.Int, kotlin.Int)/buffer">buffer</span><span class="symbol">:</span>&nbsp;<span class="identifier">Buffer</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapBuffer(Buffer, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapBuffer(Buffer, kotlin.Int, kotlin.Int)/size">size</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L157">(source)</a>
+<p>Wrap a slice of a Vert.x Buffer as a Bytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="buffer"></a>
+<code>buffer</code> - The buffer to wrap.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The offset in <code>buffer</code> from which to expose the bytes in the returned value. That is, <code>wrapBuffer(buffer, i, 1).get(0) == buffer.getByte(i)</code>.</p>
+<p><a name="size"></a>
+<code>size</code> - The size of the returned value.</p>
+<h3>Exceptions</h3>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>offset &amp;lt; 0 || (buffer.length() &gt; 0 &amp;&amp; offset &gt;= buffer.length())</code>.</p>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>length &amp;lt; 0 || offset + length &gt; buffer.length()</code>.</p>
+<p><strong>Return</strong><br/>
+A Bytes value.</p>
+</BODY>
+</HTML>

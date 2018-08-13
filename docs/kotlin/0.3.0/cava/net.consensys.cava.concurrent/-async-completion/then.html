@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncCompletion.then - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncCompletion</a>&nbsp;/&nbsp;<a href="./then.html">then</a><br/>
+<br/>
+<h1>then</h1>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$then(java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncCompletion.then.U)))))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">then</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$then(java.util.function.Supplier((net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncCompletion.then.U)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="then.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="then.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L323">(source)</a>
+<p>Returns a new completion that, when this completion completes normally, completes with the same value or exception as the result returned after executing the given function.</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - The function returning a new result.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The type of the returned result's value.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

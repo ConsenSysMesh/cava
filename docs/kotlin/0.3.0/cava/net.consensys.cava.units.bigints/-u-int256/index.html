@@ -1,0 +1,352 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>UInt256 - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.units.bigints</a>&nbsp;/&nbsp;<a href="./index.html">UInt256</a><br/>
+<br/>
+<h1>UInt256</h1>
+<code><span class="keyword">class </span><span class="identifier">UInt256</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-u-int256-value/index.html"><span class="identifier">UInt256Value</span></a><span class="symbol">&lt;</span><a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//units/src/main/java/net/consensys/cava/units/bigints/UInt256.java#L30">(source)</a>
+<p>An unsigned 256-bit precision number. This is a raw UInt256Value - a 256-bit precision unsigned number of no particular unit.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-m-a-x_-v-a-l-u-e.html">MAX_VALUE</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">MAX_VALUE</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>The maximum value of a UInt256</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-m-i-n_-v-a-l-u-e.html">MIN_VALUE</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">MIN_VALUE</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>The minimum value of a UInt256</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-o-n-e.html">ONE</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">ONE</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>The value 1</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-t-e-n.html">TEN</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">TEN</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>The value 10</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-z-e-r-o.html">ZERO</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">ZERO</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>The value 0</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$add(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$add(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="add-mod.html">addMod</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addMod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$addMod(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$addMod(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">addMod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$addMod(kotlin.Long, net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$addMod(kotlin.Long, net.consensys.cava.units.bigints.UInt256)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">addMod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$addMod(kotlin.Long, kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$addMod(kotlin.Long, kotlin.Long)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="and.html">and</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">and</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$and(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise AND of this value and the supplied value. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+<code><span class="keyword">fun </span><span class="identifier">and</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$and(net.consensys.cava.bytes.Bytes32)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise AND of this value and the supplied bytes. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="big-integer-value.html">bigIntegerValue</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bigIntegerValue</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="bit-length.html">bitLength</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bitLength</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="compare-to.html">compareTo</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">compareTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$compareTo(net.consensys.cava.units.bigints.UInt256)/other">other</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="divide.html">divide</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">divide</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$divide(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">divide</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$divide(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="fits-int.html">fitsInt</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">fitsInt</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="fits-long.html">fitsLong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">fitsLong</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="from-bytes.html">fromBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$fromBytes(net.consensys.cava.bytes.Bytes)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a UInt256 containing the value described by the specified bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="from-hex-string.html">fromHexString</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromHexString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$fromHexString(kotlin.String)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Parse an hexadecimal string into a UInt256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="int-value.html">intValue</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">intValue</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-zero.html">isZero</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isZero</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="long-value.html">longValue</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">longValue</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="mod.html">mod</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">mod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$mod(net.consensys.cava.units.bigints.UInt256)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">mod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$mod(kotlin.Long)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="multiply.html">multiply</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">multiply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiply(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">multiply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiply(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="multiply-mod.html">multiplyMod</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">multiplyMod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiplyMod(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiplyMod(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">multiplyMod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiplyMod(kotlin.Long, net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiplyMod(kotlin.Long, net.consensys.cava.units.bigints.UInt256)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">multiplyMod</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiplyMod(kotlin.Long, kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$multiplyMod(kotlin.Long, kotlin.Long)/modulus">modulus</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="not.html">not</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">not</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise NOT of this value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="number-of-leading-zeros.html">numberOfLeadingZeros</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">numberOfLeadingZeros</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="or.html">or</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">or</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$or(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise OR of this value and the supplied value. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+<code><span class="keyword">fun </span><span class="identifier">or</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$or(net.consensys.cava.bytes.Bytes32)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise OR of this value and the supplied bytes. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="pow.html">pow</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">pow</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$pow(net.consensys.cava.units.bigints.UInt256)/exponent">exponent</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">pow</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$pow(kotlin.Long)/exponent">exponent</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="shift-left.html">shiftLeft</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">shiftLeft</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$shiftLeft(kotlin.Int)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Shift all bits in this value to the left.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="shift-right.html">shiftRight</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">shiftRight</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$shiftRight(kotlin.Int)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Shift all bits in this value to the right.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="subtract.html">subtract</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">subtract</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$subtract(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">subtract</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$subtract(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-bytes.html">toBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-minimal-bytes.html">toMinimalBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toMinimalBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="uint256-value.html">uint256Value</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">uint256Value</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="value-of.html">valueOf</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">valueOf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$valueOf(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a <code>UInt256</code> containing the specified value.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">valueOf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$valueOf(java.math.BigInteger)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a UInt256 containing the specified value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="xor.html">xor</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$xor(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise XOR of this value and the supplied value. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+<code><span class="keyword">fun </span><span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.units.bigints.UInt256$xor(net.consensys.cava.bytes.Bytes32)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">UInt256</span></a></code>
+<p>Return a bit-wise XOR of this value and the supplied bytes. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-u-int256-value/to-hex-string.html">toHexString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toHexString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>This value represented as an hexadecimal string. 
+<p> Note that this representation includes all the 32 underlying bytes, no matter what the integer actually represents (in other words, it can have many leading zeros). For a shorter representation that don't include leading zeros, use <code><a href="../-u-int256-value/to-short-hex-string.html">#toShortHexString</a></code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-u-int256-value/to-short-hex-string.html">toShortHexString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toShortHexString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

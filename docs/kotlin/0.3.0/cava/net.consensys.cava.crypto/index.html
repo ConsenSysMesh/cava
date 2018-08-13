@@ -1,0 +1,63 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.crypto - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.crypto</a><br/>
+<br/>
+<h2>Package net.consensys.cava.crypto</h2>
+<p>Classes and utilities for working with cryptography.</p>
+<p>These classes are included in the complete Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-crypto</code> (<code>cava-crypto.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-hash/index.html">Hash</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Hash</span></code>
+<p>Various utilities for providing hashes (digests) of arbitrary data. Requires the BouncyCastleProvider to be loaded and available. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation for detail.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-s-e-c-p256-k1/index.html">SECP256K1</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SECP256K1</span></code>
+<p>An Elliptic Curve Digital Signature using parameters as used by Bitcoin, and defined in Standards for Efficient Cryptography (SEC) (Certicom Research, http://www.secg.org/sec2-v2.pdf). 
+<p> This class depends upon the BouncyCastle library being available and added as a java.security.Provider. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation. </p>
+<p> BouncyCastle can be included using the gradle dependency 'org.bouncycastle:bcprov-jdk15on'.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-invalid-s-e-c256-k1-secret-key-store-exception/index.html">InvalidSEC256K1SecretKeyStoreException</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">InvalidSEC256K1SecretKeyStoreException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>Exception thrown when reading a store that contains an invalid SEC256K1 private keys.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-s-e-c-p256-k1-key-recovery-exception.html">SECP256K1KeyRecoveryException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SECP256K1KeyRecoveryException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>Exception thrown when a key cannot be recovered from a signed data.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

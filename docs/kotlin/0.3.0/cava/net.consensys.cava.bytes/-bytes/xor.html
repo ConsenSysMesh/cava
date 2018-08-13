@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.xor - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./xor.html">xor</a><br/>
+<br/>
+<h1>xor</h1>
+<a name="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes)/other">other</span><span class="symbol">:</span>&nbsp;<a href="index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L740">(source)</a>
+<p>Return a bit-wise XOR of these bytes and the supplied bytes. 
+<p> If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="other"></a>
+<code>other</code> - The bytes to perform the operation with.</p>
+<p><strong>Return</strong><br/>
+The result of a bit-wise XOR.</p>
+<a name="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.xor.T)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.xor.T)/other">other</span><span class="symbol">:</span>&nbsp;<a href="index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.xor.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="xor.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="xor.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L757">(source)</a>
+<p>Calculate a bit-wise XOR of these bytes and the supplied bytes. 
+<p> If this value or the supplied value are shorter in length than the output vector, then they will be zero-padded to the left. Likewise, if either this value or the supplied valid is longer in length than the output vector, then they will be truncated to the left.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="other"></a>
+<code>other</code> - The bytes to perform the operation with.</p>
+<p><a name="result"></a>
+<code>result</code> - The mutable output vector for the result.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The MutableBytes value type.</p>
+<p><strong>Return</strong><br/>
+The <code>result</code> output vector.</p>
+</BODY>
+</HTML>

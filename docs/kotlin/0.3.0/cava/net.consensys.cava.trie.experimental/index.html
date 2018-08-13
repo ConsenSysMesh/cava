@@ -1,0 +1,79 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.trie.experimental - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.trie.experimental</a><br/>
+<br/>
+<h2>Package net.consensys.cava.trie.experimental</h2>
+<p>Merkle Trie implementations using Kotlin coroutines.</p>
+<p>Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.</p>
+<p>Classes in this package depend upon the kotlinx-coroutines library, which is not automatically included when using the complete Cava distrubution. See https://github.com/Kotlin/kotlinx.coroutines. kotlinx-coroutines can be included using the gradle dependency <code>com.jetbrains.kotlinx:koltinx-coroutines-core</code>.</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-async-merkle-storage/index.html">AsyncMerkleStorage</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AsyncMerkleStorage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-merkle-storage/index.html"><span class="identifier">MerkleStorage</span></a></code>
+<p>Storage for use in a <a href="-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-merkle-patricia-trie/index.html">MerklePatriciaTrie</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">MerklePatriciaTrie</span><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-merkle-trie/index.html"><span class="identifier">MerkleTrie</span></a><span class="symbol">&lt;</span><a href="../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">,</span>&nbsp;<a href="-merkle-patricia-trie/index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>An in-memory <a href="-merkle-trie/index.html">MerkleTrie</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-merkle-storage/index.html">MerkleStorage</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">MerkleStorage</span></code>
+<p>Storage for use in a <a href="-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-merkle-trie/index.html">MerkleTrie</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">MerkleTrie</span><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<span class="identifier">K</span><span class="symbol">, </span><span class="identifier">V</span><span class="symbol">&gt;</span></code>
+<p>A Merkle Trie.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">StoredMerklePatriciaTrie</span><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-merkle-trie/index.html"><span class="identifier">MerkleTrie</span></a><span class="symbol">&lt;</span><a href="../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">,</span>&nbsp;<a href="-stored-merkle-patricia-trie/index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>A <a href="-merkle-trie/index.html">MerkleTrie</a> that persists trie nodes to a <a href="-merkle-storage/index.html">MerkleStorage</a> key/value store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-merkle-storage-exception/index.html">MerkleStorageException</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">MerkleStorageException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-runtime-exception/index.html"><span class="identifier">RuntimeException</span></a></code>
+<p>This exception is thrown when there is an issue retrieving or decoding values from <a href="-merkle-storage/index.html">MerkleStorage</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

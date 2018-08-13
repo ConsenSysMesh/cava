@@ -1,0 +1,118 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.config - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.config</a><br/>
+<br/>
+<h2>Package net.consensys.cava.config</h2>
+<p>A general-purpose library for managing configuration data.</p>
+<p>These classes are included in the complete Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-config</code> (<code>cava-config.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-configuration/index.html">Configuration</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Configuration</span></code>
+<p>Represents collection of configuration properties, optionally validated against a schema.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-configuration-errors/index.html">ConfigurationErrors</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ConfigurationErrors</span></code>
+<p>Factory methods for collections of ConfigurationError.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-configuration-validator/index.html">ConfigurationValidator</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">ConfigurationValidator</span></code>
+<p>A validator for a configuration. 
+<p> Validators of this type are invoked during verification after all property validators. However, errors returned by property validators do not prevent this validator being evaluated, so properties of the configuration may be missing or invalid.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-document-position/index.html">DocumentPosition</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DocumentPosition</span></code>
+<p>A position in an input document.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-property-validator/index.html">PropertyValidator</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">PropertyValidator</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code>
+<p>A validator associated with a specific configuration property.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-schema/index.html">Schema</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Schema</span></code>
+<p>A schema for a configuration, providing default values and validation rules.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-schema-builder/index.html">SchemaBuilder</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SchemaBuilder</span></code>
+<p>This interface allows customers to determine a schema to associate with a configuration to validate the entries read from configuration files, and provide default values if no value is present in the configuration file.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-configuration-error/index.html">ConfigurationError</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ConfigurationError</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>Provides details regarding an error in the configuration.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-invalid-configuration-property-type-exception/index.html">InvalidConfigurationPropertyTypeException</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">InvalidConfigurationPropertyTypeException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>An exception thrown when an invalid type is encountered.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-no-configuration-property-exception.html">NoConfigurationPropertyException</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">NoConfigurationPropertyException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>An exception thrown when a requested configuration property is not found. 
+<p> This exception can be avoided by using a schema that provides a default value or asserts that a value has been provided in the configuration.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

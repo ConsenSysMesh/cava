@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.concurrent - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.concurrent</a><br/>
+<br/>
+<h2>Package net.consensys.cava.concurrent</h2>
+<p>Classes and utilities for working with concurrency.</p>
+<p>These classes are included in the complete Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-concurrent</code> (<code>cava-concurrent.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-async-completion/index.html">AsyncCompletion</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">AsyncCompletion</span></code>
+<p>A completion that will be complete at a future time.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-async-result/index.html">AsyncResult</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">AsyncResult</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code>
+<p>A result that will be available at a future time.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-atomic-slot-map/index.html">AtomicSlotMap</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">AtomicSlotMap</span><span class="symbol">&lt;</span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-comparable/index.html"><span class="identifier">Comparable</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier">V</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code>
+<p>An atomic map that locates available keys within a DiscreteDomain. 
+<p> This is an atomic map that will allocate key slots based on availability. It will attempt to keep the range compact by filling slots as they become available. </p>
+<p> This implementation should be used with small sets, as addition is an O(N) operation.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-completable-async-completion/index.html">CompletableAsyncCompletion</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">CompletableAsyncCompletion</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>An AsyncCompletion that can later be completed successfully or with a provided exception.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-completable-async-result/index.html">CompletableAsyncResult</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">CompletableAsyncResult</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="-completable-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>An AsyncResult that can be later completed successfully with a provided value, or completed with an exception.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-expiring-map/index.html">ExpiringMap</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">ExpiringMap</span><span class="symbol">&lt;</span><span class="identifier">K</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier">V</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><a href="-expiring-map/index.html#K"><span class="identifier">K</span></a><span class="symbol">,</span>&nbsp;<a href="-expiring-map/index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>A concurrent hash map that stores values along with an expiry. Values are stored in the map until their expiry is reached, after which they will no longer be available and will appear as if removed. The actual removal is done lazily whenever the map is accessed, or when the <code><a href="-expiring-map/purge-expired.html">#purgeExpired()</a></code> method is invoked.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,71 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncMerkleStorage - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.trie.experimental</a>&nbsp;/&nbsp;<a href="./index.html">AsyncMerkleStorage</a><br/>
+<br/>
+<h1>AsyncMerkleStorage</h1>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AsyncMerkleStorage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-merkle-storage/index.html"><span class="identifier">MerkleStorage</span></a></code> <a href="https://github.com/consensys/cava/blob/master//merkle-trie/src/main/kotlin/net/consensys/cava/trie/experimental/MerkleStorage.kt#L53">(source)</a>
+<p>Storage for use in a <a href="../-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+<p>This abstract implementation of <a href="../-merkle-storage/index.html">MerkleStorage</a> provides variations of get/put methods that use
+<a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> and <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> rather than kotlin coroutines, making it possible to implement in Java.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">AsyncMerkleStorage</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>Storage for use in a <a href="../-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$get(net.consensys.cava.bytes.Bytes32)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code>
+<p>Get the stored content under the given hash.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-async.html">getAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$getAsync(net.consensys.cava.bytes.Bytes32)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Get the stored content under the given hash.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$put(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$put(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/content">content</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Store content with a given hash.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put-async.html">putAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$putAsync(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.experimental.AsyncMerkleStorage$putAsync(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/content">content</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Store content with a given hash.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

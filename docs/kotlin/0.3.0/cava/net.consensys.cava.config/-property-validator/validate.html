@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PropertyValidator.validate - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">PropertyValidator</a>&nbsp;/&nbsp;<a href="./validate.html">validate</a><br/>
+<br/>
+<h1>validate</h1>
+<a name="net.consensys.cava.config.PropertyValidator$validate(kotlin.String, net.consensys.cava.config.DocumentPosition, net.consensys.cava.config.PropertyValidator.T)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">validate</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.PropertyValidator$validate(kotlin.String, net.consensys.cava.config.DocumentPosition, net.consensys.cava.config.PropertyValidator.T)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier">@Nullable</span> <span class="identifier" id="net.consensys.cava.config.PropertyValidator$validate(kotlin.String, net.consensys.cava.config.DocumentPosition, net.consensys.cava.config.PropertyValidator.T)/position">position</span><span class="symbol">:</span>&nbsp;<a href="../-document-position/index.html"><span class="identifier">DocumentPosition</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier">@Nullable</span> <span class="identifier" id="net.consensys.cava.config.PropertyValidator$validate(kotlin.String, net.consensys.cava.config.DocumentPosition, net.consensys.cava.config.PropertyValidator.T)/value">value</span><span class="symbol">:</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../-configuration-error/index.html"><span class="identifier">ConfigurationError</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/PropertyValidator.java#L202">(source)</a>
+<p>Validate a configuration property.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - The configuration property key.</p>
+<p><a name="position"></a>
+<code>position</code> - The position of the property in the input document, if supported. This should be used when constructing errors.</p>
+<p><a name="value"></a>
+<code>value</code> - The value associated with the configuration entry.</p>
+<p><strong>Return</strong><br/>
+A list of errors. If no errors are found, an empty list should be returned.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLP.decodeList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="index.html">RLP</a>&nbsp;/&nbsp;<a href="./decode-list.html">decodeList</a><br/>
+<br/>
+<h1>decodeList</h1>
+<a name="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decodeList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode-list.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode-list.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLP.java#L154">(source)</a>
+<p>Read an RLP encoded list of values from a Bytes value.</p>
+<h3>Parameters</h3>
+<p><a name="source"></a>
+<code>source</code> - The RLP encoded bytes.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided a RLPReader.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The result type of the reading function.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the first RLP value is not a list.</p>
+<p><strong>Return</strong><br/>
+The result from the reading function.</p>
+<a name="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLP.java#L170">(source)</a>
+<p>Read an RLP encoded list of values from a Bytes value, populating a mutable output list.</p>
+<h3>Parameters</h3>
+<p><a name="source"></a>
+<code>source</code> - The RLP encoded bytes.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided a RLPReader.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the first RLP value is not a list.</p>
+<p><strong>Return</strong><br/>
+The list supplied to <code>fn</code>.</p>
+</BODY>
+</HTML>

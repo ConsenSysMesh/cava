@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KeyDerivation - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="./index.html">KeyDerivation</a><br/>
+<br/>
+<h1>KeyDerivation</h1>
+<code><span class="keyword">class </span><span class="identifier">KeyDerivation</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/KeyDerivation.java#L36">(source)</a>
+<p>Key derivation. 
+<p> Multiple secret subkeys can be derived from a single master key. </p>
+<p> Given the master key and a key identifier, a subkey can be deterministically computed. However, given a subkey, an attacker cannot compute the master key nor any other subkeys.</p>
+</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-master-key/index.html">MasterKey</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">MasterKey</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/security/auth/Destroyable.html"><span class="identifier">Destroyable</span></a></code>
+<p>A KeyDerivation master key.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">KeyDerivation</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>Key derivation. 
+<p> Multiple secret subkeys can be derived from a single master key. </p>
+<p> Given the master key and a key identifier, a subkey can be deterministically computed. However, given a subkey, an attacker cannot compute the master key nor any other subkeys.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="context-length.html">contextLength</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">contextLength</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-available.html">isAvailable</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">isAvailable</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if Sodium and key derivation support is available. 
+<p> Key derivation is supported in sodium native library version &gt;= 10.0.12.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="max-sub-key-length.html">maxSubKeyLength</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">maxSubKeyLength</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="min-sub-key-length.html">minSubKeyLength</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">minSubKeyLength</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
