@@ -20,7 +20,7 @@ plugins {
 //////
 // Version numbering
 
-def versionNumber = '0.3.0'
+def versionNumber = '0.4.0'
 def buildVersion = versionNumber + buildTag()
 
 static String buildTag() {
