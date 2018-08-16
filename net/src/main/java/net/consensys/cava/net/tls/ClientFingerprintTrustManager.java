@@ -17,7 +17,6 @@ import static net.consensys.cava.net.tls.TLS.certificateFingerprint;
 
 import net.consensys.cava.bytes.Bytes;
 
-import java.io.IOException;
 import java.net.Socket;
 import java.nio.file.Path;
 import java.security.cert.CertificateException;
@@ -25,7 +24,11 @@ import java.security.cert.X509Certificate;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.X509ExtendedTrustManager;
 
-import sun.security.x509.X500Name;
+import org.bouncycastle.asn1.x500.RDN;
+import org.bouncycastle.asn1.x500.X500Name;
+import org.bouncycastle.asn1.x500.style.BCStyle;
+import org.bouncycastle.asn1.x500.style.IETFUtils;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateHolder;
 
 final class ClientFingerprintTrustManager extends X509ExtendedTrustManager {
 
@@ -56,12 +59,9 @@ final class ClientFingerprintTrustManager extends X509ExtendedTrustManager {
   @Override
   public void checkClientTrusted(X509Certificate[] chain, String authType, Socket socket) throws CertificateException {
     X509Certificate cert = chain[0];
-    String hostname;
-    try {
-      hostname = ((X500Name) cert.getSubjectDN()).getCommonName();
-    } catch (IOException e) {
-      throw new CertificateException("Invalid certificate " + cert.getSubjectDN());
-    }
+    X500Name x500name = new JcaX509CertificateHolder(cert).getSubject();
+    RDN cn = x500name.getRDNs(BCStyle.CN)[0];
+    String hostname = IETFUtils.valueToString(cn.getFirst().getValue());
     checkTrusted(chain, hostname);
   }
 
@@ -74,12 +74,9 @@ final class ClientFingerprintTrustManager extends X509ExtendedTrustManager {
   public void checkClientTrusted(X509Certificate[] chain, String authType, SSLEngine engine)
       throws CertificateException {
     X509Certificate cert = chain[0];
-    String hostname;
-    try {
-      hostname = ((X500Name) cert.getSubjectDN()).getCommonName();
-    } catch (IOException e) {
-      throw new CertificateException("Invalid certificate " + cert.getSubjectDN());
-    }
+    X500Name x500name = new JcaX509CertificateHolder(cert).getSubject();
+    RDN cn = x500name.getRDNs(BCStyle.CN)[0];
+    String hostname = IETFUtils.valueToString(cn.getFirst().getValue());
     checkTrusted(chain, hostname);
   }
 
