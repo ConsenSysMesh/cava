@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.AbstractMap.SimpleImmutableEntry;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -31,7 +32,7 @@ import java.util.Map.Entry;
 final class FingerprintRepository {
 
   private final Path fingerprintFile;
-  private Map<String, Bytes> fingerprints;
+  private volatile Map<String, Bytes> fingerprints;
 
   FingerprintRepository(Path fingerprintFile) {
     try {
@@ -56,10 +57,10 @@ final class FingerprintRepository {
     if (!contains(identifier, fingerprint)) {
       synchronized (this) {
         if (!contains(identifier, fingerprint)) {
-          // put into a copy first
+          // put into a copy first, then atomically replace
           HashMap<String, Bytes> fingerprintsCopy = new HashMap<>(fingerprints);
           fingerprintsCopy.put(identifier, fingerprint);
-          fingerprints = writeFingerprintFile(fingerprintFile, fingerprintsCopy);
+          fingerprints = Collections.unmodifiableMap(writeFingerprintFile(fingerprintFile, fingerprintsCopy));
         }
       }
     }
