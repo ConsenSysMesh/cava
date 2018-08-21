@@ -2,7 +2,6 @@ description = 'Classes and utilities for working with concurrency.'
 
 dependencies {
   compile 'com.google.guava:guava'
-  compileOnly 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
   compileOnly 'io.vertx:vertx-core'
 
   testCompile 'org.junit.jupiter:junit-jupiter-api'

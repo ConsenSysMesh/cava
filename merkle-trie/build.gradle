@@ -2,7 +2,7 @@ description = 'Patricia Merkle Trie implementations.'
 
 dependencies {
   compile project(':bytes')
-  compile project(':concurrent')
+  compile project(':concurrent-coroutines')
   compile project(':crypto')
   compile project(':rlp')
   compile 'com.google.guava:guava'
