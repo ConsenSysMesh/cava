@@ -60,7 +60,7 @@ final class FingerprintRepository {
           // put into a copy first, then atomically replace
           HashMap<String, Bytes> fingerprintsCopy = new HashMap<>(fingerprints);
           fingerprintsCopy.put(identifier, fingerprint);
-          fingerprints = Collections.unmodifiableMap(writeFingerprintFile(fingerprintFile, fingerprintsCopy));
+          fingerprints = writeFingerprintFile(fingerprintFile, fingerprintsCopy);
         }
       }
     }
@@ -91,7 +91,7 @@ final class FingerprintRepository {
       fingerprints.put(entry.getKey(), entry.getValue());
     }
 
-    return fingerprints;
+    return Collections.unmodifiableMap(fingerprints);
   }
 
   private static Map<String, Bytes> writeFingerprintFile(Path fingerprintFile, Map<String, Bytes> updatedFingerprints) {
@@ -145,7 +145,7 @@ final class FingerprintRepository {
         }
       });
 
-      return fingerprints;
+      return Collections.unmodifiableMap(fingerprints);
     } catch (IOException e) {
       throw new TLSEnvironmentException("Cannot write fingerprint file " + fingerprintFile, e);
     }
