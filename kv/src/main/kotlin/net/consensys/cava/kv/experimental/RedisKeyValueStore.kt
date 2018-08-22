@@ -10,34 +10,44 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv
+package net.consensys.cava.kv.experimental
 
 import io.lettuce.core.RedisClient
 import io.lettuce.core.RedisURI
 import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.async.RedisAsyncCommands
-import io.lettuce.core.codec.RedisCodec
 import kotlinx.coroutines.experimental.future.await
 import net.consensys.cava.bytes.Bytes
 import java.net.InetAddress
-import java.nio.ByteBuffer
 import java.util.concurrent.CompletionStage
 
+/**
+ * A key-value store backed by Redis.
+ *
+ * @param uri The uri to the Redis store.
+ * @constructor Open a Redis-backed key-value store.
+ */
 class RedisKeyValueStore(uri: String)
-  : KeyValueStore {
+  : KeyValueStore, net.consensys.cava.kv.RedisKeyValueStore {
 
   private val conn: StatefulRedisConnection<Bytes, Bytes>
   private val asyncCommands: RedisAsyncCommands<Bytes, Bytes>
 
+  /**
+   * Open a Redis-backed key-value store.
+   *
+   * @param port The port for the Redis store.
+   * @param address The address for the Redis store.
+   */
   @JvmOverloads
   constructor(
     port: Int = 6379,
-    networkInterface: InetAddress = InetAddress.getLoopbackAddress()
-  ) : this(RedisURI.create(networkInterface.hostAddress, port).toURI().toString())
+    address: InetAddress = InetAddress.getLoopbackAddress()
+  ) : this(RedisURI.create(address.hostAddress, port).toURI().toString())
 
   init {
     val redisClient = RedisClient.create(uri)
-    conn = redisClient.connect(BytesRedisCodec())
+    conn = redisClient.connect(net.consensys.cava.kv.RedisKeyValueStore.codec())
     asyncCommands = conn.async()
   }
 
@@ -50,31 +60,5 @@ class RedisKeyValueStore(uri: String)
 
   override fun close() {
     conn.close()
-  }
-
-  class BytesRedisCodec : RedisCodec<Bytes, Bytes> {
-    override fun decodeKey(bytes: ByteBuffer?): Bytes? {
-      return if (bytes == null) {
-        null
-      } else {
-        Bytes.wrapByteBuffer(bytes)
-      }
-    }
-
-    override fun encodeValue(value: Bytes?): ByteBuffer {
-      return ByteBuffer.wrap(value?.toArrayUnsafe() ?: ByteArray(0))
-    }
-
-    override fun encodeKey(key: Bytes?): ByteBuffer {
-      return ByteBuffer.wrap(key?.toArrayUnsafe() ?: ByteArray(0))
-    }
-
-    override fun decodeValue(bytes: ByteBuffer?): Bytes? {
-      return if (bytes == null) {
-        null
-      } else {
-        Bytes.wrapByteBuffer(bytes)
-      }
-    }
   }
 }

@@ -10,15 +10,15 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv
+package net.consensys.cava.kv.experimental
 
 import com.google.common.io.MoreFiles
 import com.google.common.io.RecursiveDeleteOption
 import com.winterbe.expekt.should
 import kotlinx.coroutines.experimental.runBlocking
 import net.consensys.cava.bytes.Bytes
-import net.consensys.cava.kv.Vars.foo
-import net.consensys.cava.kv.Vars.foobar
+import net.consensys.cava.kv.experimental.Vars.foo
+import net.consensys.cava.kv.experimental.Vars.foobar
 import org.iq80.leveldb.DBException
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
