@@ -10,20 +10,20 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv
+package net.consensys.cava.kv.experimental
 
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.coroutines.experimental.asyncCompletion
 import net.consensys.cava.concurrent.coroutines.experimental.asyncResult
-import java.io.Closeable
-import java.util.Optional
 
 /**
  * A key-value store.
+ *
+ * This interface extends [net.consensys.cava.kv.KeyValueStore], exposing co-routine based access methods.
  */
-interface KeyValueStore : Closeable {
+interface KeyValueStore : net.consensys.cava.kv.KeyValueStore {
 
   /**
    * Retrieves data from the store.
@@ -40,7 +40,7 @@ interface KeyValueStore : Closeable {
    * @return An [AsyncResult] that will complete with the stored content,
    *         or an empty optional if no content was available.
    */
-  fun getAsync(key: Bytes): AsyncResult<Optional<Bytes>> = asyncResult { Optional.ofNullable(get(key)) }
+  override fun getAsync(key: Bytes): AsyncResult<Bytes?> = asyncResult { get(key) }
 
   /**
    * Puts data into the store.
@@ -60,5 +60,5 @@ interface KeyValueStore : Closeable {
    * @param value the data to store.
    * @return An [AsyncCompletion] that will complete when the content is stored.
    */
-  fun putAsync(key: Bytes, value: Bytes): AsyncCompletion = asyncCompletion { put(key, value) }
+  override fun putAsync(key: Bytes, value: Bytes): AsyncCompletion = asyncCompletion { put(key, value) }
 }

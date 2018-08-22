@@ -13,8 +13,8 @@
 package net.consensys.cava.kv;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
@@ -24,7 +24,6 @@ import net.consensys.cava.junit.TempDirectoryExtension;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,30 +34,30 @@ class KeyValueStoreTest {
   @Test
   void testPutAndGet() throws Exception {
     Map<Bytes, Bytes> map = new HashMap<>();
-    KeyValueStore store = new MapKeyValueStore(map);
+    KeyValueStore store = MapKeyValueStore.open(map);
     AsyncCompletion completion = store.putAsync(Bytes.of(123), Bytes.of(10, 12, 13));
     completion.join();
-    Optional<Bytes> value = store.getAsync(Bytes.of(123)).get();
-    assertTrue(value.isPresent());
-    assertEquals(Bytes.of(10, 12, 13), value.get());
+    Bytes value = store.getAsync(Bytes.of(123)).get();
+    assertNotNull(value);
+    assertEquals(Bytes.of(10, 12, 13), value);
     assertEquals(Bytes.of(10, 12, 13), map.get(Bytes.of(123)));
   }
 
   @Test
   void testNoValue() throws Exception {
     Map<Bytes, Bytes> map = new HashMap<>();
-    KeyValueStore store = new MapKeyValueStore(map);
-    assertFalse(store.getAsync(Bytes.of(123)).get().isPresent());
+    KeyValueStore store = MapKeyValueStore.open(map);
+    assertNull(store.getAsync(Bytes.of(123)).get());
   }
 
   @Test
   void testLevelDBWithoutOptions(@TempDirectory Path tempDirectory) throws Exception {
-    try (LevelDBKeyValueStore leveldb = new LevelDBKeyValueStore(tempDirectory.resolve("foo").resolve("bar"))) {
+    try (LevelDBKeyValueStore leveldb = LevelDBKeyValueStore.open(tempDirectory.resolve("foo").resolve("bar"))) {
       AsyncCompletion completion = leveldb.putAsync(Bytes.of(123), Bytes.of(10, 12, 13));
       completion.join();
-      Optional<Bytes> value = leveldb.getAsync(Bytes.of(123)).get();
-      assertTrue(value.isPresent());
-      assertEquals(Bytes.of(10, 12, 13), value.get());
+      Bytes value = leveldb.getAsync(Bytes.of(123)).get();
+      assertNotNull(value);
+      assertEquals(Bytes.of(10, 12, 13), value);
     }
   }
 }

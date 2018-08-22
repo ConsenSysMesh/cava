@@ -10,67 +10,62 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv
+package net.consensys.cava.kv.experimental
 
 import kotlinx.coroutines.experimental.newFixedThreadPoolContext
 import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
-import org.mapdb.DB
-import org.mapdb.DBMaker
-import org.mapdb.DataInput2
-import org.mapdb.DataOutput2
-import org.mapdb.HTreeMap
+import org.fusesource.leveldbjni.JniDBFactory
+import org.iq80.leveldb.DB
+import org.iq80.leveldb.Options
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
- * A key-value store backed by a MapDB instance.
+ * A key-value store backed by LevelDB.
+ *
+ * @param dbPath The path to the levelDB database.
+ * @param options Options for the levelDB database.
+ * @param context The co-routine context for blocking tasks.
+ * @return A key-value store.
+ * @throws IOException If an I/O error occurs.
+ * @constructor Open a LevelDB-backed key-value store.
  */
-class MapDBKeyValueStore
+class LevelDBKeyValueStore
+@JvmOverloads
 @Throws(IOException::class)
 constructor(
-  databasePath: Path,
+  dbPath: Path,
+  options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong()),
   // TODO: replace with IO context when https://github.com/Kotlin/kotlinx.coroutines/issues/79 is resolved
-  private val context: CoroutineContext = newFixedThreadPoolContext(4, "MapDBKeyValueStore")
-) : KeyValueStore {
+  private val context: CoroutineContext =
+    newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors(), "LevelDBKeyValueStore")
+) : KeyValueStore, net.consensys.cava.kv.LevelDBKeyValueStore {
 
   private val db: DB
-  private val storageData: HTreeMap<Bytes, Bytes>
 
   init {
-    Files.createDirectories(databasePath.parent)
-    db = DBMaker.fileDB(databasePath.toFile()).transactionEnable().closeOnJvmShutdown().make()
-    storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()
+    Files.createDirectories(dbPath)
+    db = JniDBFactory.factory.open(dbPath.toFile(), options)
   }
 
   override suspend fun get(key: Bytes): Bytes? = withContext(context) {
-    storageData[key]
+    val rawValue = db[key.toArrayUnsafe()]
+    if (rawValue == null) {
+      null
+    } else {
+      Bytes.wrap(rawValue)
+    }
   }
 
   override suspend fun put(key: Bytes, value: Bytes) = withContext(context) {
-    storageData[key] = value
-    db.commit()
+    db.put(key.toArrayUnsafe(), value.toArrayUnsafe())
   }
 
   /**
-   * Closes the underlying MapDB instance.
+   * Closes the underlying LevelDB instance.
    */
   override fun close() = db.close()
-}
-
-private class BytesSerializer : org.mapdb.Serializer<Bytes> {
-
-  override fun serialize(out: DataOutput2, value: Bytes) {
-    out.packInt(value.size())
-    out.write(value.toArrayUnsafe())
-  }
-
-  override fun deserialize(input: DataInput2, available: Int): Bytes {
-    val size = input.unpackInt()
-    val bytes = ByteArray(size)
-    input.readFully(bytes)
-    return Bytes.wrap(bytes)
-  }
 }

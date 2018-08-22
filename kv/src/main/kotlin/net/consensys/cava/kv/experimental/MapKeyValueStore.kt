@@ -10,17 +10,22 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv
+package net.consensys.cava.kv.experimental
 
 import net.consensys.cava.bytes.Bytes
 
 /**
  * A key-value store backed by an in-memory Map.
+ *
+ * @param map The backing map for this store.
+ * @return A key-value store.
+ * @constructor Open an in-memory key-value store.
  */
 class MapKeyValueStore
-@JvmOverloads constructor(
+@JvmOverloads
+constructor(
   private val map: MutableMap<Bytes, Bytes> = HashMap()
-) : KeyValueStore {
+) : KeyValueStore, net.consensys.cava.kv.MapKeyValueStore {
 
   override suspend fun get(key: Bytes): Bytes? = map[key]
 

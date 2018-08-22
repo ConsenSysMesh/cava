@@ -14,17 +14,17 @@ Classes and utilities for working with concurrency.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-concurrent` (`cava-concurrent.jar`).
 
-# Package net.consensys.cava.config
-
-A general-purpose library for managing configuration data.
-
-These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-config` (`cava-config.jar`).
-
 # Package net.consensys.cava.concurrent.coroutines.experimental
 
 Extensions for mapping [AsyncResult][net.consensys.cava.concurrent.AsyncResult] and [AsyncCompletion][net.consensys.cava.concurrent.AsyncCompletion] objects to and from Kotlin coroutines.
 
 Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
+
+# Package net.consensys.cava.config
+
+A general-purpose library for managing configuration data.
+
+These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-config` (`cava-config.jar`).
 
 # Package net.consensys.cava.crypto
 
@@ -68,7 +68,13 @@ Classes and utilities for working with key/value stores.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kv` (`cava-kv.jar`).
 
-Classes in this package depend upon the kotlinx-coroutines library, which is not automatically included when using the complete Cava distrubution. See https://github.com/Kotlin/kotlinx.coroutines. kotlinx-coroutines can be included using the gradle dependency `com.jetbrains.kotlinx:koltinx-coroutines-core`.
+# Package net.consensys.cava.kv.experimental
+
+Key/value stores implementations exposing Kotlin coroutine methods.
+
+Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
+
+These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kv` (`cava-kv.jar`).
 
 # Package net.consensys.cava.net
 
