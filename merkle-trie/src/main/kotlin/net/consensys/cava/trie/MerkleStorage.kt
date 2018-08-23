@@ -10,10 +10,13 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
+import net.consensys.cava.concurrent.AsyncCompletion
+import net.consensys.cava.concurrent.AsyncResult
+import net.consensys.cava.concurrent.coroutines.experimental.await
 
 /**
  * Storage for use in a [StoredMerklePatriciaTrie].
@@ -24,9 +27,9 @@ interface MerkleStorage {
    * Get the stored content under the given hash.
    *
    * @param hash The hash for the content.
-   * @return The stored content, or <tt>null</tt> if not found.
+   * @return An [AsyncResult] that will complete with the stored content or <tt>null</tt> if not found.
    */
-  suspend fun get(hash: Bytes32): Bytes?
+  fun getAsync(hash: Bytes32): AsyncResult<Bytes?>
 
   /**
    * Store content with a given hash.
@@ -36,6 +39,16 @@ interface MerkleStorage {
    *
    * @param hash The hash for the content.
    * @param content The content to store.
+   * @return An [AsyncCompletion] that will complete when the content is stored.
    */
-  suspend fun put(hash: Bytes32, content: Bytes)
+  fun putAsync(hash: Bytes32, content: Bytes): AsyncCompletion
+}
+
+internal class CoroutineMerkleStorageAdapter(
+  private val storage: MerkleStorage
+) : net.consensys.cava.trie.experimental.MerkleStorage {
+
+  override suspend fun get(hash: Bytes32): Bytes? = storage.getAsync(hash).await()
+
+  override suspend fun put(hash: Bytes32, content: Bytes) = storage.putAsync(hash, content).await()
 }
