@@ -16,6 +16,7 @@ plugins {
   id 'org.jetbrains.dokka' version '0.9.17'
 }
 
+description = 'A set of libraries and other tools to aid development of blockchain and other decentralized software in Java and other JVM languages'
 
 //////
 // Version numbering
@@ -246,7 +247,7 @@ allprojects {
 
           pom {
             name = project.jar.baseName
-            description = project.description
+            afterEvaluate { description = project.description }
             url = 'https://github.com/ConsenSys/cava'
             licenses {
               license {
