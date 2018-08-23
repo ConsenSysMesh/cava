@@ -1,0 +1,249 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CompletableAsyncResult - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="./index.html">CompletableAsyncResult</a><br/>
+<br/>
+<h1>CompletableAsyncResult</h1>
+<code><span class="keyword">interface </span><span class="identifier">CompletableAsyncResult</span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/CompletableAsyncResult.java#L21">(source)</a>
+<p>An AsyncResult that can be later completed successfully with a provided value, or completed with an exception.</p>
+<h3>Parameters</h3>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the value returned by this result.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="complete.html">complete</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">complete</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.CompletableAsyncResult$complete(net.consensys.cava.concurrent.CompletableAsyncResult.T)/value">value</span><span class="symbol">:</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Complete this result with the given value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="complete-exceptionally.html">completeExceptionally</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">completeExceptionally</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.CompletableAsyncResult$completeExceptionally(kotlin.Throwable)/ex">ex</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Complete this result with the given exception.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-async-result/accept.html">accept</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">accept</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$accept(java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a new completion that, when this result completes either normally or exceptionally, completes after executing the supplied function with this result's value and exception as arguments. 
+<p> Either the value or the exception supplied to the function will be <code>null</code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/cancel.html">cancel</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">cancel</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Attempt to cancel execution of this task. 
+<p> This attempt will fail if the task has already completed, has already been cancelled, or could not be cancelled for some other reason. If successful, and this task has not started when <code>cancel</code> is called, this task should never run. </p>
+<p> After this method returns, subsequent calls to <code><a href="../-async-result/is-done.html">#isDone()</a></code> will always return true. Subsequent calls to <code><a href="../-async-result/is-cancelled.html">#isCancelled()</a></code> will always return true if this method returned true.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/exceptionally.html">exceptionally</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">exceptionally</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$exceptionally(java.util.function.Function((kotlin.Throwable, net.consensys.cava.concurrent.AsyncResult.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a new result that, when this result completes exceptionally, completes with the value obtained from executing the supplied function with this result's exception as an argument. Otherwise, if this result completes normally, then the returned result also completes normally with the same value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html#T"><span class="identifier">T</span></a></code>
+<p>Waits if necessary for the computation to complete, and then retrieves its result.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$get(kotlin.Long, java.util.concurrent.TimeUnit)/timeout">timeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$get(kotlin.Long, java.util.concurrent.TimeUnit)/unit">unit</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/TimeUnit.html"><span class="identifier">TimeUnit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html#T"><span class="identifier">T</span></a></code>
+<p>Waits if necessary for at most the given time for the computation to complete, and then retrieves its result.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/handle.html">handle</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">handle</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$handle(java.util.function.BiFunction((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable, net.consensys.cava.concurrent.AsyncResult.handle.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiFunction.html"><span class="identifier">BiFunction</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/handle.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/handle.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a new result that, when this result completes either normally or exceptionally, completes with the value obtained from executing the supplied function with this result's value and exception as arguments. 
+<p> Either the value or the exception supplied to the function will be <code>null</code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/is-cancelled.html">isCancelled</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">isCancelled</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Returns true if this task was cancelled before it completed normally.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/is-completed-exceptionally.html">isCompletedExceptionally</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">isCompletedExceptionally</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Returns true if completed exceptionally or cancelled.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/is-done.html">isDone</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">isDone</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Returns true if completed normally, completed exceptionally or cancelled.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then.html">then</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">then</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$then(java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.then.U)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a new result that, when this result completes normally, completes with the same value or exception as the result returned after executing the given function with this results value as an argument.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-accept.html">thenAccept</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenAccept</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenAccept(java.util.function.Consumer((net.consensys.cava.concurrent.AsyncResult.T)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a completion that, when this result completes normally, completes after executing the supplied consumer with this result's value as an argument.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-accept-both.html">thenAcceptBoth</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenAcceptBoth</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenAcceptBoth(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)), java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)))/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="../-async-result/then-accept-both.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenAcceptBoth(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)), java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">in</span>&nbsp;<a href="../-async-result/then-accept-both.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a completion that, when this result and the other result both complete normally, completes after executing the supplied consumer with both this result's value and the value from the other result as arguments.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-apply.html">thenApply</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenApply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenApply(java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenApply.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/then-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a result that, when this result completes normally, completes with the value obtained from executing the supplied function with this result's value as an argument.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-combine.html">thenCombine</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">, </span><span class="identifier">V</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenCombine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenCombine(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenCombine.U)), java.util.function.BiFunction((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenCombine.U, net.consensys.cava.concurrent.AsyncResult.thenCombine.V)))/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="../-async-result/then-combine.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenCombine(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenCombine.U)), java.util.function.BiFunction((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenCombine.U, net.consensys.cava.concurrent.AsyncResult.thenCombine.V)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiFunction.html"><span class="identifier">BiFunction</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">in</span>&nbsp;<a href="../-async-result/then-combine.html#U"><span class="identifier">U</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/then-combine.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-combine.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a result that, when this result and the other result both complete normally, completes with the value obtained from executing the supplied function with both this result's value and the value from the other result as arguments.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-compose.html">thenCompose</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenCompose</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenCompose(java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncCompletion)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>When this result completes normally, invokes the given function with the resulting value and obtains a new AsyncCompletion.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-run.html">thenRun</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenRun</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenRun(java.lang.Runnable)/runnable">runnable</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a new completion that, when this result completes normally, completes after given action is executed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-schedule.html">thenSchedule</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenSchedule</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenSchedule(Vertx, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenSchedule.U)))))/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenSchedule(Vertx, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenSchedule.U)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-schedule.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-schedule.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a new result that, when this result completes normally, completes with the same value or exception as the completion returned after executing the given function on the vertx context with this results value as an argument.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-schedule-apply.html">thenScheduleApply</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenScheduleApply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleApply(Vertx, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenScheduleApply.U)))/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleApply(Vertx, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenScheduleApply.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/then-schedule-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-schedule-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a result that, when this result completes normally, completes with the value obtained from executing the supplied function on the vertx context with this result's value as an argument.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-schedule-blocking-apply.html">thenScheduleBlockingApply</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenScheduleBlockingApply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingApply(Vertx, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenScheduleBlockingApply.U)))/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingApply(Vertx, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenScheduleBlockingApply.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/then-schedule-blocking-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-schedule-blocking-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a result that, when this result completes normally, completes with the value obtained from executing the supplied blocking function on the vertx context with this result's value as an argument.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenScheduleBlockingApply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingApply(WorkerExecutor, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenScheduleBlockingApply.U)))/executor">executor</span><span class="symbol">:</span>&nbsp;<span class="identifier">WorkerExecutor</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingApply(WorkerExecutor, java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenScheduleBlockingApply.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="../-async-result/then-schedule-blocking-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/then-schedule-blocking-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a result that, when this result completes normally, completes with the value obtained from executing the supplied blocking function on the vertx executor with this result's value as an argument.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-schedule-blocking-run.html">thenScheduleBlockingRun</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenScheduleBlockingRun</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingRun(Vertx, java.lang.Runnable)/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingRun(Vertx, java.lang.Runnable)/runnable">runnable</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a new completion that, when this result completes normally, completes after the given blocking action is executed on the vertx context.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenScheduleBlockingRun</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingRun(WorkerExecutor, java.lang.Runnable)/executor">executor</span><span class="symbol">:</span>&nbsp;<span class="identifier">WorkerExecutor</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleBlockingRun(WorkerExecutor, java.lang.Runnable)/runnable">runnable</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a new completion that, when this result completes normally, completes after the given blocking action is executed on the vertx executor.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/then-schedule-run.html">thenScheduleRun</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenScheduleRun</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleRun(Vertx, java.lang.Runnable)/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleRun(Vertx, java.lang.Runnable)/runnable">runnable</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Returns a new completion that, when this result completes normally, completes after the given action is executed on the vertx context.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-async-result/when-complete.html">whenComplete</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">whenComplete</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$whenComplete(java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable)))/action">action</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-async-result/index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>Returns a new result that completes with the same value or exception as this result, after executing the given action with this result's value or exception. 
+<p> Either the value or the exception supplied to the action will be <code>null</code>.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

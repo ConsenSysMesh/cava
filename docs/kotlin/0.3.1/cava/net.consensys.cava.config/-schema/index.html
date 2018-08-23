@@ -1,0 +1,183 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Schema - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="./index.html">Schema</a><br/>
+<br/>
+<h1>Schema</h1>
+<code><span class="keyword">class </span><span class="identifier">Schema</span></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Schema.java#L32">(source)</a>
+<p>A schema for a configuration, providing default values and validation rules.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="defaults-key-set.html">defaultsKeySet</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">defaultsKeySet</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>The keys of all defaults provided by this schema.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="description.html">description</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">description</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$description(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code>
+<p>Get the description for a key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default.html">getDefault</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefault</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefault(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a></code>
+<p>Get a default value from this configuration.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-boolean.html">getDefaultBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultBoolean(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a boolean.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-double.html">getDefaultDouble</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultDouble</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultDouble(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a double.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-integer.html">getDefaultInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultInteger(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a integer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list.html">getDefaultList</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultList(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list-of-boolean.html">getDefaultListOfBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultListOfBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultListOfBoolean(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list of booleans.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list-of-double.html">getDefaultListOfDouble</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultListOfDouble</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultListOfDouble(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-double/index.html"><span class="identifier">Double</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list of doubles.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list-of-integer.html">getDefaultListOfInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultListOfInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultListOfInteger(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list of integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list-of-long.html">getDefaultListOfLong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultListOfLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultListOfLong(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list of longs.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list-of-map.html">getDefaultListOfMap</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultListOfMap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultListOfMap(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list of maps.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-list-of-string.html">getDefaultListOfString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultListOfString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultListOfString(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a list of strings.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-long.html">getDefaultLong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultLong(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a long.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-map.html">getDefaultMap</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultMap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultMap(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-map/index.html"><span class="identifier">MutableMap</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a map.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-default-string.html">getDefaultString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">getDefaultString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$getDefaultString(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">?</span></code>
+<p>Get a default value from this configuration as a string.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="has-default.html">hasDefault</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hasDefault</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$hasDefault(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if a key has a default provided by this schema.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="validate.html">validate</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">validate</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Schema$validate(net.consensys.cava.config.Configuration)/configuration">configuration</span><span class="symbol">:</span>&nbsp;<a href="../-configuration/index.html"><span class="identifier">Configuration</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><a href="../-configuration-error/index.html"><span class="identifier">ConfigurationError</span></a><span class="symbol">&gt;</span></code>
+<p>Validate a configuration against this schema. 
+<p> The validations are done incrementally as the stream is consumed. Use <code>.limit(...)</code> on the stream to control the maximum number of validation errors to receive.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

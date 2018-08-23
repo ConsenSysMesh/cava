@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.thenAcceptBoth - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./then-accept-both.html">thenAcceptBoth</a><br/>
+<br/>
+<h1>thenAcceptBoth</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$thenAcceptBoth(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)), java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenAcceptBoth</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenAcceptBoth(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)), java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)))/other">other</span><span class="symbol">:</span>&nbsp;<a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="then-accept-both.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenAcceptBoth(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)), java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenAcceptBoth.U)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">in</span>&nbsp;<a href="then-accept-both.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L457">(source)</a>
+<p>Returns a completion that, when this result and the other result both complete normally, completes after executing the supplied consumer with both this result's value and the value from the other result as arguments.</p>
+<h3>Parameters</h3>
+<p><a name="other"></a>
+<code>other</code> - The other result.</p>
+<p><a name="consumer"></a>
+<code>consumer</code> - The consumer for both values.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The type of the other's value.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,81 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SECP256K1 - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto</a>&nbsp;/&nbsp;<a href="./index.html">SECP256K1</a><br/>
+<br/>
+<h1>SECP256K1</h1>
+<code><span class="keyword">class </span><span class="identifier">SECP256K1</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/SECP256K1.java#L79">(source)</a>
+<p>An Elliptic Curve Digital Signature using parameters as used by Bitcoin, and defined in Standards for Efficient Cryptography (SEC) (Certicom Research, http://www.secg.org/sec2-v2.pdf). 
+<p> This class depends upon the BouncyCastle library being available and added as a java.security.Provider. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation. </p>
+<p> BouncyCastle can be included using the gradle dependency 'org.bouncycastle:bcprov-jdk15on'.</p>
+</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-key-pair/index.html">KeyPair</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">KeyPair</span></code>
+<p>A SECP256K1 key pair.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-public-key/index.html">PublicKey</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">PublicKey</span></code>
+<p>A SECP256K1 public key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-secret-key/index.html">SecretKey</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SecretKey</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/security/auth/Destroyable.html"><span class="identifier">Destroyable</span></a></code>
+<p>A SECP256K1 private key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-signature/index.html">Signature</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">Signature</span></code>
+<p>A SECP256K1 digital signature.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="sign.html">sign</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sign</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1$sign(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/data">data</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1$sign(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/keyPair">keyPair</span><span class="symbol">:</span>&nbsp;<a href="-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-signature/index.html"><span class="identifier">Signature</span></a></code>
+<p>Generates an ECDSA signature.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="verify.html">verify</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">verify</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1$verify(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature, net.consensys.cava.crypto.SECP256K1.PublicKey)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1$verify(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature, net.consensys.cava.crypto.SECP256K1.PublicKey)/signature">signature</span><span class="symbol">:</span>&nbsp;<a href="-signature/index.html"><span class="identifier">Signature</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1$verify(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature, net.consensys.cava.crypto.SECP256K1.PublicKey)/publicKey">publicKey</span><span class="symbol">:</span>&nbsp;<a href="-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Verifies the given ECDSA signature against the message bytes using the public key bytes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

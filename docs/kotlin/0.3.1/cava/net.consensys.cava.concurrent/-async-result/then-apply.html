@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.thenApply - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./then-apply.html">thenApply</a><br/>
+<br/>
+<h1>thenApply</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$thenApply(java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenApply.U)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenApply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenApply(java.util.function.Function((net.consensys.cava.concurrent.AsyncResult.T, net.consensys.cava.concurrent.AsyncResult.thenApply.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="then-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="then-apply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L404">(source)</a>
+<p>Returns a result that, when this result completes normally, completes with the value obtained from executing the supplied function with this result's value as an argument.</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - The function to use to compute the value of the returned result.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The function's return type.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.fromHexString - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./from-hex-string.html">fromHexString</a><br/>
+<br/>
+<h1>fromHexString</h1>
+<a name="net.consensys.cava.bytes.Bytes$fromHexString(kotlin.CharSequence)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromHexString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$fromHexString(kotlin.CharSequence)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L384">(source)</a>
+<p>Parse a hexadecimal string into a Bytes value. 
+<p> This method requires that <code>str</code> have an even length.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="str"></a>
+<code>str</code> - The hexadecimal string to parse, which may or may not start with "0x".</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>str</code> does not correspond to valid hexadecimal representation, or is of an odd length.</p>
+<p><strong>Return</strong><br/>
+The value corresponding to <code>str</code>.</p>
+<a name="net.consensys.cava.bytes.Bytes$fromHexString(kotlin.CharSequence, kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromHexString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$fromHexString(kotlin.CharSequence, kotlin.Int)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$fromHexString(kotlin.CharSequence, kotlin.Int)/destinationSize">destinationSize</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L405">(source)</a>
+<p>Parse a hexadecimal string into a Bytes value. 
+<p> This method requires that <code>str</code> have an even length.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="str"></a>
+<code>str</code> - The hexadecimal string to parse, which may or may not start with "0x".</p>
+<p><a name="destinationSize"></a>
+<code>destinationSize</code> - The size of the returned value, which must be big enough to hold the bytes represented by <code>str</code>. If it is strictly bigger those bytes from <code>str</code>, the returned value will be left padded with zeros.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>str</code> does correspond to valid hexadecimal representation, or is of an odd length.</p>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>str</code> does not correspond to valid hexadecimal representation, or is of an odd length, or represents more bytes than <code>destinationSize</code> or <code>destinationSize &amp;lt; 0</code>.</p>
+<p><strong>Return</strong><br/>
+A value of size <code>destinationSize</code> corresponding to <code>str</code> potentially left-padded.</p>
+</BODY>
+</HTML>

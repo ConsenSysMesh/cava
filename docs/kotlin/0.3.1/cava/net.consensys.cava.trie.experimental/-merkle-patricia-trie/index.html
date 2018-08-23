@@ -1,0 +1,137 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MerklePatriciaTrie - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.trie.experimental</a>&nbsp;/&nbsp;<a href="./index.html">MerklePatriciaTrie</a><br/>
+<br/>
+<h1>MerklePatriciaTrie</h1>
+<code><span class="keyword">class </span><span class="identifier">MerklePatriciaTrie</span><span class="symbol">&lt;</span><span class="identifier">V</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-merkle-trie/index.html"><span class="identifier">MerkleTrie</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">,</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//merkle-trie/src/main/kotlin/net/consensys/cava/trie/experimental/MerklePatriciaTrie.kt#L32">(source)</a>
+<p>An in-memory <a href="../-merkle-trie/index.html">MerkleTrie</a>.</p>
+<h3>Parameters</h3>
+<p><a name="valueSerializer"></a>
+<code>valueSerializer</code> - A function for serializing values to bytes.</p>
+<p><strong>Parameters</strong><br/>
+</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">MerklePatriciaTrie</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerklePatriciaTrie$<init>(java.util.function.Function((net.consensys.cava.trie.experimental.MerklePatriciaTrie.V, net.consensys.cava.bytes.Bytes)))/valueSerializer">valueSerializer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">,</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span><span class="symbol">)</span></code><br/>
+<code><span class="identifier">MerklePatriciaTrie</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerklePatriciaTrie$<init>(kotlin.Function1((net.consensys.cava.trie.experimental.MerklePatriciaTrie.V, net.consensys.cava.bytes.Bytes)))/valueSerializer">valueSerializer</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span></code>
+<p>Creates an empty trie.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerklePatriciaTrie$get(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">?</span></code>
+<p>Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerklePatriciaTrie$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.trie.experimental.MerklePatriciaTrie.V)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.experimental.MerklePatriciaTrie$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.trie.experimental.MerklePatriciaTrie.V)/value">value</span><span class="symbol">:</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Updates the value that corresponds to the specified key, creating the value if one does not already exist.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="remove.html">remove</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">remove</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerklePatriciaTrie$remove(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Deletes the value that corresponds to the specified key, if such a value exists.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="root-hash.html">rootHash</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">rootHash</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Returns the KECCAK256 hash of the root node of the trie.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-merkle-trie/get-async.html">getAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerkleTrie$getAsync(net.consensys.cava.trie.experimental.MerkleTrie.K)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../-merkle-trie/index.html#K"><span class="identifier">K</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/Optional.html"><span class="identifier">Optional</span></a><span class="symbol">&lt;</span><a href="../-merkle-trie/index.html#V"><span class="identifier">V</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-merkle-trie/put-async.html">putAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerkleTrie$putAsync(net.consensys.cava.trie.experimental.MerkleTrie.K, net.consensys.cava.trie.experimental.MerkleTrie.V)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../-merkle-trie/index.html#K"><span class="identifier">K</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.experimental.MerkleTrie$putAsync(net.consensys.cava.trie.experimental.MerkleTrie.K, net.consensys.cava.trie.experimental.MerkleTrie.V)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../-merkle-trie/index.html#V"><span class="identifier">V</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Updates the value that corresponds to the specified key, creating the value if one does not already exist.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-merkle-trie/remove-async.html">removeAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">removeAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerkleTrie$removeAsync(net.consensys.cava.trie.experimental.MerkleTrie.K)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../-merkle-trie/index.html#K"><span class="identifier">K</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Deletes the value that corresponds to the specified key, if such a value exists.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="storing-bytes.html">storingBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">storingBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MerklePatriciaTrie</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Create a trie with keys and values of type <a href="../../net.consensys.cava.bytes/-bytes/index.html">Bytes</a>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="storing-strings.html">storingStrings</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">storingStrings</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MerklePatriciaTrie</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>Create a trie with value of type <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html">String</a>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

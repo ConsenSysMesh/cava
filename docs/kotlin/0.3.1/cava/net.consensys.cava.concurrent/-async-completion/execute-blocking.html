@@ -1,0 +1,50 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncCompletion.executeBlocking - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncCompletion</a>&nbsp;/&nbsp;<a href="./execute-blocking.html">executeBlocking</a><br/>
+<br/>
+<h1>executeBlocking</h1>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(java.lang.Runnable)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(java.lang.Runnable)/action">action</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L178">(source)</a>
+<p>Returns a completion that completes after the given blocking action executes asynchronously on <code><a href="#">ForkJoinPool#commonPool()</a></code>.</p>
+<h3>Parameters</h3>
+<p><a name="action"></a>
+<code>action</code> - The blocking action to execute.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(java.util.concurrent.Executor, java.lang.Runnable)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(java.util.concurrent.Executor, java.lang.Runnable)/executor">executor</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html"><span class="identifier">Executor</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(java.util.concurrent.Executor, java.lang.Runnable)/action">action</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L199">(source)</a>
+<p>Returns a completion that completes after the given blocking action executes asynchronously on an Executor.</p>
+<h3>Parameters</h3>
+<p><a name="executor"></a>
+<code>executor</code> - The executor.</p>
+<p><a name="action"></a>
+<code>action</code> - The blocking action to execute.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(Vertx, java.lang.Runnable)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(Vertx, java.lang.Runnable)/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(Vertx, java.lang.Runnable)/action">action</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L220">(source)</a>
+<p>Returns a completion that completes after the given blocking action executes asynchronously on a vertx context.</p>
+<h3>Parameters</h3>
+<p><a name="vertx"></a>
+<code>vertx</code> - The vertx context.</p>
+<p><a name="action"></a>
+<code>action</code> - The blocking action to execute.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(WorkerExecutor, java.lang.Runnable)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">executeBlocking</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(WorkerExecutor, java.lang.Runnable)/executor">executor</span><span class="symbol">:</span>&nbsp;<span class="identifier">WorkerExecutor</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$executeBlocking(WorkerExecutor, java.lang.Runnable)/action">action</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L243">(source)</a>
+<p>Returns a completion that completes after the given blocking action executes asynchronously on a vertx executor.</p>
+<h3>Parameters</h3>
+<p><a name="executor"></a>
+<code>executor</code> - A vertx executor.</p>
+<p><a name="action"></a>
+<code>action</code> - The blocking action to execute.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+</BODY>
+</HTML>

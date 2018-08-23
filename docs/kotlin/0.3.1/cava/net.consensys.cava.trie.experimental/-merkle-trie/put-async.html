@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MerkleTrie.putAsync - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.trie.experimental</a>&nbsp;/&nbsp;<a href="index.html">MerkleTrie</a>&nbsp;/&nbsp;<a href="./put-async.html">putAsync</a><br/>
+<br/>
+<h1>putAsync</h1>
+<a name="net.consensys.cava.trie.experimental.MerkleTrie$putAsync(net.consensys.cava.trie.experimental.MerkleTrie.K, net.consensys.cava.trie.experimental.MerkleTrie.V)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.experimental.MerkleTrie$putAsync(net.consensys.cava.trie.experimental.MerkleTrie.K, net.consensys.cava.trie.experimental.MerkleTrie.V)/key">key</span><span class="symbol">:</span>&nbsp;<a href="index.html#K"><span class="identifier">K</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.experimental.MerkleTrie$putAsync(net.consensys.cava.trie.experimental.MerkleTrie.K, net.consensys.cava.trie.experimental.MerkleTrie.V)/value">value</span><span class="symbol">:</span>&nbsp;<a href="index.html#V"><span class="identifier">V</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//merkle-trie/src/main/kotlin/net/consensys/cava/trie/experimental/MerkleTrie.kt#L75">(source)</a>
+<p>Updates the value that corresponds to the specified key, creating the value if one does not already exist.</p>
+<p>If the value is null, deletes the value that corresponds to the specified key, if such a value exists.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - The key that corresponds to the value to be updated.</p>
+<p><a name="value"></a>
+<code>value</code> - The value to associate the key with.</p>
+<p><strong>Return</strong><br/>
+A completion that will complete when the value has been put into the trie.</p>
+</BODY>
+</HTML>

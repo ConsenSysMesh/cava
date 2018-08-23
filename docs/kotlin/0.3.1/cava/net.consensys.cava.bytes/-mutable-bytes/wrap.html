@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MutableBytes.wrap - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">MutableBytes</a>&nbsp;/&nbsp;<a href="./wrap.html">wrap</a><br/>
+<br/>
+<h1>wrap</h1>
+<a name="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">MutableBytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/MutableBytes.java#L53">(source)</a>
+<p>Wrap a byte array in a MutableBytes value.</p>
+<h3>Parameters</h3>
+<p><a name="value"></a>
+<code>value</code> - The value to wrap.</p>
+<p><strong>Return</strong><br/>
+A MutableBytes value wrapping <code>value</code>.</p>
+<a name="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">MutableBytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/MutableBytes.java#L75">(source)</a>
+<p>Wrap a slice of a byte array as a MutableBytes value. 
+<p> Note that value is not copied and thus any future update to <code>value</code> within the slice will be reflected in the returned value.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="value"></a>
+<code>value</code> - The value to wrap.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The index (inclusive) in <code>value</code> of the first byte exposed by the returned value. In other words, you will have <code>wrap(value, o, l).get(0) == value[o]</code>.</p>
+<p><a name="length"></a>
+<code>length</code> - The length of the resulting value.</p>
+<h3>Exceptions</h3>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>offset &amp;lt; 0 || (value.length &gt; 0 &amp;&amp; offset &gt;= value.length)</code>.</p>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>length &amp;lt; 0 || offset + length &gt; value.length</code>.</p>
+<p><strong>Return</strong><br/>
+A Bytes value that expose the bytes of <code>value</code> from <code>offset</code> (inclusive) to <code>offset + length</code> (exclusive).</p>
+</BODY>
+</HTML>

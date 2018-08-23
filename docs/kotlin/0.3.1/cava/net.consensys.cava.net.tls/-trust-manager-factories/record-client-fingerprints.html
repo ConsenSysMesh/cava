@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TrustManagerFactories.recordClientFingerprints - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.tls</a>&nbsp;/&nbsp;<a href="index.html">TrustManagerFactories</a>&nbsp;/&nbsp;<a href="./record-client-fingerprints.html">recordClientFingerprints</a><br/>
+<br/>
+<h1>recordClientFingerprints</h1>
+<a name="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordClientFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TrustManagerFactories.java#L201">(source)</a>
+<p>Accept all client certificates, recording certificate fingerprints for those that are not CA-signed. 
+<p> Excepting when a client presents a CA-signed certificate, the certificate fingerprint will be written to <code>knownClientsFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownClientsFile"></a>
+<code>knownClientsFile</code> - The path to a file in which to record fingerprints.</p>
+<p><strong>Return</strong><br/>
+A trust manager factory.</p>
+<a name="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path, kotlin.Boolean)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordClientFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path, kotlin.Boolean)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path, kotlin.Boolean)/skipCASigned">skipCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TrustManagerFactories.java#L219">(source)</a>
+<p>Accept all client certificates, recording certificate fingerprints. 
+<p> For all connections, the fingerprint of the presented certificate will be written to <code>knownClientsFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownClientsFile"></a>
+<code>knownClientsFile</code> - The path to a file in which to record fingerprints.</p>
+<p><a name="skipCASigned"></a>
+<code>skipCASigned</code> - If true, CA-signed certificates are not recorded.</p>
+<p><strong>Return</strong><br/>
+A trust manager factory.</p>
+<a name="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordClientFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordClientFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TrustManagerFactories.java#L238">(source)</a>
+<p>Accept all client certificates, recording certificate fingerprints for those that are not CA-signed. 
+<p> Excepting when a client presents a CA-signed certificate, the certificate fingerprint will be written to <code>knownClientsFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownClientsFile"></a>
+<code>knownClientsFile</code> - The path to a file in which to record fingerprints.</p>
+<p><a name="tmf"></a>
+<code>tmf</code> - A TrustManagerFactory for checking server certificates against a CA.</p>
+<p><strong>Return</strong><br/>
+A trust manager factory.</p>
+</BODY>
+</HTML>

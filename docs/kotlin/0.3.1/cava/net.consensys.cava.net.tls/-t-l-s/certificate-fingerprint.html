@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TLS.certificateFingerprint - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.tls</a>&nbsp;/&nbsp;<a href="index.html">TLS</a>&nbsp;/&nbsp;<a href="./certificate-fingerprint.html">certificateFingerprint</a><br/>
+<br/>
+<h1>certificateFingerprint</h1>
+<a name="net.consensys.cava.net.tls.TLS$certificateFingerprint(java.nio.file.Path)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">certificateFingerprint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TLS$certificateFingerprint(java.nio.file.Path)/certificate">certificate</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TLS.java#L158">(source)</a>
+<p>Calculate the fingerprint for a PEM-encoded certificate.</p>
+<h3>Parameters</h3>
+<p><a name="certificate"></a>
+<code>certificate</code> - The path to a PEM-encoded certificate.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The fingerprint bytes for the certificate.</p>
+<a name="net.consensys.cava.net.tls.TLS$certificateFingerprint(java.security.cert.Certificate)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">certificateFingerprint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TLS$certificateFingerprint(java.security.cert.Certificate)/certificate">certificate</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/security/cert/Certificate.html"><span class="identifier">Certificate</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TLS.java#L180">(source)</a>
+<p>Calculate the fingerprint for certificate.</p>
+<h3>Parameters</h3>
+<p><a name="certificate"></a>
+<code>certificate</code> - The certificate.</p>
+<h3>Exceptions</h3>
+<p><a name="CertificateEncodingException"></a>
+<code>CertificateEncodingException</code> - If the certificate cannot be encoded.</p>
+<p><strong>Return</strong><br/>
+The fingerprint bytes for the certificate.</p>
+</BODY>
+</HTML>
