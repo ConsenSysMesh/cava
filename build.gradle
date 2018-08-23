@@ -67,7 +67,63 @@ spotless {
   }
 }
 
+subprojects {
+
+  jar {
+    destinationDir = file("${rootProject.buildDir}/libs")
+  }
+
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    destinationDir = file("${rootProject.buildDir}/src")
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  //////
+  // Source formatting
+
+  apply plugin: 'com.diffplug.gradle.spotless'
+  spotless {
+    java {
+      target project.fileTree(project.projectDir) {
+        include '**/*.java'
+        exclude '**/generated-src/**/*.*'
+      }
+      removeUnusedImports()
+      licenseHeaderFile rootProject.file('gradle/spotless.license.java')
+      eclipse().configFile(rootProject.file('gradle/eclipse-java-consensys-style.xml'))
+      importOrder 'net.consensys', 'java', ''
+      endWithNewline()
+    }
+    kotlin {
+      licenseHeaderFile rootProject.file('gradle/spotless.license.java')
+      ktlint().userData(['indent_size': '2', 'continuation_indent_size' : '2', 'max_line_length': '120'])
+      endWithNewline()
+    }
+  }
+
+
+  //////
+  // Parallel build execution
+
+  tasks.withType(Test) {
+    // If GRADLE_MAX_TEST_FORKS is not set, use half the available processors
+    maxParallelForks = (System.getenv('GRADLE_MAX_TEST_FORKS') ?:
+      (Runtime.runtime.availableProcessors().intdiv(2) ?: 1)).toInteger()
+  }
+
+  tasks.withType(JavaCompile) {
+    options.fork = true
+    options.incremental = true
+  }
+
+  task allDependencies(type: DependencyReportTask) {}
+}
+
 task deploy() {}
+
+configurations.archives.artifacts.removeAll { PublishArtifact publishArtifact ->
+  (publishArtifact.type == 'jar' && publishArtifact.name == 'cava')}
 
 allprojects {
   apply plugin: 'java-library'
@@ -155,18 +211,6 @@ allprojects {
     }
   }
 
-  if (project != rootProject) {
-    jar {
-      destinationDir = file("${rootProject.buildDir}/libs")
-    }
-
-    task sourcesJar(type: Jar, dependsOn: classes) {
-      destinationDir = file("${rootProject.buildDir}/src")
-      classifier = 'sources'
-      from sourceSets.main.allSource
-    }
-  }
-
   task dokkaJar(type: Jar, dependsOn: dokka) {
     destinationDir = file("${rootProject.buildDir}/docs")
     classifier = 'dokka'
@@ -175,16 +219,17 @@ allprojects {
 
   if (project.name != 'eth-reference-tests') {
 
-    tasks.withType(Sign) {
-      onlyIf { System.getenv('ENABLE_SIGNING') == 'true' }
-    }
-
     artifacts {
       if (project != rootProject) {
         archives jar
         archives sourcesJar
       }
       archives dokkaJar
+    }
+
+    signing {
+      useGpgCmd()
+      sign configurations.archives
     }
 
     publishing {
@@ -271,14 +316,48 @@ allprojects {
             configurations.compileOnly.allDependencies.each { dep ->
               addDependencyNode(dep, true)
             }
+
+            if (System.getenv('ENABLE_SIGNING') == 'true') {
+              def pomFile = file("${project.buildDir}/generated-pom.xml")
+              writeTo(pomFile)
+              def pomAscFile = signing.sign(pomFile).signatureFiles[0]
+              artifact(pomAscFile) {
+                classifier = null
+                extension = 'pom.asc'
+              }
+            }
+
+          }
+
+          if (System.getenv('ENABLE_SIGNING') == 'true') {
+            // create the signed artifacts
+            tasks.signArchives.signatureFiles.each {
+              artifact(it) {
+                def matcher = it.file =~ /-(sources|javadoc)\.jar\.asc$/
+                if (matcher.find()) {
+                  classifier = matcher.group(1)
+                } else {
+                  classifier = null
+                }
+                extension = 'jar.asc'
+              }
+            }
           }
         }
       }
     }
 
-    signing {
-      useGpgCmd()
-      sign publishing.publications.MavenDeployment
+    tasks.withType(Sign) {
+      onlyIf {
+        System.getenv('ENABLE_SIGNING') == 'true'
+      }
+    }
+
+    model {
+      tasks.generatePomFileForMavenDeploymentPublication {
+        destination = file("$buildDir/generated-pom.xml")
+      }
+      tasks.publishMavenDeploymentPublicationToMavenLocal { dependsOn project.tasks.signArchives }
     }
 
     def artifactIdMatcher = Pattern.compile("(.*)-\\d.*")
@@ -317,50 +396,6 @@ allprojects {
     }
     deploy.dependsOn bintrayUpload
   }
-}
-
-
-subprojects {
-
-  //////
-  // Source formatting
-
-  apply plugin: 'com.diffplug.gradle.spotless'
-  spotless {
-    java {
-      target project.fileTree(project.projectDir) {
-        include '**/*.java'
-        exclude '**/generated-src/**/*.*'
-      }
-      removeUnusedImports()
-      licenseHeaderFile rootProject.file('gradle/spotless.license.java')
-      eclipse().configFile(rootProject.file('gradle/eclipse-java-consensys-style.xml'))
-      importOrder 'net.consensys', 'java', ''
-      endWithNewline()
-    }
-    kotlin {
-      licenseHeaderFile rootProject.file('gradle/spotless.license.java')
-      ktlint().userData(['indent_size': '2', 'continuation_indent_size' : '2', 'max_line_length': '120'])
-      endWithNewline()
-    }
-  }
-
-
-  //////
-  // Parallel build execution
-
-  tasks.withType(Test) {
-    // If GRADLE_MAX_TEST_FORKS is not set, use half the available processors
-    maxParallelForks = (System.getenv('GRADLE_MAX_TEST_FORKS') ?:
-      (Runtime.runtime.availableProcessors().intdiv(2) ?: 1)).toInteger()
-  }
-
-  tasks.withType(JavaCompile) {
-    options.fork = true
-    options.incremental = true
-  }
-
-  task allDependencies(type: DependencyReportTask) {}
 }
 
 
