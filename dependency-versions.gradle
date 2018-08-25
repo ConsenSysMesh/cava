@@ -2,12 +2,12 @@ dependencyManagement {
   dependencies {
     dependency('com.github.jnr:jnr-ffi:2.1.8')
     dependency('com.github.kstyrc:embedded-redis:0.6')
+    dependency('com.google.code.findbugs:jsr305:3.0.2')
     dependency('com.google.errorprone:error_prone_core:2.3.1')
     dependency('com.google.guava:guava:25.1-jre')
     dependency('com.winterbe:expekt:0.5.0')
     dependency('io.lettuce:lettuce-core:5.1.0.M1')
     dependency('io.vertx:vertx-core:3.5.3')
-    dependency('com.google.code.findbugs:jsr305:3.0.2')
     dependencySet(group: 'org.antlr', version: '4.7.1') {
       entry 'antlr4'
       entry 'antlr4-runtime'
@@ -32,10 +32,15 @@ dependencyManagement {
     dependencySet(group: 'org.jetbrains.kotlinx', version: '0.24.0') {
       entry 'kotlinx-coroutines-core'
       entry 'kotlinx-coroutines-jdk8'
+      entry 'kotlinx-coroutines-nio'
     }
     dependencySet(group: 'org.jetbrains.spek', version: '1.1.5') {
       entry 'spek-api'
       entry 'spek-junit-platform-engine'
+    }
+    dependencySet(group: 'org.logl', version: '0.2.0') {
+      entry 'logl-api'
+      entry 'logl-logl'
     }
     dependency('org.mapdb:mapdb:3.0.7')
   }
