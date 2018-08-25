@@ -15,6 +15,7 @@ package net.consensys.cava.trie.experimental
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.trie.CompactEncoding.bytesToPath
+import net.consensys.cava.trie.MerkleTrie.Companion.EMPTY_TRIE_ROOT_HASH
 import java.util.function.Function
 
 /**
@@ -22,7 +23,7 @@ import java.util.function.Function
  *
  * @param <V> The type of values stored by this trie.
  */
-class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
+class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V>, net.consensys.cava.trie.StoredMerklePatriciaTrie<V> {
 
   companion object {
     /**
@@ -85,7 +86,7 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
     storage: MerkleStorage,
     valueSerializer: Function<V, Bytes>,
     valueDeserializer: Function<Bytes, V>
-  ) : this(storage, MerkleTrie.EMPTY_TRIE_ROOT_HASH, valueSerializer::apply, valueDeserializer::apply)
+  ) : this(storage, EMPTY_TRIE_ROOT_HASH, valueSerializer::apply, valueDeserializer::apply)
 
   /**
    * Create a trie.
@@ -98,7 +99,7 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
     storage: MerkleStorage,
     valueSerializer: (V) -> Bytes,
     valueDeserializer: (Bytes) -> V
-  ) : this(storage, MerkleTrie.EMPTY_TRIE_ROOT_HASH, valueSerializer, valueDeserializer)
+  ) : this(storage, EMPTY_TRIE_ROOT_HASH, valueSerializer, valueDeserializer)
 
   /**
    * Create a trie.
@@ -132,7 +133,7 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
     this.storage = storage
     this.nodeFactory = StoredNodeFactory(storage, valueSerializer, valueDeserializer)
 
-    this.root = if (rootHash == MerkleTrie.EMPTY_TRIE_ROOT_HASH) {
+    this.root = if (rootHash == EMPTY_TRIE_ROOT_HASH) {
       NullNode.instance()
     } else {
       StoredNode(nodeFactory, rootHash)
@@ -158,7 +159,7 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
    * Note: nodes are already stored using [java.lang.ref.SoftReference]'s, so they will be released automatically
    * based on memory demands.
    */
-  fun clearCache() {
+  override fun clearCache() {
     val currentRoot = root
     if (currentRoot is StoredNode<*>) {
       currentRoot.unload()

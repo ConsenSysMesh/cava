@@ -12,27 +12,15 @@
  */
 package net.consensys.cava.trie.experimental
 
-import net.consensys.cava.bytes.Bytes
-import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.coroutines.experimental.asyncCompletion
 import net.consensys.cava.concurrent.coroutines.experimental.asyncResult
-import net.consensys.cava.crypto.Hash.keccak256
-import net.consensys.cava.rlp.RLP
-import java.util.Optional
 
 /**
  * A Merkle Trie.
  */
-interface MerkleTrie<in K, V> {
-
-  companion object {
-    /**
-     * The root hash of an empty tree.
-     */
-    val EMPTY_TRIE_ROOT_HASH: Bytes32 = keccak256(RLP.encodeValue(Bytes.EMPTY))
-  }
+interface MerkleTrie<in K, V> : net.consensys.cava.trie.MerkleTrie<K, V> {
 
   /**
    * Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.
@@ -50,7 +38,7 @@ interface MerkleTrie<in K, V> {
    * @return An Optional containing the value that corresponds to the specified key, or an empty Optional if no such
    * value exists.
    */
-  fun getAsync(key: K): AsyncResult<Optional<V>> = asyncResult { Optional.ofNullable(get(key)) }
+  override fun getAsync(key: K): AsyncResult<V?> = asyncResult { get(key) }
 
   /**
    * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
@@ -72,7 +60,7 @@ interface MerkleTrie<in K, V> {
    * @param value The value to associate the key with.
    * @return A completion that will complete when the value has been put into the trie.
    */
-  fun putAsync(key: K, value: V?): AsyncCompletion = asyncCompletion { put(key, value) }
+  override fun putAsync(key: K, value: V?): AsyncCompletion = asyncCompletion { put(key, value) }
 
   /**
    * Deletes the value that corresponds to the specified key, if such a value exists.
@@ -88,12 +76,5 @@ interface MerkleTrie<in K, V> {
    * @param key The key of the value to be deleted.
    * @return A completion that will complete when the value has been removed.
    */
-  fun removeAsync(key: K): AsyncCompletion = asyncCompletion { remove(key) }
-
-  /**
-   * Returns the KECCAK256 hash of the root node of the trie.
-   *
-   * @return The KECCAK256 hash of the root node of the trie.
-   */
-  fun rootHash(): Bytes32
+  override fun removeAsync(key: K): AsyncCompletion = asyncCompletion { remove(key) }
 }

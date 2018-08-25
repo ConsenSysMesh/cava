@@ -29,7 +29,9 @@ internal fun stringDeserializer(b: Bytes): String = String(b.toArrayUnsafe(), UT
  * @param valueSerializer A function for serializing values to bytes.
  * @constructor Creates an empty trie.
  */
-class MerklePatriciaTrie<V>(valueSerializer: (V) -> Bytes) : MerkleTrie<Bytes, V> {
+class MerklePatriciaTrie<V>(
+  valueSerializer: (V) -> Bytes
+) : MerkleTrie<Bytes, V>, net.consensys.cava.trie.MerklePatriciaTrie<V> {
 
   companion object {
     /**

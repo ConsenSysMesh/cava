@@ -110,15 +110,11 @@ Implementations of the Ethereum Patricia Trie, as described at https://github.co
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-merkle-trie` (`cava-merkle-trie.jar`).
 
-Classes in this package depend upon the kotlinx-coroutines library, which is not automatically included when using the complete Cava distrubution. See https://github.com/Kotlin/kotlinx.coroutines. kotlinx-coroutines can be included using the gradle dependency `com.jetbrains.kotlinx:koltinx-coroutines-core`.
-
 # Package net.consensys.cava.trie.experimental
 
 Merkle Trie implementations using Kotlin coroutines.
 
 Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
-
-Classes in this package depend upon the kotlinx-coroutines library, which is not automatically included when using the complete Cava distrubution. See https://github.com/Kotlin/kotlinx.coroutines. kotlinx-coroutines can be included using the gradle dependency `com.jetbrains.kotlinx:koltinx-coroutines-core`.
 
 # Package net.consensys.cava.units
 
