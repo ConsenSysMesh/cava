@@ -165,8 +165,10 @@ class CoroutineSelectorPool private constructor(
         throw ClosedSelectorException()
       }
       suspendCancellableCoroutine { cont: CancellableContinuation<Unit> ->
+        // increment tasks first to keep selection loop running while we add a new pending interest
+        val isRunning = incrementTasks()
         pendingInterests.add(SelectionInterest(cont, channel, ops))
-        incrementTasksAndWakeup()
+        wakeup(isRunning)
       }
     }
 
@@ -176,8 +178,10 @@ class CoroutineSelectorPool private constructor(
       }
       check(selector.isOpen) { "Selector is closed" }
       return suspendCancellableCoroutine { cont: CancellableContinuation<Boolean> ->
+        // increment tasks first to keep selection loop running while we add a new pending cancellation
+        val isRunning = incrementTasks()
         pendingCancellations.add(SelectionCancellation(channel, cause, cont))
-        incrementTasksAndWakeup()
+        wakeup(isRunning)
       }
     }
 
@@ -192,8 +196,10 @@ class CoroutineSelectorPool private constructor(
       selector.close()
     }
 
-    private fun incrementTasksAndWakeup() {
-      if (outstandingTasks.getAndIncrement() != 0) {
+    private fun incrementTasks(): Boolean = outstandingTasks.getAndIncrement() != 0
+
+    private fun wakeup(isRunning: Boolean) {
+      if (isRunning) {
         logger.debug("Selector {}: Interrupting selection loop", System.identityHashCode(selector))
         selector.wakeup()
       } else {
