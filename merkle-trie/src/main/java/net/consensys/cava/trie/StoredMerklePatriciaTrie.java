@@ -27,6 +27,7 @@ public interface StoredMerklePatriciaTrie<V> extends MerkleTrie<Bytes, V> {
    * @param storage The storage to use for persistence.
    * @param valueSerializer A function for serializing values to bytes.
    * @param valueDeserializer A function for deserializing values from bytes.
+   * @param <V> The serialized type.
    * @return A new merkle trie.
    */
   static <V> StoredMerklePatriciaTrie<V> create(
@@ -46,6 +47,7 @@ public interface StoredMerklePatriciaTrie<V> extends MerkleTrie<Bytes, V> {
    * @param rootHash The initial root has for the trie, which should be already present in <tt>storage</tt>.
    * @param valueSerializer A function for serializing values to bytes.
    * @param valueDeserializer A function for deserializing values from bytes.
+   * @param <V> The serialized type.
    * @return A new merkle trie.
    */
   static <V> StoredMerklePatriciaTrie<V> create(
