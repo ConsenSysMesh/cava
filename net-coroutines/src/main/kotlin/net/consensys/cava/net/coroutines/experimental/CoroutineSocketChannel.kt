@@ -27,10 +27,10 @@ import java.nio.channels.SocketChannel
  */
 class CoroutineSocketChannel internal constructor(
   private val channel: SocketChannel,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : CoroutineByteChannel,
-  ScatteringCoroutineByteChannel by ScatteringCoroutineByteChannelMixin(channel, selector),
-  GatheringCoroutineByteChannel by GatheringCoroutineByteChannelMixin(channel, selector),
+  ScatteringCoroutineByteChannel by ScatteringCoroutineByteChannelMixin(channel, group),
+  GatheringCoroutineByteChannel by GatheringCoroutineByteChannelMixin(channel, group),
   NetworkChannel by channel {
 
   companion object {
@@ -41,11 +41,20 @@ class CoroutineSocketChannel internal constructor(
      * @return A new channel.
      * @throws IOException If an I/O error occurs.
      */
-    fun open(selector: CoroutineSelector = CommonCoroutineSelector): CoroutineSocketChannel {
+    fun open(group: CoroutineChannelGroup = CommonCoroutineGroup): CoroutineSocketChannel {
       val channel = SocketChannel.open()
       channel.configureBlocking(false)
-      return CoroutineSocketChannel(channel, selector)
+      return CoroutineSocketChannel(channel, group)
     }
+  }
+
+  init {
+    group.register(this)
+  }
+
+  override fun close() {
+    group.deRegister(this)
+    channel.close()
   }
 
   /**
@@ -81,7 +90,7 @@ class CoroutineSocketChannel internal constructor(
     if (!channel.connect(remote)) {
       // slow path
       do {
-        selector.select(channel, SelectionKey.OP_CONNECT)
+        group.select(channel, SelectionKey.OP_CONNECT)
       } while (!channel.finishConnect())
     }
     return this

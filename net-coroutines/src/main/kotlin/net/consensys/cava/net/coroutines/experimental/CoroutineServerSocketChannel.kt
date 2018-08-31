@@ -29,7 +29,7 @@ import java.nio.channels.UnsupportedAddressTypeException
  */
 class CoroutineServerSocketChannel private constructor(
   private val channel: ServerSocketChannel,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : NetworkChannel by channel {
 
   companion object {
@@ -40,11 +40,20 @@ class CoroutineServerSocketChannel private constructor(
      * @return A new channel.
      * @throws IOException If an I/O error occurs.
      */
-    fun open(selector: CoroutineSelector = CommonCoroutineSelector): CoroutineServerSocketChannel {
+    fun open(group: CoroutineChannelGroup = CommonCoroutineGroup): CoroutineServerSocketChannel {
       val channel = ServerSocketChannel.open()
       channel.configureBlocking(false)
-      return CoroutineServerSocketChannel(channel, selector)
+      return CoroutineServerSocketChannel(channel, group)
     }
+  }
+
+  init {
+    group.register(this)
+  }
+
+  override fun close() {
+    group.deRegister(this)
+    channel.close()
   }
 
   /**
@@ -92,10 +101,10 @@ class CoroutineServerSocketChannel private constructor(
       val s = channel.accept()
       if (s != null) {
         s.configureBlocking(false)
-        return CoroutineSocketChannel(s, selector)
+        return CoroutineSocketChannel(s, group)
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_ACCEPT)
+      group.select(channel, SelectionKey.OP_ACCEPT)
     }
   }
 }
