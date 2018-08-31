@@ -27,6 +27,7 @@ public interface MerklePatriciaTrie<V> extends MerkleTrie<Bytes, V> {
    * Create a trie.
    *
    * @param valueSerializer A function for serializing values to bytes.
+   * @param <V> The serialized type.
    * @return A new merkle trie.
    */
   static <V> MerklePatriciaTrie<V> create(Function<V, Bytes> valueSerializer) {
