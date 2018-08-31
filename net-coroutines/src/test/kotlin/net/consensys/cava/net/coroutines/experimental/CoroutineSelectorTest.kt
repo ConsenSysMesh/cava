@@ -36,7 +36,7 @@ internal class CoroutineSelectorTest {
   @Test
   fun shouldRequireNonBlockingChannel() {
     val pipe = Pipe.open()
-    val selector = CoroutineSelectorPool.open(1)
+    val selector = CoroutineSelector.open()
 
     assertThrows<IllegalArgumentException> {
       runBlocking {
@@ -46,12 +46,40 @@ internal class CoroutineSelectorTest {
   }
 
   @Test
+  fun shouldThrowWhenAccessingClosedSelector() {
+    val pipe = Pipe.open()
+    pipe.source().configureBlocking(false)
+    val selector = CoroutineSelector.open()
+    selector.close()
+
+    assertThrows<ClosedSelectorException> {
+      runBlocking {
+        selector.select(pipe.source(), SelectionKey.OP_READ)
+      }
+    }
+    assertThrows<ClosedSelectorException> {
+      runBlocking {
+        selector.cancelSelections(pipe.source())
+      }
+    }
+    assertThrows<ClosedSelectorException> {
+      selector.wakeup()
+    }
+  }
+
+  @Test
+  fun closeNowOnEmptySelectorShouldReturnImmediately() {
+    val selector = CoroutineSelector.open()
+    runBlocking { selector.closeNow() }
+  }
+
+  @Test
   fun shouldSuspendUntilReady() {
     val pipe1 = Pipe.open()
     pipe1.source().configureBlocking(false)
     val pipe2 = Pipe.open()
     pipe2.source().configureBlocking(false)
-    val selector = CoroutineSelectorPool.open(1)
+    val selector = CoroutineSelector.open()
 
     var ok1 = false
     var ok2 = false
@@ -84,7 +112,7 @@ internal class CoroutineSelectorTest {
     val client = SocketChannel.open()
     client.connect(server.localAddress)
     client.configureBlocking(false)
-    val selector = CoroutineSelectorPool.open(1)
+    val selector = CoroutineSelector.open()
 
     val job1 = async {
       selector.select(client, SelectionKey.OP_READ)
@@ -112,7 +140,7 @@ internal class CoroutineSelectorTest {
 
     client.configureBlocking(false)
     server.configureBlocking(false)
-    val selector = CoroutineSelectorPool.open(poolSize = 1, loggerProvider = SimpleLogger.toOutputStream(System.err))
+    val selector = CoroutineSelector.open(loggerProvider = SimpleLogger.toOutputStream(System.err))
 
     runBlocking {
       assertFalse(selector.cancelSelections(client))
@@ -144,7 +172,7 @@ internal class CoroutineSelectorTest {
   fun shouldThrowWhenSelectingClosedChannel() {
     val pipe = Pipe.open()
     pipe.source().configureBlocking(false)
-    val selector = CoroutineSelectorPool.open(poolSize = 1, loggerProvider = SimpleLogger.toOutputStream(System.err))
+    val selector = CoroutineSelector.open(loggerProvider = SimpleLogger.toOutputStream(System.err))
 
     pipe.source().close()
     assertThrows<ClosedChannelException> {
@@ -160,7 +188,7 @@ internal class CoroutineSelectorTest {
     pipe1.source().configureBlocking(false)
     val pipe2 = Pipe.open()
     pipe2.source().configureBlocking(false)
-    val selector = CoroutineSelectorPool.open(poolSize = 1, loggerProvider = SimpleLogger.toOutputStream(System.err))
+    val selector = CoroutineSelector.open(loggerProvider = SimpleLogger.toOutputStream(System.err))
 
     val job1 = async {
       selector.select(pipe1.source(), SelectionKey.OP_READ)
@@ -187,7 +215,7 @@ internal class CoroutineSelectorTest {
     pipe1.source().configureBlocking(false)
     val pipe2 = Pipe.open()
     pipe2.source().configureBlocking(false)
-    val selector = CoroutineSelectorPool.open(poolSize = 1, loggerProvider = SimpleLogger.toOutputStream(System.err))
+    val selector = CoroutineSelector.open(loggerProvider = SimpleLogger.toOutputStream(System.err))
 
     val job1 = async {
       selector.select(pipe1.source(), SelectionKey.OP_READ)

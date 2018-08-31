@@ -27,10 +27,10 @@ import java.nio.channels.SelectionKey
  */
 class CoroutineDatagramChannel private constructor(
   private val channel: DatagramChannel,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : CoroutineByteChannel,
-  ScatteringCoroutineByteChannel by ScatteringCoroutineByteChannelMixin(channel, selector),
-  GatheringCoroutineByteChannel by GatheringCoroutineByteChannelMixin(channel, selector),
+  ScatteringCoroutineByteChannel by ScatteringCoroutineByteChannelMixin(channel, group),
+  GatheringCoroutineByteChannel by GatheringCoroutineByteChannelMixin(channel, group),
   NetworkChannel by channel {
 
   companion object {
@@ -41,11 +41,20 @@ class CoroutineDatagramChannel private constructor(
      * @return A new channel.
      * @throws IOException If an I/O error occurs.
      */
-    fun open(selector: CoroutineSelector = CommonCoroutineSelector): CoroutineDatagramChannel {
+    fun open(group: CoroutineChannelGroup = CommonCoroutineGroup): CoroutineDatagramChannel {
       val channel = DatagramChannel.open()
       channel.configureBlocking(false)
-      return CoroutineDatagramChannel(channel, selector)
+      return CoroutineDatagramChannel(channel, group)
     }
+  }
+
+  init {
+    group.register(this)
+  }
+
+  override fun close() {
+    group.deRegister(this)
+    channel.close()
   }
 
   /**
@@ -108,6 +117,9 @@ class CoroutineDatagramChannel private constructor(
    */
   suspend fun receive(dst: ByteBuffer): SocketAddress? {
     if (dst.remaining() == 0) {
+      if (!isOpen) {
+        throw ClosedChannelException()
+      }
       return null
     }
     while (true) {
@@ -116,7 +128,7 @@ class CoroutineDatagramChannel private constructor(
         return n
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_READ)
+      group.select(channel, SelectionKey.OP_READ)
     }
   }
 
@@ -139,7 +151,7 @@ class CoroutineDatagramChannel private constructor(
         return n
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_WRITE)
+      group.select(channel, SelectionKey.OP_WRITE)
     }
   }
 }

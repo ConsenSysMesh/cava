@@ -26,6 +26,9 @@ import java.nio.channels.SelectableChannel
 import java.nio.channels.SelectionKey
 import java.nio.channels.WritableByteChannel
 
+/**
+ * A co-routine channel that can read bytes.
+ */
 interface ReadableCoroutineByteChannel {
   /**
    * Reads a sequence of bytes from this channel into the given buffer.
@@ -47,7 +50,7 @@ interface ReadableCoroutineByteChannel {
 
 internal class ReadableCoroutineByteChannelMixin<T>(
   private val channel: T,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : ReadableCoroutineByteChannel
   where T : SelectableChannel,
         T : ReadableByteChannel {
@@ -59,11 +62,14 @@ internal class ReadableCoroutineByteChannelMixin<T>(
         return n
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_READ)
+      group.select(channel, SelectionKey.OP_READ)
     }
   }
 }
 
+/**
+ * A co-routine channel that can write bytes.
+ */
 interface WritableCoroutineByteChannel {
 
   /**
@@ -83,7 +89,7 @@ interface WritableCoroutineByteChannel {
 
 internal class WritableCoroutineByteChannelMixin<T>(
   private val channel: T,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : WritableCoroutineByteChannel
   where T : SelectableChannel,
         T : WritableByteChannel {
@@ -95,19 +101,22 @@ internal class WritableCoroutineByteChannelMixin<T>(
         return n
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_WRITE)
+      group.select(channel, SelectionKey.OP_WRITE)
     }
   }
 }
 
+/**
+ * A co-routine channel that can read and write bytes.
+ */
 interface CoroutineByteChannel : ReadableCoroutineByteChannel, WritableCoroutineByteChannel
 
 internal class CoroutineByteChannelMixin<T>(
   private val channel: T,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : CoroutineByteChannel,
-  ReadableCoroutineByteChannel by ReadableCoroutineByteChannelMixin(channel, selector),
-  WritableCoroutineByteChannel by WritableCoroutineByteChannelMixin(channel, selector)
+  ReadableCoroutineByteChannel by ReadableCoroutineByteChannelMixin(channel, group),
+  WritableCoroutineByteChannel by WritableCoroutineByteChannelMixin(channel, group)
   where T : SelectableChannel,
         T : ReadableByteChannel,
         T : WritableByteChannel
@@ -138,9 +147,9 @@ interface ScatteringCoroutineByteChannel : ReadableCoroutineByteChannel {
 
 internal class ScatteringCoroutineByteChannelMixin<T>(
   private val channel: T,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : ScatteringCoroutineByteChannel,
-  ReadableCoroutineByteChannel by ReadableCoroutineByteChannelMixin(channel, selector)
+  ReadableCoroutineByteChannel by ReadableCoroutineByteChannelMixin(channel, group)
   where T : SelectableChannel,
         T : ScatteringByteChannel {
 
@@ -151,7 +160,7 @@ internal class ScatteringCoroutineByteChannelMixin<T>(
         return n
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_READ)
+      group.select(channel, SelectionKey.OP_READ)
     }
   }
 }
@@ -182,9 +191,9 @@ interface GatheringCoroutineByteChannel : WritableCoroutineByteChannel {
 
 internal class GatheringCoroutineByteChannelMixin<T>(
   private val channel: T,
-  private val selector: CoroutineSelector
+  private val group: CoroutineChannelGroup
 ) : GatheringCoroutineByteChannel,
-  WritableCoroutineByteChannel by WritableCoroutineByteChannelMixin(channel, selector)
+  WritableCoroutineByteChannel by WritableCoroutineByteChannelMixin(channel, group)
   where T : SelectableChannel,
         T : GatheringByteChannel {
 
@@ -195,7 +204,7 @@ internal class GatheringCoroutineByteChannelMixin<T>(
         return n
       }
       // slow path
-      selector.select(channel, SelectionKey.OP_WRITE)
+      group.select(channel, SelectionKey.OP_WRITE)
     }
   }
 }
