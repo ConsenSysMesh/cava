@@ -17,7 +17,6 @@ import java.net.SocketAddress
 import java.nio.channels.AsynchronousCloseException
 import java.nio.channels.ClosedByInterruptException
 import java.nio.channels.ClosedChannelException
-import java.nio.channels.NetworkChannel
 import java.nio.channels.NotYetConnectedException
 import java.nio.channels.SelectionKey
 import java.nio.channels.SocketChannel
@@ -31,7 +30,7 @@ class CoroutineSocketChannel internal constructor(
 ) : CoroutineByteChannel,
   ScatteringCoroutineByteChannel by ScatteringCoroutineByteChannelMixin(channel, group),
   GatheringCoroutineByteChannel by GatheringCoroutineByteChannelMixin(channel, group),
-  NetworkChannel by channel {
+  CoroutineNetworkChannel by CoroutineNetworkChannelMixin(channel) {
 
   companion object {
     /**

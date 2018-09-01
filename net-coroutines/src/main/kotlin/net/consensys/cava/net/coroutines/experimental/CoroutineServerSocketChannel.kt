@@ -18,7 +18,6 @@ import java.nio.channels.AlreadyBoundException
 import java.nio.channels.AsynchronousCloseException
 import java.nio.channels.ClosedByInterruptException
 import java.nio.channels.ClosedChannelException
-import java.nio.channels.NetworkChannel
 import java.nio.channels.NotYetBoundException
 import java.nio.channels.SelectionKey
 import java.nio.channels.ServerSocketChannel
@@ -30,7 +29,7 @@ import java.nio.channels.UnsupportedAddressTypeException
 class CoroutineServerSocketChannel private constructor(
   private val channel: ServerSocketChannel,
   private val group: CoroutineChannelGroup
-) : NetworkChannel by channel {
+) : CoroutineNetworkChannel by CoroutineNetworkChannelMixin(channel) {
 
   companion object {
     /**
