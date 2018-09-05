@@ -13,6 +13,7 @@
 package net.consensys.cava.net.coroutines.experimental
 
 import java.io.IOException
+import java.net.InetSocketAddress
 import java.net.SocketAddress
 import java.net.SocketOption
 import java.nio.channels.AlreadyBoundException
@@ -69,7 +70,15 @@ interface CoroutineNetworkChannel : NetworkChannel {
    * @throws ClosedChannelException If the channel is closed.
    * @throws IOException If an I/O error occurs.
    */
-  override fun getLocalAddress(): SocketAddress
+  override fun getLocalAddress(): SocketAddress?
+
+  /**
+   * The port number on the local host to which this socket is bound.
+   *
+   * The port number on the local host to which this socket is bound, -1 if the socket is closed, or 0 if it is not
+   * bound yet.
+   */
+  val localPort: Int
 
   /**
    * Sets the value of a socket option.
@@ -110,6 +119,17 @@ interface CoroutineNetworkChannel : NetworkChannel {
 internal class CoroutineNetworkChannelMixin(
   private val channel: NetworkChannel
 ) : CoroutineNetworkChannel, NetworkChannel by channel {
+
+  override val localPort: Int
+    get() {
+      if (!isOpen) {
+        return -1
+      }
+      if (localAddress !is InetSocketAddress) {
+        return 0
+      }
+      return (localAddress as InetSocketAddress).port
+    }
 
   override fun bind(local: SocketAddress?): CoroutineNetworkChannel {
     channel.bind(local)
