@@ -15,6 +15,8 @@ package net.consensys.cava.net.coroutines.experimental
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNotNull
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.net.DatagramPacket
@@ -28,7 +30,12 @@ internal class CoroutineDatagramChannelTest {
   @Test
   fun shouldSuspendDatagramChannelWhileReading() {
     val channel = CoroutineDatagramChannel.open()
+    assertNull(channel.localAddress)
+    assertEquals(0, channel.localPort)
+
     channel.bind(null)
+    assertNotNull(channel.localAddress)
+    assertTrue(channel.localPort > 0)
 
     var didBlock = false
     val dst = ByteBuffer.allocate(10)

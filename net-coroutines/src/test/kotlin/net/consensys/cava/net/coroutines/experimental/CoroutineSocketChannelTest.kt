@@ -14,6 +14,7 @@ package net.consensys.cava.net.coroutines.experimental
 
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertTrue
@@ -28,8 +29,13 @@ internal class CoroutineSocketChannelTest {
   @Test
   fun shouldSuspendServerSocketChannelWhileAccepting() {
     val listenChannel = CoroutineServerSocketChannel.open()
+    Assertions.assertNull(listenChannel.localAddress)
+    assertEquals(0, listenChannel.localPort)
+
     listenChannel.bind(null)
-    val addr = InetSocketAddress(InetAddress.getLocalHost(), (listenChannel.localAddress as InetSocketAddress).port)
+    assertNotNull(listenChannel.localAddress)
+    assertTrue(listenChannel.localPort > 0)
+    val addr = InetSocketAddress(InetAddress.getLocalHost(), listenChannel.localPort)
 
     var didBlock = false
     val job = async {
