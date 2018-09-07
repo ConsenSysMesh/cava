@@ -32,11 +32,11 @@ With Maven:
 <dependency>
   <groupId>net.consensys.cava</groupId>
   <artifactId>cava-toml</artifactId>
-  <version>0.2.0</version>
+  <version>0.3.1</version>
 </dependency>
 ```
 
-With Gradle: `compile 'net.consensys.cava:cava-toml:0.2.0'`
+With Gradle: `compile 'net.consensys.cava:cava-toml:0.3.1'`
 
 ## Links
 
