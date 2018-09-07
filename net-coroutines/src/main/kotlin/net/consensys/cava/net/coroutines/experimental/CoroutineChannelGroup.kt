@@ -112,7 +112,7 @@ internal class CoroutineSelectorChannelGroup(
   idleTimeout: Long
 ) : CoroutineChannelGroup() {
 
-  private val logger = loggerProvider.getLogger(CoroutineSelectorChannelGroup::class.java)
+  private val logger = loggerProvider.getLogger(CoroutineChannelGroup::class.java)
 
   private var selectors: Array<CoroutineSelector>? = Array(nSelectors) {
     CoroutineSelector.open(executor, loggerProvider, selectTimeout, idleTimeout)
