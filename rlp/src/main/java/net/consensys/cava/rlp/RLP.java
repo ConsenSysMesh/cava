@@ -19,16 +19,20 @@ import static java.util.Objects.requireNonNull;
 import net.consensys.cava.bytes.Bytes;
 
 import java.math.BigInteger;
+import java.nio.BufferOverflowException;
+import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-
 /**
  * Recursive Length Prefix (RLP) encoding and decoding.
  */
 public final class RLP {
+  private static final byte[] EMPTY_VALUE = new byte[] {(byte) 0x80};
+
   private RLP() {}
 
   /**
@@ -42,9 +46,29 @@ public final class RLP {
    */
   public static Bytes encode(Consumer<RLPWriter> fn) {
     requireNonNull(fn);
-    BytesValueRLPWriter writer = new BytesValueRLPWriter();
+    BytesRLPWriter writer = new BytesRLPWriter();
     fn.accept(writer);
     return writer.toBytes();
+  }
+
+  /**
+   * Encode values to a {@link ByteBuffer}.
+   * <p>
+   * Important: this method does not write any list prefix to the result. If you are writing a RLP encoded list of
+   * values, you usually want to use {@link #encodeList(Consumer)}.
+   *
+   * @param buffer The buffer to write into, starting from its current position.
+   * @param fn A consumer that will be provided with a {@link RLPWriter} that can consume values.
+   * @param <T> The type of the buffer.
+   * @return The buffer.
+   * @throws BufferOverflowException If the writer attempts to write more than the provided buffer can hold.
+   * @throws ReadOnlyBufferException If the provided buffer is read-only.
+   */
+  public static <T extends ByteBuffer> T encodeTo(T buffer, Consumer<RLPWriter> fn) {
+    requireNonNull(fn);
+    ByteBufferRLPWriter writer = new ByteBufferRLPWriter(buffer);
+    fn.accept(writer);
+    return buffer;
   }
 
   /**
@@ -55,9 +79,26 @@ public final class RLP {
    */
   public static Bytes encodeList(Consumer<RLPWriter> fn) {
     requireNonNull(fn);
-    BytesValueRLPWriter writer = new BytesValueRLPWriter();
+    BytesRLPWriter writer = new BytesRLPWriter();
     writer.writeList(fn);
     return writer.toBytes();
+  }
+
+  /**
+   * Encode a list of values to a {@link ByteBuffer}.
+   *
+   * @param buffer The buffer to write into, starting from its current position.
+   * @param fn A consumer that will be provided with a {@link RLPWriter} that can consume values.
+   * @param <T> The type of the buffer.
+   * @return The buffer.
+   * @throws BufferOverflowException If the writer attempts to write more than the provided buffer can hold.
+   * @throws ReadOnlyBufferException If the provided buffer is read-only.
+   */
+  public static <T extends ByteBuffer> T encodeListTo(T buffer, Consumer<RLPWriter> fn) {
+    requireNonNull(fn);
+    ByteBufferRLPWriter writer = new ByteBufferRLPWriter(buffer);
+    writer.writeList(fn);
+    return buffer;
   }
 
   /**
@@ -68,7 +109,7 @@ public final class RLP {
    */
   public static Bytes encodeValue(Bytes value) {
     requireNonNull(value);
-    return BytesValueRLPWriter.encodeValue(value.toArrayUnsafe());
+    return encodeValue(value.toArrayUnsafe());
   }
 
   /**
@@ -79,7 +120,32 @@ public final class RLP {
    */
   public static Bytes encodeByteArray(byte[] value) {
     requireNonNull(value);
-    return BytesValueRLPWriter.encodeValue(value);
+    return encodeValue(value);
+  }
+
+  private static Bytes encodeValue(byte[] value) {
+    int maxSize = value.length + 5;
+    ByteBuffer buffer = ByteBuffer.allocate(maxSize);
+    encodeByteArray(value, buffer::put);
+    return Bytes.wrap(buffer.array(), 0, buffer.position());
+  }
+
+  static void encodeByteArray(byte[] value, Consumer<byte[]> appender) {
+    requireNonNull(value);
+    int size = value.length;
+    if (size == 0) {
+      appender.accept(EMPTY_VALUE);
+      return;
+    }
+    if (size == 1) {
+      byte b = value[0];
+      if ((b & 0xFF) <= 0x7f) {
+        appender.accept(value);
+        return;
+      }
+    }
+    appender.accept(encodeLength(size, 0x80));
+    appender.accept(value);
   }
 
   /**
@@ -89,7 +155,7 @@ public final class RLP {
    * @return The RLP encoding in a {@link Bytes} value.
    */
   public static Bytes encodeInt(int value) {
-    return BytesValueRLPWriter.encodeLong(value);
+    return encodeLong(value);
   }
 
   /**
@@ -99,7 +165,29 @@ public final class RLP {
    * @return The RLP encoding in a {@link Bytes} value.
    */
   public static Bytes encodeLong(long value) {
-    return BytesValueRLPWriter.encodeLong(value);
+    return Bytes.wrap(encodeNumber(value));
+  }
+
+  static byte[] encodeNumber(long value) {
+    if (value <= 0x7f) {
+      return new byte[] {(byte) (value & 0xFF)};
+    }
+    return encodeLongBytes(value, 0x80);
+  }
+
+  private static byte[] encodeLongBytes(long value, int offset) {
+    int zeros = Long.numberOfLeadingZeros(value);
+    int resultBytes = 8 - (zeros / 8);
+
+    byte[] encoded = new byte[resultBytes + 1];
+    encoded[0] = (byte) ((offset + resultBytes) & 0xFF);
+
+    int shift = 0;
+    for (int i = 0; i < resultBytes; i++) {
+      encoded[resultBytes - i] = (byte) ((value >> shift) & 0xFF);
+      shift += 8;
+    }
+    return encoded;
   }
 
   /**
@@ -124,6 +212,13 @@ public final class RLP {
     return encodeByteArray(str.getBytes(UTF_8));
   }
 
+  static byte[] encodeLength(int length, int offset) {
+    if (length <= 55) {
+      return new byte[] {(byte) ((offset + length) & 0xFF)};
+    }
+    return encodeLongBytes(length, offset + 55);
+  }
+
   /**
    * Read and decode RLP from a {@link Bytes} value.
    * <p>
@@ -138,7 +233,7 @@ public final class RLP {
   public static <T> T decode(Bytes source, Function<RLPReader, T> fn) {
     requireNonNull(source);
     requireNonNull(fn);
-    return fn.apply(new BytesValueRLPReader(source));
+    return fn.apply(new BytesRLPReader(source));
   }
 
   /**

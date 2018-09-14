@@ -13,26 +13,24 @@
 package net.consensys.cava.rlp;
 
 import static java.util.Objects.requireNonNull;
+import static net.consensys.cava.rlp.RLP.encodeByteArray;
+import static net.consensys.cava.rlp.RLP.encodeLength;
+import static net.consensys.cava.rlp.RLP.encodeNumber;
 
 import net.consensys.cava.bytes.Bytes;
 
-import java.nio.ByteBuffer;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.function.Consumer;
 
-final class BytesValueRLPWriter implements RLPWriter {
+final class AccumulatingRLPWriter implements RLPWriter {
 
-  private static final byte[] EMPTY_VALUE = new byte[] {(byte) 0x80};
   private static final int COMBINE_THRESHOLD = 32;
 
   private ArrayDeque<byte[]> values = new ArrayDeque<>();
 
-  Bytes toBytes() {
-    if (values.isEmpty()) {
-      return Bytes.EMPTY;
-    }
-    return Bytes.wrap(values.stream().map(Bytes::wrap).toArray(Bytes[]::new));
+  Deque<byte[]> values() {
+    return values;
   }
 
   @Override
@@ -52,51 +50,18 @@ final class BytesValueRLPWriter implements RLPWriter {
     encodeByteArray(value, this::appendBytes);
   }
 
-  static Bytes encodeValue(byte[] value) {
-    int maxSize = value.length + 5;
-    ByteBuffer buffer = ByteBuffer.allocate(maxSize);
-    encodeByteArray(value, buffer::put);
-    return Bytes.wrap(buffer.array(), 0, buffer.position());
-  }
-
-  private static void encodeByteArray(byte[] value, Consumer<byte[]> appender) {
-    requireNonNull(value);
-    int size = value.length;
-    if (size == 0) {
-      appender.accept(EMPTY_VALUE);
-      return;
-    }
-    if (size == 1) {
-      byte b = value[0];
-      if ((b & 0xFF) <= 0x7f) {
-        appender.accept(value);
-        return;
-      }
-    }
-    appender.accept(encodeLength(size, 0x80));
-    appender.accept(value);
-  }
-
   @Override
   public void writeLong(long value) {
     appendBytes(encodeNumber(value));
   }
 
-  static Bytes encodeLong(long value) {
-    return Bytes.wrap(encodeNumber(value));
-  }
-
   @Override
   public void writeList(Consumer<RLPWriter> fn) {
     requireNonNull(fn);
-    BytesValueRLPWriter listWriter = new BytesValueRLPWriter();
+    AccumulatingRLPWriter listWriter = new AccumulatingRLPWriter();
     fn.accept(listWriter);
-    writeEncodedValuesAsList(listWriter.values);
-  }
-
-  private void writeEncodedValuesAsList(Deque<byte[]> values) {
     int totalSize = 0;
-    for (byte[] value : values) {
+    for (byte[] value : listWriter.values) {
       try {
         totalSize = Math.addExact(totalSize, value.length);
       } catch (ArithmeticException e) {
@@ -104,7 +69,7 @@ final class BytesValueRLPWriter implements RLPWriter {
       }
     }
     appendBytes(encodeLength(totalSize, 0xc0));
-    this.values.addAll(values);
+    this.values.addAll(listWriter.values);
   }
 
   private void appendBytes(byte[] bytes) {
@@ -122,34 +87,5 @@ final class BytesValueRLPWriter implements RLPWriter {
       }
     }
     values.add(bytes);
-  }
-
-  private static byte[] encodeNumber(long value) {
-    if (value <= 0x7f) {
-      return new byte[] {(byte) (value & 0xFF)};
-    }
-    return encodeLongBytes(value, 0x80);
-  }
-
-  private static byte[] encodeLength(int length, int offset) {
-    if (length <= 55) {
-      return new byte[] {(byte) ((offset + length) & 0xFF)};
-    }
-    return encodeLongBytes(length, offset + 55);
-  }
-
-  private static byte[] encodeLongBytes(long value, int offset) {
-    int zeros = Long.numberOfLeadingZeros(value);
-    int resultBytes = 8 - (zeros / 8);
-
-    byte[] encoded = new byte[resultBytes + 1];
-    encoded[0] = (byte) ((offset + resultBytes) & 0xFF);
-
-    int shift = 0;
-    for (int i = 0; i < resultBytes; i++) {
-      encoded[resultBytes - i] = (byte) ((value >> shift) & 0xFF);
-      shift += 8;
-    }
-    return encoded;
   }
 }
