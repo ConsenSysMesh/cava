@@ -139,10 +139,14 @@ internal class SingleThreadCoroutineSelector(
       throw ClosedSelectorException()
     }
     suspendCancellableCoroutine { cont: CancellableContinuation<Unit> ->
-      // increment tasks first to keep selection loop running while we add a new pending interest
-      val isRunning = incrementTasks()
-      pendingInterests.add(SelectionInterest(cont, channel, ops))
-      wakeup(isRunning)
+      try {
+        // increment tasks first to keep selection loop running while we add a new pending interest
+        val isRunning = incrementTasks()
+        pendingInterests.add(SelectionInterest(cont, channel, ops))
+        wakeup(isRunning)
+      } catch (e: Throwable) {
+        cont.resumeWithException(e)
+      }
     }
   }
 
@@ -152,10 +156,14 @@ internal class SingleThreadCoroutineSelector(
     }
     check(selector.isOpen) { "Selector is closed" }
     return suspendCancellableCoroutine { cont: CancellableContinuation<Boolean> ->
-      // increment tasks first to keep selection loop running while we add a new pending cancellation
-      val isRunning = incrementTasks()
-      pendingCancellations.add(SelectionCancellation(channel, cause, cont))
-      wakeup(isRunning)
+      try {
+        // increment tasks first to keep selection loop running while we add a new pending cancellation
+        val isRunning = incrementTasks()
+        pendingCancellations.add(SelectionCancellation(channel, cause, cont))
+        wakeup(isRunning)
+      } catch (e: Throwable) {
+        cont.resumeWithException(e)
+      }
     }
   }
 
@@ -173,9 +181,14 @@ internal class SingleThreadCoroutineSelector(
   override suspend fun closeNow() {
     selector.close()
     suspendCoroutine { cont: Continuation<Unit> ->
-      pendingCloses.add(cont)
-      if (outstandingTasks.get() == 0) {
-        processPendingCloses()
+      try {
+        pendingCloses.add(cont)
+        if (outstandingTasks.get() == 0) {
+          processPendingCloses()
+        }
+      } catch (e: Throwable) {
+        cont.resumeWithException(e)
+        throw e
       }
     }
   }
