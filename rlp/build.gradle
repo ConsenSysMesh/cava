@@ -5,11 +5,8 @@ dependencies {
   compileOnly project(':units')
 
   testCompile project(':units')
-  testCompile 'com.winterbe:expekt'
-  testCompile 'org.jetbrains.spek:spek-api'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
-  testRuntime 'org.junit.jupiter:junit-jupiter-engine'
   testCompile 'org.junit.jupiter:junit-jupiter-params'
 
-  testRuntime 'org.jetbrains.spek:spek-junit-platform-engine'
+  testRuntime 'org.junit.jupiter:junit-jupiter-engine'
 }

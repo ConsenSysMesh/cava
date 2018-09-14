@@ -16,12 +16,12 @@ import net.consensys.cava.bytes.Bytes;
 
 import java.util.function.Function;
 
-final class BytesValueRLPReader implements RLPReader {
+final class BytesRLPReader implements RLPReader {
 
   private final Bytes content;
   private int index = 0;
 
-  BytesValueRLPReader(Bytes content) {
+  BytesRLPReader(Bytes content) {
     this.content = content;
   }
 
@@ -104,7 +104,7 @@ final class BytesValueRLPReader implements RLPReader {
 
   @Override
   public <T> T readList(Function<RLPReader, T> fn) {
-    return fn.apply(new BytesValueRLPReader(readList()));
+    return fn.apply(new BytesRLPReader(readList()));
   }
 
   @Override
