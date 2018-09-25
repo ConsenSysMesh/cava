@@ -102,6 +102,11 @@ class ByteBufferWrappingBytes extends AbstractBytes {
   }
 
   @Override
+  public void appendTo(ByteBuffer byteBuffer) {
+    byteBuffer.put(this.byteBuffer);
+  }
+
+  @Override
   public byte[] toArray() {
     if (!byteBuffer.hasArray()) {
       return super.toArray();

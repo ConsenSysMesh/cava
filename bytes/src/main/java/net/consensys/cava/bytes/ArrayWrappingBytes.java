@@ -15,6 +15,7 @@ package net.consensys.cava.bytes;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
@@ -136,6 +137,11 @@ class ArrayWrappingBytes extends AbstractBytes {
 
     MutableArrayWrappingBytes d = (MutableArrayWrappingBytes) destination;
     System.arraycopy(bytes, offset, d.bytes, d.offset + destinationOffset, size);
+  }
+
+  @Override
+  public void appendTo(ByteBuffer byteBuffer) {
+    byteBuffer.put(bytes, offset, length);
   }
 
   @Override

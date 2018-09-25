@@ -19,7 +19,9 @@ import static java.lang.String.format;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.nio.ReadOnlyBufferException;
 import java.security.MessageDigest;
 import java.util.Arrays;
 
@@ -1003,6 +1005,20 @@ public interface Bytes {
 
     for (int i = 0; i < size; i++) {
       destination.set(destinationOffset + i, get(i));
+    }
+  }
+
+  /**
+   * Append the bytes of this value to the {@link ByteBuffer}.
+   *
+   * @param byteBuffer The {@link ByteBuffer} to which to append this value.
+   * @throws BufferOverflowException If the writer attempts to write more than the provided buffer can hold.
+   * @throws ReadOnlyBufferException If the provided buffer is read-only.
+   */
+  default void appendTo(ByteBuffer byteBuffer) {
+    checkNotNull(byteBuffer);
+    for (int i = 0; i < size(); i++) {
+      byteBuffer.put(get(i));
     }
   }
 
