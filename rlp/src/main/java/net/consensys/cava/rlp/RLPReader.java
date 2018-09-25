@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
-
 /**
  * A reader for consuming values from an RLP encoded source.
  */
@@ -38,6 +37,17 @@ public interface RLPReader {
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   Bytes readValue();
+
+  /**
+   * Read a byte array from the RLP source.
+   *
+   * @return The byte array for the next value.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default byte[] readByteArray() {
+    return readValue().toArrayUnsafe();
+  }
 
   /**
    * Read an integer value from the RLP source.
