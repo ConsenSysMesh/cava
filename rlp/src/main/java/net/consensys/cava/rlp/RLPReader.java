@@ -62,7 +62,7 @@ public interface RLPReader {
     try {
       return bytes.intValue();
     } catch (IllegalArgumentException e) {
-      throw new InvalidRLPTypeException("Next value is too large to be represented as an int");
+      throw new InvalidRLPTypeException("Value is too large to be represented as an int");
     }
   }
 
@@ -79,7 +79,7 @@ public interface RLPReader {
     try {
       return bytes.longValue();
     } catch (IllegalArgumentException e) {
-      throw new InvalidRLPTypeException("Next value is too large to be represented as a long");
+      throw new InvalidRLPTypeException("Value is too large to be represented as a long");
     }
   }
 
@@ -96,7 +96,7 @@ public interface RLPReader {
     try {
       return UInt256.fromBytes(bytes);
     } catch (IllegalArgumentException e) {
-      throw new InvalidRLPTypeException("Next value is too large to be represented as a UInt256");
+      throw new InvalidRLPTypeException("Value is too large to be represented as a UInt256");
     }
   }
 
