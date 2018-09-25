@@ -15,6 +15,7 @@ package net.consensys.cava.bytes;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import java.math.BigInteger;
+import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 
 import io.vertx.core.buffer.Buffer;
@@ -175,6 +176,11 @@ final class DelegatingBytes32 implements Bytes32 {
   @Override
   public void copyTo(MutableBytes destination, int destinationOffset) {
     delegate.copyTo(destination, destinationOffset);
+  }
+
+  @Override
+  public void appendTo(ByteBuffer byteBuffer) {
+    delegate.appendTo(byteBuffer);
   }
 
   @Override
