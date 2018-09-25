@@ -19,4 +19,12 @@ public class RLPException extends RuntimeException {
   public RLPException(String message) {
     super(message);
   }
+
+  public RLPException(Throwable cause) {
+    super(cause);
+  }
+
+  public RLPException(String message, Throwable cause) {
+    super(message, cause);
+  }
 }
