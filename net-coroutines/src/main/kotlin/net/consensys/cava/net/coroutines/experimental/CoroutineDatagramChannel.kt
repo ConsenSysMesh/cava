@@ -114,13 +114,7 @@ class CoroutineDatagramChannel private constructor(
    *   in progress, thereby closing the channel and setting the current thread's interrupt status.
    * @throws IOException If some other I/O error occurs.
    */
-  suspend fun receive(dst: ByteBuffer): SocketAddress? {
-    if (dst.remaining() == 0) {
-      if (!isOpen) {
-        throw ClosedChannelException()
-      }
-      return null
-    }
+  suspend fun receive(dst: ByteBuffer): SocketAddress {
     while (true) {
       val n = channel.receive(dst)
       if (n != null) {
