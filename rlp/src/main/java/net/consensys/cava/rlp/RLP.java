@@ -169,6 +169,9 @@ public final class RLP {
   }
 
   static byte[] encodeNumber(long value) {
+    if (value == 0x00) {
+      return EMPTY_VALUE;
+    }
     if (value <= 0x7f) {
       return new byte[] {(byte) (value & 0xFF)};
     }

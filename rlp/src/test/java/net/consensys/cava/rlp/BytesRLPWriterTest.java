@@ -59,17 +59,27 @@ class BytesRLPWriterTest {
 
   @Test
   void shouldWriteSmallIntegers() {
+    assertEquals(fromHexString("80"), RLP.encode(writer -> writer.writeInt(0)));
+    assertEquals(fromHexString("01"), RLP.encode(writer -> writer.writeInt(1)));
+    assertEquals(fromHexString("0f"), RLP.encode(writer -> writer.writeInt(15)));
     assertEquals(fromHexString("8203e8"), RLP.encode(writer -> writer.writeInt(1000)));
+    assertEquals(fromHexString("820400"), RLP.encode(writer -> writer.writeInt(1024)));
     assertEquals(fromHexString("830186a0"), RLP.encode(writer -> writer.writeInt(100000)));
   }
 
   @Test
   void shouldWriteLongIntegers() {
+    assertEquals(fromHexString("80"), RLP.encode(writer -> writer.writeLong(0L)));
+    assertEquals(fromHexString("01"), RLP.encode(writer -> writer.writeLong(1)));
+    assertEquals(fromHexString("0f"), RLP.encode(writer -> writer.writeLong(15)));
+    assertEquals(fromHexString("8203e8"), RLP.encode(writer -> writer.writeLong(1000)));
+    assertEquals(fromHexString("820400"), RLP.encode(writer -> writer.writeLong(1024)));
     assertEquals(fromHexString("830186a0"), RLP.encode(writer -> writer.writeLong(100000L)));
   }
 
   @Test
   void shouldWriteUInt256Integers() {
+    assertEquals(fromHexString("80"), RLP.encode(writer -> writer.writeUInt256(UInt256.valueOf(0L))));
     assertEquals(fromHexString("830186a0"), RLP.encode(writer -> writer.writeUInt256(UInt256.valueOf(100000L))));
     assertEquals(
         fromHexString("a00400000000000000000000000000000000000000000000000000f100000000ab"),
