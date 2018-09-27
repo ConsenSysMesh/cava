@@ -58,7 +58,24 @@ public interface RLPReader {
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   default int readInt() {
+    return readInt(true);
+  }
+
+  /**
+   * Read an integer value from the RLP source.
+   *
+   * @param lenient If `false`, an exception will be thrown if the integer is not minimally encoded.
+   * @return An integer.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
+   *         encoded and `lenient` is `false`.
+   * @throws InvalidRLPTypeException If the next RLP value cannot be represented as an integer.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default int readInt(boolean lenient) {
     Bytes bytes = readValue();
+    if (!lenient && bytes.hasLeadingZeroByte()) {
+      throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
+    }
     try {
       return bytes.intValue();
     } catch (IllegalArgumentException e) {
@@ -75,7 +92,24 @@ public interface RLPReader {
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   default long readLong() {
+    return readLong(true);
+  }
+
+  /**
+   * Read a long value from the RLP source.
+   *
+   * @param lenient If `false`, an exception will be thrown if the integer is not minimally encoded.
+   * @return A long.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
+   *         encoded and `lenient` is `false`.
+   * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a long.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default long readLong(boolean lenient) {
     Bytes bytes = readValue();
+    if (!lenient && bytes.hasLeadingZeroByte()) {
+      throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
+    }
     try {
       return bytes.longValue();
     } catch (IllegalArgumentException e) {
@@ -92,7 +126,24 @@ public interface RLPReader {
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   default UInt256 readUInt256() {
+    return readUInt256(true);
+  }
+
+  /**
+   * Read a {@link UInt256} value from the RLP source.
+   *
+   * @param lenient If `false`, an exception will be thrown if the integer is not minimally encoded.
+   * @return A {@link UInt256} value.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
+   *         encoded and `lenient` is `false`.
+   * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a long.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default UInt256 readUInt256(boolean lenient) {
     Bytes bytes = readValue();
+    if (!lenient && bytes.hasLeadingZeroByte()) {
+      throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
+    }
     try {
       return UInt256.fromBytes(bytes);
     } catch (IllegalArgumentException e) {
@@ -109,7 +160,25 @@ public interface RLPReader {
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   default BigInteger readBigInteger() {
-    return readValue().unsignedBigIntegerValue();
+    return readBigInteger(true);
+  }
+
+  /**
+   * Read a big integer value from the RLP source.
+   *
+   * @param lenient If `false`, an exception will be thrown if the integer is not minimally encoded.
+   * @return A big integer.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
+   *         encoded and `lenient` is `false`.
+   * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a big integer.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default BigInteger readBigInteger(boolean lenient) {
+    Bytes bytes = readValue();
+    if (!lenient && bytes.hasLeadingZeroByte()) {
+      throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
+    }
+    return bytes.unsignedBigIntegerValue();
   }
 
   /**
