@@ -87,13 +87,13 @@ public final class Transaction {
       throw new InvalidRLPTypeException(
           "The length of the 'r' portion of the signature is " + rbytes.size() + ", it should be at most 32 bytes");
     }
-    BigInteger r = rbytes.unsignedBigIntegerValue();
+    BigInteger r = rbytes.toUnsignedBigInteger();
     Bytes sbytes = reader.readValue();
     if (sbytes.size() > 32) {
       throw new InvalidRLPTypeException(
           "The length of the 's' portion of the signature is " + sbytes.size() + ", it should be at most 32 bytes");
     }
-    BigInteger s = sbytes.unsignedBigIntegerValue();
+    BigInteger s = sbytes.toUnsignedBigInteger();
     if (!reader.isComplete()) {
       throw new InvalidRLPTypeException("Additional bytes present at the end of the RLP transaction encoding");
     }
@@ -287,10 +287,10 @@ public final class Transaction {
    */
   public void writeTo(RLPWriter writer) {
     writer.writeUInt256(nonce);
-    writer.writeUInt256(gasPrice.uint256Value());
+    writer.writeUInt256(gasPrice.toUInt256());
     writer.writeLong(gasLimit.toLong());
     writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
-    writer.writeUInt256(value.uint256Value());
+    writer.writeUInt256(value.toUInt256());
     writer.writeValue(payload);
     writer.writeValue(Bytes.of(signature.v()));
     writer.writeBigInteger(signature.r());

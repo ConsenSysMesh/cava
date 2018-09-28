@@ -36,7 +36,7 @@ public final class UInt256Domain extends DiscreteDomain<UInt256> {
     if (!distance.fitsLong()) {
       return negativeDistance ? Long.MIN_VALUE : Long.MAX_VALUE;
     }
-    long distanceLong = distance.longValue();
+    long distanceLong = distance.toLong();
     return negativeDistance ? -distanceLong : distanceLong;
   }
 

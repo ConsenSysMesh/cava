@@ -124,7 +124,7 @@ class BlockRLPTestSuite {
         UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("number"))),
         Gas.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("gasLimit")))),
         Gas.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("gasUsed")))),
-        Instant.ofEpochSecond(Bytes.fromHexString((String) headerData.get("timestamp")).longValue()),
+        Instant.ofEpochSecond(Bytes.fromHexString((String) headerData.get("timestamp")).toLong()),
         Bytes.fromHexString((String) headerData.get("extraData")),
         Hash.fromBytes(Bytes.fromHexString((String) headerData.get("mixHash"))),
         Bytes.fromHexString((String) headerData.get("nonce")));
@@ -155,8 +155,8 @@ class BlockRLPTestSuite {
               Bytes.fromHexString((String) txData.get("data")),
               Signature.create(
                   Bytes.fromHexString((String) txData.get("v")).get(0),
-                  Bytes.fromHexString((String) txData.get("r")).unsignedBigIntegerValue(),
-                  Bytes.fromHexString((String) txData.get("s")).unsignedBigIntegerValue())));
+                  Bytes.fromHexString((String) txData.get("r")).toUnsignedBigInteger(),
+                  Bytes.fromHexString((String) txData.get("s")).toUnsignedBigInteger())));
     }
     List<BlockHeader> ommers = new ArrayList<>();
     for (Object ommerDataObj : (List) blockData.get("uncleHeaders")) {

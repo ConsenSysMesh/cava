@@ -180,7 +180,7 @@ public final class SECP256K1 {
       throw new IllegalArgumentException("R times n does not point at infinity");
     }
     // 1.5. Compute e from M using Steps 2 and 3 of ECDSA signature verification.
-    BigInteger e = message.unsignedBigIntegerValue();
+    BigInteger e = message.toUnsignedBigInteger();
     // 1.6. For k from 1 to 2 do the following. (loop is outside this function via
     // iterating recId)
     // 1.6.1. Compute a candidate public key as:
@@ -217,7 +217,7 @@ public final class SECP256K1 {
     ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
     ECPrivateKeyParameters privKey =
-        new ECPrivateKeyParameters(keyPair.getSecretKey().bytes().unsignedBigIntegerValue(), Parameters.CURVE);
+        new ECPrivateKeyParameters(keyPair.getSecretKey().bytes().toUnsignedBigInteger(), Parameters.CURVE);
     signer.init(true, privKey);
 
     Bytes32 dataHash = keccak256(data);
@@ -243,7 +243,7 @@ public final class SECP256K1 {
 
     // Now we have to work backwards to figure out the recId needed to recover the signature.
     int recId = -1;
-    BigInteger publicKeyBI = keyPair.getPublicKey().bytes().unsignedBigIntegerValue();
+    BigInteger publicKeyBI = keyPair.getPublicKey().bytes().toUnsignedBigInteger();
     for (int i = 0; i < 4; i++) {
       BigInteger k = recoverFromSignature(i, r, s, dataHash);
       if (k.equals(publicKeyBI)) {
@@ -451,7 +451,7 @@ public final class SECP256K1 {
      * @return The associated public key.
      */
     public static PublicKey fromSecretKey(SecretKey secretKey) {
-      BigInteger privKey = secretKey.bytes().unsignedBigIntegerValue();
+      BigInteger privKey = secretKey.bytes().toUnsignedBigInteger();
 
       /*
        * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
@@ -688,8 +688,8 @@ public final class SECP256K1 {
     public static Signature fromBytes(Bytes bytes) {
       checkNotNull(bytes);
       checkArgument(bytes.size() == 65, "Signature must be 65 bytes, but got %s instead", bytes.size());
-      BigInteger r = bytes.slice(0, 32).unsignedBigIntegerValue();
-      BigInteger s = bytes.slice(32, 32).unsignedBigIntegerValue();
+      BigInteger r = bytes.slice(0, 32).toUnsignedBigInteger();
+      BigInteger s = bytes.slice(32, 32).toUnsignedBigInteger();
       return new Signature(r, s, bytes.get(64));
     }
 

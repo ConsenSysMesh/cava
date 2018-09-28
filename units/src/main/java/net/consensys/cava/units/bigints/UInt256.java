@@ -208,7 +208,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (modulus.isZero()) {
       throw new ArithmeticException("addMod with zero modulus");
     }
-    return UInt256.valueOf(bigIntegerValue().add(value.bigIntegerValue()).mod(modulus.bigIntegerValue()));
+    return UInt256.valueOf(toBigInteger().add(value.toBigInteger()).mod(modulus.toBigInteger()));
   }
 
   @Override
@@ -216,7 +216,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (modulus.isZero()) {
       throw new ArithmeticException("addMod with zero modulus");
     }
-    return UInt256.valueOf(bigIntegerValue().add(BigInteger.valueOf(value)).mod(modulus.bigIntegerValue()));
+    return UInt256.valueOf(toBigInteger().add(BigInteger.valueOf(value)).mod(modulus.toBigInteger()));
   }
 
   @Override
@@ -227,7 +227,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (modulus < 0) {
       throw new ArithmeticException("addMod unsigned with negative modulus");
     }
-    return UInt256.valueOf(bigIntegerValue().add(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
+    return UInt256.valueOf(toBigInteger().add(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
   }
 
   @Override
@@ -328,7 +328,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value.equals(UInt256.ONE)) {
       return mod(modulus);
     }
-    return UInt256.valueOf(bigIntegerValue().multiply(value.bigIntegerValue()).mod(modulus.bigIntegerValue()));
+    return UInt256.valueOf(toBigInteger().multiply(value.toBigInteger()).mod(modulus.toBigInteger()));
   }
 
   @Override
@@ -345,7 +345,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value < 0) {
       throw new ArithmeticException("multiplyMod unsigned by negative");
     }
-    return UInt256.valueOf(bigIntegerValue().multiply(BigInteger.valueOf(value)).mod(modulus.bigIntegerValue()));
+    return UInt256.valueOf(toBigInteger().multiply(BigInteger.valueOf(value)).mod(modulus.toBigInteger()));
   }
 
   @Override
@@ -365,7 +365,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value < 0) {
       throw new ArithmeticException("multiplyMod unsigned by negative");
     }
-    return UInt256.valueOf(bigIntegerValue().multiply(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
+    return UInt256.valueOf(toBigInteger().multiply(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
   }
 
   @Override
@@ -376,7 +376,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value.equals(UInt256.ONE)) {
       return this;
     }
-    return UInt256.valueOf(bigIntegerValue().divide(value.bigIntegerValue()));
+    return UInt256.valueOf(toBigInteger().divide(value.toBigInteger()));
   }
 
   @Override
@@ -393,17 +393,17 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (isPowerOf2(value)) {
       return shiftRight(log2(value));
     }
-    return UInt256.valueOf(bigIntegerValue().divide(BigInteger.valueOf(value)));
+    return UInt256.valueOf(toBigInteger().divide(BigInteger.valueOf(value)));
   }
 
   @Override
   public UInt256 pow(UInt256 exponent) {
-    return UInt256.valueOf(bigIntegerValue().modPow(exponent.bigIntegerValue(), P_2_256));
+    return UInt256.valueOf(toBigInteger().modPow(exponent.toBigInteger(), P_2_256));
   }
 
   @Override
   public UInt256 pow(long exponent) {
-    return UInt256.valueOf(bigIntegerValue().modPow(BigInteger.valueOf(exponent), P_2_256));
+    return UInt256.valueOf(toBigInteger().modPow(BigInteger.valueOf(exponent), P_2_256));
   }
 
   @Override
@@ -411,7 +411,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (modulus.isZero()) {
       throw new ArithmeticException("mod by zero");
     }
-    return UInt256.valueOf(bigIntegerValue().mod(modulus.bigIntegerValue()));
+    return UInt256.valueOf(toBigInteger().mod(modulus.toBigInteger()));
   }
 
   @Override
@@ -436,7 +436,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
       }
       return new UInt256(result);
     }
-    return UInt256.valueOf(bigIntegerValue().mod(BigInteger.valueOf(modulus)));
+    return UInt256.valueOf(toBigInteger().mod(BigInteger.valueOf(modulus)));
   }
 
   /**
@@ -690,7 +690,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   @Override
-  public long longValue() {
+  public long toLong() {
     if (!fitsLong()) {
       throw new ArithmeticException("Value does not fit a 8 byte long");
     }
@@ -699,11 +699,11 @@ public final class UInt256 implements UInt256Value<UInt256> {
 
   @Override
   public String toString() {
-    return bigIntegerValue().toString();
+    return toBigInteger().toString();
   }
 
   @Override
-  public BigInteger bigIntegerValue() {
+  public BigInteger toBigInteger() {
     byte mag[] = new byte[32];
     for (int i = 0, j = 0; i < INTS_SIZE; ++i) {
       mag[j++] = (byte) (this.ints[i] >>> 24);
@@ -715,7 +715,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   @Override
-  public UInt256 uint256Value() {
+  public UInt256 toUInt256() {
     return this;
   }
 

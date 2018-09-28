@@ -719,7 +719,7 @@ class UInt256Test {
   @ParameterizedTest
   @MethodSource("longValueProvider")
   void longValue(UInt256 value, long expected) {
-    assertEquals(expected, value.longValue());
+    assertEquals(expected, value.toLong());
   }
 
   private static Stream<Arguments> longValueProvider() {
@@ -745,7 +745,7 @@ class UInt256Test {
 
   @Test
   void shouldThrowForLongValueOfOversizeValue() {
-    Throwable exception = assertThrows(ArithmeticException.class, () -> hv("0x010000000000000000").longValue());
+    Throwable exception = assertThrows(ArithmeticException.class, () -> hv("0x010000000000000000").toLong());
     assertEquals("Value does not fit a 8 byte long", exception.getMessage());
   }
 

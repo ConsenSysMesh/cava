@@ -49,7 +49,7 @@ public final class UInt256ValueDomain<T extends UInt256Value<T>> extends Discret
     if (!distance.fitsLong()) {
       return negativeDistance ? Long.MIN_VALUE : Long.MAX_VALUE;
     }
-    long distanceLong = distance.longValue();
+    long distanceLong = distance.toLong();
     return negativeDistance ? -distanceLong : distanceLong;
   }
 

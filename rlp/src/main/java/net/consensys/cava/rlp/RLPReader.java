@@ -77,7 +77,7 @@ public interface RLPReader {
       throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
     }
     try {
-      return bytes.intValue();
+      return bytes.toInt();
     } catch (IllegalArgumentException e) {
       throw new InvalidRLPTypeException("Value is too large to be represented as an int");
     }
@@ -111,7 +111,7 @@ public interface RLPReader {
       throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
     }
     try {
-      return bytes.longValue();
+      return bytes.toLong();
     } catch (IllegalArgumentException e) {
       throw new InvalidRLPTypeException("Value is too large to be represented as a long");
     }
@@ -178,7 +178,7 @@ public interface RLPReader {
     if (!lenient && bytes.hasLeadingZeroByte()) {
       throw new InvalidRLPEncodingException("Integer value was not minimally encoded");
     }
-    return bytes.unsignedBigIntegerValue();
+    return bytes.toUnsignedBigInteger();
   }
 
   /**

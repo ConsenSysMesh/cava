@@ -262,7 +262,7 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
    * @throws ArithmeticException If the value does not fit a {@code long}, that is if {@code
    *     !fitsLong()}.
    */
-  default long longValue() {
+  default long toLong() {
     if (!fitsLong()) {
       throw new ArithmeticException("Value does not fit a 8 byte long");
     }
@@ -272,8 +272,8 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
   /**
    * @return This value as a {@link BigInteger}.
    */
-  default BigInteger bigIntegerValue() {
-    return toBytes().unsignedBigIntegerValue();
+  default BigInteger toBigInteger() {
+    return toBytes().toUnsignedBigInteger();
   }
 
   /**
@@ -296,11 +296,11 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
   }
 
   /**
-   * Type-cast this value as a {@link UInt256}.
+   * Convert this value to a {@link UInt256}.
    *
    * @return This value as a {@link UInt256}.
    */
-  UInt256 uint256Value();
+  UInt256 toUInt256();
 
   /**
    * @return The value as bytes.

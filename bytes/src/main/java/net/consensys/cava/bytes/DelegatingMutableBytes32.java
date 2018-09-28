@@ -79,8 +79,8 @@ final class DelegatingMutableBytes32 implements MutableBytes32 {
   }
 
   @Override
-  public int intValue() {
-    return delegate.intValue();
+  public int toInt() {
+    return delegate.toInt();
   }
 
   @Override
@@ -89,18 +89,18 @@ final class DelegatingMutableBytes32 implements MutableBytes32 {
   }
 
   @Override
-  public long longValue() {
-    return delegate.longValue();
+  public long toLong() {
+    return delegate.toLong();
   }
 
   @Override
-  public BigInteger bigIntegerValue() {
-    return delegate.bigIntegerValue();
+  public BigInteger toBigInteger() {
+    return delegate.toBigInteger();
   }
 
   @Override
-  public BigInteger unsignedBigIntegerValue() {
-    return delegate.unsignedBigIntegerValue();
+  public BigInteger toUnsignedBigInteger() {
+    return delegate.toUnsignedBigInteger();
   }
 
   @Override
