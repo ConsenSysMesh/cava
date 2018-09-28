@@ -56,7 +56,7 @@ public final class Gas {
       return CONSTANTS[value.intValue()];
     }
     if (!value.fitsLong()) {
-      throw new IllegalArgumentException("Gas value cannot be larger than 2^63 -1");
+      throw new IllegalArgumentException("Gas value cannot be larger than 2^63 - 1");
     }
     return new Gas(value.longValue());
   }
@@ -126,15 +126,19 @@ public final class Gas {
     return Objects.hashCode(value);
   }
 
+  @Override
+  public String toString() {
+    return "Gas{" + "value=" + value + '}';
+  }
+
+  public long toLong() {
+    return value;
+  }
+
   public Bytes toBytes() {
     MutableBytes bytes = MutableBytes.create(8);
     bytes.setLong(0, value);
     return bytes;
-  }
-
-  @Override
-  public String toString() {
-    return "Gas{" + "value=" + value + '}';
   }
 
   public Bytes toMinimalBytes() {

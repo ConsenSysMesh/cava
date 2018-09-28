@@ -147,11 +147,11 @@ class BlockRLPTestSuite {
 
       transactions.add(
           new Transaction(
-              UInt256.fromBytes(Bytes.fromHexString((String) txData.get("nonce"))),
-              Wei.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) txData.get("gasPrice")))),
-              Gas.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) txData.get("gasLimit")))),
+              UInt256.fromHexString((String) txData.get("nonce")),
+              Wei.valueOf(UInt256.fromHexString((String) txData.get("gasPrice"))),
+              Gas.valueOf(UInt256.fromHexString((String) txData.get("gasLimit"))),
               toAddress,
-              Wei.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) txData.get("value")))),
+              Wei.valueOf(UInt256.fromHexString((String) txData.get("value"))),
               Bytes.fromHexString((String) txData.get("data")),
               Signature.create(
                   Bytes.fromHexString((String) txData.get("v")).get(0),
