@@ -244,14 +244,14 @@ class BytesTest extends CommonBytesTests {
 
   @Test
   void asUnsignedBigIntegerConstants() {
-    assertEquals(bi("0"), Bytes.EMPTY.unsignedBigIntegerValue());
-    assertEquals(bi("1"), Bytes.of(1).unsignedBigIntegerValue());
+    assertEquals(bi("0"), Bytes.EMPTY.toUnsignedBigInteger());
+    assertEquals(bi("1"), Bytes.of(1).toUnsignedBigInteger());
   }
 
   @Test
   void asSignedBigIntegerConstants() {
-    assertEquals(bi("0"), Bytes.EMPTY.bigIntegerValue());
-    assertEquals(bi("1"), Bytes.of(1).bigIntegerValue());
+    assertEquals(bi("0"), Bytes.EMPTY.toBigInteger());
+    assertEquals(bi("1"), Bytes.of(1).toBigInteger());
   }
 
   @Test

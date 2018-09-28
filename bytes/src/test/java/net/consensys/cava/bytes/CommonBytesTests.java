@@ -48,7 +48,7 @@ abstract class CommonBytesTests {
   @Test
   void asUnsignedBigInteger() {
     // Make sure things are interpreted unsigned.
-    assertEquals(bi("255"), h("0xFF").unsignedBigIntegerValue());
+    assertEquals(bi("255"), h("0xFF").toUnsignedBigInteger());
 
     // Try 2^100 + Long.MAX_VALUE, as an easy to define a big not too special big integer.
     BigInteger expected = BigInteger.valueOf(2).pow(100).add(BigInteger.valueOf(Long.MAX_VALUE));
@@ -58,13 +58,13 @@ abstract class CommonBytesTests {
     MutableBytes v = m(13);
     v.set(0, (byte) 16);
     v.setLong(v.size() - 8, Long.MAX_VALUE);
-    assertEquals(expected, v.unsignedBigIntegerValue());
+    assertEquals(expected, v.toUnsignedBigInteger());
   }
 
   @Test
   void testAsSignedBigInteger() {
     // Make sure things are interpreted signed.
-    assertEquals(bi("-1"), h("0xFF").bigIntegerValue());
+    assertEquals(bi("-1"), h("0xFF").toBigInteger());
 
     // Try 2^100 + Long.MAX_VALUE, as an easy to define a big but not too special big integer.
     BigInteger expected = BigInteger.valueOf(2).pow(100).add(BigInteger.valueOf(Long.MAX_VALUE));
@@ -74,7 +74,7 @@ abstract class CommonBytesTests {
     MutableBytes v = m(13);
     v.set(0, (byte) 16);
     v.setLong(v.size() - 8, Long.MAX_VALUE);
-    assertEquals(expected, v.bigIntegerValue());
+    assertEquals(expected, v.toBigInteger());
 
     // And for a large negative one, we use -(2^100 + Long.MAX_VALUE), which is:
     //  2^100 + Long.MAX_VALUE = 0x10(4 bytes of 0)7F(  7 bytes of 1)
@@ -89,7 +89,7 @@ abstract class CommonBytesTests {
     v.set(5, (byte) 0x80);
     // 6 bytes of 0
     v.set(12, (byte) 1);
-    assertEquals(expected, v.bigIntegerValue());
+    assertEquals(expected, v.toBigInteger());
   }
 
   @Test
@@ -149,29 +149,29 @@ abstract class CommonBytesTests {
 
   @Test
   void testAsInt() {
-    assertEquals(0, Bytes.EMPTY.intValue());
+    assertEquals(0, Bytes.EMPTY.toInt());
     Bytes value1 = w(new byte[] {0, 0, 1, 0});
     // 0x00000100 = 256
-    assertEquals(256, value1.intValue());
-    assertEquals(256, value1.slice(2).intValue());
+    assertEquals(256, value1.toInt());
+    assertEquals(256, value1.slice(2).toInt());
 
     Bytes value2 = w(new byte[] {0, 1, 0, -1});
     // 0x000100FF = 65536 + 255 = 65791
-    assertEquals(65791, value2.intValue());
-    assertEquals(65791, value2.slice(1).intValue());
+    assertEquals(65791, value2.toInt());
+    assertEquals(65791, value2.slice(1).toInt());
 
     Bytes value3 = w(new byte[] {1, 0, -1, -1});
     // 0x0100FFFF = 16777216 (2^24) + (65536 - 1) = 16842751
-    assertEquals(16842751, value3.intValue());
+    assertEquals(16842751, value3.toInt());
 
     Bytes value4 = w(new byte[] {-1, -1, -1, -1});
     // 0xFFFFFFFF = -1
-    assertEquals(-1, value4.intValue());
+    assertEquals(-1, value4.toInt());
   }
 
   @Test
   void testAsIntTooManyBytes() {
-    Throwable exception = assertThrows(IllegalArgumentException.class, () -> w(new byte[] {1, 2, 3, 4, 5}).intValue());
+    Throwable exception = assertThrows(IllegalArgumentException.class, () -> w(new byte[] {1, 2, 3, 4, 5}).toInt());
     assertEquals("Value of size 5 has more than 4 bytes", exception.getMessage());
   }
 
@@ -204,24 +204,24 @@ abstract class CommonBytesTests {
 
   @Test
   void testAsLong() {
-    assertEquals(0, Bytes.EMPTY.longValue());
+    assertEquals(0, Bytes.EMPTY.toLong());
     Bytes value1 = w(new byte[] {0, 0, 1, 0, -1, -1, -1, -1});
     // 0x00000100FFFFFFFF = (2^40) + (2^32) - 1 = 1103806595071
-    assertEquals(1103806595071L, value1.longValue());
-    assertEquals(1103806595071L, value1.slice(2).longValue());
+    assertEquals(1103806595071L, value1.toLong());
+    assertEquals(1103806595071L, value1.slice(2).toLong());
     Bytes value2 = w(new byte[] {0, 1, 0, -1, -1, -1, -1, 0});
     // 0x000100FFFFFFFF00 = (2^48) + (2^40) - 1 - 255 = 282574488338176
-    assertEquals(282574488338176L, value2.longValue());
-    assertEquals(282574488338176L, value2.slice(1).longValue());
+    assertEquals(282574488338176L, value2.toLong());
+    assertEquals(282574488338176L, value2.slice(1).toLong());
 
     Bytes value3 = w(new byte[] {-1, -1, -1, -1, -1, -1, -1, -1});
-    assertEquals(-1L, value3.longValue());
+    assertEquals(-1L, value3.toLong());
   }
 
   @Test
   void testAsLongTooManyBytes() {
     Throwable exception =
-        assertThrows(IllegalArgumentException.class, () -> w(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).longValue());
+        assertThrows(IllegalArgumentException.class, () -> w(new byte[] {1, 2, 3, 4, 5, 6, 7, 8, 9}).toLong());
     assertEquals("Value of size 9 has more than 8 bytes", exception.getMessage());
   }
 

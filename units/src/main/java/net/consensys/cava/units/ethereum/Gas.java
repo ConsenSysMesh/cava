@@ -56,9 +56,9 @@ public final class Gas {
       return CONSTANTS[value.intValue()];
     }
     if (!value.fitsLong()) {
-      throw new IllegalArgumentException("Gas value cannot be larger than 2^63 -1");
+      throw new IllegalArgumentException("Gas value cannot be larger than 2^63 - 1");
     }
-    return new Gas(value.longValue());
+    return new Gas(value.toLong());
   }
 
   /**
@@ -102,7 +102,7 @@ public final class Gas {
    * @return The price of this amount of gas for a per unit of gas price of {@code gasPrice}.
    */
   public Wei priceFor(Wei gasPrice) {
-    return Wei.valueOf(gasPrice.uint256Value().multiply(value).uint256Value());
+    return Wei.valueOf(gasPrice.toUInt256().multiply(value).toUInt256());
   }
 
   public Gas add(Gas other) {
@@ -126,15 +126,19 @@ public final class Gas {
     return Objects.hashCode(value);
   }
 
+  @Override
+  public String toString() {
+    return "Gas{" + "value=" + value + '}';
+  }
+
+  public long toLong() {
+    return value;
+  }
+
   public Bytes toBytes() {
     MutableBytes bytes = MutableBytes.create(8);
     bytes.setLong(0, value);
     return bytes;
-  }
-
-  @Override
-  public String toString() {
-    return "Gas{" + "value=" + value + '}';
   }
 
   public Bytes toMinimalBytes() {

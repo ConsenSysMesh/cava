@@ -103,7 +103,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public T add(T value) {
-    return add(value.uint256Value());
+    return add(value.toUInt256());
   }
 
   /**
@@ -129,7 +129,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public T addMod(T value, UInt256 modulus) {
-    return addMod(value.uint256Value(), modulus);
+    return addMod(value.toUInt256(), modulus);
   }
 
   /**
@@ -156,7 +156,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public T subtract(T value) {
-    return subtract(value.uint256Value());
+    return subtract(value.toUInt256());
   }
 
   /**
@@ -182,7 +182,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public T multiply(T value) {
-    return multiply(value.uint256Value());
+    return multiply(value.toUInt256());
   }
 
   /**
@@ -214,7 +214,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public T multiplyMod(T value, UInt256 modulus) {
-    return multiplyMod(value.uint256Value(), modulus);
+    return multiplyMod(value.toUInt256(), modulus);
   }
 
   /**
@@ -241,7 +241,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public T divide(T value) {
-    return divide(value.uint256Value());
+    return divide(value.toUInt256());
   }
 
   /**
@@ -282,7 +282,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public int compareTo(T other) {
-    return compareTo(other.uint256Value());
+    return compareTo(other.toUInt256());
   }
 
   /**
@@ -308,7 +308,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
     }
 
     UInt256Value<?> other = (UInt256Value<?>) obj;
-    return this.value.equals(other.uint256Value());
+    return this.value.equals(other.toUInt256());
   }
 
   @Override
@@ -322,7 +322,7 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
   }
 
   @Override
-  public UInt256 uint256Value() {
+  public UInt256 toUInt256() {
     return value;
   }
 

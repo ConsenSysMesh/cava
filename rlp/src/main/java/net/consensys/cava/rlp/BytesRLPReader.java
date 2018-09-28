@@ -64,7 +64,7 @@ final class BytesRLPReader implements RLPReader {
       }
       int length;
       try {
-        length = lengthBytes.intValue();
+        length = lengthBytes.toInt();
       } catch (IllegalArgumentException e) {
         throw new InvalidRLPEncodingException(e.getMessage());
       }
@@ -137,7 +137,7 @@ final class BytesRLPReader implements RLPReader {
       }
 
       remaining -= lengthOfLength;
-      int length = content.slice(index + 1, lengthOfLength).intValue();
+      int length = content.slice(index + 1, lengthOfLength).toInt();
       if (remaining < length) {
         throw new InvalidRLPEncodingException(
             "Insufficient bytes in RLP encoding: expected " + length + " but have only " + remaining);
@@ -163,7 +163,7 @@ final class BytesRLPReader implements RLPReader {
     }
 
     remaining -= lengthOfLength;
-    int length = content.slice(index + 1, lengthOfLength).intValue();
+    int length = content.slice(index + 1, lengthOfLength).toInt();
 
     if (remaining < length) {
       throw new InvalidRLPEncodingException(
@@ -227,7 +227,7 @@ final class BytesRLPReader implements RLPReader {
     if (lengthBytes.hasLeadingZeroByte()) {
       throw new InvalidRLPEncodingException("RLP list length contains leading zero bytes");
     }
-    int length = lengthBytes.intValue();
+    int length = lengthBytes.toInt();
 
     if (remaining < length) {
       throw new InvalidRLPEncodingException(

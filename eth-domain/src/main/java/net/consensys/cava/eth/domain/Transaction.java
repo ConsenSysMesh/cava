@@ -18,9 +18,9 @@ import static java.util.Objects.requireNonNull;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.crypto.SECP256K1.Signature;
-import net.consensys.cava.rlp.InvalidRLPEncodingException;
 import net.consensys.cava.rlp.InvalidRLPTypeException;
 import net.consensys.cava.rlp.RLP;
+import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
 import net.consensys.cava.rlp.RLPWriter;
 import net.consensys.cava.units.bigints.UInt256;
@@ -42,7 +42,8 @@ public final class Transaction {
    * Deserialize a transaction from RLP encoded bytes.
    *
    * @param encoded The RLP encoded transaction.
-   * @return The deserialized transaction.
+   * @return The de-serialized transaction.
+   * @throws RLPException If there is an error decoding the transaction.
    */
   public static Transaction fromBytes(Bytes encoded) {
     requireNonNull(encoded);
@@ -59,42 +60,42 @@ public final class Transaction {
    * Deserialize a transaction from an RLP input.
    *
    * @param reader The RLP reader.
-   * @return The deserialized transaction.
+   * @return The de-serialized transaction.
+   * @throws RLPException If there is an error decoding the transaction.
    */
   public static Transaction readFrom(RLPReader reader) {
-    UInt256 nonce = fromMinimalBytes(reader.readValue(), "nonce");
-    Wei gasPrice = Wei.valueOf(fromMinimalBytes(reader.readValue(), "gasPrice"));
-    Gas gasLimit = Gas.valueOf(fromMinimalBytes(reader.readValue(), "gasLimit"));
+    UInt256 nonce = reader.readUInt256(false);
+    Wei gasPrice = Wei.valueOf(reader.readUInt256(false));
+    Gas gasLimit = Gas.valueOf(reader.readLong(false));
     Bytes addressBytes = reader.readValue();
-    Address address = addressBytes.isEmpty() ? null : Address.fromBytes(addressBytes);
-    Wei value = Wei.valueOf(fromMinimalBytes(reader.readValue(), "wei"));
+    Address address;
+    try {
+      address = addressBytes.isEmpty() ? null : Address.fromBytes(addressBytes);
+    } catch (IllegalArgumentException e) {
+      throw new InvalidRLPTypeException("Value is the wrong size to be an address");
+    }
+    Wei value = Wei.valueOf(reader.readUInt256(false));
     Bytes payload = reader.readValue();
     Bytes vbytes = reader.readValue();
     if (vbytes.size() != 1) {
-      throw new IllegalArgumentException(
+      throw new InvalidRLPTypeException(
           "The 'v' portion of the signature should be exactly 1 byte, it is " + vbytes.size() + " instead");
     }
     byte v = vbytes.get(0);
     Bytes rbytes = reader.readValue();
-    if (rbytes.hasLeadingZeroByte()) {
-      throw new IllegalArgumentException("The 'r' portion of the signature contains leading zero-byte values");
-    }
     if (rbytes.size() > 32) {
-      throw new IllegalArgumentException(
+      throw new InvalidRLPTypeException(
           "The length of the 'r' portion of the signature is " + rbytes.size() + ", it should be at most 32 bytes");
     }
-    BigInteger r = rbytes.unsignedBigIntegerValue();
+    BigInteger r = rbytes.toUnsignedBigInteger();
     Bytes sbytes = reader.readValue();
-    if (sbytes.hasLeadingZeroByte()) {
-      throw new IllegalArgumentException("The 's' portion of the signature contains leading zero-byte values");
-    }
     if (sbytes.size() > 32) {
-      throw new IllegalArgumentException(
+      throw new InvalidRLPTypeException(
           "The length of the 's' portion of the signature is " + sbytes.size() + ", it should be at most 32 bytes");
     }
-    BigInteger s = sbytes.unsignedBigIntegerValue();
+    BigInteger s = sbytes.toUnsignedBigInteger();
     if (!reader.isComplete()) {
-      throw new InvalidRLPTypeException("Additional bytes present at the end of the encoded transaction list");
+      throw new InvalidRLPTypeException("Additional bytes present at the end of the RLP transaction encoding");
     }
     return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, Signature.create(v, r, s));
   }
@@ -219,14 +220,13 @@ public final class Transaction {
    */
   public Address sender() {
     PublicKey publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
-      writer.writeValue(nonce().toMinimalBytes());
-      writer.writeValue(gasPrice().toMinimalBytes());
-      writer.writeValue(gasLimit().toMinimalBytes());
-      Address to = to();
+      writer.writeUInt256(nonce);
+      writer.writeValue(gasPrice.toMinimalBytes());
+      writer.writeValue(gasLimit.toMinimalBytes());
       writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
-      writer.writeValue(value().toMinimalBytes());
-      writer.writeValue(payload());
-    }), signature());
+      writer.writeValue(value.toMinimalBytes());
+      writer.writeValue(payload);
+    }), signature);
     return Address.fromBytes(Hash.hash(publicKey.bytes()).toBytes().slice(12, 20));
   }
 
@@ -286,21 +286,14 @@ public final class Transaction {
    * @param writer The RLP writer.
    */
   public void writeTo(RLPWriter writer) {
-    writer.writeValue(nonce.toMinimalBytes());
-    writer.writeValue(gasPrice.toMinimalBytes());
-    writer.writeValue(gasLimit.toMinimalBytes());
+    writer.writeUInt256(nonce);
+    writer.writeUInt256(gasPrice.toUInt256());
+    writer.writeLong(gasLimit.toLong());
     writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
-    writer.writeValue(value.toMinimalBytes());
+    writer.writeUInt256(value.toUInt256());
     writer.writeValue(payload);
     writer.writeValue(Bytes.of(signature.v()));
     writer.writeBigInteger(signature.r());
     writer.writeBigInteger(signature.s());
-  }
-
-  private static UInt256 fromMinimalBytes(Bytes bytes, String fieldName) {
-    if (bytes.hasLeadingZeroByte()) {
-      throw new InvalidRLPEncodingException("Unexpected leading zero byte in encoding of " + fieldName);
-    }
-    return UInt256.fromBytes(bytes);
   }
 }

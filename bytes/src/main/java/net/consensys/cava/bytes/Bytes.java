@@ -452,7 +452,7 @@ public interface Bytes {
    * @return An value corresponding to this value interpreted as an integer.
    * @throws IllegalArgumentException if {@code size() &gt; 4}.
    */
-  default int intValue() {
+  default int toInt() {
     int i = size();
     checkArgument(i <= 4, "Value of size %s has more than 4 bytes", size());
     if (i == 0) {
@@ -516,7 +516,7 @@ public interface Bytes {
    * @return An value corresponding to this value interpreted as a long.
    * @throws IllegalArgumentException if {@code size() &gt; 8}.
    */
-  default long longValue() {
+  default long toLong() {
     int i = size();
     checkArgument(i <= 8, "Value of size %s has more than 8 bytes", size());
     if (i == 0) {
@@ -558,7 +558,7 @@ public interface Bytes {
    *
    * @return A {@link BigInteger} corresponding to interpreting these bytes as a two's-complement signed integer.
    */
-  default BigInteger bigIntegerValue() {
+  default BigInteger toBigInteger() {
     if (size() == 0) {
       return BigInteger.ZERO;
     }
@@ -570,7 +570,7 @@ public interface Bytes {
    *
    * @return A positive (or zero) {@link BigInteger} corresponding to interpreting these bytes as an unsigned integer.
    */
-  default BigInteger unsignedBigIntegerValue() {
+  default BigInteger toUnsignedBigInteger() {
     return new BigInteger(1, toArrayUnsafe());
   }
 
