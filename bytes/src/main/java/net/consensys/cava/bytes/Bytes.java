@@ -23,7 +23,9 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Random;
 
 import io.netty.buffer.ByteBuf;
 import io.vertx.core.buffer.Buffer;
@@ -408,6 +410,29 @@ public interface Bytes {
     checkNotNull(str);
     checkArgument(destinationSize >= 0, "Invalid negative destination size %s", destinationSize);
     return BytesValues.fromHexString(str, destinationSize, false);
+  }
+
+  /**
+   * Generate random bytes.
+   *
+   * @param size The number of bytes to generate.
+   * @return A value containing the desired number of random bytes.
+   */
+  static Bytes random(int size) {
+    return random(size, new SecureRandom());
+  }
+
+  /**
+   * Generate random bytes.
+   *
+   * @param size The number of bytes to generate.
+   * @param generator The generator for random bytes.
+   * @return A value containing the desired number of random bytes.
+   */
+  static Bytes random(int size, Random generator) {
+    byte[] array = new byte[size];
+    generator.nextBytes(array);
+    return Bytes.wrap(array);
   }
 
   /** @return The number of bytes this value represents. */
