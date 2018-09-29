@@ -49,8 +49,20 @@ public final class Hash {
    * @return A hash.
    */
   public static Hash fromBytes(Bytes32 bytes) {
-    requireNonNull(bytes);
     return new Hash(bytes);
+  }
+
+  /**
+   * Parse a hexadecimal string into a {@link Hash}.
+   *
+   * @param str The hexadecimal string to parse, which may or may not start with "0x". That representation may contain
+   *        less than 32 bytes, in which case the result is left padded with zeros.
+   * @return The value corresponding to {@code str}.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation or
+   *         contains more than 32 bytes.
+   */
+  public static Hash fromHexString(String str) {
+    return new Hash(Bytes32.fromHexStringLenient(str));
   }
 
   public static Hash hash(Bytes value) {

@@ -346,7 +346,7 @@ public interface Bytes {
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x".
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation.
    */
   static Bytes fromHexStringLenient(CharSequence str) {
     checkNotNull(str);
@@ -365,8 +365,8 @@ public interface Bytes {
    *        {@code str}. If it is strictly bigger those bytes from {@code str}, the returned value will be left padded
    *        with zeros.
    * @return A value of size {@code destinationSize} corresponding to {@code str} potentially left-padded.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, represents
-   *         more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation,
+   *         represents more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
    */
   static Bytes fromHexStringLenient(CharSequence str, int destinationSize) {
     checkNotNull(str);
@@ -382,7 +382,7 @@ public interface Bytes {
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x".
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, or is of
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation, or is of
    *         an odd length.
    */
   static Bytes fromHexString(CharSequence str) {
@@ -401,9 +401,9 @@ public interface Bytes {
    *        {@code str}. If it is strictly bigger those bytes from {@code str}, the returned value will be left padded
    *        with zeros.
    * @return A value of size {@code destinationSize} corresponding to {@code str} potentially left-padded.
-   * @throws IllegalArgumentException if {@code str} does correspond to valid hexadecimal representation, or is of an
+   * @throws IllegalArgumentException if {@code str} does correspond to a valid hexadecimal representation, or is of an
    *         odd length.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, or is of
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation, or is of
    *         an odd length, or represents more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
    */
   static Bytes fromHexString(CharSequence str, int destinationSize) {
