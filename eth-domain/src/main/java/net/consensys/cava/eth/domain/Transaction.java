@@ -38,6 +38,10 @@ import com.google.common.base.Objects;
  */
 public final class Transaction {
 
+  // Used for transactions that are not tied to a specific chain
+  // (e.g. does not have a chain id associated with it).
+  private static final int REPLAY_UNPROTECTED_V_BASE = 27;
+
   /**
    * Deserialize a transaction from RLP encoded bytes.
    *
@@ -97,7 +101,7 @@ public final class Transaction {
     if (!reader.isComplete()) {
       throw new InvalidRLPTypeException("Additional bytes present at the end of the RLP transaction encoding");
     }
-    return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, Signature.create(v, r, s));
+    return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, Signature.create(r, s, v));
   }
 
   private final UInt256 nonce;
