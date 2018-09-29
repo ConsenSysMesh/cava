@@ -12,9 +12,11 @@
  */
 package net.consensys.cava.eth.domain;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.crypto.SECP256K1.Signature;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.units.bigints.UInt256;
@@ -22,7 +24,6 @@ import net.consensys.cava.units.ethereum.Gas;
 import net.consensys.cava.units.ethereum.Wei;
 
 import java.math.BigInteger;
-import java.security.SecureRandom;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,14 +31,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 @ExtendWith(BouncyCastleExtension.class)
 class TransactionTest {
 
-  static Bytes randomBytes(int length) {
-    SecureRandom random = new SecureRandom();
-    byte[] bytes = new byte[length];
-    random.nextBytes(bytes);
-    return Bytes.wrap(bytes);
-  }
-
   static Transaction generateTransaction() {
+    Signature signature = SECP256K1.sign("random".getBytes(UTF_8), SECP256K1.KeyPair.random());
     return new Transaction(
         UInt256.valueOf(0),
         Wei.valueOf(BigInteger.valueOf(5L)),
@@ -45,7 +40,7 @@ class TransactionTest {
         Address.fromBytes(Bytes.fromHexString("0x0102030405060708091011121314151617181920")),
         Wei.valueOf(10L),
         Bytes.of(1, 2, 3, 4),
-        Signature.fromBytes(randomBytes(65)));
+        signature);
   }
 
   @Test
