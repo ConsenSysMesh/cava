@@ -139,8 +139,8 @@ public interface Bytes32 extends Bytes {
    *        less than 32 bytes, in which case the result is left padded with zeros (see {@link #fromHexStringStrict} if
    *        this is not what you want).
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation or contains
-   *         more than 32 bytes.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation or
+   *         contains more than 32 bytes.
    */
   static Bytes32 fromHexStringLenient(CharSequence str) {
     checkNotNull(str);
@@ -157,7 +157,7 @@ public interface Bytes32 extends Bytes {
    *        less than 32 bytes, in which case the result is left padded with zeros (see {@link #fromHexStringStrict} if
    *        this is not what you want).
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, is of an
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation, is of an
    *         odd length, or contains more than 32 bytes.
    */
   static Bytes32 fromHexString(CharSequence str) {
@@ -174,7 +174,7 @@ public interface Bytes32 extends Bytes {
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x".
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, is of an
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation, is of an
    *         odd length or does not contain exactly 32 bytes.
    */
   static Bytes32 fromHexStringStrict(CharSequence str) {

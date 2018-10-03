@@ -42,6 +42,11 @@ class DelegatingRLPWriter<T extends AccumulatingRLPWriter> implements RLPWriter 
   }
 
   @Override
+  public void writeByte(byte value) {
+    delegate.writeByte(value);
+  }
+
+  @Override
   public void writeInt(int value) {
     delegate.writeInt(value);
   }

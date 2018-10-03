@@ -12,7 +12,6 @@
  */
 package net.consensys.cava.eth.domain;
 
-import static net.consensys.cava.eth.domain.TransactionTest.randomBytes;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;
@@ -31,21 +30,21 @@ class BlockHeaderTest {
 
   static BlockHeader generateBlockHeader() {
     return new BlockHeader(
-        Hash.fromBytes(randomBytes(32)),
-        Hash.fromBytes(randomBytes(32)),
+        Hash.fromBytes(Bytes.random(32)),
+        Hash.fromBytes(Bytes.random(32)),
         Address.fromBytes(Bytes.fromHexString("0x0102030405060708091011121314151617181920")),
-        Hash.fromBytes(randomBytes(32)),
-        Hash.fromBytes(randomBytes(32)),
-        Hash.fromBytes(randomBytes(32)),
-        randomBytes(8),
-        UInt256.fromBytes(randomBytes(32)),
-        UInt256.fromBytes(randomBytes(32)),
-        Gas.valueOf(UInt256.fromBytes(randomBytes(6))),
-        Gas.valueOf(UInt256.fromBytes(randomBytes(6))),
+        Hash.fromBytes(Bytes.random(32)),
+        Hash.fromBytes(Bytes.random(32)),
+        Hash.fromBytes(Bytes.random(32)),
+        Bytes.random(8),
+        UInt256.fromBytes(Bytes.random(32)),
+        UInt256.fromBytes(Bytes.random(32)),
+        Gas.valueOf(UInt256.fromBytes(Bytes.random(6))),
+        Gas.valueOf(UInt256.fromBytes(Bytes.random(6))),
         Instant.now().truncatedTo(ChronoUnit.SECONDS),
-        randomBytes(22),
-        Hash.fromBytes(randomBytes(32)),
-        randomBytes(8));
+        Bytes.random(22),
+        Hash.fromBytes(Bytes.random(32)),
+        Bytes.random(8));
   }
 
   @Test
@@ -54,5 +53,4 @@ class BlockHeaderTest {
     BlockHeader read = BlockHeader.fromBytes(blockHeader.toBytes());
     assertEquals(blockHeader, read);
   }
-
 }

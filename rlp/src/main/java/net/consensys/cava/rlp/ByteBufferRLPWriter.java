@@ -48,6 +48,11 @@ final class ByteBufferRLPWriter implements RLPWriter {
   }
 
   @Override
+  public void writeByte(byte value) {
+    encodeByteArray(new byte[] {value}, buffer::put);
+  }
+
+  @Override
   public void writeLong(long value) {
     buffer.put(encodeNumber(value));
   }

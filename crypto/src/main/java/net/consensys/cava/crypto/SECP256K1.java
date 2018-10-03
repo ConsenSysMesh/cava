@@ -60,7 +60,6 @@ import org.bouncycastle.math.ec.custom.sec.SecP256K1Curve;
  * Adapted from the BitcoinJ ECKey (Apache 2 License) implementation:
  * https://github.com/bitcoinj/bitcoinj/blob/master/core/src/main/java/org/bitcoinj/core/ECKey.java
  *
- *
  * Adapted from the web3j (Apache 2 License) implementations:
  * https://github.com/web3j/web3j/crypto/src/main/java/org/web3j/crypto/*.java
  */
@@ -86,6 +85,7 @@ public final class SECP256K1 {
   // Lazily initialize parameters by using java initialization on demand
   static final class Parameters {
     static final ECDomainParameters CURVE;
+    static final BigInteger CURVE_ORDER;
     static final BigInteger HALF_CURVE_ORDER;
     static final KeyPairGenerator KEY_PAIR_GENERATOR;
 
@@ -98,7 +98,11 @@ public final class SECP256K1 {
       }
       X9ECParameters params = SECNamedCurves.getByName(CURVE_NAME);
       CURVE = new ECDomainParameters(params.getCurve(), params.getG(), params.getN(), params.getH());
-      HALF_CURVE_ORDER = CURVE.getN().shiftRight(1);
+      CURVE_ORDER = CURVE.getN();
+      HALF_CURVE_ORDER = CURVE_ORDER.shiftRight(1);
+      if (CURVE_ORDER.compareTo(SecP256K1Curve.q) >= 0) {
+        throw new IllegalStateException("secp256k1.n should be smaller than secp256k1.q, but is not");
+      }
       try {
         KEY_PAIR_GENERATOR = KeyPairGenerator.getInstance(ALGORITHM, PROVIDER);
       } catch (NoSuchProviderException e) {
@@ -130,75 +134,57 @@ public final class SECP256K1 {
    * signature according to the algorithm in SEC1v2 section 4.1.6.
    *
    * <p>
-   * The recId is an index from 0 to 3 which indicates which of the 4 possible keys is the correct one. Because the key
-   * recovery operation yields multiple potential keys, the correct key must either be stored alongside the signature,
-   * or you must be willing to try each recId in turn until you find one that outputs the key you are expecting.
+   * The recovery id is an index from 0 to 3 which indicates which of the 4 possible keys is the correct one. Because
+   * the key recovery operation yields multiple potential keys, the correct key must either be stored alongside the
+   * signature, or you must be willing to try each recovery id in turn until you find one that outputs the key you are
+   * expecting.
    *
    * <p>
-   * If this method returns null it means recovery was not possible and recId should be iterated.
+   * If this method returns null it means recovery was not possible and recovery id should be iterated.
    *
    * <p>
    * Given the above two points, a correct usage of this method is inside a for loop from 0 to 3, and if the output is
-   * null OR a key that is not the one you expect, you try again with the next recId.
+   * null OR a key that is not the one you expect, you try again with the next recovery id.
    *
-   * @param recId Which possible key to recover.
+   * @param v Which possible key to recover.
    * @param r The R component of the signature.
    * @param s The S component of the signature.
-   * @param message Hash of the data that was signed.
-   * @throws IllegalArgumentException if no key can be recovered from the components
+   * @param messageHash Hash of the data that was signed.
    * @return A ECKey containing only the public part.
+   * @throws IllegalArgumentException if no key can be recovered from the components
    */
-  private static BigInteger recoverFromSignature(int recId, BigInteger r, BigInteger s, Bytes32 message) {
-    assert (recId >= 0);
+  private static BigInteger recoverFromSignature(int v, BigInteger r, BigInteger s, Bytes32 messageHash) {
+    assert (v == 0 || v == 1);
     assert (r.signum() >= 0);
     assert (s.signum() >= 0);
-    assert (message != null);
+    assert (messageHash != null);
 
-    // 1.0 For j from 0 to h (h == recId here and the loop is outside this function)
-    // 1.1 Let x = r + jn
-    BigInteger n = Parameters.CURVE.getN(); // Curve order.
-    BigInteger i = BigInteger.valueOf((long) recId / 2);
-    BigInteger x = r.add(i.multiply(n));
-    // 1.2. Convert the integer x to an octet string X of length mlen using the conversion
-    // routine specified in Section 2.3.7, where mlen = ⌈(log2 p)/8⌉ or mlen = ⌈m/8⌉.
-    // 1.3. Convert the octet string (16 set binary digits)||X to an elliptic curve point R
-    // using the conversion routine specified in Section 2.3.4. If this conversion
-    // routine outputs "invalid", then do another iteration of Step 1.
-    //
-    // More concisely, what these points mean is to use X as a compressed public key.
-    BigInteger prime = SecP256K1Curve.q;
-    if (x.compareTo(prime) >= 0) {
-      // Cannot have point co-ordinates larger than this as everything takes place modulo Q.
-      throw new IllegalArgumentException("x is larger than curve q");
-    }
-    // Compressed keys require you to know an extra bit of data about the y-coord as there are
-    // two possibilities. So it's encoded in the recId.
-    ECPoint R = decompressKey(x, (recId & 1) == 1);
-    // 1.4. If nR != point at infinity, then do another iteration of Step 1 (callers
-    // responsibility).
-    if (!R.multiply(n).isInfinity()) {
+    // Compressed keys require you to know an extra bit of data about the y-coord as there are two possibilities.
+    // So it's encoded in the recovery id (v).
+    ECPoint R = decompressKey(r, (v & 1) == 1);
+    // 1.4. If nR != point at infinity, then do another iteration of Step 1 (callers responsibility).
+    if (!R.multiply(Parameters.CURVE_ORDER).isInfinity()) {
       throw new IllegalArgumentException("R times n does not point at infinity");
     }
+
     // 1.5. Compute e from M using Steps 2 and 3 of ECDSA signature verification.
-    BigInteger e = message.toUnsignedBigInteger();
-    // 1.6. For k from 1 to 2 do the following. (loop is outside this function via
-    // iterating recId)
+    BigInteger e = messageHash.toUnsignedBigInteger();
+    // 1.6. For k from 1 to 2 do the following. (loop is outside this function via iterating v)
     // 1.6.1. Compute a candidate public key as:
-    // Q = mi(r) * (sR - eG)
+    //   Q = mi(r) * (sR - eG)
     //
     // Where mi(x) is the modular multiplicative inverse. We transform this into the following:
-    // Q = (mi(r) * s ** R) + (mi(r) * -e ** G)
+    //   Q = (mi(r) * s ** R) + (mi(r) * -e ** G)
     // Where -e is the modular additive inverse of e, that is z such that z + e = 0 (mod n).
     // In the above equation ** is point multiplication and + is point addition (the EC group
     // operator).
     //
-    // We can find the additive inverse by subtracting e from zero then taking the mod. For
-    // example the additive inverse of 3 modulo 11 is 8 because 3 + 8 mod 11 = 0, and
-    // -3 mod 11 = 8.
-    BigInteger eInv = BigInteger.ZERO.subtract(e).mod(n);
-    BigInteger rInv = r.modInverse(n);
-    BigInteger srInv = rInv.multiply(s).mod(n);
-    BigInteger eInvrInv = rInv.multiply(eInv).mod(n);
+    // We can find the additive inverse by subtracting e from zero then taking the mod. For example the additive
+    // inverse of 3 modulo 11 is 8 because 3 + 8 mod 11 = 0, and -3 mod 11 = 8.
+    BigInteger eInv = BigInteger.ZERO.subtract(e).mod(Parameters.CURVE_ORDER);
+    BigInteger rInv = r.modInverse(Parameters.CURVE_ORDER);
+    BigInteger srInv = rInv.multiply(s).mod(Parameters.CURVE_ORDER);
+    BigInteger eInvrInv = rInv.multiply(eInv).mod(Parameters.CURVE_ORDER);
     ECPoint q = ECAlgorithms.sumOfTwoMultiplies(Parameters.CURVE.getG(), eInvrInv, R, srInv);
 
     byte[] qBytes = q.getEncoded(false);
@@ -213,15 +199,47 @@ public final class SECP256K1 {
    * @param keyPair The keypair to sign using.
    * @return The signature.
    */
+  public static Signature sign(byte[] data, KeyPair keyPair) {
+    return signHashed(keccak256(data), keyPair);
+  }
+
+  /**
+   * Generates an ECDSA signature.
+   *
+   * @param data The data to sign.
+   * @param keyPair The keypair to sign using.
+   * @return The signature.
+   */
   public static Signature sign(Bytes data, KeyPair keyPair) {
+    return signHashed(keccak256(data), keyPair);
+  }
+
+  /**
+   * Generates an ECDSA signature.
+   *
+   * @param hash The keccak256 hash of the data to sign.
+   * @param keyPair The keypair to sign using.
+   * @return The signature.
+   */
+  public static Signature signHashed(byte[] hash, KeyPair keyPair) {
+    return signHashed(Bytes32.wrap(hash), keyPair);
+  }
+
+  /**
+   * Generates an ECDSA signature.
+   *
+   * @param hash The keccak256 hash of the data to sign.
+   * @param keyPair The keypair to sign using.
+   * @return The signature.
+   */
+  public static Signature signHashed(Bytes32 hash, KeyPair keyPair) {
     ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
     ECPrivateKeyParameters privKey =
         new ECPrivateKeyParameters(keyPair.getSecretKey().bytes().toUnsignedBigInteger(), Parameters.CURVE);
     signer.init(true, privKey);
 
-    Bytes32 dataHash = keccak256(data);
-    BigInteger[] components = signer.generateSignature(dataHash.toArrayUnsafe());
+    BigInteger[] components = signer.generateSignature(hash.toArrayUnsafe());
     BigInteger r = components[0];
     BigInteger s = components[1];
 
@@ -234,30 +252,43 @@ public final class SECP256K1 {
     if (s.compareTo(Parameters.HALF_CURVE_ORDER) > 0) {
       // The order of the curve is the number of valid points that exist on that curve.
       // If S is in the upper half of the number of valid points, then bring it back to
-      // the lower half. Otherwise, imagine that
-      // N = 10
-      // s = 8, so (-8 % 10 == 2) thus both (r, 8) and (r, 2) are valid solutions.
-      // 10 - 8 == 2, giving us always the latter solution, which is canonical.
-      s = Parameters.CURVE.getN().subtract(s);
+      // the lower half. Otherwise, imagine that:
+      //   N = 10
+      //   s = 8, so (-8 % 10 == 2) thus both (r, 8) and (r, 2) are valid solutions.
+      //   10 - 8 == 2, giving us always the latter solution, which is canonical.
+      s = Parameters.CURVE_ORDER.subtract(s);
     }
 
-    // Now we have to work backwards to figure out the recId needed to recover the signature.
+    // Now we have to work backwards to figure out the recovery id needed to recover the signature.
+    // On this curve, there are only two possible values for the recovery id.
     int recId = -1;
     BigInteger publicKeyBI = keyPair.getPublicKey().bytes().toUnsignedBigInteger();
-    for (int i = 0; i < 4; i++) {
-      BigInteger k = recoverFromSignature(i, r, s, dataHash);
+    for (int i = 0; i < 2; i++) {
+      BigInteger k = recoverFromSignature(i, r, s, hash);
       if (k.equals(publicKeyBI)) {
         recId = i;
         break;
       }
     }
     if (recId == -1) {
-      throw new Error("Unexpected error - could not construct a recoverable key.");
+      // this should never happen
+      throw new RuntimeException("Unexpected error - could not construct a recoverable key.");
     }
 
-    byte v = (byte) (recId + 27);
+    byte v = (byte) recId;
+    return new Signature(v, r, s);
+  }
 
-    return new Signature(r, s, v);
+  /**
+   * Verifies the given ECDSA signature against the message bytes using the public key bytes.
+   *
+   * @param message The message data to verify.
+   * @param signature The signature.
+   * @param publicKey The public key.
+   * @return True if the verification is successful.
+   */
+  public static boolean verify(byte[] message, Signature signature, PublicKey publicKey) {
+    return verify(Bytes.wrap(message), signature, publicKey);
   }
 
   /**
@@ -278,8 +309,7 @@ public final class SECP256K1 {
       Bytes32 dataHash = keccak256(message);
       return signer.verifySignature(dataHash.toArrayUnsafe(), signature.r, signature.s);
     } catch (NullPointerException e) {
-      // Bouncy Castle contains a bug that can cause NPEs given specially crafted signatures. Those
-      // signatures
+      // Bouncy Castle contains a bug that can cause NPEs given specially crafted signatures. Those signatures
       // are inherently invalid/attack sigs so we just fail them here rather than crash the thread.
       return false;
     }
@@ -457,8 +487,8 @@ public final class SECP256K1 {
        * TODO: FixedPointCombMultiplier currently doesn't support scalars longer than the group
        * order, but that could change in future versions.
        */
-      if (privKey.bitLength() > Parameters.CURVE.getN().bitLength()) {
-        privKey = privKey.mod(Parameters.CURVE.getN());
+      if (privKey.bitLength() > Parameters.CURVE_ORDER.bitLength()) {
+        privKey = privKey.mod(Parameters.CURVE_ORDER);
       }
 
       ECPoint point = new FixedPointCombMultiplier().multiply(Parameters.CURVE.getG(), privKey);
@@ -499,20 +529,53 @@ public final class SECP256K1 {
     }
 
     /**
-     * Create a public key using a digital signature.
+     * Recover a public key using a digital signature and the data it signs.
      *
      * @param data The signed data.
      * @param signature The digital signature.
-     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
      * @return The associated public key.
+     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     */
+    public static PublicKey recoverFromSignature(byte[] data, Signature signature) {
+      return recoverFromHashAndSignature(keccak256(data), signature);
+    }
+
+    /**
+     * Recover a public key using a digital signature and the data it signs.
+     *
+     * @param data The signed data.
+     * @param signature The digital signature.
+     * @return The associated public key.
+     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
      */
     public static PublicKey recoverFromSignature(Bytes data, Signature signature) {
-      Bytes32 dataHash = keccak256(data);
-      int v = signature.v();
-      v = v == 27 || v == 28 ? v - 27 : v;
+      return recoverFromHashAndSignature(keccak256(data), signature);
+    }
+
+    /**
+     * Create a public key using a digital signature and a keccak256 hash of the data it signs.
+     *
+     * @param hash The keccak256 hash of the signed data.
+     * @param signature The digital signature.
+     * @return The associated public key.
+     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     */
+    public static PublicKey recoverFromHashAndSignature(byte[] hash, Signature signature) {
+      return recoverFromHashAndSignature(Bytes32.wrap(hash), signature);
+    }
+
+    /**
+     * Create a public key using a digital signature and a keccak256 hash of the data it signs.
+     *
+     * @param hash The keccak256 hash of the signed data.
+     * @param signature The digital signature.
+     * @return The associated public key.
+     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     */
+    public static PublicKey recoverFromHashAndSignature(Bytes32 hash, Signature signature) {
       BigInteger publicKeyBI;
       try {
-        publicKeyBI = SECP256K1.recoverFromSignature(v, signature.r(), signature.s(), dataHash);
+        publicKeyBI = SECP256K1.recoverFromSignature(signature.v(), signature.r(), signature.s(), hash);
       } catch (IllegalArgumentException e) {
         throw new SECP256K1KeyRecoveryException("Public key cannot be recovered: " + e.getMessage(), e);
       }
@@ -675,7 +738,14 @@ public final class SECP256K1 {
    * A SECP256K1 digital signature.
    */
   public static class Signature {
-    private byte v;
+    /*
+     * Parameter v is the recovery id to reconstruct the public key used to create the signature. It must be in
+     * the range 0 to 3 and indicates which of the 4 possible keys is the correct one. Because the key recovery
+     * operation yields multiple potential keys, the correct key must either be stored alongside the signature,
+     * or you must be willing to try each recovery id in turn until you find one that outputs the key you are
+     * expecting.
+     */
+    private final byte v;
     private final BigInteger r;
     private final BigInteger s;
 
@@ -690,40 +760,60 @@ public final class SECP256K1 {
       checkArgument(bytes.size() == 65, "Signature must be 65 bytes, but got %s instead", bytes.size());
       BigInteger r = bytes.slice(0, 32).toUnsignedBigInteger();
       BigInteger s = bytes.slice(32, 32).toUnsignedBigInteger();
-      return new Signature(r, s, bytes.get(64));
+      return new Signature(bytes.get(64), r, s);
     }
 
     /**
      * Create a signature from parameters.
      *
-     * @param v The v-value.
+     * @param v The v-value (recovery id).
      * @param r The r-value.
      * @param s The s-value.
-     * @return The signature
+     * @return The signature.
+     * @throws IllegalArgumentException If any argument has an invalid range.
      */
     public static Signature create(byte v, BigInteger r, BigInteger s) {
-      return new Signature(r, s, v);
+      return new Signature(v, r, s);
     }
 
-    Signature(BigInteger r, BigInteger s, byte v) {
+    Signature(byte v, BigInteger r, BigInteger s) {
+      checkArgument(v == 0 || v == 1, "Invalid v-value, should be 0 or 1, got %s", v);
       checkNotNull(r);
       checkNotNull(s);
-      checkInBounds("r", r);
-      checkInBounds("s", s);
+      checkArgument(
+          r.compareTo(BigInteger.ONE) >= 0 && r.compareTo(Parameters.CURVE_ORDER) < 0,
+          "Invalid r-value, should be >= 1 and < %s, got %s",
+          Parameters.CURVE_ORDER,
+          r);
+      checkArgument(
+          s.compareTo(BigInteger.ONE) >= 0 && s.compareTo(Parameters.CURVE_ORDER) < 0,
+          "Invalid s-value, should be >= 1 and < %s, got %s",
+          Parameters.CURVE_ORDER,
+          s);
+      this.v = v;
       this.r = r;
       this.s = s;
-      this.v = v;
     }
 
-    private static void checkInBounds(String name, BigInteger value) {
-      if (value.compareTo(BigInteger.ONE) < 0) {
-        throw new IllegalArgumentException(String.format("Invalid '%s' value, should be >= 1 but got %s", name, value));
-      }
+    /**
+     * @return The v-value (recovery id) of the signature.
+     */
+    public byte v() {
+      return v;
+    }
 
-      if (value.compareTo(Parameters.CURVE.getN()) >= 0) {
-        throw new IllegalArgumentException(
-            String.format("Invalid '%s' value, should be < %s but got %s", name, Parameters.CURVE.getN(), value));
-      }
+    /**
+     * @return The r-value of the signature.
+     */
+    public BigInteger r() {
+      return r;
+    }
+
+    /**
+     * @return The s-value of the signature.
+     */
+    public BigInteger s() {
+      return s;
     }
 
     @Override
@@ -743,7 +833,7 @@ public final class SECP256K1 {
       MutableBytes signature = MutableBytes.create(65);
       UInt256.valueOf(r).toBytes().copyTo(signature, 0);
       UInt256.valueOf(s).toBytes().copyTo(signature, 32);
-      signature.set(64, v == 27 || v == 28 ? (byte) (v - 27) : v);
+      signature.set(64, v);
       return signature;
     }
 
@@ -754,28 +844,7 @@ public final class SECP256K1 {
 
     @Override
     public String toString() {
-      return "Signature{" + "v=" + v + ", r=" + r + ", s=" + s + '}';
-    }
-
-    /**
-     * @return The v-value of the signature.
-     */
-    public byte v() {
-      return v;
-    }
-
-    /**
-     * @return The r-value of the signature.
-     */
-    public BigInteger r() {
-      return r;
-    }
-
-    /**
-     * @return The s-value of the signature.
-     */
-    public BigInteger s() {
-      return s;
+      return "Signature{" + "r=" + r + ", s=" + s + ", v=" + v + '}';
     }
   }
 }

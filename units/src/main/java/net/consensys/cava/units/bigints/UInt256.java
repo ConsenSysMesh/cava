@@ -110,13 +110,13 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   /**
-   * Parse an hexadecimal string into a {@link UInt256}.
+   * Parse a hexadecimal string into a {@link UInt256}.
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x". That representation may contain
    *        less than 32 bytes, in which case the result is left padded with zeros.
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation or contains
-   *         more than 32 bytes.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation or
+   *         contains more than 32 bytes.
    */
   public static UInt256 fromHexString(String str) {
     return new UInt256(Bytes32.fromHexStringLenient(str));

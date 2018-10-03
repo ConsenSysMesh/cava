@@ -64,17 +64,17 @@ class BlockRLPTestSuite {
       Block block,
       String rlp,
       String hash) {
-    Block rlpBlock = Block.fromBytes(Bytes.fromHexString(rlp));
+    Block rlpBlock = Block.fromHexString(rlp);
     assertEquals(block, rlpBlock);
     assertEquals(Bytes.fromHexString(rlp), block.toBytes());
-    assertEquals(Hash.fromBytes(Bytes.fromHexString(hash)), block.header().hash());
-    assertEquals(Hash.fromBytes(Bytes.fromHexString(hash)), rlpBlock.header().hash());
+    assertEquals(Hash.fromHexString(hash), block.header().hash());
+    assertEquals(Hash.fromHexString(hash), rlpBlock.header().hash());
   }
 
   private static Stream<Arguments> readBlockChainTests() throws IOException {
     URL testFolder = MerkleTrieTestSuite.class.getClassLoader().getResource("tests");
     if (testFolder == null) {
-      throw new RuntimeException("Tests folder missing. Please run git submodule --init");
+      throw new IllegalStateException("Tests folder missing. Please run git submodule --init");
     }
     Path folderPath = Paths.get(testFolder.getFile(), "BlockchainTests");
 
@@ -111,22 +111,22 @@ class BlockRLPTestSuite {
 
   @SuppressWarnings({"unchecked", "rawtypes"})
   private static BlockHeader createBlockHeader(Map headerData) {
-    checkNotNull(headerData, "" + headerData);
+    checkNotNull(headerData, headerData.toString());
     return new BlockHeader(
-        Hash.fromBytes(Bytes.fromHexString((String) headerData.get("parentHash"))),
-        Hash.fromBytes(Bytes.fromHexString((String) headerData.get("uncleHash"))),
-        Address.fromBytes(Bytes.fromHexString((String) headerData.get("coinbase"))),
-        Hash.fromBytes(Bytes.fromHexString((String) headerData.get("stateRoot"))),
-        Hash.fromBytes(Bytes.fromHexString((String) headerData.get("transactionsTrie"))),
-        Hash.fromBytes(Bytes.fromHexString((String) headerData.get("receiptTrie"))),
+        Hash.fromHexString((String) headerData.get("parentHash")),
+        Hash.fromHexString((String) headerData.get("uncleHash")),
+        Address.fromHexString((String) headerData.get("coinbase")),
+        Hash.fromHexString((String) headerData.get("stateRoot")),
+        Hash.fromHexString((String) headerData.get("transactionsTrie")),
+        Hash.fromHexString((String) headerData.get("receiptTrie")),
         Bytes.fromHexString((String) headerData.get("bloom")),
-        UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("difficulty"))),
-        UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("number"))),
-        Gas.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("gasLimit")))),
-        Gas.valueOf(UInt256.fromBytes(Bytes.fromHexString((String) headerData.get("gasUsed")))),
+        UInt256.fromHexString((String) headerData.get("difficulty")),
+        UInt256.fromHexString((String) headerData.get("number")),
+        Gas.valueOf(UInt256.fromHexString((String) headerData.get("gasLimit"))),
+        Gas.valueOf(UInt256.fromHexString((String) headerData.get("gasUsed"))),
         Instant.ofEpochSecond(Bytes.fromHexString((String) headerData.get("timestamp")).toLong()),
         Bytes.fromHexString((String) headerData.get("extraData")),
-        Hash.fromBytes(Bytes.fromHexString((String) headerData.get("mixHash"))),
+        Hash.fromHexString((String) headerData.get("mixHash")),
         Bytes.fromHexString((String) headerData.get("nonce")));
   }
 
@@ -154,7 +154,7 @@ class BlockRLPTestSuite {
               Wei.valueOf(UInt256.fromHexString((String) txData.get("value"))),
               Bytes.fromHexString((String) txData.get("data")),
               Signature.create(
-                  Bytes.fromHexString((String) txData.get("v")).get(0),
+                  (byte) ((int) Bytes.fromHexString((String) txData.get("v")).get(0) - 27),
                   Bytes.fromHexString((String) txData.get("r")).toUnsignedBigInteger(),
                   Bytes.fromHexString((String) txData.get("s")).toUnsignedBigInteger())));
     }

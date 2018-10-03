@@ -54,6 +54,15 @@ public interface RLPWriter {
   }
 
   /**
+   * Encode a byte to RLP.
+   *
+   * @param value The byte value to encode.
+   */
+  default void writeByte(byte value) {
+    writeValue(Bytes.of(value));
+  }
+
+  /**
    * Write an integer to the output.
    *
    * @param value The integer to write.

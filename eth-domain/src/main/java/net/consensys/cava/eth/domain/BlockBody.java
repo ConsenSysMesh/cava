@@ -16,6 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.rlp.RLP;
+import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
 import net.consensys.cava.rlp.RLPWriter;
 
@@ -34,6 +35,7 @@ public final class BlockBody {
    *
    * @param encoded The RLP encoded block.
    * @return The deserialized block body.
+   * @throws RLPException If there is an error decoding the block body.
    */
   public static BlockBody fromBytes(Bytes encoded) {
     requireNonNull(encoded);

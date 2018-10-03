@@ -51,6 +51,11 @@ final class AccumulatingRLPWriter implements RLPWriter {
   }
 
   @Override
+  public void writeByte(byte value) {
+    encodeByteArray(new byte[] {value}, this::appendBytes);
+  }
+
+  @Override
   public void writeLong(long value) {
     appendBytes(encodeNumber(value));
   }

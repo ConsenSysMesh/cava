@@ -50,6 +50,21 @@ public interface RLPReader {
   }
 
   /**
+   * Read a byte from the RLP source.
+   *
+   * @return The byte for the next value.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default byte readByte() {
+    Bytes bytes = readValue();
+    if (bytes.size() != 1) {
+      throw new InvalidRLPTypeException("Value is not a single byte");
+    }
+    return bytes.get(0);
+  }
+
+  /**
    * Read an integer value from the RLP source.
    *
    * @return An integer.

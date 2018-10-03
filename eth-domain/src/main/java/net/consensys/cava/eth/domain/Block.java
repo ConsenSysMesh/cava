@@ -16,6 +16,7 @@ import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.rlp.RLP;
+import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
 import net.consensys.cava.rlp.RLPWriter;
 
@@ -31,10 +32,22 @@ public final class Block {
    *
    * @param encoded The RLP encoded block.
    * @return The deserialized block.
+   * @throws RLPException If there is an error decoding the block.
    */
   public static Block fromBytes(Bytes encoded) {
-    requireNonNull(encoded);
     return RLP.decodeList(encoded, Block::readFrom);
+  }
+
+  /**
+   * Parse a hexadecimal string into a {@link Block}.
+   *
+   * @param str The hexadecimal string to parse, which may or may not start with "0x".
+   * @return The value corresponding to {@code str}.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation.
+   * @throws RLPException If there is an error decoding the block.
+   */
+  public static Block fromHexString(String str) {
+    return RLP.decodeList(Bytes.fromHexString(str), Block::readFrom);
   }
 
   /**
@@ -42,6 +55,7 @@ public final class Block {
    *
    * @param reader The RLP reader.
    * @return The deserialized block.
+   * @throws RLPException If there is an error decoding the block.
    */
   public static Block readFrom(RLPReader reader) {
     BlockHeader header = reader.readList(BlockHeader::readFrom);

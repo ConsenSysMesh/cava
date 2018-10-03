@@ -23,7 +23,9 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Random;
 
 import io.netty.buffer.ByteBuf;
 import io.vertx.core.buffer.Buffer;
@@ -344,7 +346,7 @@ public interface Bytes {
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x".
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation.
    */
   static Bytes fromHexStringLenient(CharSequence str) {
     checkNotNull(str);
@@ -363,8 +365,8 @@ public interface Bytes {
    *        {@code str}. If it is strictly bigger those bytes from {@code str}, the returned value will be left padded
    *        with zeros.
    * @return A value of size {@code destinationSize} corresponding to {@code str} potentially left-padded.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, represents
-   *         more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation,
+   *         represents more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
    */
   static Bytes fromHexStringLenient(CharSequence str, int destinationSize) {
     checkNotNull(str);
@@ -380,7 +382,7 @@ public interface Bytes {
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x".
    * @return The value corresponding to {@code str}.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, or is of
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation, or is of
    *         an odd length.
    */
   static Bytes fromHexString(CharSequence str) {
@@ -399,15 +401,38 @@ public interface Bytes {
    *        {@code str}. If it is strictly bigger those bytes from {@code str}, the returned value will be left padded
    *        with zeros.
    * @return A value of size {@code destinationSize} corresponding to {@code str} potentially left-padded.
-   * @throws IllegalArgumentException if {@code str} does correspond to valid hexadecimal representation, or is of an
+   * @throws IllegalArgumentException if {@code str} does correspond to a valid hexadecimal representation, or is of an
    *         odd length.
-   * @throws IllegalArgumentException if {@code str} does not correspond to valid hexadecimal representation, or is of
+   * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation, or is of
    *         an odd length, or represents more bytes than {@code destinationSize} or {@code destinationSize &lt; 0}.
    */
   static Bytes fromHexString(CharSequence str, int destinationSize) {
     checkNotNull(str);
     checkArgument(destinationSize >= 0, "Invalid negative destination size %s", destinationSize);
     return BytesValues.fromHexString(str, destinationSize, false);
+  }
+
+  /**
+   * Generate random bytes.
+   *
+   * @param size The number of bytes to generate.
+   * @return A value containing the desired number of random bytes.
+   */
+  static Bytes random(int size) {
+    return random(size, new SecureRandom());
+  }
+
+  /**
+   * Generate random bytes.
+   *
+   * @param size The number of bytes to generate.
+   * @param generator The generator for random bytes.
+   * @return A value containing the desired number of random bytes.
+   */
+  static Bytes random(int size, Random generator) {
+    byte[] array = new byte[size];
+    generator.nextBytes(array);
+    return Bytes.wrap(array);
   }
 
   /** @return The number of bytes this value represents. */

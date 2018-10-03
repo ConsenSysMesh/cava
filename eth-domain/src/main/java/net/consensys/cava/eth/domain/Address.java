@@ -40,6 +40,19 @@ public final class Address {
     return new Address(bytes);
   }
 
+  /**
+   * Parse a hexadecimal string into a {@link Address}.
+   *
+   * @param str The hexadecimal string to parse, which may or may not start with "0x", and should encode exactly 20
+   *        bytes.
+   * @return The value corresponding to {@code str}.
+   * @throws IllegalArgumentException if {@code str} does not correspond to va alid hexadecimal representation
+   *         containing 20 bytes.
+   */
+  public static Address fromHexString(String str) {
+    return fromBytes(Bytes.fromHexString(str));
+  }
+
   private static final int SIZE = 20;
 
   private final Bytes delegate;

@@ -33,6 +33,7 @@ import net.consensys.cava.junit.TempDirectoryExtension;
 import java.math.BigInteger;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -158,17 +159,17 @@ class SECP256K1Test {
 
   @Test
   void testCreateSignature() {
-    SECP256K1.Signature signature = new SECP256K1.Signature(BigInteger.ONE, BigInteger.TEN, (byte) 7);
+    SECP256K1.Signature signature = new SECP256K1.Signature((byte) 0, BigInteger.ONE, BigInteger.TEN);
     assertEquals(BigInteger.ONE, signature.r());
     assertEquals(BigInteger.TEN, signature.s());
-    assertEquals((byte) 7, signature.v());
+    assertEquals((byte) 0, signature.v());
   }
 
   @Test
   void testEncodeSignature() {
-    SECP256K1.Signature signature = new SECP256K1.Signature(BigInteger.ONE, BigInteger.TEN, (byte) 7);
+    SECP256K1.Signature signature = new SECP256K1.Signature((byte) 0, BigInteger.ONE, BigInteger.TEN);
     assertEquals(
-        "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000A07",
+        "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000A00",
         signature.bytes().toString());
   }
 
@@ -176,36 +177,40 @@ class SECP256K1Test {
   void testCreateSignatureFromEncoding() {
     SECP256K1.Signature signature = SECP256K1.Signature.fromBytes(
         fromHexString(
-            "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000A07"));
+            "0x0000000000000000000000000000000000000000000000000000000000000001000000000000000000000000000000000000000000000000000000000000000A01"));
     assertEquals(BigInteger.ONE, signature.r());
     assertEquals(BigInteger.TEN, signature.s());
-    assertEquals((byte) 7, signature.v());
+    assertEquals((byte) 1, signature.v());
   }
 
   @Test
   void testCreateSignatureWithNullR() {
-    assertThrows(NullPointerException.class, () -> SECP256K1.Signature.create((byte) 12, null, BigInteger.ONE));
+    assertThrows(NullPointerException.class, () -> SECP256K1.Signature.create((byte) 1, null, BigInteger.ONE));
   }
 
   @Test
   void testCreateSignatureWithNullS() {
-    assertThrows(NullPointerException.class, () -> SECP256K1.Signature.create((byte) 12, BigInteger.ONE, null));
+    assertThrows(NullPointerException.class, () -> SECP256K1.Signature.create((byte) 1, BigInteger.ONE, null));
   }
 
   @Test
   void testCreateSignatureWithZeroR() {
     Exception throwable = assertThrows(
         IllegalArgumentException.class,
-        () -> SECP256K1.Signature.create((byte) 12, BigInteger.ZERO, BigInteger.ONE));
-    assertEquals("Invalid 'r' value, should be >= 1 but got 0", throwable.getMessage());
+        () -> SECP256K1.Signature.create((byte) 1, BigInteger.ZERO, BigInteger.ONE));
+    assertEquals(
+        "Invalid r-value, should be >= 1 and < " + SECP256K1.Parameters.CURVE.getN() + ", got 0",
+        throwable.getMessage());
   }
 
   @Test
   void testCreateSignatureWithZeroS() {
     Exception throwable = assertThrows(
         IllegalArgumentException.class,
-        () -> SECP256K1.Signature.create((byte) 12, BigInteger.ONE, BigInteger.ZERO));
-    assertEquals("Invalid 's' value, should be >= 1 but got 0", throwable.getMessage());
+        () -> SECP256K1.Signature.create((byte) 1, BigInteger.ONE, BigInteger.ZERO));
+    assertEquals(
+        "Invalid s-value, should be >= 1 and < " + SECP256K1.Parameters.CURVE.getN() + ", got 0",
+        throwable.getMessage());
   }
 
   @Test
@@ -213,9 +218,9 @@ class SECP256K1Test {
     BigInteger curveN = SECP256K1.Parameters.CURVE.getN();
     Exception throwable = assertThrows(
         IllegalArgumentException.class,
-        () -> SECP256K1.Signature.create((byte) 12, curveN.add(BigInteger.ONE), BigInteger.ONE));
+        () -> SECP256K1.Signature.create((byte) 1, curveN.add(BigInteger.ONE), BigInteger.ONE));
     assertEquals(
-        "Invalid 'r' value, should be < " + curveN.toString() + " but got " + curveN.add(BigInteger.ONE),
+        "Invalid r-value, should be >= 1 and < " + curveN + ", got " + curveN.add(BigInteger.ONE),
         throwable.getMessage());
   }
 
@@ -224,9 +229,9 @@ class SECP256K1Test {
     BigInteger curveN = SECP256K1.Parameters.CURVE.getN();
     Exception throwable = assertThrows(
         IllegalArgumentException.class,
-        () -> SECP256K1.Signature.create((byte) 12, BigInteger.ONE, curveN.add(BigInteger.ONE)));
+        () -> SECP256K1.Signature.create((byte) 1, BigInteger.ONE, curveN.add(BigInteger.ONE)));
     assertEquals(
-        "Invalid 's' value, should be < " + curveN.toString() + " but got " + curveN.add(BigInteger.ONE),
+        "Invalid s-value, should be >= 1 and < " + curveN + ", got " + curveN.add(BigInteger.ONE),
         throwable.getMessage());
   }
 
@@ -236,19 +241,31 @@ class SECP256K1Test {
         SecretKey.fromInteger(new BigInteger("c85ef7d79691fe79573b1a7064c19c1a9819ebdbd1faaab1a8ec92344438aaf4", 16));
     SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.fromSecretKey(secretKey);
 
-    Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
-    SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
+    long seed = new Random().nextLong();
+    Random random = new Random(seed);
+    for (int i = 0; i < 100; ++i) {
+      try {
+        byte[] data = new byte[20];
+        random.nextBytes(data);
+        SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
 
-    PublicKey recoveredPublicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
-    assertEquals(keyPair.getPublicKey().toString(), recoveredPublicKey.toString());
+        PublicKey recoveredPublicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
+        assertEquals(keyPair.getPublicKey().toString(), recoveredPublicKey.toString());
+        assertTrue(SECP256K1.verify(data, signature, recoveredPublicKey));
+      } catch (AssertionError e) {
+        System.err.println("Random seed: " + seed);
+        throw e;
+      }
+    }
   }
 
   @Test
   void testCannotRecoverPublicKeyFromSignature() {
-    SECP256K1.Signature signature = new Signature(BigInteger.ONE, BigInteger.valueOf(10), (byte) 3);
+    SECP256K1.Signature signature =
+        new Signature((byte) 0, SECP256K1.Parameters.CURVE_ORDER.subtract(BigInteger.ONE), BigInteger.valueOf(10));
 
     SECP256K1KeyRecoveryException exception = assertThrows(SECP256K1KeyRecoveryException.class, () -> {
-      SECP256K1.PublicKey.recoverFromSignature(Bytes.of("This is not matching data".getBytes(UTF_8)), signature);
+      SECP256K1.PublicKey.recoverFromSignature(Bytes.of("Random data".getBytes(UTF_8)), signature);
     });
     assertEquals("Public key cannot be recovered: Invalid point compression", exception.getMessage());
   }
@@ -261,9 +278,9 @@ class SECP256K1Test {
 
     Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
     SECP256K1.Signature expectedSignature = new SECP256K1.Signature(
+        (byte) 1,
         new BigInteger("d2ce488f4da29e68f22cb05cac1b19b75df170a12b4ad1bdd4531b8e9115c6fb", 16),
-        new BigInteger("75c1fe50a95e8ccffcbb5482a1e42fbbdd6324131dfe75c3b3b7f9a7c721eccb", 16),
-        (byte) 28);
+        new BigInteger("75c1fe50a95e8ccffcbb5482a1e42fbbdd6324131dfe75c3b3b7f9a7c721eccb", 16));
 
     SECP256K1.Signature actualSignature = SECP256K1.sign(data, keyPair);
     assertEquals(expectedSignature, actualSignature);
@@ -280,7 +297,6 @@ class SECP256K1Test {
     SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
     assertTrue(SECP256K1.verify(data, signature, keyPair.getPublicKey()));
   }
-
 
   @Test
   void testFileContainsValidPrivateKey(@TempDirectory Path tempDir) throws Exception {

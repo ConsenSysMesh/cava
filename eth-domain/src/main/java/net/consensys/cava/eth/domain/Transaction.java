@@ -14,11 +14,11 @@ package net.consensys.cava.eth.domain;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
+import static net.consensys.cava.crypto.Hash.keccak256;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.crypto.SECP256K1.Signature;
-import net.consensys.cava.rlp.InvalidRLPTypeException;
 import net.consensys.cava.rlp.RLP;
 import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
@@ -38,6 +38,9 @@ import com.google.common.base.Objects;
  */
 public final class Transaction {
 
+  // The base of the signature v-value
+  private static final int V_BASE = 27;
+
   /**
    * Deserialize a transaction from RLP encoded bytes.
    *
@@ -50,7 +53,7 @@ public final class Transaction {
     return RLP.decode(encoded, (reader) -> {
       Transaction tx = reader.readList(Transaction::readFrom);
       if (!reader.isComplete()) {
-        throw new InvalidRLPTypeException("Additional bytes present at the end of the encoded transaction");
+        throw new RLPException("Additional bytes present at the end of the encoded transaction");
       }
       return tx;
     });
@@ -72,32 +75,29 @@ public final class Transaction {
     try {
       address = addressBytes.isEmpty() ? null : Address.fromBytes(addressBytes);
     } catch (IllegalArgumentException e) {
-      throw new InvalidRLPTypeException("Value is the wrong size to be an address");
+      throw new RLPException("Value is the wrong size to be an address");
     }
     Wei value = Wei.valueOf(reader.readUInt256(false));
     Bytes payload = reader.readValue();
-    Bytes vbytes = reader.readValue();
-    if (vbytes.size() != 1) {
-      throw new InvalidRLPTypeException(
-          "The 'v' portion of the signature should be exactly 1 byte, it is " + vbytes.size() + " instead");
-    }
-    byte v = vbytes.get(0);
+    byte encodedV = reader.readByte();
     Bytes rbytes = reader.readValue();
     if (rbytes.size() > 32) {
-      throw new InvalidRLPTypeException(
-          "The length of the 'r' portion of the signature is " + rbytes.size() + ", it should be at most 32 bytes");
+      throw new RLPException("r-value of the signature is " + rbytes.size() + ", it should be at most 32 bytes");
     }
     BigInteger r = rbytes.toUnsignedBigInteger();
     Bytes sbytes = reader.readValue();
     if (sbytes.size() > 32) {
-      throw new InvalidRLPTypeException(
-          "The length of the 's' portion of the signature is " + sbytes.size() + ", it should be at most 32 bytes");
+      throw new RLPException("s-value of the signature is " + sbytes.size() + ", it should be at most 32 bytes");
     }
     BigInteger s = sbytes.toUnsignedBigInteger();
     if (!reader.isComplete()) {
-      throw new InvalidRLPTypeException("Additional bytes present at the end of the RLP transaction encoding");
+      throw new RLPException("Additional bytes present at the end of the RLP transaction encoding");
     }
-    return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, Signature.create(v, r, s));
+
+    byte v = (byte) ((int) encodedV - V_BASE);
+
+    Signature signature = Signature.create(v, r, s);
+    return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, signature);
   }
 
   private final UInt256 nonce;
@@ -130,7 +130,7 @@ public final class Transaction {
       Bytes payload,
       Signature signature) {
     requireNonNull(nonce);
-    checkArgument(nonce.compareTo(UInt256.ZERO) >= 0, "Nonce less than zero");
+    checkArgument(nonce.compareTo(UInt256.ZERO) >= 0, "nonce must be >= 0");
     requireNonNull(gasPrice);
     requireNonNull(value);
     requireNonNull(signature);
@@ -171,6 +171,13 @@ public final class Transaction {
   @Nullable
   public Address to() {
     return to;
+  }
+
+  /**
+   * @return <tt>true</tt> if the transaction is a contract creation (<tt>to</tt> address is <tt>null</tt>).
+   */
+  public boolean isContractCreation() {
+    return to == null;
   }
 
   /**
@@ -227,7 +234,7 @@ public final class Transaction {
       writer.writeValue(value.toMinimalBytes());
       writer.writeValue(payload);
     }), signature);
-    return Address.fromBytes(Hash.hash(publicKey.bytes()).toBytes().slice(12, 20));
+    return Address.fromBytes(Bytes.wrap(keccak256(publicKey.bytesArray()), 12, 20));
   }
 
   @Override
@@ -255,22 +262,15 @@ public final class Transaction {
 
   @Override
   public String toString() {
-    return "Transaction{"
-        + "nonce="
-        + nonce
-        + ", gasPrice="
-        + gasPrice
-        + ", gasLimit="
-        + gasLimit
-        + ", to="
-        + to
-        + ", value="
-        + value
-        + ", signature="
-        + signature
-        + ", payload="
-        + payload
-        + '}';
+    return String.format(
+        "Transaction{nonce=%s, gasPrice=%s, gasLimit=%s, to=%s, value=%s, signature=%s, payload=%s",
+        nonce,
+        gasPrice,
+        gasLimit,
+        to,
+        value,
+        signature,
+        payload);
   }
 
   /**
@@ -292,7 +292,7 @@ public final class Transaction {
     writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
     writer.writeUInt256(value.toUInt256());
     writer.writeValue(payload);
-    writer.writeValue(Bytes.of(signature.v()));
+    writer.writeByte((byte) ((int) signature.v() + V_BASE));
     writer.writeBigInteger(signature.r());
     writer.writeBigInteger(signature.s());
   }
