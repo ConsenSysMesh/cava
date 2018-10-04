@@ -16,20 +16,20 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.io.Resources;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.trie.experimental.MerklePatriciaTrie;
 
-import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.errorprone.annotations.MustBeClosed;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -70,32 +70,31 @@ class MerkleTrieTestSuite {
     assertEquals(Bytes.fromHexString(root), trie.rootHash());
   }
 
+  @MustBeClosed
   private static Stream<Arguments> readTrieTests() throws IOException {
-    return prepareTests(Paths.get("TrieTests", "trietest.json"));
+    return findTests("**/TrieTests/trietest.json");
   }
 
+  @MustBeClosed
   private static Stream<Arguments> readAnyOrderTrieTests() throws IOException {
-    return prepareTests(Paths.get("TrieTests", "trieanyorder.json"));
+    return findTests("**/TrieTests/trieanyorder.json");
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  private static Stream<Arguments> prepareTests(Path path) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    Map allTests = mapper.readerFor(Map.class).readValue(findTests(path));
-    return allTests.entrySet().stream().map(entry -> {
-      String name = (String) ((Map.Entry) entry).getKey();
-      return Arguments.of(
-          name,
-          ((Map) ((Map.Entry) entry).getValue()).get("in"),
-          ((Map) ((Map.Entry) entry).getValue()).get("root"));
+  @MustBeClosed
+  private static Stream<Arguments> findTests(String glob) throws IOException {
+    return Resources.find(glob).flatMap(url -> {
+      try (InputStream in = url.openConnection().getInputStream()) {
+        return prepareTests(in);
+      } catch (IOException e) {
+        throw new UncheckedIOException(e);
+      }
     });
   }
 
-  private static File findTests(Path testsPath) {
-    URL testFolder = MerkleTrieTestSuite.class.getClassLoader().getResource("tests");
-    if (testFolder == null) {
-      throw new RuntimeException("Tests folder missing. Please run git submodule --init");
-    }
-    return Paths.get(testFolder.getFile()).resolve(testsPath).toFile();
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  private static Stream<Arguments> prepareTests(InputStream in) throws IOException {
+    Map<String, Map> allTests = new ObjectMapper().readerFor(Map.class).readValue(in);
+    return allTests.entrySet().stream().map(
+        entry -> Arguments.of(entry.getKey(), entry.getValue().get("in"), entry.getValue().get("root")));
   }
 }

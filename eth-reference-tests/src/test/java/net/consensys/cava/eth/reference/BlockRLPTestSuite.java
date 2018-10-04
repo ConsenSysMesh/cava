@@ -23,27 +23,24 @@ import net.consensys.cava.eth.domain.BlockBody;
 import net.consensys.cava.eth.domain.BlockHeader;
 import net.consensys.cava.eth.domain.Hash;
 import net.consensys.cava.eth.domain.Transaction;
+import net.consensys.cava.io.Resources;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.units.bigints.UInt256;
 import net.consensys.cava.units.ethereum.Gas;
 import net.consensys.cava.units.ethereum.Wei;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UncheckedIOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.collect.Streams;
+import com.google.errorprone.annotations.MustBeClosed;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -54,16 +51,9 @@ class BlockRLPTestSuite {
 
   private static ObjectMapper mapper = new ObjectMapper();
 
-  @ParameterizedTest(name = "{index}. block {0}/{1}/{2}[{3}]")
+  @ParameterizedTest(name = "{index}. block {0}[{1}]")
   @MethodSource("readBlockChainTests")
-  void testBlockRLP(
-      String folder,
-      String fileName,
-      String name,
-      long blockIndex,
-      Block block,
-      String rlp,
-      String hash) {
+  void testBlockRLP(String name, long blockIndex, Block block, String rlp, String hash) {
     Block rlpBlock = Block.fromHexString(rlp);
     assertEquals(block, rlpBlock);
     assertEquals(Bytes.fromHexString(rlp), block.toBytes());
@@ -71,42 +61,27 @@ class BlockRLPTestSuite {
     assertEquals(Hash.fromHexString(hash), rlpBlock.header().hash());
   }
 
+  @MustBeClosed
   private static Stream<Arguments> readBlockChainTests() throws IOException {
-    URL testFolder = MerkleTrieTestSuite.class.getClassLoader().getResource("tests");
-    if (testFolder == null) {
-      throw new IllegalStateException("Tests folder missing. Please run git submodule --init");
-    }
-    Path folderPath = Paths.get(testFolder.getFile(), "BlockchainTests");
-
-    List<Arguments> testCases = new ArrayList<>();
-    try (Stream<Path> walker = Files.walk(folderPath)) {
-      walker.filter(path -> path.toString().endsWith(".json")).forEach(
-          file -> testCases.addAll(readTestCase(file).collect(Collectors.toList())));
-      testCases.sort(Comparator.comparing(a -> ((String) a.get()[0])));
-      return testCases.stream();
-    }
+    return Resources.find("**/BlockchainTests/**/*.json").flatMap(url -> {
+      try (InputStream is = url.openConnection().getInputStream()) {
+        return readTestCase(is);
+      } catch (IOException e) {
+        throw new UncheckedIOException(e);
+      }
+    });
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})
-  private static Stream<Arguments> readTestCase(Path testFile) {
-    try {
-      Map test = mapper.readerFor(Map.class).readValue(testFile.toFile());
-      String name = (String) test.keySet().iterator().next();
-      Map testData = (Map) test.get(name);
-      List blocks = (List) testData.get("blocks");
-      return Streams.mapWithIndex(
-          blocks.stream().filter(block -> ((Map) block).containsKey("blockHeader")),
-          (block, index) -> Arguments.of(
-              testFile.getName(testFile.getNameCount() - 2).toString(),
-              testFile.getName(testFile.getNameCount() - 1).toString(),
-              name,
-              index,
-              createBlock((Map) block),
-              ((Map) block).get("rlp"),
-              ((Map) ((Map) block).get("blockHeader")).get("hash")));
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
+  private static Stream<Arguments> readTestCase(InputStream is) throws IOException {
+    Map<String, Map> test = mapper.readerFor(Map.class).readValue(is);
+    String name = test.keySet().iterator().next();
+    Map testData = test.get(name);
+    List<Map> blocks = (List<Map>) testData.get("blocks");
+    return IntStream.range(0, blocks.size()).boxed().filter(i -> blocks.get(i).containsKey("blockHeader")).map(i -> {
+      Map block = blocks.get(i);
+      return Arguments.of(name, i, createBlock(block), block.get("rlp"), ((Map) block.get("blockHeader")).get("hash"));
+    });
   }
 
   @SuppressWarnings({"unchecked", "rawtypes"})

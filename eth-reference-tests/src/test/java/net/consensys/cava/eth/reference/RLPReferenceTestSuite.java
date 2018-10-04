@@ -16,22 +16,22 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.io.Resources;
 import net.consensys.cava.rlp.RLP;
 import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
 import net.consensys.cava.rlp.RLPWriter;
 
-import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.math.BigInteger;
-import java.net.URL;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.errorprone.annotations.MustBeClosed;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -106,32 +106,32 @@ class RLPReferenceTestSuite {
     });
   }
 
+  @MustBeClosed
   private static Stream<Arguments> readRLPTests() throws IOException {
-    return prepareRLPTests(Paths.get("RLPTests", "rlptest.json"));
+    return findTests("**/RLPTests/rlptest.json");
   }
 
+  @MustBeClosed
   private static Stream<Arguments> readInvalidRLPTests() throws IOException {
-    return prepareRLPTests(Paths.get("RLPTests", "invalidRLPTest.json"));
+    return findTests("**/RLPTests/invalidRLPTest.json");
   }
 
-  @SuppressWarnings({"unchecked", "rawtypes"})
-  private static Stream<Arguments> prepareRLPTests(Path testsPath) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    Map allTests = mapper.readerFor(Map.class).readValue(findTests(testsPath));
-    return allTests.entrySet().stream().map(entry -> {
-      String name = (String) ((Map.Entry) entry).getKey();
-      return Arguments.of(
-          name,
-          ((Map) ((Map.Entry) entry).getValue()).get("in"),
-          ((Map) ((Map.Entry) entry).getValue()).get("out"));
+  @MustBeClosed
+  private static Stream<Arguments> findTests(String glob) throws IOException {
+    return Resources.find(glob).flatMap(url -> {
+      try (InputStream in = url.openConnection().getInputStream()) {
+        return prepareTests(in);
+      } catch (IOException e) {
+        throw new UncheckedIOException(e);
+      }
     });
   }
 
-  private static File findTests(Path testsPath) {
-    URL testFolder = RLPReferenceTestSuite.class.getClassLoader().getResource("tests");
-    if (testFolder == null) {
-      throw new RuntimeException("Tests folder missing. Please run git submodule --init");
-    }
-    return Paths.get(testFolder.getFile()).resolve(testsPath).toFile();
+  @SuppressWarnings({"unchecked", "rawtypes"})
+  private static Stream<Arguments> prepareTests(InputStream in) throws IOException {
+    ObjectMapper mapper = new ObjectMapper();
+    Map<String, Map> allTests = mapper.readerFor(Map.class).readValue(in);
+    return allTests.entrySet().stream().map(
+        entry -> Arguments.of(entry.getKey(), entry.getValue().get("in"), entry.getValue().get("out")));
   }
 }
