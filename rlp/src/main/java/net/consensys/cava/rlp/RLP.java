@@ -234,9 +234,25 @@ public final class RLP {
    * @return The result from the reading function.
    */
   public static <T> T decode(Bytes source, Function<RLPReader, T> fn) {
+    return decode(source, false, fn);
+  }
+
+  /**
+   * Read and decode RLP from a {@link Bytes} value.
+   * <p>
+   * Important: this method does not consume any list prefix from the source data. If you are reading a RLP encoded list
+   * of values, you usually want to use {@link #decodeList(Bytes, Function)}.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param fn A function that will be provided a {@link RLPReader}.
+   * @param <T> The result type of the reading function.
+   * @return The result from the reading function.
+   */
+  public static <T> T decode(Bytes source, boolean lenient, Function<RLPReader, T> fn) {
     requireNonNull(source);
     requireNonNull(fn);
-    return fn.apply(new BytesRLPReader(source));
+    return fn.apply(new BytesRLPReader(source, lenient));
   }
 
   /**
@@ -250,10 +266,25 @@ public final class RLP {
    * @throws InvalidRLPTypeException If the first RLP value is not a list.
    */
   public static <T> T decodeList(Bytes source, Function<RLPReader, T> fn) {
+    return decodeList(source, false, fn);
+  }
+
+  /**
+   * Read an RLP encoded list of values from a {@link Bytes} value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param fn A function that will be provided a {@link RLPReader}.
+   * @param <T> The result type of the reading function.
+   * @return The result from the reading function.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws InvalidRLPTypeException If the first RLP value is not a list.
+   */
+  public static <T> T decodeList(Bytes source, boolean lenient, Function<RLPReader, T> fn) {
     requireNonNull(source);
     requireNonNull(fn);
     checkArgument(source.size() > 0, "source is empty");
-    return decode(source, reader -> reader.readList(fn));
+    return decode(source, lenient, reader -> reader.readList(fn));
   }
 
   /**
@@ -266,10 +297,24 @@ public final class RLP {
    * @throws InvalidRLPTypeException If the first RLP value is not a list.
    */
   public static List<Object> decodeList(Bytes source, BiConsumer<RLPReader, List<Object>> fn) {
+    return decodeList(source, false, fn);
+  }
+
+  /**
+   * Read an RLP encoded list of values from a {@link Bytes} value, populating a mutable output list.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param fn A function that will be provided a {@link RLPReader}.
+   * @return The list supplied to {@code fn}.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws InvalidRLPTypeException If the first RLP value is not a list.
+   */
+  public static List<Object> decodeList(Bytes source, boolean lenient, BiConsumer<RLPReader, List<Object>> fn) {
     requireNonNull(source);
     requireNonNull(fn);
     checkArgument(source.size() > 0, "source is empty");
-    return decode(source, reader -> reader.readList(fn));
+    return decode(source, lenient, reader -> reader.readList(fn));
   }
 
   /**
@@ -281,8 +326,21 @@ public final class RLP {
    * @throws EndOfRLPException If there are no RLP values to read.
    */
   public static Bytes decodeValue(Bytes source) {
+    return decodeValue(source, false);
+  }
+
+  /**
+   * Read an RLP encoded value from a {@link Bytes} value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @return The bytes for the value.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws EndOfRLPException If there are no RLP values to read.
+   */
+  public static Bytes decodeValue(Bytes source, boolean lenient) {
     requireNonNull(source);
-    return decode(source, RLPReader::readValue);
+    return decode(source, lenient, RLPReader::readValue);
   }
 
   /**
@@ -293,9 +351,21 @@ public final class RLP {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
   public static int decodeInt(Bytes source) {
+    return decodeInt(source, false);
+  }
+
+  /**
+   * Read an RLP encoded integer from a {@link Bytes} value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @return An integer.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   */
+  public static int decodeInt(Bytes source, boolean lenient) {
     requireNonNull(source);
     checkArgument(source.size() > 0, "source is empty");
-    return decode(source, RLPReader::readInt);
+    return decode(source, lenient, RLPReader::readInt);
   }
 
   /**
@@ -306,9 +376,21 @@ public final class RLP {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
   public static long decodeLong(Bytes source) {
+    return decodeLong(source, false);
+  }
+
+  /**
+   * Read an RLP encoded long from a {@link Bytes} value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @return A long.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   */
+  public static long decodeLong(Bytes source, boolean lenient) {
     requireNonNull(source);
     checkArgument(source.size() > 0, "source is empty");
-    return decode(source, RLPReader::readLong);
+    return decode(source, lenient, RLPReader::readLong);
   }
 
   /**
@@ -319,9 +401,21 @@ public final class RLP {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
   public static BigInteger decodeBigInteger(Bytes source) {
+    return decodeBigInteger(source, false);
+  }
+
+  /**
+   * Read an RLP encoded big integer from a {@link Bytes} value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @return A {@link BigInteger}.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   */
+  public static BigInteger decodeBigInteger(Bytes source, boolean lenient) {
     requireNonNull(source);
     checkArgument(source.size() > 0, "source is empty");
-    return decode(source, RLPReader::readBigInteger);
+    return decode(source, lenient, RLPReader::readBigInteger);
   }
 
   /**
@@ -332,9 +426,21 @@ public final class RLP {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
   public static String decodeString(Bytes source) {
+    return decodeString(source, false);
+  }
+
+  /**
+   * Read an RLP encoded string from a {@link Bytes} value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @return A string.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   */
+  public static String decodeString(Bytes source, boolean lenient) {
     requireNonNull(source);
     checkArgument(source.size() > 0, "source is empty");
-    return decode(source, RLPReader::readString);
+    return decode(source, lenient, RLPReader::readString);
   }
 
   /**
