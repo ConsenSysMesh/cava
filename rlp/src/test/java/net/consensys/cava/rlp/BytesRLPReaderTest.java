@@ -121,11 +121,48 @@ class BytesRLPReaderTest {
   }
 
   @Test
+  void shouldThrowWhenLowValueIsntEncodedToSingleByte() {
+    Bytes bytes1 = fromHexString("8128");
+    InvalidRLPEncodingException ex1 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes1));
+    assertEquals("Value should have been encoded as a single byte 0x28", ex1.getMessage());
+    assertEquals(40, RLP.decodeInt(bytes1, true));
+
+    Bytes bytes2 = fromHexString("b80128");
+    InvalidRLPEncodingException ex2 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes1));
+    assertEquals("Value should have been encoded as a single byte 0x28", ex2.getMessage());
+    assertEquals(40, RLP.decodeInt(bytes2, true));
+  }
+
+  @Test
   void shouldThrowWhenLengthContainsLeadingZeros() {
-    Bytes bytes = fromHexString(
+    Bytes bytes1 = fromHexString(
         "b900384c6f72656d20697073756d20646f6c6f722073697420616d65742c20636f6e7365637465747572206164697069736963696e6720656c6974");
-    InvalidRLPEncodingException ex = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeString(bytes));
-    assertEquals("RLP value length contains leading zero bytes", ex.getMessage());
+    InvalidRLPEncodingException ex1 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeString(bytes1));
+    assertEquals("RLP value length contains leading zero bytes", ex1.getMessage());
+    assertEquals("Lorem ipsum dolor sit amet, consectetur adipisicing elit", RLP.decodeString(bytes1, true));
+
+    Bytes bytes2 = fromHexString("bb0000000028");
+    InvalidRLPEncodingException ex2 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes2));
+    assertEquals("RLP value length contains leading zero bytes", ex2.getMessage());
+    InvalidRLPEncodingException ex3 =
+        assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes2, true));
+    assertEquals("RLP value length is zero", ex3.getMessage());
+
+    Bytes bytes3 = fromHexString("bd00000000000128");
+    InvalidRLPEncodingException ex4 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes3));
+    assertEquals("RLP value length contains leading zero bytes", ex4.getMessage());
+    assertEquals(40, RLP.decodeInt(bytes3, true));
+  }
+
+  @Test
+  void shouldThrowWhenLengthIsOversized() {
+    Bytes bytes1 = fromHexString("bc0aaaaaaaaa28");
+    InvalidRLPEncodingException ex1 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes1));
+    assertEquals("RLP value length is oversized", ex1.getMessage());
+
+    Bytes bytes2 = fromHexString("bb8000000128");
+    InvalidRLPEncodingException ex2 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes2));
+    assertEquals("RLP value length is oversized", ex2.getMessage());
   }
 
   @Test
