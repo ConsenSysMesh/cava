@@ -98,7 +98,7 @@ class RLPReferenceTestSuite {
   void testReadInvalidRLP(String name, Object in, String out) {
     assertThrows(RLPException.class, () -> {
       if ("incorrectLengthInArray".equals(name)) {
-        RLP.decodeList(Bytes.fromHexString(out), (reader, list) -> {
+        RLP.decodeToList(Bytes.fromHexString(out), (reader, list) -> {
         });
       } else {
         RLP.decodeValue(Bytes.fromHexString(out));
