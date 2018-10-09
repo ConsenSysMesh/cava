@@ -282,32 +282,55 @@ public final class SECP256K1 {
   /**
    * Verifies the given ECDSA signature against the message bytes using the public key bytes.
    *
-   * @param message The message data to verify.
+   * @param data The data to verify.
    * @param signature The signature.
    * @param publicKey The public key.
    * @return True if the verification is successful.
    */
-  public static boolean verify(byte[] message, Signature signature, PublicKey publicKey) {
-    return verify(Bytes.wrap(message), signature, publicKey);
+  public static boolean verify(byte[] data, Signature signature, PublicKey publicKey) {
+    return verifyHashed(keccak256(data), signature, publicKey);
   }
 
   /**
    * Verifies the given ECDSA signature against the message bytes using the public key bytes.
    *
-   * @param message The message data to verify.
+   * @param data The data to verify.
    * @param signature The signature.
    * @param publicKey The public key.
    * @return True if the verification is successful.
    */
-  public static boolean verify(Bytes message, Signature signature, PublicKey publicKey) {
+  public static boolean verify(Bytes data, Signature signature, PublicKey publicKey) {
+    return verifyHashed(keccak256(data), signature, publicKey);
+  }
+
+  /**
+   * Verifies the given ECDSA signature against the message bytes using the public key bytes.
+   *
+   * @param hash The keccak256 hash of the data to verify.
+   * @param signature The signature.
+   * @param publicKey The public key.
+   * @return True if the verification is successful.
+   */
+  public static boolean verifyHashed(Bytes32 hash, Signature signature, PublicKey publicKey) {
+    return verifyHashed(hash.toArrayUnsafe(), signature, publicKey);
+  }
+
+  /**
+   * Verifies the given ECDSA signature against the message bytes using the public key bytes.
+   *
+   * @param hash The keccak256 hash of the data to verify.
+   * @param signature The signature.
+   * @param publicKey The public key.
+   * @return True if the verification is successful.
+   */
+  public static boolean verifyHashed(byte[] hash, Signature signature, PublicKey publicKey) {
     ECDSASigner signer = new ECDSASigner();
     Bytes toDecode = Bytes.wrap(Bytes.of((byte) 4), publicKey.bytes());
     ECPublicKeyParameters params =
         new ECPublicKeyParameters(Parameters.CURVE.getCurve().decodePoint(toDecode.toArray()), Parameters.CURVE);
     signer.init(false, params);
     try {
-      Bytes32 dataHash = keccak256(message);
-      return signer.verifySignature(dataHash.toArrayUnsafe(), signature.r, signature.s);
+      return signer.verifySignature(hash, signature.r, signature.s);
     } catch (NullPointerException e) {
       // Bouncy Castle contains a bug that can cause NPEs given specially crafted signatures. Those signatures
       // are inherently invalid/attack sigs so we just fail them here rather than crash the thread.
