@@ -17,12 +17,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1.Signature;
-import net.consensys.cava.eth.domain.Address;
-import net.consensys.cava.eth.domain.Block;
-import net.consensys.cava.eth.domain.BlockBody;
-import net.consensys.cava.eth.domain.BlockHeader;
-import net.consensys.cava.eth.domain.Hash;
-import net.consensys.cava.eth.domain.Transaction;
+import net.consensys.cava.eth.Address;
+import net.consensys.cava.eth.Block;
+import net.consensys.cava.eth.BlockBody;
+import net.consensys.cava.eth.BlockHeader;
+import net.consensys.cava.eth.Hash;
+import net.consensys.cava.eth.Transaction;
 import net.consensys.cava.io.Resources;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.units.bigints.UInt256;

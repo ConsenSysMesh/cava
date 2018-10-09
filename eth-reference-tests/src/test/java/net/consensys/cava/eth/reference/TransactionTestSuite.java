@@ -16,8 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.eth.domain.Address;
-import net.consensys.cava.eth.domain.Transaction;
+import net.consensys.cava.eth.Address;
+import net.consensys.cava.eth.Transaction;
 import net.consensys.cava.io.Resources;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.rlp.RLPException;

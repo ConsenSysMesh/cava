@@ -6,6 +6,6 @@
  * 'net.consensys.cava:cava-eth-domain' (cava-eth-domain.jar).
  */
 @ParametersAreNonnullByDefault
-package net.consensys.cava.eth.domain;
+package net.consensys.cava.eth;
 
 import javax.annotation.ParametersAreNonnullByDefault;

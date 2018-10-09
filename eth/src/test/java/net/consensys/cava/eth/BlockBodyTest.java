@@ -10,10 +10,10 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.eth.domain;
+package net.consensys.cava.eth;
 
-import static net.consensys.cava.eth.domain.BlockHeaderTest.generateBlockHeader;
-import static net.consensys.cava.eth.domain.TransactionTest.generateTransaction;
+import static net.consensys.cava.eth.BlockHeaderTest.generateBlockHeader;
+import static net.consensys.cava.eth.TransactionTest.generateTransaction;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;

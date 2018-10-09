@@ -1,7 +1,7 @@
 jar { enabled = false }
 
 dependencies {
-  testCompile project(':eth-domain')
+  testCompile project(':eth')
   testCompile project(':merkle-trie')
   testCompile project(':rlp')
 
