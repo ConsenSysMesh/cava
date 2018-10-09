@@ -19,7 +19,6 @@ import static net.consensys.cava.crypto.Hash.keccak256;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.crypto.SECP256K1.Signature;
-import net.consensys.cava.crypto.SECP256K1KeyRecoveryException;
 import net.consensys.cava.rlp.RLP;
 import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
@@ -244,18 +243,16 @@ public final class Transaction {
         return address;
       }
     }
-    PublicKey publicKey;
-    try {
-      publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
-        writer.writeUInt256(nonce);
-        writer.writeValue(gasPrice.toMinimalBytes());
-        writer.writeValue(gasLimit.toMinimalBytes());
-        writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
-        writer.writeValue(value.toMinimalBytes());
-        writer.writeValue(payload);
-      }), signature);
-    } catch (SECP256K1KeyRecoveryException e) {
-      throw new IllegalStateException("Invalid transaction signature", e);
+    PublicKey publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
+      writer.writeUInt256(nonce);
+      writer.writeValue(gasPrice.toMinimalBytes());
+      writer.writeValue(gasLimit.toMinimalBytes());
+      writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
+      writer.writeValue(value.toMinimalBytes());
+      writer.writeValue(payload);
+    }), signature);
+    if (publicKey == null) {
+      throw new IllegalStateException("Invalid transaction signature");
     }
     Address address = Address.fromBytes(Bytes.wrap(keccak256(publicKey.bytesArray()), 12, 20));
     sender = new SoftReference<>(address);
