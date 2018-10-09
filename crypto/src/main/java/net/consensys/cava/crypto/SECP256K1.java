@@ -194,6 +194,10 @@ public final class SECP256K1 {
     BigInteger eInvrInv = rInv.multiply(eInv).mod(Parameters.CURVE_ORDER);
     ECPoint q = ECAlgorithms.sumOfTwoMultiplies(Parameters.CURVE.getG(), eInvrInv, R, srInv);
 
+    if (q.isInfinity()) {
+      return null;
+    }
+
     byte[] qBytes = q.getEncoded(false);
     // We remove the prefix
     return new BigInteger(1, Arrays.copyOfRange(qBytes, 1, qBytes.length));

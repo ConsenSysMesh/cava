@@ -259,6 +259,13 @@ class SECP256K1Test {
         throw e;
       }
     }
+
+    Bytes32 hash = Bytes32.fromHexString("ACB1C19AC0832320815B5E886C6B73AD7D6177853D44B026F2A7A9E11BB899FC");
+    SECP256K1.Signature signature = SECP256K1.Signature.create(
+        (byte) 1,
+        new BigInteger("62380806879052346173879701944100777919767605075819957043497305774369260714318"),
+        new BigInteger("38020116821208196490118623452490256423459205241616519723877133146103446128360"));
+    assertNull(SECP256K1.PublicKey.recoverFromHashAndSignature(hash, signature));
   }
 
   @Test
