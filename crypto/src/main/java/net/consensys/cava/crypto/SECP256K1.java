@@ -816,6 +816,18 @@ public final class SECP256K1 {
       return s;
     }
 
+    /**
+     * Check if the signature is canonical.
+     *
+     * Every signature (r,s) has an equivalent signature (r, -s (mod N)) that is also valid for the same message. The
+     * canonical signature is considered the signature with the s-value less than or equal to half the curve order.
+     *
+     * @return <tt>true</tt> if this is the canonical form of the signature, and <tt>false</tt> otherwise.
+     */
+    public boolean isCanonical() {
+      return s.compareTo(Parameters.HALF_CURVE_ORDER) <= 0;
+    }
+
     @Override
     public boolean equals(Object other) {
       if (!(other instanceof Signature)) {
