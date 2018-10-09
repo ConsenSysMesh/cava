@@ -34,7 +34,9 @@ internal class BranchNode<V>(
     const val RADIX = CompactEncoding.LEAF_TERMINATOR.toInt()
   }
 
+  @Volatile
   private var rlp: WeakReference<Bytes>? = null
+  @Volatile
   private var hash: SoftReference<Bytes32>? = null
 
   init {
