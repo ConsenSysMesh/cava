@@ -247,7 +247,7 @@ public final class SECP256K1 {
     ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
     ECPrivateKeyParameters privKey =
-        new ECPrivateKeyParameters(keyPair.getSecretKey().bytes().toUnsignedBigInteger(), Parameters.CURVE);
+        new ECPrivateKeyParameters(keyPair.secretKey().bytes().toUnsignedBigInteger(), Parameters.CURVE);
     signer.init(true, privKey);
 
     BigInteger[] components = signer.generateSignature(hash.toArrayUnsafe());
@@ -273,7 +273,7 @@ public final class SECP256K1 {
     // Now we have to work backwards to figure out the recovery id needed to recover the signature.
     // On this curve, there are only two possible values for the recovery id.
     int recId = -1;
-    BigInteger publicKeyBI = keyPair.getPublicKey().bytes().toUnsignedBigInteger();
+    BigInteger publicKeyBI = keyPair.publicKey().bytes().toUnsignedBigInteger();
     for (int i = 0; i < 2; i++) {
       BigInteger k = recoverFromSignature(i, r, s, hash);
       if (k != null && k.equals(publicKeyBI)) {
@@ -741,14 +741,14 @@ public final class SECP256K1 {
     /**
      * @return The secret key.
      */
-    public SecretKey getSecretKey() {
+    public SecretKey secretKey() {
       return secretKey;
     }
 
     /**
      * @return The public key.
      */
-    public PublicKey getPublicKey() {
+    public PublicKey publicKey() {
       return publicKey;
     }
 
