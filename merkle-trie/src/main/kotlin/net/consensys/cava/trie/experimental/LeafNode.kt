@@ -26,7 +26,9 @@ internal class LeafNode<V>(
   private val nodeFactory: NodeFactory<V>,
   private val valueSerializer: (V) -> Bytes
 ) : Node<V> {
+  @Volatile
   private var rlp: WeakReference<Bytes>? = null
+  @Volatile
   private var hash: SoftReference<Bytes32>? = null
 
   override suspend fun accept(visitor: NodeVisitor<V>, path: Bytes): Node<V> = visitor.visit(this, path)

@@ -25,7 +25,9 @@ internal class ExtensionNode<V>(
   private val child: Node<V>,
   private val nodeFactory: NodeFactory<V>
 ) : Node<V> {
+  @Volatile
   private var rlp: WeakReference<Bytes>? = null
+  @Volatile
   private var hash: SoftReference<Bytes32>? = null
 
   init {
