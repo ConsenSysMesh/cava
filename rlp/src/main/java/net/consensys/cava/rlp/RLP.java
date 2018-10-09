@@ -296,8 +296,8 @@ public final class RLP {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the first RLP value is not a list.
    */
-  public static List<Object> decodeList(Bytes source, BiConsumer<RLPReader, List<Object>> fn) {
-    return decodeList(source, false, fn);
+  public static List<Object> decodeToList(Bytes source, BiConsumer<RLPReader, List<Object>> fn) {
+    return decodeToList(source, false, fn);
   }
 
   /**
@@ -310,7 +310,7 @@ public final class RLP {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the first RLP value is not a list.
    */
-  public static List<Object> decodeList(Bytes source, boolean lenient, BiConsumer<RLPReader, List<Object>> fn) {
+  public static List<Object> decodeToList(Bytes source, boolean lenient, BiConsumer<RLPReader, List<Object>> fn) {
     requireNonNull(source);
     requireNonNull(fn);
     checkArgument(source.size() > 0, "source is empty");

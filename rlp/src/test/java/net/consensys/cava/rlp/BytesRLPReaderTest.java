@@ -134,7 +134,7 @@ class BytesRLPReaderTest {
   }
 
   @Test
-  void shouldThrowWhenLengthContainsLeadingZeros() {
+  void shouldThrowWhenValueLengthContainsLeadingZeros() {
     Bytes bytes1 = fromHexString(
         "b900384c6f72656d20697073756d20646f6c6f722073697420616d65742c20636f6e7365637465747572206164697069736963696e6720656c6974");
     InvalidRLPEncodingException ex1 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeString(bytes1));
@@ -155,6 +155,21 @@ class BytesRLPReaderTest {
   }
 
   @Test
+  void shouldThrowWhenListLengthContainsLeadingZeros() {
+    Bytes bytes1 = fromHexString("0xF9000101");
+    InvalidRLPEncodingException ex1 =
+        assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeList(bytes1, RLPReader::readInt));
+    assertEquals("RLP list length contains leading zero bytes", ex1.getMessage());
+    assertEquals(Integer.valueOf(1), RLP.decodeList(bytes1, true, RLPReader::readInt));
+
+    Bytes bytes2 = fromHexString("0xF80101");
+    InvalidRLPEncodingException ex2 =
+        assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeList(bytes2, RLPReader::readInt));
+    assertEquals("RLP list length of 1 was not minimally encoded", ex2.getMessage());
+    assertEquals(Integer.valueOf(1), RLP.decodeList(bytes2, true, RLPReader::readInt));
+  }
+
+  @Test
   void shouldThrowWhenLengthIsOversized() {
     Bytes bytes1 = fromHexString("bc0aaaaaaaaa28");
     InvalidRLPEncodingException ex1 = assertThrows(InvalidRLPEncodingException.class, () -> RLP.decodeInt(bytes1));
@@ -170,7 +185,7 @@ class BytesRLPReaderTest {
     List<String> expected =
         Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer");
 
-    List<Object> result = RLP.decodeList(SHORT_LIST, (reader, list) -> {
+    List<Object> result = RLP.decodeToList(SHORT_LIST, (reader, list) -> {
       assertEquals(11, reader.remaining());
       for (int i = 10; i >= 0; --i) {
         list.add(reader.readString());
@@ -184,7 +199,7 @@ class BytesRLPReaderTest {
     List<List<String>> expected =
         Stream.generate(() -> Arrays.asList("asdf", "qwer", "zxcv")).limit(31).collect(Collectors.toList());
 
-    List<Object> result = RLP.decodeList(LONG_LIST, (reader, list) -> {
+    List<Object> result = RLP.decodeToList(LONG_LIST, (reader, list) -> {
       for (int i = 30; i >= 0; --i) {
         list.add(reader.readList((subReader, subList) -> {
           subList.add(subReader.readString());

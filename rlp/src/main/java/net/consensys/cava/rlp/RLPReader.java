@@ -336,7 +336,18 @@ public interface RLPReader {
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
-  void skipNext();
+  default void skipNext() {
+    skipNext(isLenient());
+  }
+
+  /**
+   * Skip the next value or list in the RLP source.
+   *
+   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  void skipNext(boolean lenient);
 
   /**
    * The number of remaining values to read.

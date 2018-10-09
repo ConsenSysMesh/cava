@@ -65,32 +65,7 @@ final class BytesRLPReader implements RLPReader {
       }
 
       remaining -= lengthOfLength;
-      Bytes lengthBytes = content.slice(index + 1, lengthOfLength);
-      if (!lenient) {
-        if (lengthBytes.hasLeadingZeroByte()) {
-          throw new InvalidRLPEncodingException("RLP value length contains leading zero bytes");
-        }
-      } else {
-        lengthBytes = lengthBytes.trimLeadingZeros();
-      }
-      if (lengthBytes.size() == 0) {
-        throw new InvalidRLPEncodingException("RLP value length is zero");
-      }
-      // Check if the length is greater than a 4 byte integer
-      if (lengthBytes.size() > 4) {
-        throw new InvalidRLPEncodingException("RLP value length is oversized");
-      }
-      int length;
-      try {
-        length = lengthBytes.toInt();
-      } catch (IllegalArgumentException e) {
-        throw new InvalidRLPEncodingException(e.getMessage());
-      }
-      if (length < 0) {
-        // Java ints are two's compliment, so this was oversized
-        throw new InvalidRLPEncodingException("RLP value length is oversized");
-      }
-      assert length > 0;
+      int length = getLength(lengthOfLength, lenient, "value");
 
       if (remaining < length) {
         throw new InvalidRLPEncodingException(
@@ -127,11 +102,11 @@ final class BytesRLPReader implements RLPReader {
 
   @Override
   public <T> T readList(boolean lenient, Function<RLPReader, T> fn) {
-    return fn.apply(new BytesRLPReader(readList(), lenient));
+    return fn.apply(new BytesRLPReader(readList(lenient), lenient));
   }
 
   @Override
-  public void skipNext() {
+  public void skipNext(boolean lenient) {
     int remaining = content.size() - index;
     if (remaining == 0) {
       throw new EndOfRLPException();
@@ -149,6 +124,10 @@ final class BytesRLPReader implements RLPReader {
         throw new InvalidRLPEncodingException(
             "Insufficient bytes in RLP encoding: expected " + length + " but have only " + remaining);
       }
+      if (!lenient && length == 1 && (content.get(index + 1) & 0xFF) <= 0x7f) {
+        throw new InvalidRLPEncodingException(
+            "Value should have been encoded as a single byte " + content.slice(index + 1, 1).toHexString());
+      }
       index += 1 + length;
       return;
     }
@@ -160,7 +139,8 @@ final class BytesRLPReader implements RLPReader {
       }
 
       remaining -= lengthOfLength;
-      int length = content.slice(index + 1, lengthOfLength).toInt();
+      int length = getLength(lengthOfLength, lenient, "value");
+
       if (remaining < length) {
         throw new InvalidRLPEncodingException(
             "Insufficient bytes in RLP encoding: expected " + length + " but have only " + remaining);
@@ -186,7 +166,7 @@ final class BytesRLPReader implements RLPReader {
     }
 
     remaining -= lengthOfLength;
-    int length = content.slice(index + 1, lengthOfLength).toInt();
+    int length = getLength(lengthOfLength, lenient, "list");
 
     if (remaining < length) {
       throw new InvalidRLPEncodingException(
@@ -216,7 +196,7 @@ final class BytesRLPReader implements RLPReader {
     return (content.size() - index) == 0;
   }
 
-  private Bytes readList() {
+  private Bytes readList(boolean lenient) {
     int remaining = content.size() - index;
     if (remaining == 0) {
       throw new EndOfRLPException();
@@ -246,11 +226,7 @@ final class BytesRLPReader implements RLPReader {
     }
 
     remaining -= lengthOfLength;
-    Bytes lengthBytes = content.slice(index + 1, lengthOfLength);
-    if (lengthBytes.hasLeadingZeroByte()) {
-      throw new InvalidRLPEncodingException("RLP list length contains leading zero bytes");
-    }
-    int length = lengthBytes.toInt();
+    int length = getLength(lengthOfLength, lenient, "list");
 
     if (remaining < length) {
       throw new InvalidRLPEncodingException(
@@ -261,5 +237,33 @@ final class BytesRLPReader implements RLPReader {
     Bytes bytes = content.slice(index, length);
     index += length;
     return bytes;
+  }
+
+  private int getLength(int lengthOfLength, boolean lenient, String type) {
+    Bytes lengthBytes = content.slice(index + 1, lengthOfLength);
+    if (!lenient) {
+      if (lengthBytes.hasLeadingZeroByte()) {
+        throw new InvalidRLPEncodingException("RLP " + type + " length contains leading zero bytes");
+      }
+    } else {
+      lengthBytes = lengthBytes.trimLeadingZeros();
+    }
+    if (lengthBytes.size() == 0) {
+      throw new InvalidRLPEncodingException("RLP " + type + " length is zero");
+    }
+    // Check if the length is greater than a 4 byte integer
+    if (lengthBytes.size() > 4) {
+      throw new InvalidRLPEncodingException("RLP " + type + " length is oversized");
+    }
+    int length = lengthBytes.toInt();
+    if (length < 0) {
+      // Java ints are two's compliment, so this was oversized
+      throw new InvalidRLPEncodingException("RLP " + type + " length is oversized");
+    }
+    assert length > 0;
+    if (!lenient && length <= 55) {
+      throw new InvalidRLPEncodingException("RLP " + type + " length of " + length + " was not minimally encoded");
+    }
+    return length;
   }
 }
