@@ -1,4 +1,4 @@
-description = 'Classes and utilities for working with Ethereum domain objects.'
+description = 'Classes and utilities for working with Ethereum.'
 
 dependencies {
   compile project(':bytes')

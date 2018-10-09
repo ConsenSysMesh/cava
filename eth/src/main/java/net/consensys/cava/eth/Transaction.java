@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.eth.domain;
+package net.consensys.cava.eth;
 
 import static com.google.common.base.Preconditions.checkArgument;
 import static java.util.Objects.requireNonNull;
@@ -19,6 +19,7 @@ import static net.consensys.cava.crypto.Hash.keccak256;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.crypto.SECP256K1.Signature;
+import net.consensys.cava.crypto.SECP256K1KeyRecoveryException;
 import net.consensys.cava.rlp.RLP;
 import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
@@ -75,7 +76,7 @@ public final class Transaction {
     try {
       address = addressBytes.isEmpty() ? null : Address.fromBytes(addressBytes);
     } catch (IllegalArgumentException e) {
-      throw new RLPException("Value is the wrong size to be an address");
+      throw new RLPException("Value is the wrong size to be an address", e);
     }
     Wei value = Wei.valueOf(reader.readUInt256(false));
     Bytes payload = reader.readValue();
@@ -91,13 +92,22 @@ public final class Transaction {
     }
     BigInteger s = sbytes.toUnsignedBigInteger();
     if (!reader.isComplete()) {
-      throw new RLPException("Additional bytes present at the end of the RLP transaction encoding");
+      throw new RLPException("Additional bytes present at the end of the encoding");
     }
 
     byte v = (byte) ((int) encodedV - V_BASE);
 
-    Signature signature = Signature.create(v, r, s);
-    return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, signature);
+    Signature signature;
+    try {
+      signature = Signature.create(v, r, s);
+    } catch (IllegalArgumentException e) {
+      throw new RLPException("Invalid signature: " + e.getMessage());
+    }
+    try {
+      return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, signature);
+    } catch (IllegalArgumentException e) {
+      throw new RLPException(e.getMessage(), e);
+    }
   }
 
   private final UInt256 nonce;
@@ -109,6 +119,7 @@ public final class Transaction {
   private final Signature signature;
   private final Bytes payload;
   private SoftReference<Hash> hash;
+  private SoftReference<Address> sender;
 
   /**
    * Create a transaction.
@@ -224,17 +235,31 @@ public final class Transaction {
 
   /**
    * @return The sender of the transaction.
+   * @throws IllegalStateException If the transaction signature is invalid and the sender cannot be determined.
    */
   public Address sender() {
-    PublicKey publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
-      writer.writeUInt256(nonce);
-      writer.writeValue(gasPrice.toMinimalBytes());
-      writer.writeValue(gasLimit.toMinimalBytes());
-      writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
-      writer.writeValue(value.toMinimalBytes());
-      writer.writeValue(payload);
-    }), signature);
-    return Address.fromBytes(Bytes.wrap(keccak256(publicKey.bytesArray()), 12, 20));
+    if (sender != null) {
+      Address address = sender.get();
+      if (address != null) {
+        return address;
+      }
+    }
+    PublicKey publicKey;
+    try {
+      publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
+        writer.writeUInt256(nonce);
+        writer.writeValue(gasPrice.toMinimalBytes());
+        writer.writeValue(gasLimit.toMinimalBytes());
+        writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
+        writer.writeValue(value.toMinimalBytes());
+        writer.writeValue(payload);
+      }), signature);
+    } catch (SECP256K1KeyRecoveryException e) {
+      throw new IllegalStateException("Invalid transaction signature", e);
+    }
+    Address address = Address.fromBytes(Bytes.wrap(keccak256(publicKey.bytesArray()), 12, 20));
+    sender = new SoftReference<>(address);
+    return address;
   }
 
   @Override

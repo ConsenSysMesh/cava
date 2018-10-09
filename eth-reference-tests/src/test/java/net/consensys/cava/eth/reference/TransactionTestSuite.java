@@ -16,10 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.eth.domain.Address;
-import net.consensys.cava.eth.domain.Transaction;
+import net.consensys.cava.eth.Address;
+import net.consensys.cava.eth.Transaction;
 import net.consensys.cava.io.Resources;
 import net.consensys.cava.junit.BouncyCastleExtension;
+import net.consensys.cava.rlp.RLPException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,10 +46,21 @@ class TransactionTestSuite {
   @ParameterizedTest(name = "{index}. tx {0}/{1}")
   @MethodSource("readTransactionTests")
   void testTransaction(String name, String milestone, String rlp, String hash, String sender) {
+
     if (hash == null && sender == null) {
-      assertThrows(Throwable.class, () -> {
-        Transaction tx = Transaction.fromBytes(Bytes.fromHexString(rlp));
-        tx.sender();
+      assertThrows(RLPException.class, () -> {
+        Bytes rlpBytes;
+        try {
+          rlpBytes = Bytes.fromHexString(rlp);
+        } catch (IllegalArgumentException e) {
+          throw new RLPException("bad bytes", e);
+        }
+        Transaction tx = Transaction.fromBytes(rlpBytes);
+        try {
+          tx.sender();
+        } catch (IllegalStateException e) {
+          throw new RLPException("bad signature");
+        }
       });
     } else {
       Bytes rlpBytes = Bytes.fromHexString(rlp);
