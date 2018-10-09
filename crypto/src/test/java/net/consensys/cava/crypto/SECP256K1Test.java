@@ -17,6 +17,7 @@ import static net.consensys.cava.bytes.Bytes.fromHexString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -250,6 +251,7 @@ class SECP256K1Test {
         SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
 
         PublicKey recoveredPublicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
+        assertNotNull(recoveredPublicKey);
         assertEquals(keyPair.getPublicKey().toString(), recoveredPublicKey.toString());
         assertTrue(SECP256K1.verify(data, signature, recoveredPublicKey));
       } catch (AssertionError e) {
@@ -263,11 +265,7 @@ class SECP256K1Test {
   void testCannotRecoverPublicKeyFromSignature() {
     SECP256K1.Signature signature =
         new Signature((byte) 0, SECP256K1.Parameters.CURVE_ORDER.subtract(BigInteger.ONE), BigInteger.valueOf(10));
-
-    SECP256K1KeyRecoveryException exception = assertThrows(SECP256K1KeyRecoveryException.class, () -> {
-      SECP256K1.PublicKey.recoverFromSignature(Bytes.of("Random data".getBytes(UTF_8)), signature);
-    });
-    assertEquals("Public key cannot be recovered: Invalid point compression", exception.getMessage());
+    assertNull(SECP256K1.PublicKey.recoverFromSignature(Bytes.of("Random data".getBytes(UTF_8)), signature));
   }
 
   @Test
