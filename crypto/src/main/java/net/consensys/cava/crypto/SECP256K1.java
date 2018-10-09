@@ -37,6 +37,7 @@ import java.security.NoSuchProviderException;
 import java.security.SecureRandom;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
+import javax.annotation.Nullable;
 import javax.security.auth.Destroyable;
 
 import com.google.common.base.Objects;
@@ -122,11 +123,17 @@ public final class SECP256K1 {
   }
 
   // Decompress a compressed public key (x co-ord and low-bit of y-coord).
+  @Nullable
   private static ECPoint decompressKey(BigInteger xBN, boolean yBit) {
     X9IntegerConverter x9 = new X9IntegerConverter();
     byte[] compEnc = x9.integerToBytes(xBN, 1 + x9.getByteLength(Parameters.CURVE.getCurve()));
     compEnc[0] = (byte) (yBit ? 0x03 : 0x02);
-    return Parameters.CURVE.getCurve().decodePoint(compEnc);
+    try {
+      return Parameters.CURVE.getCurve().decodePoint(compEnc);
+    } catch (IllegalArgumentException e) {
+      // the compressed key was invalid
+      return null;
+    }
   }
 
   /**
@@ -150,9 +157,9 @@ public final class SECP256K1 {
    * @param r The R component of the signature.
    * @param s The S component of the signature.
    * @param messageHash Hash of the data that was signed.
-   * @return A ECKey containing only the public part.
-   * @throws IllegalArgumentException if no key can be recovered from the components
+   * @return A ECKey containing only the public part, or <tt>null</tt> if recovery wasn't possible.
    */
+  @Nullable
   private static BigInteger recoverFromSignature(int v, BigInteger r, BigInteger s, Bytes32 messageHash) {
     assert (v == 0 || v == 1);
     assert (r.signum() >= 0);
@@ -163,8 +170,8 @@ public final class SECP256K1 {
     // So it's encoded in the recovery id (v).
     ECPoint R = decompressKey(r, (v & 1) == 1);
     // 1.4. If nR != point at infinity, then do another iteration of Step 1 (callers responsibility).
-    if (!R.multiply(Parameters.CURVE_ORDER).isInfinity()) {
-      throw new IllegalArgumentException("R times n does not point at infinity");
+    if (R == null || !R.multiply(Parameters.CURVE_ORDER).isInfinity()) {
+      return null;
     }
 
     // 1.5. Compute e from M using Steps 2 and 3 of ECDSA signature verification.
@@ -186,6 +193,10 @@ public final class SECP256K1 {
     BigInteger srInv = rInv.multiply(s).mod(Parameters.CURVE_ORDER);
     BigInteger eInvrInv = rInv.multiply(eInv).mod(Parameters.CURVE_ORDER);
     ECPoint q = ECAlgorithms.sumOfTwoMultiplies(Parameters.CURVE.getG(), eInvrInv, R, srInv);
+
+    if (q.isInfinity()) {
+      return null;
+    }
 
     byte[] qBytes = q.getEncoded(false);
     // We remove the prefix
@@ -265,7 +276,7 @@ public final class SECP256K1 {
     BigInteger publicKeyBI = keyPair.getPublicKey().bytes().toUnsignedBigInteger();
     for (int i = 0; i < 2; i++) {
       BigInteger k = recoverFromSignature(i, r, s, hash);
-      if (k.equals(publicKeyBI)) {
+      if (k != null && k.equals(publicKeyBI)) {
         recId = i;
         break;
       }
@@ -282,32 +293,55 @@ public final class SECP256K1 {
   /**
    * Verifies the given ECDSA signature against the message bytes using the public key bytes.
    *
-   * @param message The message data to verify.
+   * @param data The data to verify.
    * @param signature The signature.
    * @param publicKey The public key.
    * @return True if the verification is successful.
    */
-  public static boolean verify(byte[] message, Signature signature, PublicKey publicKey) {
-    return verify(Bytes.wrap(message), signature, publicKey);
+  public static boolean verify(byte[] data, Signature signature, PublicKey publicKey) {
+    return verifyHashed(keccak256(data), signature, publicKey);
   }
 
   /**
    * Verifies the given ECDSA signature against the message bytes using the public key bytes.
    *
-   * @param message The message data to verify.
+   * @param data The data to verify.
    * @param signature The signature.
    * @param publicKey The public key.
    * @return True if the verification is successful.
    */
-  public static boolean verify(Bytes message, Signature signature, PublicKey publicKey) {
+  public static boolean verify(Bytes data, Signature signature, PublicKey publicKey) {
+    return verifyHashed(keccak256(data), signature, publicKey);
+  }
+
+  /**
+   * Verifies the given ECDSA signature against the message bytes using the public key bytes.
+   *
+   * @param hash The keccak256 hash of the data to verify.
+   * @param signature The signature.
+   * @param publicKey The public key.
+   * @return True if the verification is successful.
+   */
+  public static boolean verifyHashed(Bytes32 hash, Signature signature, PublicKey publicKey) {
+    return verifyHashed(hash.toArrayUnsafe(), signature, publicKey);
+  }
+
+  /**
+   * Verifies the given ECDSA signature against the message bytes using the public key bytes.
+   *
+   * @param hash The keccak256 hash of the data to verify.
+   * @param signature The signature.
+   * @param publicKey The public key.
+   * @return True if the verification is successful.
+   */
+  public static boolean verifyHashed(byte[] hash, Signature signature, PublicKey publicKey) {
     ECDSASigner signer = new ECDSASigner();
     Bytes toDecode = Bytes.wrap(Bytes.of((byte) 4), publicKey.bytes());
     ECPublicKeyParameters params =
         new ECPublicKeyParameters(Parameters.CURVE.getCurve().decodePoint(toDecode.toArray()), Parameters.CURVE);
     signer.init(false, params);
     try {
-      Bytes32 dataHash = keccak256(message);
-      return signer.verifySignature(dataHash.toArrayUnsafe(), signature.r, signature.s);
+      return signer.verifySignature(hash, signature.r, signature.s);
     } catch (NullPointerException e) {
       // Bouncy Castle contains a bug that can cause NPEs given specially crafted signatures. Those signatures
       // are inherently invalid/attack sigs so we just fail them here rather than crash the thread.
@@ -533,9 +567,9 @@ public final class SECP256K1 {
      *
      * @param data The signed data.
      * @param signature The digital signature.
-     * @return The associated public key.
-     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
      */
+    @Nullable
     public static PublicKey recoverFromSignature(byte[] data, Signature signature) {
       return recoverFromHashAndSignature(keccak256(data), signature);
     }
@@ -545,41 +579,36 @@ public final class SECP256K1 {
      *
      * @param data The signed data.
      * @param signature The digital signature.
-     * @return The associated public key.
-     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
      */
+    @Nullable
     public static PublicKey recoverFromSignature(Bytes data, Signature signature) {
       return recoverFromHashAndSignature(keccak256(data), signature);
     }
 
     /**
-     * Create a public key using a digital signature and a keccak256 hash of the data it signs.
+     * Recover a public key using a digital signature and a keccak256 hash of the data it signs.
      *
      * @param hash The keccak256 hash of the signed data.
      * @param signature The digital signature.
-     * @return The associated public key.
-     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
      */
+    @Nullable
     public static PublicKey recoverFromHashAndSignature(byte[] hash, Signature signature) {
       return recoverFromHashAndSignature(Bytes32.wrap(hash), signature);
     }
 
     /**
-     * Create a public key using a digital signature and a keccak256 hash of the data it signs.
+     * Recover a public key using a digital signature and a keccak256 hash of the data it signs.
      *
      * @param hash The keccak256 hash of the signed data.
      * @param signature The digital signature.
-     * @return The associated public key.
-     * @throws SECP256K1KeyRecoveryException If no signature can be recovered from the data.
+     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
      */
+    @Nullable
     public static PublicKey recoverFromHashAndSignature(Bytes32 hash, Signature signature) {
-      BigInteger publicKeyBI;
-      try {
-        publicKeyBI = SECP256K1.recoverFromSignature(signature.v(), signature.r(), signature.s(), hash);
-      } catch (IllegalArgumentException e) {
-        throw new SECP256K1KeyRecoveryException("Public key cannot be recovered: " + e.getMessage(), e);
-      }
-      return fromInteger(publicKeyBI);
+      BigInteger publicKeyBI = SECP256K1.recoverFromSignature(signature.v(), signature.r(), signature.s(), hash);
+      return (publicKeyBI != null) ? fromInteger(publicKeyBI) : null;
     }
 
     private PublicKey(Bytes bytes) {
@@ -814,6 +843,18 @@ public final class SECP256K1 {
      */
     public BigInteger s() {
       return s;
+    }
+
+    /**
+     * Check if the signature is canonical.
+     *
+     * Every signature (r,s) has an equivalent signature (r, -s (mod N)) that is also valid for the same message. The
+     * canonical signature is considered the signature with the s-value less than or equal to half the curve order.
+     *
+     * @return <tt>true</tt> if this is the canonical form of the signature, and <tt>false</tt> otherwise.
+     */
+    public boolean isCanonical() {
+      return s.compareTo(Parameters.HALF_CURVE_ORDER) <= 0;
     }
 
     @Override
