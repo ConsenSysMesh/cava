@@ -17,7 +17,6 @@ import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.crypto.Hash.keccak256
 import net.consensys.cava.rlp.RLP
 import net.consensys.cava.trie.CompactEncoding
-import java.lang.ref.SoftReference
 import java.lang.ref.WeakReference
 
 internal class LeafNode<V>(
@@ -29,7 +28,7 @@ internal class LeafNode<V>(
   @Volatile
   private var rlp: WeakReference<Bytes>? = null
   @Volatile
-  private var hash: SoftReference<Bytes32>? = null
+  private var hash: Bytes32? = null
 
   override suspend fun accept(visitor: NodeVisitor<V>, path: Bytes): Node<V> = visitor.visit(this, path)
 
@@ -57,12 +56,9 @@ internal class LeafNode<V>(
   }
 
   override fun hash(): Bytes32 {
-    val prevHashed = hash?.get()
-    if (prevHashed != null) {
-      return prevHashed
-    }
+    hash?.let { return it }
     val hashed = keccak256(rlp())
-    hash = SoftReference(hashed)
+    hash = hashed
     return hashed
   }
 
