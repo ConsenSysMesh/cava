@@ -13,7 +13,8 @@
 package net.consensys.cava.eth.reference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.eth.Address;
@@ -46,29 +47,42 @@ class TransactionTestSuite {
   @ParameterizedTest(name = "{index}. tx {0}/{1}")
   @MethodSource("readTransactionTests")
   void testTransaction(String name, String milestone, String rlp, String hash, String sender) {
-
-    if (hash == null && sender == null) {
-      assertThrows(RLPException.class, () -> {
-        Bytes rlpBytes;
-        try {
-          rlpBytes = Bytes.fromHexString(rlp);
-        } catch (IllegalArgumentException e) {
-          throw new RLPException("bad bytes", e);
-        }
-        Transaction tx = Transaction.fromBytes(rlpBytes);
-        try {
-          tx.sender();
-        } catch (IllegalStateException e) {
-          throw new RLPException("bad signature");
-        }
-      });
+    if (hash == null || sender == null) {
+      assertTrue(hash == null && sender == null, "Invalid test case");
+      testInvalidTransaction(rlp);
     } else {
-      Bytes rlpBytes = Bytes.fromHexString(rlp);
-      Transaction tx = Transaction.fromBytes(rlpBytes);
-      assertEquals(Address.fromBytes(Bytes.fromHexString(sender)), tx.sender());
-      assertEquals(rlpBytes, tx.toBytes());
-      assertEquals(Bytes.fromHexString(hash), tx.hash().toBytes());
+      testValidTransaction(rlp, hash, sender);
     }
+  }
+
+  private void testValidTransaction(String rlp, String hash, String sender) {
+    Bytes rlpBytes = Bytes.fromHexString(rlp);
+    Transaction tx = Transaction.fromBytes(rlpBytes);
+    assertEquals(Address.fromBytes(Bytes.fromHexString(sender)), tx.sender());
+    assertEquals(rlpBytes, tx.toBytes());
+    assertEquals(Bytes.fromHexString(hash), tx.hash().toBytes());
+  }
+
+  private void testInvalidTransaction(String rlp) {
+    Bytes rlpBytes;
+    try {
+      rlpBytes = Bytes.fromHexString(rlp);
+    } catch (IllegalArgumentException e) {
+      return;
+    }
+
+    Transaction tx;
+    try {
+      tx = Transaction.fromBytes(rlpBytes);
+    } catch (RLPException e) {
+      return;
+    }
+
+    if (tx.sender() == null) {
+      return;
+    }
+
+    fail("Expected an invalid transaction but it was successfully read");
   }
 
   @MustBeClosed

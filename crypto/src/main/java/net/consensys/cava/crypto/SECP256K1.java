@@ -89,6 +89,7 @@ public final class SECP256K1 {
     static final BigInteger CURVE_ORDER;
     static final BigInteger HALF_CURVE_ORDER;
     static final KeyPairGenerator KEY_PAIR_GENERATOR;
+    static final X9IntegerConverter X_9_INTEGER_CONVERTER;
 
     static {
       try {
@@ -119,14 +120,16 @@ public final class SECP256K1 {
       } catch (InvalidAlgorithmParameterException e) {
         throw new IllegalStateException("Algorithm parameter should be available but was not", e);
       }
+
+      X_9_INTEGER_CONVERTER = new X9IntegerConverter();
     }
   }
 
   // Decompress a compressed public key (x co-ord and low-bit of y-coord).
   @Nullable
   private static ECPoint decompressKey(BigInteger xBN, boolean yBit) {
-    X9IntegerConverter x9 = new X9IntegerConverter();
-    byte[] compEnc = x9.integerToBytes(xBN, 1 + x9.getByteLength(Parameters.CURVE.getCurve()));
+    byte[] compEnc = Parameters.X_9_INTEGER_CONVERTER
+        .integerToBytes(xBN, 1 + Parameters.X_9_INTEGER_CONVERTER.getByteLength(Parameters.CURVE.getCurve()));
     compEnc[0] = (byte) (yBit ? 0x03 : 0x02);
     try {
       return Parameters.CURVE.getCurve().decodePoint(compEnc);
@@ -247,7 +250,7 @@ public final class SECP256K1 {
     ECDSASigner signer = new ECDSASigner(new HMacDSAKCalculator(new SHA256Digest()));
 
     ECPrivateKeyParameters privKey =
-        new ECPrivateKeyParameters(keyPair.getSecretKey().bytes().toUnsignedBigInteger(), Parameters.CURVE);
+        new ECPrivateKeyParameters(keyPair.secretKey().bytes().toUnsignedBigInteger(), Parameters.CURVE);
     signer.init(true, privKey);
 
     BigInteger[] components = signer.generateSignature(hash.toArrayUnsafe());
@@ -273,7 +276,7 @@ public final class SECP256K1 {
     // Now we have to work backwards to figure out the recovery id needed to recover the signature.
     // On this curve, there are only two possible values for the recovery id.
     int recId = -1;
-    BigInteger publicKeyBI = keyPair.getPublicKey().bytes().toUnsignedBigInteger();
+    BigInteger publicKeyBI = keyPair.publicKey().bytes().toUnsignedBigInteger();
     for (int i = 0; i < 2; i++) {
       BigInteger k = recoverFromSignature(i, r, s, hash);
       if (k != null && k.equals(publicKeyBI)) {
@@ -741,14 +744,14 @@ public final class SECP256K1 {
     /**
      * @return The secret key.
      */
-    public SecretKey getSecretKey() {
+    public SecretKey secretKey() {
       return secretKey;
     }
 
     /**
      * @return The public key.
      */
-    public PublicKey getPublicKey() {
+    public PublicKey publicKey() {
       return publicKey;
     }
 

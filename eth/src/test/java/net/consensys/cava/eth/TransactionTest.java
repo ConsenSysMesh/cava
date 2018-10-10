@@ -12,12 +12,11 @@
  */
 package net.consensys.cava.eth;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
+import static net.consensys.cava.crypto.Hash.keccak256;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1;
-import net.consensys.cava.crypto.SECP256K1.Signature;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.units.bigints.UInt256;
 import net.consensys.cava.units.ethereum.Gas;
@@ -32,7 +31,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 class TransactionTest {
 
   static Transaction generateTransaction() {
-    Signature signature = SECP256K1.sign("random".getBytes(UTF_8), SECP256K1.KeyPair.random());
+    return generateTransaction(SECP256K1.KeyPair.random());
+  }
+
+  static Transaction generateTransaction(SECP256K1.KeyPair keyPair) {
     return new Transaction(
         UInt256.valueOf(0),
         Wei.valueOf(BigInteger.valueOf(5L)),
@@ -40,14 +42,22 @@ class TransactionTest {
         Address.fromBytes(Bytes.fromHexString("0x0102030405060708091011121314151617181920")),
         Wei.valueOf(10L),
         Bytes.of(1, 2, 3, 4),
-        signature);
+        keyPair);
   }
 
   @Test
-  void testRLPRoundtrip() {
+  void testRLPRoundTrip() {
     Transaction tx = generateTransaction();
     Bytes encoded = tx.toBytes();
     Transaction read = Transaction.fromBytes(encoded);
     assertEquals(tx, read);
+  }
+
+  @Test
+  void shouldGetSenderFromSignature() {
+    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
+    Address sender = Address.fromBytes(Bytes.wrap(keccak256(keyPair.publicKey().bytesArray()), 12, 20));
+    Transaction tx = generateTransaction(keyPair);
+    assertEquals(sender, tx.sender());
   }
 }

@@ -114,8 +114,8 @@ class SECP256K1Test {
   void testKeyPairGeneration() {
     SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
     assertNotNull(keyPair);
-    assertNotNull(keyPair.getSecretKey());
-    assertNotNull(keyPair.getPublicKey());
+    assertNotNull(keyPair.secretKey());
+    assertNotNull(keyPair.publicKey());
   }
 
   @Test
@@ -144,7 +144,7 @@ class SECP256K1Test {
   @Test
   void testKeyPairGeneration_PublicKeyRecovery() {
     SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
-    assertEquals(keyPair.getPublicKey(), SECP256K1.PublicKey.fromSecretKey(keyPair.getSecretKey()));
+    assertEquals(keyPair.publicKey(), SECP256K1.PublicKey.fromSecretKey(keyPair.secretKey()));
   }
 
   @Test
@@ -252,7 +252,7 @@ class SECP256K1Test {
 
         PublicKey recoveredPublicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
         assertNotNull(recoveredPublicKey);
-        assertEquals(keyPair.getPublicKey().toString(), recoveredPublicKey.toString());
+        assertEquals(keyPair.publicKey().toString(), recoveredPublicKey.toString());
         assertTrue(SECP256K1.verify(data, signature, recoveredPublicKey));
       } catch (AssertionError e) {
         System.err.println("Random seed: " + seed);
@@ -300,7 +300,7 @@ class SECP256K1Test {
     Bytes data = Bytes.wrap("This is an example of a signed message.".getBytes(UTF_8));
 
     SECP256K1.Signature signature = SECP256K1.sign(data, keyPair);
-    assertTrue(SECP256K1.verify(data, signature, keyPair.getPublicKey()));
+    assertTrue(SECP256K1.verify(data, signature, keyPair.publicKey()));
   }
 
   @Test

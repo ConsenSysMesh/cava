@@ -17,8 +17,7 @@ import static java.util.Objects.requireNonNull;
 import static net.consensys.cava.crypto.Hash.keccak256;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.crypto.SECP256K1.PublicKey;
-import net.consensys.cava.crypto.SECP256K1.Signature;
+import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.rlp.RLP;
 import net.consensys.cava.rlp.RLPException;
 import net.consensys.cava.rlp.RLPReader;
@@ -27,7 +26,6 @@ import net.consensys.cava.units.bigints.UInt256;
 import net.consensys.cava.units.ethereum.Gas;
 import net.consensys.cava.units.ethereum.Wei;
 
-import java.lang.ref.SoftReference;
 import java.math.BigInteger;
 import javax.annotation.Nullable;
 
@@ -49,8 +47,20 @@ public final class Transaction {
    * @throws RLPException If there is an error decoding the transaction.
    */
   public static Transaction fromBytes(Bytes encoded) {
+    return fromBytes(encoded, false);
+  }
+
+  /**
+   * Deserialize a transaction from RLP encoded bytes.
+   *
+   * @param encoded The RLP encoded transaction.
+   * @param lenient If <tt>true</tt>, the RLP decoding will be lenient toward any non-minimal encoding.
+   * @return The de-serialized transaction.
+   * @throws RLPException If there is an error decoding the transaction.
+   */
+  public static Transaction fromBytes(Bytes encoded, boolean lenient) {
     requireNonNull(encoded);
-    return RLP.decode(encoded, (reader) -> {
+    return RLP.decode(encoded, lenient, (reader) -> {
       Transaction tx = reader.readList(Transaction::readFrom);
       if (!reader.isComplete()) {
         throw new RLPException("Additional bytes present at the end of the encoded transaction");
@@ -67,9 +77,9 @@ public final class Transaction {
    * @throws RLPException If there is an error decoding the transaction.
    */
   public static Transaction readFrom(RLPReader reader) {
-    UInt256 nonce = reader.readUInt256(false);
-    Wei gasPrice = Wei.valueOf(reader.readUInt256(false));
-    Gas gasLimit = Gas.valueOf(reader.readLong(false));
+    UInt256 nonce = reader.readUInt256();
+    Wei gasPrice = Wei.valueOf(reader.readUInt256());
+    Gas gasLimit = Gas.valueOf(reader.readLong());
     Bytes addressBytes = reader.readValue();
     Address address;
     try {
@@ -77,7 +87,7 @@ public final class Transaction {
     } catch (IllegalArgumentException e) {
       throw new RLPException("Value is the wrong size to be an address", e);
     }
-    Wei value = Wei.valueOf(reader.readUInt256(false));
+    Wei value = Wei.valueOf(reader.readUInt256());
     Bytes payload = reader.readValue();
     byte encodedV = reader.readByte();
     Bytes rbytes = reader.readValue();
@@ -96,9 +106,9 @@ public final class Transaction {
 
     byte v = (byte) ((int) encodedV - V_BASE);
 
-    Signature signature;
+    SECP256K1.Signature signature;
     try {
-      signature = Signature.create(v, r, s);
+      signature = SECP256K1.Signature.create(v, r, s);
     } catch (IllegalArgumentException e) {
       throw new RLPException("Invalid signature: " + e.getMessage());
     }
@@ -115,10 +125,40 @@ public final class Transaction {
   @Nullable
   private final Address to;
   private final Wei value;
-  private final Signature signature;
+  private final SECP256K1.Signature signature;
   private final Bytes payload;
-  private SoftReference<Hash> hash;
-  private SoftReference<Address> sender;
+  private volatile Hash hash;
+  private volatile Address sender;
+  private volatile Boolean validSignature;
+
+  /**
+   * Create a transaction.
+   *
+   * @param nonce The transaction nonce.
+   * @param gasPrice The transaction gas price.
+   * @param gasLimit The transaction gas limit.
+   * @param to The target contract address, if any.
+   * @param value The amount of Eth to transfer.
+   * @param payload The transaction payload.
+   * @param keyPair A keypair to generate the transaction signature with.
+   */
+  public Transaction(
+      UInt256 nonce,
+      Wei gasPrice,
+      Gas gasLimit,
+      @Nullable Address to,
+      Wei value,
+      Bytes payload,
+      SECP256K1.KeyPair keyPair) {
+    this(
+        nonce,
+        gasPrice,
+        gasLimit,
+        to,
+        value,
+        payload,
+        generateSignature(nonce, gasPrice, gasLimit, to, value, payload, keyPair));
+  }
 
   /**
    * Create a transaction.
@@ -138,7 +178,7 @@ public final class Transaction {
       @Nullable Address to,
       Wei value,
       Bytes payload,
-      Signature signature) {
+      SECP256K1.Signature signature) {
     requireNonNull(nonce);
     checkArgument(nonce.compareTo(UInt256.ZERO) >= 0, "nonce must be >= 0");
     requireNonNull(gasPrice);
@@ -200,7 +240,7 @@ public final class Transaction {
   /**
    * @return The transaction signature.
    */
-  public Signature signature() {
+  public SECP256K1.Signature signature() {
     return signature;
   }
 
@@ -214,49 +254,41 @@ public final class Transaction {
   /**
    * Calculate and return the hash for this transaction.
    *
-   * <p>
-   * Note: the hash is calculated lazily and stored (as a {@link SoftReference} for future access.
-   *
    * @return The hash.
    */
   public Hash hash() {
     if (hash != null) {
-      Hash hashed = hash.get();
-      if (hashed != null) {
-        return hashed;
-      }
+      return hash;
     }
     Bytes rlp = toBytes();
-    Hash hashed = Hash.hash(rlp);
-    hash = new SoftReference<>(hashed);
-    return hashed;
+    hash = Hash.hash(rlp);
+    return hash;
   }
 
   /**
-   * @return The sender of the transaction.
-   * @throws IllegalStateException If the transaction signature is invalid and the sender cannot be determined.
+   * @return The sender of the transaction, or <tt>null</tt> if the signature is invalid.
    */
+  @Nullable
   public Address sender() {
-    if (sender != null) {
-      Address address = sender.get();
-      if (address != null) {
-        return address;
-      }
+    if (validSignature != null) {
+      return sender;
     }
-    PublicKey publicKey = PublicKey.recoverFromSignature(RLP.encodeList(writer -> {
-      writer.writeUInt256(nonce);
-      writer.writeValue(gasPrice.toMinimalBytes());
-      writer.writeValue(gasLimit.toMinimalBytes());
-      writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
-      writer.writeValue(value.toMinimalBytes());
-      writer.writeValue(payload);
-    }), signature);
+    return verifySignatureAndGetSender();
+  }
+
+  @Nullable
+  private Address verifySignatureAndGetSender() {
+    Bytes data = signatureData(nonce, gasPrice, gasLimit, to, value, payload);
+
+    SECP256K1.PublicKey publicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
     if (publicKey == null) {
-      throw new IllegalStateException("Invalid transaction signature");
+      validSignature = false;
+    } else {
+      sender = Address.fromBytes(Bytes.wrap(keccak256(publicKey.bytesArray()), 12, 20));
+      validSignature = true;
     }
-    Address address = Address.fromBytes(Bytes.wrap(keccak256(publicKey.bytesArray()), 12, 20));
-    sender = new SoftReference<>(address);
-    return address;
+
+    return sender;
   }
 
   @Override
@@ -317,5 +349,33 @@ public final class Transaction {
     writer.writeByte((byte) ((int) signature.v() + V_BASE));
     writer.writeBigInteger(signature.r());
     writer.writeBigInteger(signature.s());
+  }
+
+  private static SECP256K1.Signature generateSignature(
+      UInt256 nonce,
+      Wei gasPrice,
+      Gas gasLimit,
+      @Nullable Address to,
+      Wei value,
+      Bytes payload,
+      SECP256K1.KeyPair keyPair) {
+    return SECP256K1.sign(signatureData(nonce, gasPrice, gasLimit, to, value, payload), keyPair);
+  }
+
+  private static Bytes signatureData(
+      UInt256 nonce,
+      Wei gasPrice,
+      Gas gasLimit,
+      @Nullable Address to,
+      Wei value,
+      Bytes payload) {
+    return RLP.encodeList(writer -> {
+      writer.writeUInt256(nonce);
+      writer.writeValue(gasPrice.toMinimalBytes());
+      writer.writeValue(gasLimit.toMinimalBytes());
+      writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
+      writer.writeValue(value.toMinimalBytes());
+      writer.writeValue(payload);
+    });
   }
 }
