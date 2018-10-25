@@ -30,9 +30,11 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.PathMatcher;
 import java.nio.file.Paths;
+import java.util.Collection;
 import java.util.Enumeration;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.regex.PatternSyntaxException;
@@ -132,7 +134,7 @@ public final class Resources {
   }
 
   private static Stream<URL> classLoaderJarRoots(@Nullable ClassLoader classLoader) {
-    return classLoaderJarRoots(classLoader, new HashSet<>()).stream().map(uri -> {
+    return classLoaderJarRoots(classLoader, new HashMap<>()).stream().map(uri -> {
       try {
         return uri.toURL();
       } catch (MalformedURLException e) {
@@ -142,7 +144,7 @@ public final class Resources {
     });
   }
 
-  private static Set<URI> classLoaderJarRoots(@Nullable ClassLoader classLoader, Set<URI> results) {
+  private static Collection<URI> classLoaderJarRoots(@Nullable ClassLoader classLoader, Map<String, URI> results) {
     if (classLoader instanceof URLClassLoader) {
       URL[] urls = ((URLClassLoader) classLoader).getURLs();
       for (URL url : urls) {
@@ -158,14 +160,46 @@ public final class Resources {
           // Should not happen
           throw new RuntimeException(e);
         }
-        results.add(jarUri);
+        results.put(url.getPath(), jarUri);
       }
     }
 
+    if (classLoader == ClassLoader.getSystemClassLoader()) {
+      // "java.class.path" manifest evaluation...
+      classPathManifestEntries(results);
+    }
+
     if (classLoader == null) {
-      return results;
+      return results.values();
     }
     return classLoaderJarRoots(classLoader.getParent(), results);
+  }
+
+  private static void classPathManifestEntries(Map<String, URI> results) {
+    String classPath = System.getProperty("java.class.path");
+    if (classPath == null) {
+      return;
+    }
+
+    StringTokenizer st = new StringTokenizer(classPath, System.getProperty("path.separator"));
+    while (st.hasMoreTokens()) {
+      String entry = st.nextToken().trim();
+      if (entry.isEmpty()) {
+        continue;
+      }
+      Path path = Paths.get(entry);
+      if (!Files.isRegularFile(path)) {
+        continue;
+      }
+      URI jarUri;
+      try {
+        jarUri = new URI("jar:" + path.toUri().toString() + "!/");
+      } catch (URISyntaxException e) {
+        // Should not happen
+        throw new RuntimeException(e);
+      }
+      results.put(path.toString(), jarUri);
+    }
   }
 
   @MustBeClosed
