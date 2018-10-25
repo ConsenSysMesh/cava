@@ -116,7 +116,8 @@ fun <T> AsyncResult<T>.asDeferred(): Deferred<T> {
   // Fast path if already completed
   if (isDone) {
     return try {
-      CompletableDeferred(get())
+      @Suppress("UNCHECKED_CAST")
+      CompletableDeferred(get() as T)
     } catch (e: Throwable) {
       // unwrap original cause from CompletionException
       val original = (e as? CompletionException)?.cause ?: e
@@ -151,7 +152,8 @@ suspend fun <T> AsyncResult<T>.await(): T {
   // fast path when CompletableFuture is already done (does not suspend)
   if (isDone) {
     try {
-      return get()
+      @Suppress("UNCHECKED_CAST")
+      return get() as T
     } catch (e: CompletionException) {
       throw e.cause ?: e // unwrap original cause from CompletionException
     }

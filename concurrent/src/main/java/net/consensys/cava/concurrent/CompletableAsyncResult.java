@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.concurrent;
 
+import javax.annotation.Nullable;
+
 /**
  * An {@link AsyncResult} that can be later completed successfully with a provided value, or completed with an
  * exception.
@@ -27,7 +29,7 @@ public interface CompletableAsyncResult<T> extends AsyncResult<T> {
    * @return <tt>true</tt> if this invocation caused this result to transition to a completed state, else
    *         <tt>false</tt>.
    */
-  boolean complete(T value);
+  boolean complete(@Nullable T value);
 
   /**
    * Complete this result with the given exception.

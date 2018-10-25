@@ -14,6 +14,7 @@ package net.consensys.cava.concurrent;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -31,6 +32,13 @@ class DefaultCompletableAsyncResultTest {
     AsyncResult<String> asyncResult = AsyncResult.completed("Completed");
     assertThat(asyncResult.isDone()).isTrue();
     assertThat(asyncResult.get()).isEqualTo("Completed");
+  }
+
+  @Test
+  void shouldReturnNullValueFromCompletedResult() throws Exception {
+    AsyncResult<String> asyncResult = AsyncResult.completed(null);
+    assertThat(asyncResult.isDone()).isTrue();
+    assertNull(asyncResult.get());
   }
 
   @Test
