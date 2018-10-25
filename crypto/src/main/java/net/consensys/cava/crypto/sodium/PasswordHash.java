@@ -673,7 +673,7 @@ public final class PasswordHash {
    *
    * @param hash The hash.
    * @param password The password to verify.
-   * @return <tt>true</tt> if the password matches the hash.
+   * @return {@code true} if the password matches the hash.
    */
   public static boolean verify(String hash, String password) {
     byte[] hashBytes = hash.getBytes(UTF_8);
@@ -720,14 +720,14 @@ public final class PasswordHash {
     NEEDS_REHASH;
 
     /**
-     * @return <tt>true</tt> if the verification passed.
+     * @return {@code true} if the verification passed.
      */
     public boolean passed() {
       return this != FAILED;
     }
 
     /**
-     * @return <tt>true</tt> if the hash should be regenerated.
+     * @return {@code true} if the hash should be regenerated.
      */
     public boolean needsRehash() {
       return this == NEEDS_REHASH;
@@ -839,7 +839,7 @@ public final class PasswordHash {
    * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
    *
    * @param hash The hash.
-   * @return <tt>true</tt> if the hash should be regenerated.
+   * @return {@code true} if the hash should be regenerated.
    */
   public static boolean needsRehash(String hash) {
     return needsRehash(hash, moderateOpsLimit(), moderateMemLimit());
@@ -856,7 +856,7 @@ public final class PasswordHash {
    * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
    *
    * @param hash The hash.
-   * @return <tt>true</tt> if the hash should be regenerated.
+   * @return {@code true} if the hash should be regenerated.
    */
   public static boolean needsRehashForInteractive(String hash) {
     return needsRehash(hash, interactiveOpsLimit(), interactiveMemLimit());
@@ -873,7 +873,7 @@ public final class PasswordHash {
    * Note: only supported when the sodium native library version &gt;= 10.0.14 is available.
    *
    * @param hash The hash.
-   * @return <tt>true</tt> if the hash should be regenerated.
+   * @return {@code true} if the hash should be regenerated.
    */
   public static boolean needsRehashForSensitive(String hash) {
     return needsRehash(hash, sensitiveOpsLimit(), sensitiveMemLimit());
@@ -891,7 +891,7 @@ public final class PasswordHash {
    * @param hash The hash.
    * @param opsLimit The operations limit, which must be in the range {@link #minOpsLimit()} to {@link #maxOpsLimit()}.
    * @param memLimit The memory limit, which must be in the range {@link #minMemLimit()} to {@link #maxMemLimit()}.
-   * @return <tt>true</tt> if the hash should be regenerated.
+   * @return {@code true} if the hash should be regenerated.
    */
   public static boolean needsRehash(String hash, long opsLimit, long memLimit) {
     assertCheckRehashAvailable();

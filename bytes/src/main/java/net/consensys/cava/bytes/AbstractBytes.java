@@ -27,7 +27,7 @@ public abstract class AbstractBytes implements Bytes {
    * Two {@link Bytes} values are equal is they have contain the exact same bytes.
    *
    * @param obj The object to test for equality with.
-   * @return <tt>true</tt> if this value and {@code obj} are equal.
+   * @return {@code true} if this value and {@code obj} are equal.
    */
   @Override
   public boolean equals(Object obj) {

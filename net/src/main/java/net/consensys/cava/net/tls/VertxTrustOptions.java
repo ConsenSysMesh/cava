@@ -55,7 +55,7 @@ public final class VertxTrustOptions {
    * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
    *
    * @param knownServersFile The path to a file in which to record fingerprints by host.
-   * @param skipCASigned If <tt>true</tt>, CA-signed certificates are not recorded.
+   * @param skipCASigned If {@code true}, CA-signed certificates are not recorded.
    * @return A Vert.x {@link TrustOptions}.
    */
   public static TrustOptions recordServerFingerprints(Path knownServersFile, boolean skipCASigned) {
@@ -105,8 +105,8 @@ public final class VertxTrustOptions {
    * it has not changed.
    *
    * @param knownServersFile The path to the file containing fingerprints by host.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted (and the fingerprint will
-   *        not be recorded).
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted (and the fingerprint will not
+   *        be recorded).
    * @return A Vert.x {@link TrustOptions}.
    */
   public static TrustOptions trustServerOnFirstUse(Path knownServersFile, boolean acceptCASigned) {
@@ -152,7 +152,7 @@ public final class VertxTrustOptions {
    * (identified by host+port).
    *
    * @param knownServersFile The path to the file containing fingerprints by host.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
    * @return A Vert.x {@link TrustOptions}.
    */
   public static TrustOptions whitelistServers(Path knownServersFile, boolean acceptCASigned) {
@@ -202,7 +202,7 @@ public final class VertxTrustOptions {
    * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
    *
    * @param knownClientsFile The path to a file in which to record fingerprints by common name.
-   * @param skipCASigned If <tt>true</tt>, CA-signed certificates are not recorded.
+   * @param skipCASigned If {@code true}, CA-signed certificates are not recorded.
    * @return A Vert.x {@link TrustOptions}.
    */
   public static TrustOptions recordClientFingerprints(Path knownClientsFile, boolean skipCASigned) {
@@ -265,7 +265,7 @@ public final class VertxTrustOptions {
    * clients can circumvent access control by using a different common name from any previously recorded client.</i>
    *
    * @param knownClientsFile The path to the file containing fingerprints by common name.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
    * @return A Vert.x {@link TrustOptions}.
    */
   public static TrustOptions trustClientOnFirstAccess(Path knownClientsFile, boolean acceptCASigned) {
@@ -317,7 +317,7 @@ public final class VertxTrustOptions {
    * The common name and fingerprint for a client certificate must be present in {@code knownClientsFile}.
    *
    * @param knownClientsFile The path to the file containing fingerprints by common name.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
    * @return A Vert.x {@link TrustOptions}.
    */
   public static TrustOptions whitelistClients(Path knownClientsFile, boolean acceptCASigned) {

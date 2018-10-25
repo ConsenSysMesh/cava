@@ -27,7 +27,7 @@ public interface KeyValueStore extends Closeable {
    * Retrieves data from the store.
    *
    * @param key The key for the content.
-   * @return An {@link AsyncResult} that will complete with the stored content, or <tt>null</tt> if no content was
+   * @return An {@link AsyncResult} that will complete with the stored content, or {@code null} if no content was
    *         available.
    */
   AsyncResult<Bytes> getAsync(Bytes key);

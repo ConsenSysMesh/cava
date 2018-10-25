@@ -35,7 +35,7 @@ public interface RLPReader {
    * A non-lenient reader will throw {@link InvalidRLPEncodingException} from any read method if the source RLP has not
    * used a minimal encoding format for the value.
    * 
-   * @return <tt>true</tt> if the reader is lenient, and <tt>false</tt> otherwise (default).
+   * @return {@code true} if the reader is lenient, and {@code false} otherwise (default).
    */
   boolean isLenient();
 
@@ -53,7 +53,7 @@ public interface RLPReader {
   /**
    * Read the next value from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @return The bytes for the next value.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws EndOfRLPException If there are no more RLP values to read.
@@ -85,7 +85,7 @@ public interface RLPReader {
   /**
    * Read a byte from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the byte is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the byte is not minimally encoded.
    * @return The byte for the next value.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws EndOfRLPException If there are no more RLP values to read.
@@ -113,10 +113,10 @@ public interface RLPReader {
   /**
    * Read an integer value from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @return An integer.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
-   *         encoded and `lenient` is <tt>false</tt>.
+   *         encoded and `lenient` is {@code false}.
    * @throws InvalidRLPTypeException If the next RLP value cannot be represented as an integer.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
@@ -147,10 +147,10 @@ public interface RLPReader {
   /**
    * Read a long value from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @return A long.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
-   *         encoded and `lenient` is <tt>false</tt>.
+   *         encoded and `lenient` is {@code false}.
    * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a long.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
@@ -181,10 +181,10 @@ public interface RLPReader {
   /**
    * Read a {@link UInt256} value from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @return A {@link UInt256} value.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
-   *         encoded and `lenient` is <tt>false</tt>.
+   *         encoded and `lenient` is {@code false}.
    * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a long.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
@@ -215,10 +215,10 @@ public interface RLPReader {
   /**
    * Read a big integer value from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @return A big integer.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source, or the integer is not minimally
-   *         encoded and `lenient` is <tt>false</tt>.
+   *         encoded and `lenient` is {@code false}.
    * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a big integer.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
@@ -245,7 +245,7 @@ public interface RLPReader {
   /**
    * Read a string value from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @return A string.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the next RLP value cannot be represented as a string.
@@ -258,7 +258,7 @@ public interface RLPReader {
   /**
    * Check if the next item to be read is a list.
    *
-   * @return <tt>true</tt> if the next item to be read is a list.
+   * @return {@code true} if the next item to be read is a list.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   boolean nextIsList();
@@ -266,7 +266,7 @@ public interface RLPReader {
   /**
    * Check if the next item to be read is empty.
    *
-   * @return <tt>true</tt> if the next item to be read is empty.
+   * @return {@code true} if the next item to be read is empty.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
   boolean nextIsEmpty();
@@ -288,7 +288,7 @@ public interface RLPReader {
   /**
    * Read a list of values from the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @param fn A function that will be provided a {@link RLPReader}.
    * @param <T> The result type of the reading function.
    * @return The result from the reading function.
@@ -314,7 +314,7 @@ public interface RLPReader {
   /**
    * Read a list of values from the RLP source, populating a mutable output list.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @param fn A function that will be provided with a {@link RLPReader} and a mutable output list.
    * @return The list supplied to {@code fn}.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
@@ -343,7 +343,7 @@ public interface RLPReader {
   /**
    * Skip the next value or list in the RLP source.
    *
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the integer is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws EndOfRLPException If there are no more RLP values to read.
    */
@@ -359,7 +359,7 @@ public interface RLPReader {
   /**
    * Check if all values have been read.
    *
-   * @return <tt>true</tt> if all values have been read.
+   * @return {@code true} if all values have been read.
    */
   boolean isComplete();
 }

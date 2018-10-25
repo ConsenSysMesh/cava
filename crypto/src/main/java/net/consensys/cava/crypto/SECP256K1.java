@@ -160,7 +160,7 @@ public final class SECP256K1 {
    * @param r The R component of the signature.
    * @param s The S component of the signature.
    * @param messageHash Hash of the data that was signed.
-   * @return A ECKey containing only the public part, or <tt>null</tt> if recovery wasn't possible.
+   * @return A ECKey containing only the public part, or {@code null} if recovery wasn't possible.
    */
   @Nullable
   private static BigInteger recoverFromSignature(int v, BigInteger r, BigInteger s, Bytes32 messageHash) {
@@ -570,7 +570,7 @@ public final class SECP256K1 {
      *
      * @param data The signed data.
      * @param signature The digital signature.
-     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
+     * @return The associated public key, or {@code null} if recovery wasn't possible.
      */
     @Nullable
     public static PublicKey recoverFromSignature(byte[] data, Signature signature) {
@@ -582,7 +582,7 @@ public final class SECP256K1 {
      *
      * @param data The signed data.
      * @param signature The digital signature.
-     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
+     * @return The associated public key, or {@code null} if recovery wasn't possible.
      */
     @Nullable
     public static PublicKey recoverFromSignature(Bytes data, Signature signature) {
@@ -594,7 +594,7 @@ public final class SECP256K1 {
      *
      * @param hash The keccak256 hash of the signed data.
      * @param signature The digital signature.
-     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
+     * @return The associated public key, or {@code null} if recovery wasn't possible.
      */
     @Nullable
     public static PublicKey recoverFromHashAndSignature(byte[] hash, Signature signature) {
@@ -606,7 +606,7 @@ public final class SECP256K1 {
      *
      * @param hash The keccak256 hash of the signed data.
      * @param signature The digital signature.
-     * @return The associated public key, or <tt>null</tt> if recovery wasn't possible.
+     * @return The associated public key, or {@code null} if recovery wasn't possible.
      */
     @Nullable
     public static PublicKey recoverFromHashAndSignature(Bytes32 hash, Signature signature) {
@@ -854,7 +854,7 @@ public final class SECP256K1 {
      * Every signature (r,s) has an equivalent signature (r, -s (mod N)) that is also valid for the same message. The
      * canonical signature is considered the signature with the s-value less than or equal to half the curve order.
      *
-     * @return <tt>true</tt> if this is the canonical form of the signature, and <tt>false</tt> otherwise.
+     * @return {@code true} if this is the canonical form of the signature, and {@code false} otherwise.
      */
     public boolean isCanonical() {
       return s.compareTo(Parameters.HALF_CURVE_ORDER) <= 0;

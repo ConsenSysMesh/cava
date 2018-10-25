@@ -176,7 +176,7 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
   T divide(long value);
 
   /**
-   * Returns a value that is <tt>(this<sup>exponent</sup> mod 2<sup>256</sup>)</tt>
+   * Returns a value that is {@code (this<sup>exponent</sup> mod 2<sup>256</sup>)}
    *
    * <p>
    * This calculates an exponentiation over the modulus of {@code 2^256}.
@@ -185,18 +185,18 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
    * Note that {@code exponent} is an {@link UInt256} rather than of the type {@code T}.
    *
    * @param exponent The exponent to which this value is to be raised.
-   * @return <tt>this<sup>exponent</sup> mod 2<sup>256</sup></tt>
+   * @return {@code this<sup>exponent</sup> mod 2<sup>256</sup>}
    */
   T pow(UInt256 exponent);
 
   /**
-   * Returns a value that is <tt>(this<sup>exponent</sup> mod 2<sup>256</sup>)</tt>
+   * Returns a value that is {@code (this<sup>exponent</sup> mod 2<sup>256</sup>)}
    *
    * <p>
    * This calculates an exponentiation over the modulus of {@code 2^256}.
    *
    * @param exponent The exponent to which this value is to be raised.
-   * @return <tt>this<sup>exponent</sup> mod 2<sup>256</sup></tt>
+   * @return {@code this<sup>exponent</sup> mod 2<sup>256</sup>}
    */
   T pow(long exponent);
 

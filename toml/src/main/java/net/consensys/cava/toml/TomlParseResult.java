@@ -20,7 +20,7 @@ import java.util.List;
 public interface TomlParseResult extends TomlTable {
 
   /**
-   * @return <tt>true</tt> if the TOML document contained errors.
+   * @return {@code true} if the TOML document contained errors.
    */
   default boolean hasErrors() {
     return !(errors().isEmpty());

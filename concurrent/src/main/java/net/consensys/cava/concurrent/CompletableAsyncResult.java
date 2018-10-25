@@ -26,8 +26,7 @@ public interface CompletableAsyncResult<T> extends AsyncResult<T> {
    * Complete this result with the given value.
    *
    * @param value The value to complete this result with.
-   * @return <tt>true</tt> if this invocation caused this result to transition to a completed state, else
-   *         <tt>false</tt>.
+   * @return {@code true} if this invocation caused this result to transition to a completed state, else {@code false}.
    */
   boolean complete(@Nullable T value);
 
@@ -35,8 +34,7 @@ public interface CompletableAsyncResult<T> extends AsyncResult<T> {
    * Complete this result with the given exception.
    *
    * @param ex The exception to complete this result with.
-   * @return <tt>true</tt> if this invocation caused this result to transition to a completed state, else
-   *         <tt>false</tt>.
+   * @return {@code true} if this invocation caused this result to transition to a completed state, else {@code false}.
    */
   boolean completeExceptionally(Throwable ex);
 }

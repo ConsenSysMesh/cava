@@ -57,7 +57,7 @@ public final class TrustManagerFactories {
    * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
    *
    * @param knownServersFile The path to a file in which to record fingerprints by host.
-   * @param skipCASigned If <tt>true</tt>, CA-signed certificates are not recorded.
+   * @param skipCASigned If {@code true}, CA-signed certificates are not recorded.
    * @return A trust manager factory.
    */
   public static TrustManagerFactory recordServerFingerprints(Path knownServersFile, boolean skipCASigned) {
@@ -110,8 +110,8 @@ public final class TrustManagerFactories {
    * stored fingerprint to ensure it has not changed.
    *
    * @param knownServersFile The path to the file containing fingerprints by host.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted (and the fingerprint will
-   *        not be recorded).
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted (and the fingerprint will not
+   *        be recorded).
    * @return A trust manager factory.
    */
   public static TrustManagerFactory trustServerOnFirstUse(Path knownServersFile, boolean acceptCASigned) {
@@ -160,7 +160,7 @@ public final class TrustManagerFactories {
    * server (identified by host+port).
    *
    * @param knownServersFile The path to the file containing fingerprints by host.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
    * @return A trust manager factory.
    */
   public static TrustManagerFactory whitelistServers(Path knownServersFile, boolean acceptCASigned) {
@@ -213,7 +213,7 @@ public final class TrustManagerFactories {
    * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
    *
    * @param knownClientsFile The path to a file in which to record fingerprints.
-   * @param skipCASigned If <tt>true</tt>, CA-signed certificates are not recorded.
+   * @param skipCASigned If {@code true}, CA-signed certificates are not recorded.
    * @return A trust manager factory.
    */
   public static TrustManagerFactory recordClientFingerprints(Path knownClientsFile, boolean skipCASigned) {
@@ -279,7 +279,7 @@ public final class TrustManagerFactories {
    * clients can circumvent access control by using a different common name from any previously recorded client.</i>
    *
    * @param knownClientsFile The path to the file containing fingerprints.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
    * @return A trust manager factory.
    */
   public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile, boolean acceptCASigned) {
@@ -333,7 +333,7 @@ public final class TrustManagerFactories {
    * The fingerprint for a client certificate must be present in {@code knownClientsFile}.
    *
    * @param knownClientsFile The path to the file containing fingerprints.
-   * @param acceptCASigned If <tt>true</tt>, CA-signed certificates will always be accepted.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
    * @return A trust manager factory.
    */
   public static TrustManagerFactory whitelistClients(Path knownClientsFile, boolean acceptCASigned) {

@@ -244,7 +244,7 @@ public final class RLP {
    * of values, you usually want to use {@link #decodeList(Bytes, Function)}.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @param fn A function that will be provided a {@link RLPReader}.
    * @param <T> The result type of the reading function.
    * @return The result from the reading function.
@@ -273,7 +273,7 @@ public final class RLP {
    * Read an RLP encoded list of values from a {@link Bytes} value.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @param fn A function that will be provided a {@link RLPReader}.
    * @param <T> The result type of the reading function.
    * @return The result from the reading function.
@@ -304,7 +304,7 @@ public final class RLP {
    * Read an RLP encoded list of values from a {@link Bytes} value, populating a mutable output list.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @param fn A function that will be provided a {@link RLPReader}.
    * @return The list supplied to {@code fn}.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
@@ -333,7 +333,7 @@ public final class RLP {
    * Read an RLP encoded value from a {@link Bytes} value.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @return The bytes for the value.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws EndOfRLPException If there are no RLP values to read.
@@ -358,7 +358,7 @@ public final class RLP {
    * Read an RLP encoded integer from a {@link Bytes} value.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @return An integer.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
@@ -383,7 +383,7 @@ public final class RLP {
    * Read an RLP encoded long from a {@link Bytes} value.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @return A long.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
@@ -408,7 +408,7 @@ public final class RLP {
    * Read an RLP encoded big integer from a {@link Bytes} value.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @return A {@link BigInteger}.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
@@ -433,7 +433,7 @@ public final class RLP {
    * Read an RLP encoded string from a {@link Bytes} value.
    *
    * @param source The RLP encoded bytes.
-   * @param lenient If <tt>false</tt>, an exception will be thrown if the value is not minimally encoded.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @return A string.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    */
@@ -447,7 +447,7 @@ public final class RLP {
    * Check if the {@link Bytes} value contains an RLP encoded list.
    *
    * @param value The value to check.
-   * @return <tt>true</tt> if the value contains a list.
+   * @return {@code true} if the value contains a list.
    */
   public static boolean isList(Bytes value) {
     requireNonNull(value);

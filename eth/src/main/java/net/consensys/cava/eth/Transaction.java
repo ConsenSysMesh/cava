@@ -54,7 +54,7 @@ public final class Transaction {
    * Deserialize a transaction from RLP encoded bytes.
    *
    * @param encoded The RLP encoded transaction.
-   * @param lenient If <tt>true</tt>, the RLP decoding will be lenient toward any non-minimal encoding.
+   * @param lenient If {@code true}, the RLP decoding will be lenient toward any non-minimal encoding.
    * @return The de-serialized transaction.
    * @throws RLPException If there is an error decoding the transaction.
    */
@@ -224,7 +224,7 @@ public final class Transaction {
   }
 
   /**
-   * @return <tt>true</tt> if the transaction is a contract creation (<tt>to</tt> address is <tt>null</tt>).
+   * @return {@code true} if the transaction is a contract creation ({@code to} address is {@code null}).
    */
   public boolean isContractCreation() {
     return to == null;
@@ -266,7 +266,7 @@ public final class Transaction {
   }
 
   /**
-   * @return The sender of the transaction, or <tt>null</tt> if the signature is invalid.
+   * @return The sender of the transaction, or {@code null} if the signature is invalid.
    */
   @Nullable
   public Address sender() {

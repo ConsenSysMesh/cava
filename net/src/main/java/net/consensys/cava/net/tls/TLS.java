@@ -69,7 +69,7 @@ public final class TLS {
    *
    * @param key The key path.
    * @param certificate The certificate path.
-   * @return <tt>true</tt> if a self-signed certificate was created.
+   * @return {@code true} if a self-signed certificate was created.
    * @throws IOException If an IO error occurs creating the certificate.
    */
   public static boolean createSelfSignedCertificateIfMissing(Path key, Path certificate) throws IOException {

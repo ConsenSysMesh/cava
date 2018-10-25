@@ -20,8 +20,8 @@ public interface CompletableAsyncCompletion extends AsyncCompletion {
   /**
    * Complete this completion.
    *
-   * @return <tt>true</tt> if this invocation caused this completion to transition to a completed state, else
-   *         <tt>false</tt>.
+   * @return {@code true} if this invocation caused this completion to transition to a completed state, else
+   *         {@code false}.
    */
   boolean complete();
 
@@ -29,8 +29,8 @@ public interface CompletableAsyncCompletion extends AsyncCompletion {
    * Complete this completion with the given exception.
    *
    * @param ex The exception to complete this result with.
-   * @return <tt>true</tt> if this invocation caused this completion to transition to a completed state, else
-   *         <tt>false</tt>.
+   * @return {@code true} if this invocation caused this completion to transition to a completed state, else
+   *         {@code false}.
    */
   boolean completeExceptionally(Throwable ex);
 }

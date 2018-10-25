@@ -59,7 +59,7 @@ public final class AES256GCM implements AutoCloseable {
   /**
    * Check if Sodium and the AES256-GCM algorithm is available.
    *
-   * @return <tt>true</tt> if Sodium and the AES256-GCM algorithm is available.
+   * @return {@code true} if Sodium and the AES256-GCM algorithm is available.
    */
   public static boolean isAvailable() {
     try {
@@ -664,7 +664,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce to use when decrypting.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, Key key, Nonce nonce) {
@@ -678,7 +678,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce to use when decrypting.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
@@ -692,7 +692,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, Bytes data, Key key, Nonce nonce) {
@@ -707,7 +707,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   @Nullable
@@ -743,7 +743,7 @@ public final class AES256GCM implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public Bytes decrypt(Bytes cipherText, Nonce nonce) {
@@ -756,7 +756,7 @@ public final class AES256GCM implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public byte[] decrypt(byte[] cipherText, Nonce nonce) {
@@ -769,7 +769,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public Bytes decrypt(Bytes cipherText, Bytes data, Nonce nonce) {
@@ -783,7 +783,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public byte[] decrypt(byte[] cipherText, byte[] data, Nonce nonce) {
@@ -830,7 +830,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
@@ -845,7 +845,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
@@ -860,7 +860,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Key key, Nonce nonce) {
@@ -876,7 +876,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   @Nullable
@@ -919,7 +919,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public Bytes decryptDetached(Bytes cipherText, Bytes mac, Nonce nonce) {
@@ -933,7 +933,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public byte[] decryptDetached(byte[] cipherText, byte[] mac, Nonce nonce) {
@@ -947,7 +947,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public Bytes decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Nonce nonce) {
@@ -962,7 +962,7 @@ public final class AES256GCM implements AutoCloseable {
    * @param mac The message authentication code.
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    * @throws UnsupportedOperationException If AES256-GSM support is not available.
    */
   @Nullable

@@ -41,7 +41,7 @@ public final class KeyDerivation {
    * <p>
    * Key derivation is supported in sodium native library version &gt;= 10.0.12.
    *
-   * @return <tt>true</tt> if Sodium and key derivation support is available.
+   * @return {@code true} if Sodium and key derivation support is available.
    */
   public static boolean isAvailable() {
     try {

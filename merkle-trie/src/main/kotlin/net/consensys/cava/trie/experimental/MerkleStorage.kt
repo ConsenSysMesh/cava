@@ -24,7 +24,7 @@ interface MerkleStorage {
    * Get the stored content under the given hash.
    *
    * @param hash The hash for the content.
-   * @return The stored content, or <tt>null</tt> if not found.
+   * @return The stored content, or {@code null} if not found.
    */
   suspend fun get(hash: Bytes32): Bytes?
 
