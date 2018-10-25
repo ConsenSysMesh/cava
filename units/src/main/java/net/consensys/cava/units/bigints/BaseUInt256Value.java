@@ -298,15 +298,12 @@ public abstract class BaseUInt256Value<T extends UInt256Value<T>> implements UIn
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null) {
+    if (obj == this) {
+      return true;
+    }
+    if (!(obj instanceof UInt256Value)) {
       return false;
     }
-    // Note that we do want strictly class equality in this case: we don't want 2 quantity of
-    // mismatching unit to be considered equal, even if they do represent the same number.
-    if (this.getClass() != obj.getClass()) {
-      return false;
-    }
-
     UInt256Value<?> other = (UInt256Value<?>) obj;
     return this.value.equals(other.toUInt256());
   }
