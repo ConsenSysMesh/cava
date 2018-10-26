@@ -35,7 +35,7 @@ internal class CoroutineLatchTest {
   }
 
   @Test
-  fun shouldUnsuspendWhenLatchOpens() {
+  fun shouldUnsuspendWhenLatchOpens() = runBlocking {
     val latch = CoroutineLatch(2)
     assertFalse(latch.isOpen)
     assertEquals(2, latch.count)
@@ -60,7 +60,7 @@ internal class CoroutineLatchTest {
     assertTrue(latch.countDown())
     assertTrue(latch.isOpen)
     assertEquals(0, latch.count)
-    runBlocking { job.await() }
+    job.await()
     assertTrue(done, "failed to wakeup")
   }
 

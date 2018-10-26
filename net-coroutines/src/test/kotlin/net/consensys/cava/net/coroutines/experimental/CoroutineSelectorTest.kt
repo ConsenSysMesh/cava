@@ -13,6 +13,7 @@
 package net.consensys.cava.net.coroutines.experimental
 
 import kotlinx.coroutines.experimental.CancellationException
+import kotlinx.coroutines.experimental.CoroutineStart
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.runBlocking
 import org.junit.jupiter.api.Assertions.assertFalse
@@ -74,7 +75,7 @@ internal class CoroutineSelectorTest {
   }
 
   @Test
-  fun shouldSuspendUntilReady() {
+  fun shouldSuspendUntilReady() = runBlocking {
     val pipe1 = Pipe.open()
     pipe1.source().configureBlocking(false)
     val pipe2 = Pipe.open()
@@ -99,14 +100,14 @@ internal class CoroutineSelectorTest {
 
     ok1 = true
     pipe1.sink().write(ByteBuffer.wrap(byteArrayOf(1)))
-    runBlocking { job1.await() }
+    job1.await()
     ok2 = true
     pipe2.sink().write(ByteBuffer.wrap(byteArrayOf(1)))
-    runBlocking { job2.await() }
+    job2.await()
   }
 
   @Test
-  fun shouldAwakenMultiple() {
+  fun shouldAwakenMultiple() = runBlocking {
     val server = ServerSocketChannel.open()
     server.bind(InetSocketAddress(0))
     val client = SocketChannel.open()
@@ -124,14 +125,12 @@ internal class CoroutineSelectorTest {
     Thread.sleep(100)
     server.accept().write(ByteBuffer.wrap(byteArrayOf(1)))
 
-    runBlocking {
-      job2.await()
-      job1.await()
-    }
+    job2.await()
+    job1.await()
   }
 
   @Test
-  fun shouldCancelOutstanding() {
+  fun shouldCancelOutstanding() = runBlocking {
     val server = ServerSocketChannel.open()
     server.bind(InetSocketAddress(0))
     val client = SocketChannel.open()
@@ -142,30 +141,27 @@ internal class CoroutineSelectorTest {
     server.configureBlocking(false)
     val selector = CoroutineSelector.open(loggerProvider = SimpleLogger.toOutputStream(System.err))
 
-    runBlocking {
-      assertFalse(selector.cancelSelections(client))
-    }
+    assertFalse(selector.cancelSelections(client))
 
-    val job1 = async {
+    val job1 = async(start = CoroutineStart.UNDISPATCHED) {
       selector.select(client, SelectionKey.OP_READ)
     }
-    val job2 = async {
+    val job2 = async(start = CoroutineStart.UNDISPATCHED) {
       selector.select(client, SelectionKey.OP_WRITE)
     }
-    val job3 = async {
+    val job3 = async(start = CoroutineStart.UNDISPATCHED) {
       selector.select(server, SelectionKey.OP_ACCEPT)
     }
 
+    job2.await()
     Thread.sleep(100)
 
-    runBlocking {
-      selector.cancelSelections(client)
-      job2.await()
-    }
+    selector.cancelSelections(client)
+
     assertThrows<CancellationException> { runBlocking { job1.await() } }
     assertFalse(job3.isCompleted)
     SocketChannel.open().connect(server.localAddress)
-    runBlocking { job3.await() }
+    job3.await()
   }
 
   @Test
@@ -183,7 +179,7 @@ internal class CoroutineSelectorTest {
   }
 
   @Test
-  fun shouldAwakenOnChannelClose() {
+  fun shouldAwakenOnChannelClose() = runBlocking {
     val pipe1 = Pipe.open()
     pipe1.source().configureBlocking(false)
     val pipe2 = Pipe.open()
@@ -210,7 +206,7 @@ internal class CoroutineSelectorTest {
   }
 
   @Test
-  fun shouldAwakenOnSelectorClose() {
+  fun shouldAwakenOnSelectorClose() = runBlocking {
     val pipe1 = Pipe.open()
     pipe1.source().configureBlocking(false)
     val pipe2 = Pipe.open()

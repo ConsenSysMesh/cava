@@ -12,7 +12,9 @@
  */
 package net.consensys.cava.kv.experimental
 
-import kotlinx.coroutines.experimental.newFixedThreadPoolContext
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
 import org.mapdb.DB
@@ -23,13 +25,12 @@ import org.mapdb.HTreeMap
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.coroutines.experimental.CoroutineContext
 
 /**
  * A key-value store backed by a MapDB instance.
  *
  * @param dbPath The path to the MapDB database.
- * @param context The co-routine context for blocking tasks.
+ * @param dispatcher The co-routine dispatcher for blocking tasks.
  * @return A key-value store.
  * @throws IOException If an I/O error occurs.
  * @constructor Open a MapDB-backed key-value store.
@@ -39,9 +40,7 @@ class MapDBKeyValueStore
 @Throws(IOException::class)
 constructor(
   dbPath: Path,
-  // TODO: replace with IO context when https://github.com/Kotlin/kotlinx.coroutines/issues/79 is resolved
-  private val context: CoroutineContext =
-    newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors(), "MapDBKeyValueStore")
+  private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : KeyValueStore, net.consensys.cava.kv.MapDBKeyValueStore {
 
   private val db: DB
@@ -53,11 +52,11 @@ constructor(
     storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()
   }
 
-  override suspend fun get(key: Bytes): Bytes? = withContext(context) {
+  override suspend fun get(key: Bytes): Bytes? = withContext(dispatcher) {
     storageData[key]
   }
 
-  override suspend fun put(key: Bytes, value: Bytes) = withContext(context) {
+  override suspend fun put(key: Bytes, value: Bytes) = withContext(dispatcher) {
     storageData[key] = value
     db.commit()
   }

@@ -12,8 +12,11 @@
  */
 package net.consensys.cava.trie.experimental
 
+import kotlinx.coroutines.experimental.Dispatchers
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
+import net.consensys.cava.concurrent.AsyncCompletion
+import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.trie.CompactEncoding.bytesToPath
 import java.util.function.Function
 import kotlin.text.Charsets.UTF_8
@@ -63,6 +66,9 @@ class MerklePatriciaTrie<V>(
 
   override suspend fun get(key: Bytes): V? = root.accept(getVisitor, bytesToPath(key)).value()
 
+  // This implementation does not suspend, so we can use the unconfined context
+  override fun getAsync(key: Bytes): AsyncResult<V?> = getAsync(Dispatchers.Unconfined, key)
+
   override suspend fun put(key: Bytes, value: V?) {
     if (value == null) {
       return remove(key)
@@ -70,9 +76,15 @@ class MerklePatriciaTrie<V>(
     this.root = root.accept(PutVisitor(nodeFactory, value), bytesToPath(key))
   }
 
+  // This implementation does not suspend, so we can use the unconfined context
+  override fun putAsync(key: Bytes, value: V?): AsyncCompletion = putAsync(Dispatchers.Unconfined, key, value)
+
   override suspend fun remove(key: Bytes) {
     this.root = root.accept(removeVisitor, bytesToPath(key))
   }
+
+  // This implementation does not suspend, so we can use the unconfined context
+  override fun removeAsync(key: Bytes): AsyncCompletion = removeAsync(Dispatchers.Unconfined, key)
 
   override fun rootHash(): Bytes32 = root.hash()
 

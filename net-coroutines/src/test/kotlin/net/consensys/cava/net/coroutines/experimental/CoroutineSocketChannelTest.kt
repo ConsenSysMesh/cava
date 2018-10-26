@@ -27,7 +27,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 internal class CoroutineSocketChannelTest {
 
   @Test
-  fun shouldSuspendServerSocketChannelWhileAccepting() {
+  fun shouldSuspendServerSocketChannelWhileAccepting() = runBlocking {
     val listenChannel = CoroutineServerSocketChannel.open()
     Assertions.assertNull(listenChannel.localAddress)
     assertEquals(0, listenChannel.localPort)
@@ -48,14 +48,12 @@ internal class CoroutineSocketChannelTest {
     didBlock = true
 
     val clientChannel = CoroutineSocketChannel.open()
-    runBlocking {
-      clientChannel.connect(addr)
-      job.await()
-    }
+    clientChannel.connect(addr)
+    job.await()
   }
 
   @Test
-  fun shouldBlockSocketChannelWhileReading() {
+  fun shouldBlockSocketChannelWhileReading() = runBlocking {
     val listenChannel = CoroutineServerSocketChannel.open()
     listenChannel.bind(null)
     val addr = InetSocketAddress(InetAddress.getLocalHost(), (listenChannel.localAddress as InetSocketAddress).port)
@@ -95,14 +93,12 @@ internal class CoroutineSocketChannelTest {
       clientChannel.close()
     }
 
-    runBlocking {
-      serverJob.await()
-      clientJob.await()
-    }
+    serverJob.await()
+    clientJob.await()
   }
 
   @Test
-  fun shouldCloseSocketChannelWhenRemoteClosed() {
+  fun shouldCloseSocketChannelWhenRemoteClosed() = runBlocking {
     val listenChannel = CoroutineServerSocketChannel.open()
     listenChannel.bind(null)
     val addr = InetSocketAddress(InetAddress.getLocalHost(), (listenChannel.localAddress as InetSocketAddress).port)
@@ -135,9 +131,7 @@ internal class CoroutineSocketChannelTest {
       clientChannel.close()
     }
 
-    runBlocking {
-      serverJob.await()
-      clientJob.await()
-    }
+    serverJob.await()
+    clientJob.await()
   }
 }

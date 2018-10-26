@@ -14,6 +14,9 @@ package net.consensys.cava.trie.experimental
 
 import kotlinx.coroutines.experimental.CoroutineStart
 import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.async
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
@@ -74,7 +77,7 @@ internal class StoredNode<V> : Node<V> {
       return loadedNode
     }
 
-    val deferred: Deferred<Node<V>> = async(start = CoroutineStart.LAZY) {
+    val deferred: Deferred<Node<V>> = GlobalScope.async(Dispatchers.IO, start = CoroutineStart.LAZY) {
       val node = nodeFactory.retrieve(hash)
       loaded = SoftReference(node)
       loader.set(null)
@@ -103,6 +106,8 @@ internal class StoredNode<V> : Node<V> {
   }
 
   fun unload() {
+    val deferred: Deferred<Node<V>>? = loader.get()
+    deferred?.cancel()
     loaded = null
   }
 }

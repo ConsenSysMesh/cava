@@ -1,36 +1,36 @@
 dependencyManagement {
   dependencies {
-    dependency('com.github.jnr:jnr-ffi:2.1.8')
+    dependency('com.github.jnr:jnr-ffi:2.1.9')
     dependency('com.github.kstyrc:embedded-redis:0.6')
     dependency('com.google.code.findbugs:jsr305:3.0.2')
     dependency('com.google.errorprone:error_prone_core:2.3.2')
     dependency('com.google.errorprone:javac:9+181-r4173-1')
-    dependency('com.google.guava:guava:25.1-jre')
+    dependency('com.google.guava:guava:27.0-jre')
     dependency('com.winterbe:expekt:0.5.0')
-    dependency('io.lettuce:lettuce-core:5.1.0.M1')
-    dependency('io.vertx:vertx-core:3.5.3')
+    dependency('io.lettuce:lettuce-core:5.1.1.RELEASE')
+    dependency('io.vertx:vertx-core:3.5.4')
     dependencySet(group: 'org.antlr', version: '4.7.1') {
       entry 'antlr4'
       entry 'antlr4-runtime'
     }
-    dependency('org.assertj:assertj-core:3.10.0')
+    dependency('org.assertj:assertj-core:3.11.1')
     dependencySet(group: 'org.bouncycastle', version: '1.60') {
       entry 'bcpkix-jdk15on'
       entry 'bcprov-jdk15on'
     }
     dependency('org.fusesource.leveldbjni:leveldbjni-all:1.8')
-    dependencySet(group: 'org.junit.jupiter', version: '5.2.0') {
+    dependencySet(group: 'org.junit.jupiter', version: '5.3.1') {
       entry 'junit-jupiter-api'
       entry 'junit-jupiter-engine'
       entry 'junit-jupiter-params'
     }
-    dependency('org.jetbrains:annotations:16.0.2')
-    dependencySet(group: 'org.jetbrains.kotlin', version: '1.2.51') {
+    dependency('org.jetbrains:annotations:16.0.3')
+    dependencySet(group: 'org.jetbrains.kotlin', version: '1.2.61') {
       entry 'kotlin-reflect'
       entry 'kotlin-stdlib'
       entry 'kotlin-stdlib-jdk8'
     }
-    dependencySet(group: 'org.jetbrains.kotlinx', version: '0.24.0') {
+    dependencySet(group: 'org.jetbrains.kotlinx', version: '0.27.0') {
       entry 'kotlinx-coroutines-core'
       entry 'kotlinx-coroutines-jdk8'
       entry 'kotlinx-coroutines-nio'
