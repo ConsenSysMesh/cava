@@ -23,6 +23,7 @@ import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import javax.annotation.Nullable;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.WorkerExecutor;
@@ -40,7 +41,7 @@ final class DefaultCompletableAsyncResult<T> implements CompletableAsyncResult<T
   }
 
   @Override
-  public boolean complete(T value) {
+  public boolean complete(@Nullable T value) {
     return future.complete(value);
   }
 
@@ -70,6 +71,7 @@ final class DefaultCompletableAsyncResult<T> implements CompletableAsyncResult<T
   }
 
   @Override
+  @Nullable
   public T get() throws CompletionException, InterruptedException {
     try {
       return get(10, TimeUnit.SECONDS);
@@ -79,6 +81,7 @@ final class DefaultCompletableAsyncResult<T> implements CompletableAsyncResult<T
   }
 
   @Override
+  @Nullable
   public T get(long timeout, TimeUnit unit) throws CompletionException, TimeoutException, InterruptedException {
     requireNonNull(unit);
     try {

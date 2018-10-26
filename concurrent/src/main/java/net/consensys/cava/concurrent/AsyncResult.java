@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.*;
 import java.util.stream.Stream;
+import javax.annotation.Nullable;
 
 import io.vertx.core.Vertx;
 import io.vertx.core.WorkerExecutor;
@@ -40,8 +41,7 @@ public interface AsyncResult<T> {
    * @param <T> The type of the value.
    * @return A completed result.
    */
-  static <T> AsyncResult<T> completed(T value) {
-    requireNonNull(value);
+  static <T> AsyncResult<T> completed(@Nullable T value) {
     CompletableAsyncResult<T> result = new DefaultCompletableAsyncResult<>();
     result.complete(value);
     return result;
@@ -311,6 +311,7 @@ public interface AsyncResult<T> {
    * @throws CompletionException If the computation threw an exception.
    * @throws InterruptedException If the current thread was interrupted while waiting.
    */
+  @Nullable
   T get() throws CompletionException, InterruptedException;
 
   /**
@@ -323,6 +324,7 @@ public interface AsyncResult<T> {
    * @throws TimeoutException If the wait timed out.
    * @throws InterruptedException If the current thread was interrupted while waiting.
    */
+  @Nullable
   T get(long timeout, TimeUnit unit) throws CompletionException, TimeoutException, InterruptedException;
 
   /**
