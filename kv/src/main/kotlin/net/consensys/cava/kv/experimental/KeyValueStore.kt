@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.kv.experimental
 
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
@@ -40,13 +43,24 @@ interface KeyValueStore : net.consensys.cava.kv.KeyValueStore {
    * @return An [AsyncResult] that will complete with the stored content,
    *         or an empty optional if no content was available.
    */
-  override fun getAsync(key: Bytes): AsyncResult<Bytes?> = asyncResult { get(key) }
+  override fun getAsync(key: Bytes): AsyncResult<Bytes?> = getAsync(Dispatchers.Default, key)
+
+  /**
+   * Retrieves data from the store.
+   *
+   * @param key The key for the content.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return An [AsyncResult] that will complete with the stored content,
+   *         or an empty optional if no content was available.
+   */
+  fun getAsync(dispatcher: CoroutineDispatcher, key: Bytes): AsyncResult<Bytes?> =
+    GlobalScope.asyncResult(dispatcher) { get(key) }
 
   /**
    * Puts data into the store.
    *
    * @param key The key to associate with the data, for use when retrieving.
-   * @param value the data to store.
+   * @param value The data to store.
    */
   suspend fun put(key: Bytes, value: Bytes)
 
@@ -57,8 +71,22 @@ interface KeyValueStore : net.consensys.cava.kv.KeyValueStore {
    * existing content.
    *
    * @param key The key to associate with the data, for use when retrieving.
-   * @param value the data to store.
+   * @param value The data to store.
    * @return An [AsyncCompletion] that will complete when the content is stored.
    */
-  override fun putAsync(key: Bytes, value: Bytes): AsyncCompletion = asyncCompletion { put(key, value) }
+  override fun putAsync(key: Bytes, value: Bytes): AsyncCompletion = putAsync(Dispatchers.Default, key, value)
+
+  /**
+   * Puts data into the store.
+   *
+   * Note: if the storage implementation already contains content for the given key, it does not need to replace the
+   * existing content.
+   *
+   * @param key The key to associate with the data, for use when retrieving.
+   * @param value The data to store.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return An [AsyncCompletion] that will complete when the content is stored.
+   */
+  fun putAsync(dispatcher: CoroutineDispatcher, key: Bytes, value: Bytes): AsyncCompletion =
+    GlobalScope.asyncCompletion(dispatcher) { put(key, value) }
 }

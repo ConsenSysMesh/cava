@@ -602,7 +602,7 @@ public interface Bytes {
   /**
    * Whether this value has only zero bytes.
    *
-   * @return <tt>true</tt> if all the bits of this value are zeros.
+   * @return {@code true} if all the bits of this value are zeros.
    */
   default boolean isZero() {
     for (int i = size() - 1; i >= 0; --i) {

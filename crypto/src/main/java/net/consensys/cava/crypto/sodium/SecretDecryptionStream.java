@@ -39,6 +39,6 @@ public interface SecretDecryptionStream extends Destroyable {
    */
   byte[] pull(byte[] cipherText);
 
-  /** @return <tt>true</tt> if no more messages should be decrypted by this stream */
+  /** @return {@code true} if no more messages should be decrypted by this stream */
   boolean isComplete();
 }

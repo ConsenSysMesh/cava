@@ -36,7 +36,7 @@ public final class InvalidConfigurationPropertyTypeException extends RuntimeExce
   }
 
   /**
-   * @return The position of the property in the configuration document, or <tt>null</tt> if there is no position
+   * @return The position of the property in the configuration document, or {@code null} if there is no position
    *         available.
    */
   @Nullable

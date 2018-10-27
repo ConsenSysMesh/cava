@@ -881,7 +881,7 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
@@ -896,7 +896,7 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, PublicKey sender, SecretKey receiver, Nonce nonce) {
@@ -919,7 +919,7 @@ public final class Box implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public Bytes decrypt(Bytes cipherText, Nonce nonce) {
@@ -932,7 +932,7 @@ public final class Box implements AutoCloseable {
    *
    * @param cipherText The cipher text to decrypt.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public byte[] decrypt(byte[] cipherText, Nonce nonce) {
@@ -968,7 +968,7 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptSealed(Bytes cipherText, PublicKey sender, SecretKey receiver) {
@@ -982,7 +982,7 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptSealed(byte[] cipherText, PublicKey sender, SecretKey receiver) {
@@ -1015,7 +1015,7 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, PublicKey sender, SecretKey receiver, Nonce nonce) {
@@ -1031,7 +1031,7 @@ public final class Box implements AutoCloseable {
    * @param sender The public key of the sender.
    * @param receiver The secret key of the receiver.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(
@@ -1068,7 +1068,7 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public Bytes decryptDetached(Bytes cipherText, Bytes mac, Nonce nonce) {
@@ -1082,7 +1082,7 @@ public final class Box implements AutoCloseable {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public byte[] decryptDetached(byte[] cipherText, byte[] mac, Nonce nonce) {

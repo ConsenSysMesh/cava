@@ -47,7 +47,7 @@ public final class Files {
    *
    * @param path The path to the file to create.
    * @param attrs An optional list of file attributes to set atomically when creating the file.
-   * @return <tt>true</tt> if the file was created.
+   * @return {@code true} if the file was created.
    * @throws IOException If an I/O error occurs or the parent directory does not exist.
    */
   public static boolean createFileIfMissing(Path path, FileAttribute<?>... attrs) throws IOException {

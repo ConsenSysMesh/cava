@@ -127,7 +127,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -154,7 +154,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -207,7 +207,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -256,7 +256,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -283,7 +283,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -310,7 +310,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -337,7 +337,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -427,7 +427,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -510,7 +510,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -537,7 +537,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.
@@ -564,7 +564,7 @@ public final class SchemaBuilder {
    *
    * <p>
    * If a {@code defaultValue} is provided, then the provided validator, if any, will only be invoked if the value is
-   * present (i.e. it will not be provided a <tt>null</tt> value to validate).
+   * present (i.e. it will not be provided a {@code null} value to validate).
    *
    * @param key The configuration property key.
    * @param defaultValue A default value for the property or null if no default is provided.

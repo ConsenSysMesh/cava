@@ -50,7 +50,7 @@ internal class CoroutineChannelGroupTest {
   }
 
   @Test
-  fun shouldTerminateWhenAllChannelAreClosed() {
+  fun shouldTerminateWhenAllChannelAreClosed() = runBlocking {
     val group = CoroutineChannelGroup.open()
     val channel = CoroutineServerSocketChannel.open(group)
     var didBlock = false
@@ -63,7 +63,7 @@ internal class CoroutineChannelGroupTest {
     assertFalse(group.isTerminated)
     didBlock = true
     channel.close()
-    runBlocking { task.await() }
+    task.await()
     assertTrue(group.isTerminated)
   }
 
@@ -78,7 +78,7 @@ internal class CoroutineChannelGroupTest {
   }
 
   @Test
-  fun shutdownNowShouldResumeCoroutinesAwaitingTermination() {
+  fun shutdownNowShouldResumeCoroutinesAwaitingTermination() = runBlocking {
     val group = CoroutineChannelGroup.open()
     val channel = CoroutineServerSocketChannel.open(group)
     var didBlock = false
@@ -90,7 +90,7 @@ internal class CoroutineChannelGroupTest {
     didBlock = true
     group.shutdownNow()
     assertTrue(group.isTerminated)
-    runBlocking { task.await() }
+    task.await()
     assertFalse(channel.isOpen)
   }
 

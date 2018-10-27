@@ -73,7 +73,7 @@ public interface SecretEncryptionStream extends Destroyable {
    * Push a message to this secret stream.
    *
    * @param clearText The message to encrypt.
-   * @param isFinal <tt>true</tt> if this is the final message that will be sent on this stream.
+   * @param isFinal {@code true} if this is the final message that will be sent on this stream.
    * @return The encrypted message.
    */
   default Bytes push(Bytes clearText, boolean isFinal) {
@@ -84,7 +84,7 @@ public interface SecretEncryptionStream extends Destroyable {
    * Push a message to this secret stream.
    *
    * @param clearText The message to encrypt.
-   * @param isFinal <tt>true</tt> if this is the final message that will be sent on this stream.
+   * @param isFinal {@code true} if this is the final message that will be sent on this stream.
    * @return The encrypted message.
    */
   byte[] push(byte[] clearText, boolean isFinal);

@@ -70,7 +70,7 @@ public final class Sodium {
    * Check if the loaded sodium native library is the same or later than the specified version.
    *
    * @param requiredVersion The version to compare to.
-   * @return <tt>true</tt> if the loaded sodium native library is the same or a later version.
+   * @return {@code true} if the loaded sodium native library is the same or a later version.
    */
   public static boolean supportsVersion(SodiumVersion requiredVersion) {
     return supportsVersion(requiredVersion, libSodium());
@@ -207,7 +207,7 @@ public final class Sodium {
    * <p>
    * If the sodium library has not already been loaded, this will attempt to load and initialize it before returning.
    *
-   * @return <tt>true</tt> if the library is loaded and available.
+   * @return {@code true} if the library is loaded and available.
    */
   public static boolean isAvailable() {
     try {

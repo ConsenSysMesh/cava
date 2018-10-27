@@ -56,7 +56,7 @@ public final class XChaCha20Poly1305 {
    * <p>
    * XChaCha20Poly1305 is supported in sodium native library version &gt;= 10.0.12.
    *
-   * @return <tt>true</tt> if Sodium and the XChaCha20Poly1305 algorithm is available.
+   * @return {@code true} if Sodium and the XChaCha20Poly1305 algorithm is available.
    */
   public static boolean isAvailable() {
     try {
@@ -79,7 +79,7 @@ public final class XChaCha20Poly1305 {
    * <p>
    * XChaCha20Poly1305 secret stream is supported in sodium native library version &gt;= 10.0.14.
    *
-   * @return <tt>true</tt> if Sodium and the XChaCha20Poly1305 secret stream algorithm is available.
+   * @return {@code true} if Sodium and the XChaCha20Poly1305 secret stream algorithm is available.
    */
   public static boolean isSecretStreamAvailable() {
     try {
@@ -613,7 +613,7 @@ public final class XChaCha20Poly1305 {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, Key key, Nonce nonce) {
@@ -627,7 +627,7 @@ public final class XChaCha20Poly1305 {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
@@ -641,7 +641,7 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, Bytes data, Key key, Nonce nonce) {
@@ -656,7 +656,7 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
    */
   @Nullable
@@ -704,7 +704,7 @@ public final class XChaCha20Poly1305 {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
     byte[] bytes = decryptDetached(cipherText.toArrayUnsafe(), mac.toArrayUnsafe(), key, nonce);
@@ -718,7 +718,7 @@ public final class XChaCha20Poly1305 {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
@@ -733,7 +733,7 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Bytes data, Key key, Nonce nonce) {
@@ -749,7 +749,7 @@ public final class XChaCha20Poly1305 {
    * @param data Extra non-confidential data that is included within the encrypted payload.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    * @throws UnsupportedOperationException If XChaCha20Poly1305 support is not available.
    */
   @Nullable

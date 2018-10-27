@@ -75,7 +75,7 @@ public final class Schema {
    * Check if a key has a default provided by this schema.
    *
    * @param key A configuration key (e.g. {@code "server.address.hostname"}).
-   * @return <tt>true</tt> if this schema provides a default value for the key.
+   * @return {@code true} if this schema provides a default value for the key.
    */
   public boolean hasDefault(String key) {
     requireNonNull(key);

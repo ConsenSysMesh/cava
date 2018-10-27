@@ -223,7 +223,7 @@ public final class Auth {
    * @param tag The authentication tag for the input.
    * @param input The input.
    * @param key A confidential key that was used for tag creation.
-   * @return <tt>true</tt> if the tag correction authenticates the input (using the specified key).
+   * @return {@code true} if the tag correction authenticates the input (using the specified key).
    */
   public static boolean verify(Bytes tag, Bytes input, Key key) {
     return verify(tag.toArrayUnsafe(), input.toArrayUnsafe(), key);
@@ -235,7 +235,7 @@ public final class Auth {
    * @param tag The authentication tag for the input.
    * @param input The input.
    * @param key A confidential key that was used for tag creation.
-   * @return <tt>true</tt> if the tag correction authenticates the input (using the specified key).
+   * @return {@code true} if the tag correction authenticates the input (using the specified key).
    */
   public static boolean verify(byte[] tag, byte[] input, Key key) {
     checkArgument(key.ptr != null, "Key has been destroyed");

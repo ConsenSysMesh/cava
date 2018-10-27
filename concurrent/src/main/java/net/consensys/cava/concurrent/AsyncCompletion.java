@@ -257,16 +257,16 @@ public interface AsyncCompletion {
   }
 
   /**
-   * Returns <tt>true</tt> if completed normally, completed exceptionally or cancelled.
+   * Returns {@code true} if completed normally, completed exceptionally or cancelled.
    *
-   * @return <tt>true</tt> if completed.
+   * @return {@code true} if completed.
    */
   boolean isDone();
 
   /**
-   * Returns <tt>true</tt> if completed exceptionally or cancelled.
+   * Returns {@code true} if completed exceptionally or cancelled.
    *
-   * @return <tt>true</tt> if completed exceptionally or cancelled.
+   * @return {@code true} if completed exceptionally or cancelled.
    */
   boolean isCompletedExceptionally();
 
@@ -279,17 +279,17 @@ public interface AsyncCompletion {
    * never run.
    *
    * <p>
-   * After this method returns, subsequent calls to {@link #isDone()} will always return <tt>true</tt>. Subsequent calls
-   * to {@link #isCancelled()} will always return <tt>true</tt> if this method returned <tt>true</tt>.
+   * After this method returns, subsequent calls to {@link #isDone()} will always return {@code true}. Subsequent calls
+   * to {@link #isCancelled()} will always return {@code true} if this method returned {@code true}.
    *
-   * @return <tt>true</tt> if this completion transitioned to a cancelled state.
+   * @return {@code true} if this completion transitioned to a cancelled state.
    */
   boolean cancel();
 
   /**
-   * Returns <tt>true</tt> if this task was cancelled before it completed normally.
+   * Returns {@code true} if this task was cancelled before it completed normally.
    *
-   * @return <tt>true</tt> if completed.
+   * @return {@code true} if completed.
    */
   boolean isCancelled();
 

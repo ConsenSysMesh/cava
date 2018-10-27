@@ -28,7 +28,7 @@ import java.nio.ByteBuffer
 internal class CoroutineDatagramChannelTest {
 
   @Test
-  fun shouldSuspendDatagramChannelWhileReading() {
+  fun shouldSuspendDatagramChannelWhileReading() = runBlocking {
     val channel = CoroutineDatagramChannel.open()
     assertNull(channel.localAddress)
     assertEquals(0, channel.localPort)
@@ -52,7 +52,7 @@ internal class CoroutineDatagramChannelTest {
 
     val testData = byteArrayOf(1, 2, 3, 4, 5)
     socket.send(DatagramPacket(testData, 5))
-    runBlocking { job.await() }
+    job.await()
 
     dst.flip()
     assertEquals(5, dst.remaining())
@@ -64,7 +64,7 @@ internal class CoroutineDatagramChannelTest {
   }
 
   @Test
-  fun shouldSuspendDatagramChannelWhileWriting() {
+  fun shouldSuspendDatagramChannelWhileWriting() = runBlocking {
     val socket = DatagramSocket()
 
     val channel = CoroutineDatagramChannel.open()
@@ -87,6 +87,6 @@ internal class CoroutineDatagramChannelTest {
     assertEquals(testData[3], resultData[3])
     assertEquals(testData[4], resultData[4])
 
-    runBlocking { job.await() }
+    job.await()
   }
 }

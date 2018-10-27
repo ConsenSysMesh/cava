@@ -33,57 +33,57 @@ public interface TomlArray {
   int size();
 
   /**
-   * @return <tt>true</tt> if the array is empty.
+   * @return {@code true} if the array is empty.
    */
   boolean isEmpty();
 
   /**
-   * @return <tt>true</tt> if the array contains strings.
+   * @return {@code true} if the array contains strings.
    */
   boolean containsStrings();
 
   /**
-   * @return <tt>true</tt> if the array contains longs.
+   * @return {@code true} if the array contains longs.
    */
   boolean containsLongs();
 
   /**
-   * @return <tt>true</tt> if the array contains doubles.
+   * @return {@code true} if the array contains doubles.
    */
   boolean containsDoubles();
 
   /**
-   * @return <tt>true</tt> if the array contains booleans.
+   * @return {@code true} if the array contains booleans.
    */
   boolean containsBooleans();
 
   /**
-   * @return <tt>true</tt> if the array contains {@link OffsetDateTime}s.
+   * @return {@code true} if the array contains {@link OffsetDateTime}s.
    */
   boolean containsOffsetDateTimes();
 
   /**
-   * @return <tt>true</tt> if the array contains {@link LocalDateTime}s.
+   * @return {@code true} if the array contains {@link LocalDateTime}s.
    */
   boolean containsLocalDateTimes();
 
   /**
-   * @return <tt>true</tt> if the array contains {@link LocalDate}s.
+   * @return {@code true} if the array contains {@link LocalDate}s.
    */
   boolean containsLocalDates();
 
   /**
-   * @return <tt>true</tt> if the array contains {@link LocalTime}s.
+   * @return {@code true} if the array contains {@link LocalTime}s.
    */
   boolean containsLocalTimes();
 
   /**
-   * @return <tt>true</tt> if the array contains arrays.
+   * @return {@code true} if the array contains arrays.
    */
   boolean containsArrays();
 
   /**
-   * @return <tt>true</tt> if the array contains tables.
+   * @return {@code true} if the array contains tables.
    */
   boolean containsTables();
 

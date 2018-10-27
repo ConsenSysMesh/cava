@@ -13,13 +13,11 @@
 package net.consensys.cava.concurrent.coroutines.experimental
 
 import kotlinx.coroutines.experimental.CancellableContinuation
-import kotlinx.coroutines.experimental.CommonPool
 import kotlinx.coroutines.experimental.CompletableDeferred
-import kotlinx.coroutines.experimental.CoroutineDispatcher
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.DefaultDispatcher
 import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.experimental.Dispatchers
 import kotlinx.coroutines.experimental.Job
 import kotlinx.coroutines.experimental.newCoroutineContext
 import kotlinx.coroutines.experimental.suspendCancellableCoroutine
@@ -33,41 +31,32 @@ import kotlin.coroutines.experimental.ContinuationInterceptor
 import kotlin.coroutines.experimental.CoroutineContext
 
 /**
- * Starts new coroutine and returns its result as an [AsyncResult].
+ * Starts new co-routine and returns its result as an implementation of [AsyncResult].
+ * The running co-outine is cancelled when the resulting future is cancelled or otherwise completed.
  *
- * This coroutine builder uses [CommonPool] context by default and is conceptually similar to
- * [AsyncResult.executeBlocking].
+ * Co-routine context is inherited from a [CoroutineScope], additional context elements can be specified with [context]
+ * argument. If the context does not have any dispatcher nor any other [ContinuationInterceptor], then
+ * [Dispatchers.Default] is used. The parent job is inherited from a [CoroutineScope] as well, but it can also be
+ * overridden with corresponding [coroutineContext] element.
  *
- * The running coroutine is cancelled when the [AsyncResult] is cancelled or otherwise completed.
+ * By default, the co-routine is immediately scheduled for execution. Other options can be specified via `start`
+ * parameter. See [CoroutineStart] for details. A value of [CoroutineStart.LAZY] is not supported (since
+ * `AsyncResult` framework does not provide the corresponding capability) and produces [IllegalArgumentException].
  *
- * The [context] for the new coroutine can be explicitly specified. See [CoroutineDispatcher] for the standard context
- * implementations that are provided by `kotlinx.coroutines`. The [context][CoroutineScope.coroutineContext] of the
- * parent coroutine from its [scope][CoroutineScope] may be used, in which case the [Job] of the resulting coroutine is
- * a child of the job of the parent coroutine. The parent job may be also explicitly specified using [parent]
- * parameter.
+ * See [newCoroutineContext][CoroutineScope.newCoroutineContext] for a description of debugging facilities that are
+ * available for newly created co-routine.
  *
- * If the context does not have any dispatcher nor any other [ContinuationInterceptor], then [DefaultDispatcher] is
- * used.
- *
- * By default, the coroutine is immediately scheduled for execution. Other options can be specified via `start`
- * parameter. See [CoroutineStart] for details. A value of [CoroutineStart.LAZY] is not supported (since [AsyncResult]
- * does not provide the corresponding capability) and produces [IllegalArgumentException].
- *
- * See [newCoroutineContext] for a description of debugging facilities that are available for newly created coroutine.
- *
- * @param context context of the coroutine. The default value is [DefaultDispatcher].
- * @param start coroutine start option. The default value is [CoroutineStart.DEFAULT].
- * @param parent explicitly specifies the parent job, overrides job from the [context] (if any).
- * @param block the coroutine code.
+ * @param context Additional to [CoroutineScope.coroutineContext] context of the coroutine.
+ * @param start Co-routine start option. The default value is [CoroutineStart.DEFAULT].
+ * @param block The co-routine code.
  */
-fun <T> asyncResult(
-  context: CoroutineContext = DefaultDispatcher,
+fun <T> CoroutineScope.asyncResult(
+  context: CoroutineContext = Dispatchers.Default,
   start: CoroutineStart = CoroutineStart.DEFAULT,
-  parent: Job? = null,
   block: suspend CoroutineScope.() -> T
 ): AsyncResult<T> {
   require(!start.isLazy) { "$start start is not supported" }
-  val newContext = newCoroutineContext(context, parent)
+  val newContext = this.newCoroutineContext(context)
   val job = Job(newContext[Job])
   val coroutine = AsyncResultCoroutine<T>(newContext + job)
   job.invokeOnCompletion { coroutine.result.cancel() }
@@ -121,7 +110,7 @@ fun <T> AsyncResult<T>.asDeferred(): Deferred<T> {
     } catch (e: Throwable) {
       // unwrap original cause from CompletionException
       val original = (e as? CompletionException)?.cause ?: e
-      CompletableDeferred<T>().also { it.completeExceptionally(original) }
+      CompletableDeferred<T>().also { it.cancel(original) }
     }
   }
   val result = CompletableDeferred<T>()
@@ -129,7 +118,7 @@ fun <T> AsyncResult<T>.asDeferred(): Deferred<T> {
     if (exception == null) {
       result.complete(value)
     } else {
-      result.completeExceptionally(exception)
+      result.cancel(exception)
     }
   }
   result.invokeOnCompletion { this.cancel() }

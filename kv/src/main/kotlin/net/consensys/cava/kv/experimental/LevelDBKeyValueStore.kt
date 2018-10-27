@@ -12,7 +12,9 @@
  */
 package net.consensys.cava.kv.experimental
 
-import kotlinx.coroutines.experimental.newFixedThreadPoolContext
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.IO
 import kotlinx.coroutines.experimental.withContext
 import net.consensys.cava.bytes.Bytes
 import org.fusesource.leveldbjni.JniDBFactory
@@ -21,14 +23,13 @@ import org.iq80.leveldb.Options
 import java.io.IOException
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.coroutines.experimental.CoroutineContext
 
 /**
  * A key-value store backed by LevelDB.
  *
  * @param dbPath The path to the levelDB database.
  * @param options Options for the levelDB database.
- * @param context The co-routine context for blocking tasks.
+ * @param dispatcher The co-routine context for blocking tasks.
  * @return A key-value store.
  * @throws IOException If an I/O error occurs.
  * @constructor Open a LevelDB-backed key-value store.
@@ -39,9 +40,7 @@ class LevelDBKeyValueStore
 constructor(
   dbPath: Path,
   options: Options = Options().createIfMissing(true).cacheSize((100 * 1048576).toLong()),
-  // TODO: replace with IO context when https://github.com/Kotlin/kotlinx.coroutines/issues/79 is resolved
-  private val context: CoroutineContext =
-    newFixedThreadPoolContext(Runtime.getRuntime().availableProcessors(), "LevelDBKeyValueStore")
+  private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : KeyValueStore, net.consensys.cava.kv.LevelDBKeyValueStore {
 
   private val db: DB
@@ -51,7 +50,7 @@ constructor(
     db = JniDBFactory.factory.open(dbPath.toFile(), options)
   }
 
-  override suspend fun get(key: Bytes): Bytes? = withContext(context) {
+  override suspend fun get(key: Bytes): Bytes? = withContext(dispatcher) {
     val rawValue = db[key.toArrayUnsafe()]
     if (rawValue == null) {
       null
@@ -60,7 +59,7 @@ constructor(
     }
   }
 
-  override suspend fun put(key: Bytes, value: Bytes) = withContext(context) {
+  override suspend fun put(key: Bytes, value: Bytes) = withContext(dispatcher) {
     db.put(key.toArrayUnsafe(), value.toArrayUnsafe())
   }
 

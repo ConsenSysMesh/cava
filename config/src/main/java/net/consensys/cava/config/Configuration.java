@@ -126,7 +126,7 @@ public interface Configuration {
   }
 
   /**
-   * @return <tt>true</tt> if the TOML document contained errors.
+   * @return {@code true} if the TOML document contained errors.
    */
   default boolean hasErrors() {
     return !(errors().isEmpty());
@@ -190,7 +190,7 @@ public interface Configuration {
    * Check if a key is set in this configuration.
    *
    * @param key A configuration key (e.g. {@code "server.address.hostname"}).
-   * @return <tt>true</tt> if the entry is present in this configuration.
+   * @return {@code true} if the entry is present in this configuration.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   boolean contains(String key);
@@ -199,7 +199,7 @@ public interface Configuration {
    * Get an object from this configuration.
    *
    * @param key A configuration key (e.g. {@code "server.address.hostname"}).
-   * @return The value, or <tt>null</tt> if no value was set in the configuration.
+   * @return The value, or {@code null} if no value was set in the configuration.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   @Nullable
@@ -209,7 +209,7 @@ public interface Configuration {
    * Get the position where a key is defined in the TOML document.
    *
    * @param key A configuration key (e.g. {@code "server.address.port"}).
-   * @return The input position, or <tt>null</tt> if the key was not set in this configuration.
+   * @return The input position, or {@code null} if the key was not set in this configuration.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   @Nullable

@@ -44,7 +44,7 @@ public interface TomlTable {
   int size();
 
   /**
-   * @return <tt>true</tt> if there are no entries in this table.
+   * @return {@code true} if there are no entries in this table.
    */
   boolean isEmpty();
 
@@ -52,7 +52,7 @@ public interface TomlTable {
    * Check if a key was set in the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.port"}).
-   * @return <tt>true</tt> if the key was set in the TOML document.
+   * @return {@code true} if the key was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean contains(String dottedKey) {
@@ -64,7 +64,7 @@ public interface TomlTable {
    * Check if a key was set in the TOML document.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the key was set in the TOML document.
+   * @return {@code true} if the key was set in the TOML document.
    */
   default boolean contains(List<String> path) {
     try {
@@ -100,7 +100,7 @@ public interface TomlTable {
   /**
    * Get all the dotted keys of this table.
    *
-   * @param includeTables If <tt>true</tt>, also include paths to intermediary and empty tables.
+   * @param includeTables If {@code true}, also include paths to intermediary and empty tables.
    * @return A set containing all the dotted keys of this table.
    */
   default Set<String> dottedKeySet(boolean includeTables) {
@@ -122,7 +122,7 @@ public interface TomlTable {
   /**
    * Get all the paths in this table.
    *
-   * @param includeTables If <tt>true</tt>, also include paths to intermediary and empty tables.
+   * @param includeTables If {@code true}, also include paths to intermediary and empty tables.
    * @return A set containing all the key paths of this table.
    */
   Set<List<String>> keyPathSet(boolean includeTables);
@@ -131,7 +131,7 @@ public interface TomlTable {
    * Get a value from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If any element of the path preceding the final key is not a table.
    */
@@ -145,7 +145,7 @@ public interface TomlTable {
    * Get a value from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If any element of the path preceding the final key is not a table.
    */
   @Nullable
@@ -155,7 +155,7 @@ public interface TomlTable {
    * Get the position where a key is defined in the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The input position, or <tt>null</tt> if the key was not set in the TOML document.
+   * @return The input position, or {@code null} if the key was not set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If any element of the path preceding the final key is not a table.
    */
@@ -169,7 +169,7 @@ public interface TomlTable {
    * Get the position where a key is defined in the TOML document.
    *
    * @param path The key path.
-   * @return The input position, or <tt>null</tt> if the key was not set in the TOML document.
+   * @return The input position, or {@code null} if the key was not set in the TOML document.
    * @throws TomlInvalidTypeException If any element of the path preceding the final key is not a table.
    */
   @Nullable
@@ -179,7 +179,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a string.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.hostname"}).
-   * @return <tt>true</tt> if the value can be obtained as a string.
+   * @return {@code true} if the value can be obtained as a string.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isString(String dottedKey) {
@@ -191,7 +191,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a string.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a string.
+   * @return {@code true} if the value can be obtained as a string.
    */
   default boolean isString(List<String> path) {
     Object value;
@@ -207,7 +207,7 @@ public interface TomlTable {
    * Get a string from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.hostname"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a string, or any element of the path preceding the
    *         final key is not a table.
@@ -222,7 +222,7 @@ public interface TomlTable {
    * Get a string from the TOML document.
    *
    * @param path A dotted key (e.g. {@code "server.address.hostname"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a string, or any element of the path preceding the
    *         final key is not a table.
    */
@@ -275,7 +275,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a long.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as a long.
+   * @return {@code true} if the value can be obtained as a long.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isLong(String dottedKey) {
@@ -287,7 +287,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a long.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a long.
+   * @return {@code true} if the value can be obtained as a long.
    */
   default boolean isLong(List<String> path) {
     Object value;
@@ -303,7 +303,7 @@ public interface TomlTable {
    * Get a long from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a long, or any element of the path preceding the
    *         final key is not a table.
@@ -318,7 +318,7 @@ public interface TomlTable {
    * Get a long from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a long, or any element of the path preceding the
    *         final key is not a table.
    */
@@ -371,7 +371,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a double.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as a double.
+   * @return {@code true} if the value can be obtained as a double.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isDouble(String dottedKey) {
@@ -383,7 +383,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a double.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a double.
+   * @return {@code true} if the value can be obtained as a double.
    */
   default boolean isDouble(List<String> path) {
     Object value;
@@ -399,7 +399,7 @@ public interface TomlTable {
    * Get a double from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a double, or any element of the path preceding the
    *         final key is not a table.
@@ -414,7 +414,7 @@ public interface TomlTable {
    * Get a double from the TOML document.
    *
    * @param path A dotted key.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a double, or any element of the path preceding the
    *         final key is not a table.
    */
@@ -467,7 +467,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a boolean.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as a boolean.
+   * @return {@code true} if the value can be obtained as a boolean.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isBoolean(String dottedKey) {
@@ -479,7 +479,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a boolean.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a boolean.
+   * @return {@code true} if the value can be obtained as a boolean.
    */
   default boolean isBoolean(List<String> path) {
     Object value;
@@ -495,7 +495,7 @@ public interface TomlTable {
    * Get a boolean from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a boolean, or any element of the path preceding
    *         the final key is not a table.
@@ -510,7 +510,7 @@ public interface TomlTable {
    * Get a boolean from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a boolean, or any element of the path preceding
    *         the final key is not a table.
    */
@@ -563,7 +563,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is an {@link OffsetDateTime}.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as an {@link OffsetDateTime}.
+   * @return {@code true} if the value can be obtained as an {@link OffsetDateTime}.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isOffsetDateTime(String dottedKey) {
@@ -575,7 +575,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is an {@link OffsetDateTime}.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as an {@link OffsetDateTime}.
+   * @return {@code true} if the value can be obtained as an {@link OffsetDateTime}.
    */
   default boolean isOffsetDateTime(List<String> path) {
     Object value;
@@ -591,7 +591,7 @@ public interface TomlTable {
    * Get an offset date time from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not an {@link OffsetDateTime}, or any element of the
    *         path preceding the final key is not a table.
@@ -606,7 +606,7 @@ public interface TomlTable {
    * Get an offset date time from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not an {@link OffsetDateTime}, or any element of the
    *         path preceding the final key is not a table.
    */
@@ -659,7 +659,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a {@link LocalDateTime}.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as a {@link LocalDateTime}.
+   * @return {@code true} if the value can be obtained as a {@link LocalDateTime}.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isLocalDateTime(String dottedKey) {
@@ -671,7 +671,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a {@link LocalDateTime}.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a {@link LocalDateTime}.
+   * @return {@code true} if the value can be obtained as a {@link LocalDateTime}.
    */
   default boolean isLocalDateTime(List<String> path) {
     Object value;
@@ -687,7 +687,7 @@ public interface TomlTable {
    * Get a local date time from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a {@link LocalDateTime}, or any element of the
    *         path preceding the final key is not a table.
@@ -702,7 +702,7 @@ public interface TomlTable {
    * Get a local date time from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a {@link LocalDateTime}, or any element of the
    *         path preceding the final key is not a table.
    */
@@ -755,7 +755,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a {@link LocalDate}.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as a {@link LocalDate}.
+   * @return {@code true} if the value can be obtained as a {@link LocalDate}.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isLocalDate(String dottedKey) {
@@ -767,7 +767,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a {@link LocalDate}.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a {@link LocalDate}.
+   * @return {@code true} if the value can be obtained as a {@link LocalDate}.
    */
   default boolean isLocalDate(List<String> path) {
     Object value;
@@ -783,7 +783,7 @@ public interface TomlTable {
    * Get a local date from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a {@link LocalDate}, or any element of the path
    *         preceding the final key is not a table.
@@ -798,7 +798,7 @@ public interface TomlTable {
    * Get a local date from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a {@link LocalDate}, or any element of the path
    *         preceding the final key is not a table.
    */
@@ -851,7 +851,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a {@link LocalTime}.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return <tt>true</tt> if the value can be obtained as a {@link LocalTime}.
+   * @return {@code true} if the value can be obtained as a {@link LocalTime}.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isLocalTime(String dottedKey) {
@@ -863,7 +863,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a {@link LocalTime}.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a {@link LocalTime}.
+   * @return {@code true} if the value can be obtained as a {@link LocalTime}.
    */
   default boolean isLocalTime(List<String> path) {
     Object value;
@@ -879,7 +879,7 @@ public interface TomlTable {
    * Get a local time from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address.port"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a {@link LocalTime}, or any element of the path
    *         preceding the final key is not a table.
@@ -894,7 +894,7 @@ public interface TomlTable {
    * Get a local time from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a {@link LocalTime}, or any element of the path
    *         preceding the final key is not a table.
    */
@@ -947,7 +947,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is an array.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.addresses"}).
-   * @return <tt>true</tt> if the value can be obtained as an array.
+   * @return {@code true} if the value can be obtained as an array.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isArray(String dottedKey) {
@@ -959,7 +959,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is an array.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as an array.
+   * @return {@code true} if the value can be obtained as an array.
    */
   default boolean isArray(List<String> path) {
     Object value;
@@ -975,7 +975,7 @@ public interface TomlTable {
    * Get an array from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.addresses"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not an array, or any element of the path preceding the
    *         final key is not a table.
@@ -990,7 +990,7 @@ public interface TomlTable {
    * Get an array from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not an array, or any element of the path preceding the
    *         final key is not a table.
    */
@@ -1040,7 +1040,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a table.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address"}).
-   * @return <tt>true</tt> if the value can be obtained as a table.
+   * @return {@code true} if the value can be obtained as a table.
    * @throws IllegalArgumentException If the key cannot be parsed.
    */
   default boolean isTable(String dottedKey) {
@@ -1052,7 +1052,7 @@ public interface TomlTable {
    * Check if a value in the TOML document is a table.
    *
    * @param path The key path.
-   * @return <tt>true</tt> if the value can be obtained as a table.
+   * @return {@code true} if the value can be obtained as a table.
    */
   default boolean isTable(List<String> path) {
     Object value;
@@ -1068,7 +1068,7 @@ public interface TomlTable {
    * Get a table from the TOML document.
    *
    * @param dottedKey A dotted key (e.g. {@code "server.address"}).
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws IllegalArgumentException If the key cannot be parsed.
    * @throws TomlInvalidTypeException If the value is present but not a table, or any element of the path preceding the
    *         final key is not a table.
@@ -1083,7 +1083,7 @@ public interface TomlTable {
    * Get a table from the TOML document.
    *
    * @param path The key path.
-   * @return The value, or <tt>null</tt> if no value was set in the TOML document.
+   * @return The value, or {@code null} if no value was set in the TOML document.
    * @throws TomlInvalidTypeException If the value is present but not a table, or any element of the path preceding the
    *         final key is not a table.
    */

@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.trie.experimental
 
+import kotlinx.coroutines.experimental.CoroutineDispatcher
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.GlobalScope
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.coroutines.experimental.asyncCompletion
@@ -38,7 +41,18 @@ interface MerkleTrie<in K, V> : net.consensys.cava.trie.MerkleTrie<K, V> {
    * @return An Optional containing the value that corresponds to the specified key, or an empty Optional if no such
    * value exists.
    */
-  override fun getAsync(key: K): AsyncResult<V?> = asyncResult { get(key) }
+  override fun getAsync(key: K): AsyncResult<V?> = getAsync(Dispatchers.Default, key)
+
+  /**
+   * Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.
+   *
+   * @param key The key of the value to be returned.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return An Optional containing the value that corresponds to the specified key, or an empty Optional if no such
+   * value exists.
+   */
+  fun getAsync(dispatcher: CoroutineDispatcher, key: K): AsyncResult<V?> =
+    GlobalScope.asyncResult(dispatcher) { get(key) }
 
   /**
    * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
@@ -60,7 +74,20 @@ interface MerkleTrie<in K, V> : net.consensys.cava.trie.MerkleTrie<K, V> {
    * @param value The value to associate the key with.
    * @return A completion that will complete when the value has been put into the trie.
    */
-  override fun putAsync(key: K, value: V?): AsyncCompletion = asyncCompletion { put(key, value) }
+  override fun putAsync(key: K, value: V?): AsyncCompletion = putAsync(Dispatchers.Default, key, value)
+
+  /**
+   * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
+   *
+   * If the value is null, deletes the value that corresponds to the specified key, if such a value exists.
+   *
+   * @param key The key that corresponds to the value to be updated.
+   * @param value The value to associate the key with.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return A completion that will complete when the value has been put into the trie.
+   */
+  fun putAsync(dispatcher: CoroutineDispatcher, key: K, value: V?): AsyncCompletion =
+    GlobalScope.asyncCompletion(dispatcher) { put(key, value) }
 
   /**
    * Deletes the value that corresponds to the specified key, if such a value exists.
@@ -76,5 +103,15 @@ interface MerkleTrie<in K, V> : net.consensys.cava.trie.MerkleTrie<K, V> {
    * @param key The key of the value to be deleted.
    * @return A completion that will complete when the value has been removed.
    */
-  override fun removeAsync(key: K): AsyncCompletion = asyncCompletion { remove(key) }
+  override fun removeAsync(key: K): AsyncCompletion = removeAsync(Dispatchers.Default, key)
+
+  /**
+   * Deletes the value that corresponds to the specified key, if such a value exists.
+   *
+   * @param key The key of the value to be deleted.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return A completion that will complete when the value has been removed.
+   */
+  fun removeAsync(dispatcher: CoroutineDispatcher, key: K): AsyncCompletion =
+    GlobalScope.asyncCompletion(dispatcher) { remove(key) }
 }

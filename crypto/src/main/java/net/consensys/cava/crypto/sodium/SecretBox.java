@@ -370,7 +370,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, Key key, Nonce nonce) {
@@ -384,7 +384,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
@@ -412,7 +412,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, Key key, Nonce nonce) {
@@ -427,7 +427,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param key The key to use for decryption.
    * @param nonce The nonce that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
@@ -1012,7 +1012,7 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, String password) {
@@ -1030,7 +1030,7 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, String password) {
@@ -1049,7 +1049,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(Bytes cipherText, String password, PasswordHash.Algorithm algorithm) {
@@ -1063,7 +1063,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decrypt(byte[] cipherText, String password, PasswordHash.Algorithm algorithm) {
@@ -1076,7 +1076,7 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptInteractive(Bytes cipherText, String password) {
@@ -1094,7 +1094,7 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptInteractive(byte[] cipherText, String password) {
@@ -1113,7 +1113,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptInteractive(Bytes cipherText, String password, PasswordHash.Algorithm algorithm) {
@@ -1132,7 +1132,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptInteractive(byte[] cipherText, String password, PasswordHash.Algorithm algorithm) {
@@ -1150,7 +1150,7 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptSensitive(Bytes cipherText, String password) {
@@ -1168,7 +1168,7 @@ public final class SecretBox {
    *
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptSensitive(byte[] cipherText, String password) {
@@ -1187,7 +1187,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptSensitive(Bytes cipherText, String password, PasswordHash.Algorithm algorithm) {
@@ -1201,7 +1201,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptSensitive(byte[] cipherText, String password, PasswordHash.Algorithm algorithm) {
@@ -1216,7 +1216,7 @@ public final class SecretBox {
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decrypt(
@@ -1237,7 +1237,7 @@ public final class SecretBox {
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    * @throws UnsupportedOperationException If the specified algorithm is not supported by the currently loaded sodium
    *         native library.
    */
@@ -1294,7 +1294,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, String password) {
@@ -1315,7 +1315,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, String password) {
@@ -1336,7 +1336,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(Bytes cipherText, Bytes mac, String password, PasswordHash.Algorithm algorithm) {
@@ -1357,7 +1357,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(
@@ -1382,7 +1382,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptInteractiveDetached(Bytes cipherText, Bytes mac, String password) {
@@ -1403,7 +1403,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptInteractiveDetached(byte[] cipherText, byte[] mac, String password) {
@@ -1424,7 +1424,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptInteractiveDetached(
@@ -1449,7 +1449,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptInteractiveDetached(
@@ -1474,7 +1474,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptSensitiveDetached(Bytes cipherText, Bytes mac, String password) {
@@ -1495,7 +1495,7 @@ public final class SecretBox {
    * @param cipherText The cipher text to decrypt.
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptSensitiveDetached(byte[] cipherText, byte[] mac, String password) {
@@ -1516,7 +1516,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptSensitiveDetached(
@@ -1541,7 +1541,7 @@ public final class SecretBox {
    * @param mac The message authentication code.
    * @param password The password that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptSensitiveDetached(
@@ -1568,7 +1568,7 @@ public final class SecretBox {
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static Bytes decryptDetached(
@@ -1593,7 +1593,7 @@ public final class SecretBox {
    * @param opsLimit The opsLimit that was used for encryption.
    * @param memLimit The memLimit that was used for encryption.
    * @param algorithm The algorithm that was used for encryption.
-   * @return The decrypted data, or <tt>null</tt> if verification failed.
+   * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
   public static byte[] decryptDetached(

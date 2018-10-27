@@ -27,7 +27,7 @@ interface MerkleStorage {
    * Get the stored content under the given hash.
    *
    * @param hash The hash for the content.
-   * @return An [AsyncResult] that will complete with the stored content or <tt>null</tt> if not found.
+   * @return An [AsyncResult] that will complete with the stored content or {@code null} if not found.
    */
   fun getAsync(hash: Bytes32): AsyncResult<Bytes?>
 

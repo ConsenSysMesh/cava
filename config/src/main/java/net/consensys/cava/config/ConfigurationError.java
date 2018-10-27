@@ -65,7 +65,7 @@ public final class ConfigurationError extends RuntimeException {
   }
 
   /**
-   * @return The position in the input where the error occurred, or <tt>null</tt> if no position information is
+   * @return The position in the input where the error occurred, or {@code null} if no position information is
    *         available.
    */
   @Nullable
