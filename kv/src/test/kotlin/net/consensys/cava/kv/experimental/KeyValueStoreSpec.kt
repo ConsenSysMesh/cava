@@ -15,7 +15,7 @@ package net.consensys.cava.kv.experimental
 import com.google.common.io.MoreFiles
 import com.google.common.io.RecursiveDeleteOption
 import com.winterbe.expekt.should
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.kv.experimental.Vars.foo
 import net.consensys.cava.kv.experimental.Vars.foobar

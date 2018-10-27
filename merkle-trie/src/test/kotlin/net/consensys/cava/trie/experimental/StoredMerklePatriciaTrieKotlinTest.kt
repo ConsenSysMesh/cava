@@ -12,7 +12,7 @@
  */
 package net.consensys.cava.trie.experimental
 
-import kotlinx.coroutines.experimental.runBlocking
+import kotlinx.coroutines.runBlocking
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.junit.BouncyCastleExtension

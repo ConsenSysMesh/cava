@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.net.coroutines.experimental
+package net.consensys.cava.net.coroutines
 
 import java.io.IOException
 import java.net.SocketAddress

@@ -10,25 +10,30 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.concurrent.coroutines.experimental
+package net.consensys.cava.concurrent.coroutines
 
-import kotlinx.coroutines.experimental.CancellableContinuation
-import kotlinx.coroutines.experimental.CompletableDeferred
-import kotlinx.coroutines.experimental.CoroutineScope
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.newCoroutineContext
-import kotlinx.coroutines.experimental.suspendCancellableCoroutine
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.newCoroutineContext
+import kotlinx.coroutines.suspendCancellableCoroutine
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.CompletableAsyncCompletion
 import java.util.concurrent.CancellationException
 import java.util.concurrent.CompletionException
 import java.util.function.Consumer
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.ContinuationInterceptor
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.ContinuationInterceptor
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * Starts new co-routine and returns its result as an implementation of [AsyncCompletion].
@@ -50,6 +55,7 @@ import kotlin.coroutines.experimental.CoroutineContext
  * @param start Co-routine start option. The default value is [CoroutineStart.DEFAULT].
  * @param block The co-routine code.
  */
+@UseExperimental(InternalCoroutinesApi::class, ObsoleteCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 fun CoroutineScope.asyncCompletion(
   context: CoroutineContext = Dispatchers.Default,
   start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -59,24 +65,21 @@ fun CoroutineScope.asyncCompletion(
   val newContext = this.newCoroutineContext(context)
   val job = Job(newContext[Job])
   val coroutine = AsyncCompletionCoroutine(newContext + job)
-  job.invokeOnCompletion { coroutine.completion.cancel() }
-  coroutine.completion.whenComplete { exception -> job.cancel(exception) }
+  job.invokeOnCompletion { coroutine.asynCompletion.cancel() }
+  coroutine.asynCompletion.whenComplete { job.cancel() }
   start(block, receiver = coroutine, completion = coroutine) // use the specified start strategy
-  return coroutine.completion
+  return coroutine.asynCompletion
 }
 
 private class AsyncCompletionCoroutine(
   override val context: CoroutineContext,
-  val completion: CompletableAsyncCompletion = AsyncCompletion.incomplete()
+  val asynCompletion: CompletableAsyncCompletion = AsyncCompletion.incomplete()
 ) : Continuation<Unit>, CoroutineScope {
   override val coroutineContext: CoroutineContext get() = context
-  override val isActive: Boolean get() = context[Job]!!.isActive
-  override fun resume(value: Unit) {
-    completion.complete()
-  }
-
-  override fun resumeWithException(exception: Throwable) {
-    completion.completeExceptionally(exception)
+  override fun resumeWith(result: Result<Unit>) {
+    result
+      .onSuccess { asynCompletion.complete() }
+      .onFailure { asynCompletion.completeExceptionally(it) }
   }
 }
 
@@ -84,9 +87,10 @@ private class AsyncCompletionCoroutine(
  * Converts this deferred value to a [AsyncCompletion].
  * The deferred value is cancelled when the returned [AsyncCompletion] is cancelled or otherwise completed.
  */
+@UseExperimental(ObsoleteCoroutinesApi::class)
 fun Deferred<Unit>.asAsyncCompletion(): AsyncCompletion {
   val asyncCompletion = AsyncCompletion.incomplete()
-  asyncCompletion.whenComplete { exception -> cancel(exception) }
+  asyncCompletion.whenComplete { cancel() }
   invokeOnCompletion {
     try {
       asyncCompletion.complete()
@@ -101,9 +105,10 @@ fun Deferred<Unit>.asAsyncCompletion(): AsyncCompletion {
  * Converts this job to a [AsyncCompletion].
  * The job is cancelled when the returned [AsyncCompletion] is cancelled or otherwise completed.
  */
+@UseExperimental(ObsoleteCoroutinesApi::class)
 fun Job.asAsyncCompletion(): AsyncCompletion {
   val asyncCompletion = AsyncCompletion.incomplete()
-  asyncCompletion.whenComplete { exception -> cancel(exception) }
+  asyncCompletion.whenComplete { cancel() }
   invokeOnCompletion {
     try {
       asyncCompletion.complete()
@@ -118,6 +123,7 @@ fun Job.asAsyncCompletion(): AsyncCompletion {
  * Converts this [AsyncCompletion] to an instance of [Deferred].
  * The [AsyncCompletion] is cancelled when the resulting deferred is cancelled.
  */
+@UseExperimental(ObsoleteCoroutinesApi::class)
 fun AsyncCompletion.asDeferred(): Deferred<Unit> {
   // Fast path if already completed
   if (isDone) {
@@ -126,7 +132,7 @@ fun AsyncCompletion.asDeferred(): Deferred<Unit> {
     } catch (e: Throwable) {
       // unwrap original cause from CompletionException
       val original = (e as? CompletionException)?.cause ?: e
-      CompletableDeferred<Unit>().also { it.cancel(original) }
+      CompletableDeferred<Unit>().also { it.completeExceptionally(original) }
     }
   }
   val result = CompletableDeferred<Unit>()
@@ -134,7 +140,7 @@ fun AsyncCompletion.asDeferred(): Deferred<Unit> {
     if (exception == null) {
       result.complete(Unit)
     } else {
-      result.cancel(exception)
+      result.completeExceptionally(exception)
     }
   }
   result.invokeOnCompletion { this.cancel() }
@@ -177,9 +183,12 @@ private class ContinuationConsumer(
 ) : Consumer<Throwable?> {
   override fun accept(exception: Throwable?) {
     val cont = this.cont ?: return // atomically read current value unless null
-    if (exception == null) // the future has been completed normally
+    if (exception == null) {
+      // the future has been completed normally
       cont.resume(Unit)
-    else // the future has completed with an exception
-      cont.resumeWithException(exception)
+    } else {
+      // the future has completed with an exception, unwrap it to provide consistent view of .await() result and to propagate only original exception
+      cont.resumeWithException((exception as? CompletionException)?.cause ?: exception)
+    }
   }
 }

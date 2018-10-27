@@ -12,7 +12,8 @@
  */
 package net.consensys.cava.trie.experimental
 
-import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.concurrent.AsyncCompletion
@@ -67,6 +68,7 @@ class MerklePatriciaTrie<V>(
   override suspend fun get(key: Bytes): V? = root.accept(getVisitor, bytesToPath(key)).value()
 
   // This implementation does not suspend, so we can use the unconfined context
+  @UseExperimental(ExperimentalCoroutinesApi::class)
   override fun getAsync(key: Bytes): AsyncResult<V?> = getAsync(Dispatchers.Unconfined, key)
 
   override suspend fun put(key: Bytes, value: V?) {
@@ -77,6 +79,7 @@ class MerklePatriciaTrie<V>(
   }
 
   // This implementation does not suspend, so we can use the unconfined context
+  @UseExperimental(ExperimentalCoroutinesApi::class)
   override fun putAsync(key: Bytes, value: V?): AsyncCompletion = putAsync(Dispatchers.Unconfined, key, value)
 
   override suspend fun remove(key: Bytes) {
@@ -84,6 +87,7 @@ class MerklePatriciaTrie<V>(
   }
 
   // This implementation does not suspend, so we can use the unconfined context
+  @UseExperimental(ExperimentalCoroutinesApi::class)
   override fun removeAsync(key: Bytes): AsyncCompletion = removeAsync(Dispatchers.Unconfined, key)
 
   override fun rootHash(): Bytes32 = root.hash()

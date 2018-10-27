@@ -12,13 +12,13 @@
  */
 package net.consensys.cava.trie.experimental
 
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.GlobalScope
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
-import net.consensys.cava.concurrent.coroutines.experimental.asyncCompletion
-import net.consensys.cava.concurrent.coroutines.experimental.asyncResult
+import net.consensys.cava.concurrent.coroutines.asyncCompletion
+import net.consensys.cava.concurrent.coroutines.asyncResult
 
 /**
  * A Merkle Trie.
