@@ -10,25 +10,30 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.concurrent.coroutines.experimental
+package net.consensys.cava.concurrent.coroutines
 
-import kotlinx.coroutines.experimental.CancellableContinuation
-import kotlinx.coroutines.experimental.CompletableDeferred
-import kotlinx.coroutines.experimental.CoroutineScope
-import kotlinx.coroutines.experimental.CoroutineStart
-import kotlinx.coroutines.experimental.Deferred
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.Job
-import kotlinx.coroutines.experimental.newCoroutineContext
-import kotlinx.coroutines.experimental.suspendCancellableCoroutine
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.ObsoleteCoroutinesApi
+import kotlinx.coroutines.newCoroutineContext
+import kotlinx.coroutines.suspendCancellableCoroutine
 import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.CompletableAsyncResult
 import java.util.concurrent.CancellationException
 import java.util.concurrent.CompletionException
 import java.util.function.BiConsumer
-import kotlin.coroutines.experimental.Continuation
-import kotlin.coroutines.experimental.ContinuationInterceptor
-import kotlin.coroutines.experimental.CoroutineContext
+import kotlin.Result
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * Starts new co-routine and returns its result as an implementation of [AsyncResult].
@@ -50,6 +55,7 @@ import kotlin.coroutines.experimental.CoroutineContext
  * @param start Co-routine start option. The default value is [CoroutineStart.DEFAULT].
  * @param block The co-routine code.
  */
+@UseExperimental(InternalCoroutinesApi::class, ObsoleteCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 fun <T> CoroutineScope.asyncResult(
   context: CoroutineContext = Dispatchers.Default,
   start: CoroutineStart = CoroutineStart.DEFAULT,
@@ -59,24 +65,21 @@ fun <T> CoroutineScope.asyncResult(
   val newContext = this.newCoroutineContext(context)
   val job = Job(newContext[Job])
   val coroutine = AsyncResultCoroutine<T>(newContext + job)
-  job.invokeOnCompletion { coroutine.result.cancel() }
-  coroutine.result.whenComplete { _, exception -> job.cancel(exception) }
+  job.invokeOnCompletion { coroutine.asyncResult.cancel() }
+  coroutine.asyncResult.whenComplete { _, _ -> job.cancel() }
   start(block, receiver = coroutine, completion = coroutine) // use the specified start strategy
-  return coroutine.result
+  return coroutine.asyncResult
 }
 
 private class AsyncResultCoroutine<T>(
   override val context: CoroutineContext,
-  val result: CompletableAsyncResult<T> = AsyncResult.incomplete()
+  val asyncResult: CompletableAsyncResult<T> = AsyncResult.incomplete()
 ) : Continuation<T>, CoroutineScope {
   override val coroutineContext: CoroutineContext get() = context
-  override val isActive: Boolean get() = context[Job]!!.isActive
-  override fun resume(value: T) {
-    result.complete(value)
-  }
-
-  override fun resumeWithException(exception: Throwable) {
-    result.completeExceptionally(exception)
+  override fun resumeWith(result: Result<T>) {
+    result
+      .onSuccess { asyncResult.complete(it) }
+      .onFailure { asyncResult.completeExceptionally(it) }
   }
 }
 
@@ -84,9 +87,10 @@ private class AsyncResultCoroutine<T>(
  * Converts this deferred value to an [AsyncResult].
  * The deferred value is cancelled when the returned [AsyncResult] is cancelled or otherwise completed.
  */
+@UseExperimental(ExperimentalCoroutinesApi::class, ObsoleteCoroutinesApi::class)
 fun <T> Deferred<T>.asAsyncResult(): AsyncResult<T> {
   val asyncResult = AsyncResult.incomplete<T>()
-  asyncResult.whenComplete { _, exception -> cancel(exception) }
+  asyncResult.whenComplete { _, _ -> cancel() }
   invokeOnCompletion {
     try {
       asyncResult.complete(getCompleted())
@@ -101,6 +105,7 @@ fun <T> Deferred<T>.asAsyncResult(): AsyncResult<T> {
  * Converts this [AsyncResult] to an instance of [Deferred].
  * The [AsyncResult] is cancelled when the resulting deferred is cancelled.
  */
+@UseExperimental(ObsoleteCoroutinesApi::class)
 fun <T> AsyncResult<T>.asDeferred(): Deferred<T> {
   // Fast path if already completed
   if (isDone) {
@@ -110,7 +115,7 @@ fun <T> AsyncResult<T>.asDeferred(): Deferred<T> {
     } catch (e: Throwable) {
       // unwrap original cause from CompletionException
       val original = (e as? CompletionException)?.cause ?: e
-      CompletableDeferred<T>().also { it.cancel(original) }
+      CompletableDeferred<T>().also { it.completeExceptionally(original) }
     }
   }
   val result = CompletableDeferred<T>()
@@ -118,7 +123,7 @@ fun <T> AsyncResult<T>.asDeferred(): Deferred<T> {
     if (exception == null) {
       result.complete(value)
     } else {
-      result.cancel(exception)
+      result.completeExceptionally(exception)
     }
   }
   result.invokeOnCompletion { this.cancel() }
@@ -160,11 +165,15 @@ suspend fun <T> AsyncResult<T>.await(): T {
 private class ContinuationBiConsumer<T>(
   @Volatile @JvmField var cont: Continuation<T>?
 ) : BiConsumer<T?, Throwable?> {
+  @Suppress("UNCHECKED_CAST")
   override fun accept(result: T?, exception: Throwable?) {
     val cont = this.cont ?: return // atomically read current value unless null
-    if (exception == null) // the future has been completed normally
-      cont.resume(result!!)
-    else // the future has completed with an exception
-      cont.resumeWithException(exception)
+    if (exception == null) {
+      // the future has been completed normally
+      cont.resume(result as T)
+    } else {
+      // the future has completed with an exception, unwrap it to provide consistent view of .await() result and to propagate only original exception
+      cont.resumeWithException((exception as? CompletionException)?.cause ?: exception)
+    }
   }
 }

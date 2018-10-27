@@ -16,7 +16,7 @@ import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
-import net.consensys.cava.concurrent.coroutines.experimental.await
+import net.consensys.cava.concurrent.coroutines.await
 
 /**
  * Storage for use in a [StoredMerklePatriciaTrie].

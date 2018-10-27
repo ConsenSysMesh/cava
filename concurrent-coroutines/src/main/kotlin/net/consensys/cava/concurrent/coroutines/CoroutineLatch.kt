@@ -10,11 +10,13 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.concurrent.coroutines.experimental
+package net.consensys.cava.concurrent.coroutines
 
-import kotlinx.coroutines.experimental.suspendCancellableCoroutine
+import kotlinx.coroutines.suspendCancellableCoroutine
 import java.util.concurrent.atomic.AtomicInteger
-import kotlin.coroutines.experimental.Continuation
+import kotlin.coroutines.Continuation
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
 
 /**
  * A co-routine synchronization aid that allows co-routines to wait until a set of operations being performed
@@ -82,7 +84,7 @@ class CoroutineLatch(initial: Int) {
     }
     suspendCancellableCoroutine { cont: Continuation<Unit> ->
       try {
-        var suspended = false
+        var suspended: Boolean
         synchronized(this) {
           suspended = atomicCount.get() > 0
           if (suspended) {

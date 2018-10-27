@@ -16,7 +16,7 @@ import io.lettuce.core.RedisClient
 import io.lettuce.core.RedisURI
 import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.async.RedisAsyncCommands
-import kotlinx.coroutines.experimental.future.await
+import kotlinx.coroutines.future.await
 import net.consensys.cava.bytes.Bytes
 import java.net.InetAddress
 import java.util.concurrent.CompletionStage

@@ -12,10 +12,9 @@
  */
 package net.consensys.cava.kv.experimental
 
-import kotlinx.coroutines.experimental.CoroutineDispatcher
-import kotlinx.coroutines.experimental.Dispatchers
-import kotlinx.coroutines.experimental.IO
-import kotlinx.coroutines.experimental.withContext
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import net.consensys.cava.bytes.Bytes
 import org.fusesource.leveldbjni.JniDBFactory
 import org.iq80.leveldb.DB
