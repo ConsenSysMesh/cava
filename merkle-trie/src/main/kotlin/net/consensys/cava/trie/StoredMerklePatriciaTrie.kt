@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
@@ -23,7 +23,7 @@ import java.util.function.Function
  *
  * @param <V> The type of values stored by this trie.
  */
-class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V>, net.consensys.cava.trie.StoredMerklePatriciaTrie<V> {
+class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V> {
 
   companion object {
     /**
@@ -67,6 +67,44 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V>, net.consensys.cava.tri
     @JvmStatic
     fun storingStrings(storage: MerkleStorage, rootHash: Bytes32): StoredMerklePatriciaTrie<String> =
       StoredMerklePatriciaTrie(storage, rootHash, ::stringSerializer, ::stringDeserializer)
+
+    /**
+     * Create a trie.
+     *
+     * @param storage The storage to use for persistence.
+     * @param valueSerializer A function for serializing values to bytes.
+     * @param valueDeserializer A function for deserializing values from bytes.
+     * @param <V> The serialized type.
+     * @return A new merkle trie.
+     */
+    @JvmStatic
+    fun <V> create(
+      storage: MerkleStorage,
+      valueSerializer: Function<V, Bytes>,
+      valueDeserializer: Function<Bytes, V>
+    ): StoredMerklePatriciaTrie<V> {
+      return StoredMerklePatriciaTrie(storage, valueSerializer::apply, valueDeserializer::apply)
+    }
+
+    /**
+     * Create a trie.
+     *
+     * @param storage The storage to use for persistence.
+     * @param rootHash The initial root has for the trie, which should be already present in `storage`.
+     * @param valueSerializer A function for serializing values to bytes.
+     * @param valueDeserializer A function for deserializing values from bytes.
+     * @param <V> The serialized type.
+     * @return A new merkle trie.
+     */
+    @JvmStatic
+    fun <V> create(
+      storage: MerkleStorage,
+      rootHash: Bytes32,
+      valueSerializer: Function<V, Bytes>,
+      valueDeserializer: Function<Bytes, V>
+    ): StoredMerklePatriciaTrie<V> {
+      return StoredMerklePatriciaTrie(storage, rootHash, valueSerializer::apply, valueDeserializer::apply)
+    }
   }
 
   private val getVisitor = GetVisitor<V>()
@@ -84,37 +122,9 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V>, net.consensys.cava.tri
    */
   constructor(
     storage: MerkleStorage,
-    valueSerializer: Function<V, Bytes>,
-    valueDeserializer: Function<Bytes, V>
-  ) : this(storage, EMPTY_TRIE_ROOT_HASH, valueSerializer::apply, valueDeserializer::apply)
-
-  /**
-   * Create a trie.
-   *
-   * @param storage The storage to use for persistence.
-   * @param valueSerializer A function for serializing values to bytes.
-   * @param valueDeserializer A function for deserializing values from bytes.
-   */
-  constructor(
-    storage: MerkleStorage,
     valueSerializer: (V) -> Bytes,
     valueDeserializer: (Bytes) -> V
   ) : this(storage, EMPTY_TRIE_ROOT_HASH, valueSerializer, valueDeserializer)
-
-  /**
-   * Create a trie.
-   *
-   * @param storage The storage to use for persistence.
-   * @param rootHash The initial root has for the trie, which should be already present in `storage`.
-   * @param valueSerializer A function for serializing values to bytes.
-   * @param valueDeserializer A function for deserializing values from bytes.
-   */
-  constructor(
-    storage: MerkleStorage,
-    rootHash: Bytes32,
-    valueSerializer: Function<V, Bytes>,
-    valueDeserializer: Function<Bytes, V>
-  ) : this(storage, rootHash, valueSerializer::apply, valueDeserializer::apply)
 
   /**
    * Create a trie.
@@ -159,7 +169,7 @@ class StoredMerklePatriciaTrie<V> : MerkleTrie<Bytes, V>, net.consensys.cava.tri
    * Note: nodes are already stored using [java.lang.ref.SoftReference]'s, so they will be released automatically
    * based on memory demands.
    */
-  override fun clearCache() {
+  fun clearCache() {
     val currentRoot = root
     if (currentRoot is StoredNode<*>) {
       currentRoot.unload()

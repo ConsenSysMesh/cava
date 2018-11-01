@@ -10,12 +10,13 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv.experimental
+package net.consensys.cava.kv
 
 import io.lettuce.core.RedisClient
 import io.lettuce.core.RedisURI
 import io.lettuce.core.api.StatefulRedisConnection
 import io.lettuce.core.api.async.RedisAsyncCommands
+import io.lettuce.core.codec.RedisCodec
 import kotlinx.coroutines.future.await
 import net.consensys.cava.bytes.Bytes
 import java.net.InetAddress
@@ -27,8 +28,54 @@ import java.util.concurrent.CompletionStage
  * @param uri The uri to the Redis store.
  * @constructor Open a Redis-backed key-value store.
  */
-class RedisKeyValueStore(uri: String)
-  : KeyValueStore, net.consensys.cava.kv.RedisKeyValueStore {
+class RedisKeyValueStore(uri: String) : KeyValueStore {
+
+  companion object {
+    /**
+     * Open a Redis-backed key-value store.
+     *
+     * @param uri The uri to the Redis store.
+     * @return A key-value store.
+     */
+    @JvmStatic
+    fun open(uri: String) = RedisKeyValueStore(uri)
+
+    /**
+     * Open a Redis-backed key-value store.
+     *
+     * @param port The port for the Redis store.
+     * @return A key-value store.
+     */
+    @JvmStatic
+    fun open(port: Int) = RedisKeyValueStore(port)
+
+    /**
+     * Open a Redis-backed key-value store.
+     *
+     * @param address The address for the Redis store.
+     * @return A key-value store.
+     */
+    @JvmStatic
+    fun open(address: InetAddress) = RedisKeyValueStore(6379, address)
+
+    /**
+     * Open a Redis-backed key-value store.
+     *
+     * @param port The port for the Redis store.
+     * @param address The address for the Redis store.
+     * @return A key-value store.
+     */
+    @JvmStatic
+    fun open(port: Int, address: InetAddress) = RedisKeyValueStore(port, address)
+
+    /**
+     * A [RedisCodec] for working with cava Bytes classes.
+     *
+     * @return A [RedisCodec] for working with cava Bytes classes.
+     */
+    @JvmStatic
+    fun codec(): RedisCodec<Bytes, Bytes> = RedisBytesCodec()
+  }
 
   private val conn: StatefulRedisConnection<Bytes, Bytes>
   private val asyncCommands: RedisAsyncCommands<Bytes, Bytes>
@@ -47,7 +94,7 @@ class RedisKeyValueStore(uri: String)
 
   init {
     val redisClient = RedisClient.create(uri)
-    conn = redisClient.connect(net.consensys.cava.kv.RedisKeyValueStore.codec())
+    conn = redisClient.connect(RedisKeyValueStore.codec())
     asyncCommands = conn.async()
   }
 

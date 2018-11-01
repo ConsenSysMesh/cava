@@ -10,24 +10,26 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import net.consensys.cava.bytes.Bytes
-import net.consensys.cava.trie.CompactEncoding
 
-internal class GetVisitor<V> : NodeVisitor<V> {
+internal class RemoveVisitor<V> : NodeVisitor<V> {
 
   override suspend fun visit(extensionNode: ExtensionNode<V>, path: Bytes): Node<V> {
     val extensionPath = extensionNode.path()
     val commonPathLength = extensionPath.commonPrefixLength(path)
     assert(commonPathLength < path.size()) { "Visiting path doesn't end with a non-matching terminator" }
 
-    if (commonPathLength < extensionPath.size()) {
-      // path diverges before the end of the extension, so it cannot match
-      return NullNode.instance()
+    if (commonPathLength == extensionPath.size()) {
+      val child = extensionNode.child()
+      val updatedChild = child.accept(this, path.slice(commonPathLength))
+      return extensionNode.replaceChild(updatedChild)
     }
 
-    return extensionNode.child().accept(this, path.slice(commonPathLength))
+    // The path diverges before the end of the extension, so it cannot match
+
+    return extensionNode
   }
 
   override suspend fun visit(branchNode: BranchNode<V>, path: Bytes): Node<V> {
@@ -35,21 +37,22 @@ internal class GetVisitor<V> : NodeVisitor<V> {
 
     val childIndex = path.get(0)
     if (childIndex == CompactEncoding.LEAF_TERMINATOR) {
-      return branchNode
+      return branchNode.removeValue()
     }
 
-    return branchNode.child(childIndex).accept(this, path.slice(1))
+    val updatedChild = branchNode.child(childIndex).accept(this, path.slice(1))
+    return branchNode.replaceChild(childIndex, updatedChild)
   }
 
   override suspend fun visit(leafNode: LeafNode<V>, path: Bytes): Node<V> {
     val leafPath = leafNode.path()
-
-    if (leafPath.commonPrefixLength(path) != leafPath.size()) {
+    val commonPathLength = leafPath.commonPrefixLength(path)
+    if (commonPathLength == leafPath.size()) {
       return NullNode.instance()
     }
-
     return leafNode
   }
 
-  override suspend fun visit(nullNode: NullNode<V>, path: Bytes): Node<V> = NullNode.instance()
+  override suspend fun visit(nullNode: NullNode<V>, path: Bytes): Node<V> =
+    NullNode.instance()
 }

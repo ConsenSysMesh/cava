@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv.experimental
+package net.consensys.cava.kv
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -35,12 +35,24 @@ import java.nio.file.Path
  * @constructor Open a MapDB-backed key-value store.
  */
 class MapDBKeyValueStore
-@JvmOverloads
 @Throws(IOException::class)
 constructor(
   dbPath: Path,
   private val dispatcher: CoroutineDispatcher = Dispatchers.IO
-) : KeyValueStore, net.consensys.cava.kv.MapDBKeyValueStore {
+) : KeyValueStore {
+
+  companion object {
+    /**
+     * Open a MapDB-backed key-value store.
+     *
+     * @param dbPath The path to the MapDB database.
+     * @return A key-value store.
+     * @throws IOException If an I/O error occurs.
+     */
+    @JvmStatic
+    @Throws(IOException::class)
+    fun open(dbPath: Path) = MapDBKeyValueStore(dbPath)
+  }
 
   private val db: DB
   private val storageData: HTreeMap<Bytes, Bytes>
@@ -48,7 +60,11 @@ constructor(
   init {
     Files.createDirectories(dbPath.parent)
     db = DBMaker.fileDB(dbPath.toFile()).transactionEnable().closeOnJvmShutdown().make()
-    storageData = db.hashMap("storageData", BytesSerializer(), BytesSerializer()).createOrOpen()
+    storageData = db.hashMap(
+      "storageData",
+      BytesSerializer(),
+      BytesSerializer()
+    ).createOrOpen()
   }
 
   override suspend fun get(key: Bytes): Bytes? = withContext(dispatcher) {

@@ -10,10 +10,11 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.runBlocking
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.concurrent.AsyncCompletion
@@ -33,16 +34,15 @@ internal fun stringDeserializer(b: Bytes): String = String(b.toArrayUnsafe(), UT
  * @param valueSerializer A function for serializing values to bytes.
  * @constructor Creates an empty trie.
  */
-class MerklePatriciaTrie<V>(
-  valueSerializer: (V) -> Bytes
-) : MerkleTrie<Bytes, V>, net.consensys.cava.trie.MerklePatriciaTrie<V> {
+class MerklePatriciaTrie<V>(valueSerializer: (V) -> Bytes) : MerkleTrie<Bytes, V> {
 
   companion object {
     /**
      * Create a trie with keys and values of type [Bytes].
      */
     @JvmStatic
-    fun storingBytes(): MerklePatriciaTrie<Bytes> = MerklePatriciaTrie(::bytesIdentity)
+    fun storingBytes(): MerklePatriciaTrie<Bytes> =
+      MerklePatriciaTrie(::bytesIdentity)
 
     /**
      * Create a trie with value of type [String].
@@ -50,7 +50,19 @@ class MerklePatriciaTrie<V>(
      * Strings are stored in UTF-8 encoding.
      */
     @JvmStatic
-    fun storingStrings(): MerklePatriciaTrie<String> = MerklePatriciaTrie(::stringSerializer)
+    fun storingStrings(): MerklePatriciaTrie<String> =
+      MerklePatriciaTrie(::stringSerializer)
+
+    /**
+     * Create a trie.
+     *
+     * @param valueSerializer A function for serializing values to bytes.
+     * @param <V> The serialized type.
+     * @return A new merkle trie.
+     */
+    @JvmStatic
+    fun <V> create(valueSerializer: Function<V, Bytes>): MerklePatriciaTrie<V> =
+      MerklePatriciaTrie(valueSerializer::apply)
   }
 
   private val getVisitor = GetVisitor<V>()
@@ -58,18 +70,13 @@ class MerklePatriciaTrie<V>(
   private val nodeFactory: DefaultNodeFactory<V> = DefaultNodeFactory(valueSerializer)
   private var root: Node<V> = NullNode.instance()
 
-  /**
-   * Creates an empty trie.
-   *
-   * @param valueSerializer A function for serializing values to bytes.
-   */
-  constructor(valueSerializer: Function<V, Bytes>) : this(valueSerializer::apply)
-
   override suspend fun get(key: Bytes): V? = root.accept(getVisitor, bytesToPath(key)).value()
 
   // This implementation does not suspend, so we can use the unconfined context
   @UseExperimental(ExperimentalCoroutinesApi::class)
-  override fun getAsync(key: Bytes): AsyncResult<V?> = getAsync(Dispatchers.Unconfined, key)
+  override fun getAsync(key: Bytes): AsyncResult<V?> = runBlocking(Dispatchers.Unconfined) {
+    AsyncResult.completed(get(key))
+  }
 
   override suspend fun put(key: Bytes, value: V?) {
     if (value == null) {
@@ -80,7 +87,10 @@ class MerklePatriciaTrie<V>(
 
   // This implementation does not suspend, so we can use the unconfined context
   @UseExperimental(ExperimentalCoroutinesApi::class)
-  override fun putAsync(key: Bytes, value: V?): AsyncCompletion = putAsync(Dispatchers.Unconfined, key, value)
+  override fun putAsync(key: Bytes, value: V?): AsyncCompletion = runBlocking(Dispatchers.Unconfined) {
+    put(key, value)
+    AsyncCompletion.completed()
+  }
 
   override suspend fun remove(key: Bytes) {
     this.root = root.accept(removeVisitor, bytesToPath(key))
@@ -88,14 +98,15 @@ class MerklePatriciaTrie<V>(
 
   // This implementation does not suspend, so we can use the unconfined context
   @UseExperimental(ExperimentalCoroutinesApi::class)
-  override fun removeAsync(key: Bytes): AsyncCompletion = removeAsync(Dispatchers.Unconfined, key)
+  override fun removeAsync(key: Bytes): AsyncCompletion = runBlocking(Dispatchers.Unconfined) {
+    remove(key)
+    AsyncCompletion.completed()
+  }
 
   override fun rootHash(): Bytes32 = root.hash()
 
   /**
    * @return A string representation of the object.
    */
-  override fun toString(): String {
-    return javaClass.simpleName + "[" + rootHash() + "]"
-  }
+  override fun toString(): String = javaClass.simpleName + "[" + rootHash() + "]"
 }

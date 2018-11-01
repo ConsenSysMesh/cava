@@ -10,16 +10,18 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import net.consensys.cava.bytes.Bytes
 import java.util.Collections
 
-internal class DefaultNodeFactory<V>(private val valueSerializer: (V) -> Bytes) : NodeFactory<V> {
+internal class DefaultNodeFactory<V>(private val valueSerializer: (V) -> Bytes) :
+  NodeFactory<V> {
 
   private val nullNode: NullNode<V> = NullNode.instance()
 
-  override suspend fun createExtension(path: Bytes, child: Node<V>): Node<V> = ExtensionNode(path, child, this)
+  override suspend fun createExtension(path: Bytes, child: Node<V>): Node<V> =
+    ExtensionNode(path, child, this)
 
   override suspend fun createBranch(leftIndex: Byte, left: Node<V>, rightIndex: Byte, right: Node<V>): Node<V> {
     assert(leftIndex <= BranchNode.RADIX)

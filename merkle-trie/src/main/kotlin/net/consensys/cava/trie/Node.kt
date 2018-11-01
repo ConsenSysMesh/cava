@@ -10,24 +10,24 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv;
+package net.consensys.cava.trie
 
-import java.io.IOException;
-import java.nio.file.Path;
+import net.consensys.cava.bytes.Bytes
+import net.consensys.cava.bytes.Bytes32
 
-/**
- * A key-value store backed by a MapDB instance.
- */
-public interface MapDBKeyValueStore extends KeyValueStore {
+internal interface Node<V> {
 
-  /**
-   * Open a MapDB-backed key-value store.
-   *
-   * @param dbPath The path to the MapDB database.
-   * @return A key-value store.
-   * @throws IOException If an I/O error occurs.
-   */
-  static MapDBKeyValueStore open(Path dbPath) throws IOException {
-    return new net.consensys.cava.kv.experimental.MapDBKeyValueStore(dbPath);
-  }
+  suspend fun accept(visitor: NodeVisitor<V>, path: Bytes): Node<V>
+
+  suspend fun path(): Bytes
+
+  suspend fun value(): V?
+
+  fun rlp(): Bytes
+
+  fun rlpRef(): Bytes
+
+  fun hash(): Bytes32
+
+  suspend fun replacePath(path: Bytes): Node<V>
 }

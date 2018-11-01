@@ -37,7 +37,7 @@ class StoredMerklePatriciaTrieJavaTest {
   @BeforeEach
   void setup() {
     Map<Bytes32, Bytes> storage = new HashMap<>();
-    merkleStorage = new MerkleStorage() {
+    merkleStorage = new AsyncMerkleStorage() {
       @Override
       public @NotNull AsyncResult<Bytes> getAsync(@NotNull Bytes32 hash) {
         return AsyncResult.completed(storage.get(hash));

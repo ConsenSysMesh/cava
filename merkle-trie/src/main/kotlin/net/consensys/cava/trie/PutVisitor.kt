@@ -10,10 +10,9 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import net.consensys.cava.bytes.Bytes
-import net.consensys.cava.trie.CompactEncoding
 
 internal class PutVisitor<V>(
   private val nodeFactory: NodeFactory<V>,

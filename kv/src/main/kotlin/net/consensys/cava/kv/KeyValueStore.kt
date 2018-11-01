@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.kv.experimental
+package net.consensys.cava.kv
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -20,13 +20,12 @@ import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.coroutines.asyncCompletion
 import net.consensys.cava.concurrent.coroutines.asyncResult
+import java.io.Closeable
 
 /**
  * A key-value store.
- *
- * This interface extends [net.consensys.cava.kv.KeyValueStore], exposing co-routine based access methods.
  */
-interface KeyValueStore : net.consensys.cava.kv.KeyValueStore {
+interface KeyValueStore : Closeable {
 
   /**
    * Retrieves data from the store.
@@ -43,7 +42,7 @@ interface KeyValueStore : net.consensys.cava.kv.KeyValueStore {
    * @return An [AsyncResult] that will complete with the stored content,
    *         or an empty optional if no content was available.
    */
-  override fun getAsync(key: Bytes): AsyncResult<Bytes?> = getAsync(Dispatchers.Default, key)
+  fun getAsync(key: Bytes): AsyncResult<Bytes?> = getAsync(Dispatchers.Default, key)
 
   /**
    * Retrieves data from the store.
@@ -74,7 +73,7 @@ interface KeyValueStore : net.consensys.cava.kv.KeyValueStore {
    * @param value The data to store.
    * @return An [AsyncCompletion] that will complete when the content is stored.
    */
-  override fun putAsync(key: Bytes, value: Bytes): AsyncCompletion = putAsync(Dispatchers.Default, key, value)
+  fun putAsync(key: Bytes, value: Bytes): AsyncCompletion = putAsync(Dispatchers.Default, key, value)
 
   /**
    * Puts data into the store.

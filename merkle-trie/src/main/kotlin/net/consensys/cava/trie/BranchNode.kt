@@ -10,14 +10,13 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.trie.experimental
+package net.consensys.cava.trie
 
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.bytes.MutableBytes
 import net.consensys.cava.crypto.Hash.keccak256
 import net.consensys.cava.rlp.RLP
-import net.consensys.cava.trie.CompactEncoding
 import java.lang.ref.WeakReference
 
 private val NULL_NODE: NullNode<*> = NullNode.instance<Any>()
