@@ -9,7 +9,8 @@
 .classpath
 .externalToolBuilders/
 .gradle/
-.idea/
+.idea/*
+!.idea/codeStyles/
 .loadpath
 .metadata
 .prefs
