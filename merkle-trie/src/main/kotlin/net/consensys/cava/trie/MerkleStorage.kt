@@ -27,9 +27,37 @@ interface MerkleStorage {
    * Get the stored content under the given hash.
    *
    * @param hash The hash for the content.
+   * @return The stored content, or {@code null} if not found.
+   */
+  suspend fun get(hash: Bytes32): Bytes?
+
+  /**
+   * Store content with a given hash.
+   *
+   * Note: if the storage implementation already contains content for the given hash, it does not need to replace the
+   * existing content.
+   *
+   * @param hash The hash for the content.
+   * @param content The content to store.
+   */
+  suspend fun put(hash: Bytes32, content: Bytes)
+}
+
+/**
+ * A [MerkleStorage] implementation using [AsyncResult]'s.
+ */
+abstract class AsyncMerkleStorage : MerkleStorage {
+  override suspend fun get(hash: Bytes32): Bytes? = getAsync(hash).await()
+
+  /**
+   * Get the stored content under the given hash.
+   *
+   * @param hash The hash for the content.
    * @return An [AsyncResult] that will complete with the stored content or {@code null} if not found.
    */
-  fun getAsync(hash: Bytes32): AsyncResult<Bytes?>
+  abstract fun getAsync(hash: Bytes32): AsyncResult<Bytes?>
+
+  override suspend fun put(hash: Bytes32, content: Bytes) = putAsync(hash, content).await()
 
   /**
    * Store content with a given hash.
@@ -41,14 +69,5 @@ interface MerkleStorage {
    * @param content The content to store.
    * @return An [AsyncCompletion] that will complete when the content is stored.
    */
-  fun putAsync(hash: Bytes32, content: Bytes): AsyncCompletion
-}
-
-internal class CoroutineMerkleStorageAdapter(
-  private val storage: MerkleStorage
-) : net.consensys.cava.trie.experimental.MerkleStorage {
-
-  override suspend fun get(hash: Bytes32): Bytes? = storage.getAsync(hash).await()
-
-  override suspend fun put(hash: Bytes32, content: Bytes) = storage.putAsync(hash, content).await()
+  abstract fun putAsync(hash: Bytes32, content: Bytes): AsyncCompletion
 }

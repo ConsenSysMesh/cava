@@ -18,14 +18,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.io.Resources;
 import net.consensys.cava.junit.BouncyCastleExtension;
-import net.consensys.cava.trie.experimental.MerklePatriciaTrie;
+import net.consensys.cava.trie.MerklePatriciaTrie;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Stream;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -50,7 +49,7 @@ class MerkleTrieTestSuite {
   @MethodSource("readAnyOrderTrieTests")
   @SuppressWarnings({"unchecked", "rawtypes"})
   void testAnyOrderTrieTrees(String name, Map input, String root) throws Exception {
-    MerklePatriciaTrie<String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
+    MerklePatriciaTrie<String> trie = MerklePatriciaTrie.create(this::readFromString);
     for (Object entry : input.entrySet()) {
       Map.Entry keyValue = (Map.Entry) entry;
       trie.putAsync(readFromString((String) keyValue.getKey()), (String) keyValue.getValue()).join();
@@ -62,7 +61,7 @@ class MerkleTrieTestSuite {
   @MethodSource("readTrieTests")
   @SuppressWarnings({"unchecked", "rawtypes"})
   void testTrieTrees(String name, List input, String root) throws Exception {
-    MerklePatriciaTrie<String> trie = new MerklePatriciaTrie<>((Function<String, Bytes>) this::readFromString);
+    MerklePatriciaTrie<String> trie = MerklePatriciaTrie.create(this::readFromString);
     for (Object entry : input) {
       List keyValue = (List) entry;
       trie.putAsync(readFromString((String) keyValue.get(0)), (String) keyValue.get(1)).join();

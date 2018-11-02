@@ -12,10 +12,15 @@
  */
 package net.consensys.cava.trie
 
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.concurrent.AsyncCompletion
 import net.consensys.cava.concurrent.AsyncResult
+import net.consensys.cava.concurrent.coroutines.asyncCompletion
+import net.consensys.cava.concurrent.coroutines.asyncResult
 import net.consensys.cava.crypto.Hash
 import net.consensys.cava.rlp.RLP
 
@@ -34,10 +39,39 @@ interface MerkleTrie<in K, V> {
    * Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.
    *
    * @param key The key of the value to be returned.
-   * @return An Optional containing the value that corresponds to the specified key, or an empty Optional if no such
-   * value exists.
+   * @return The value that corresponds to the specified key, or {@code null} if no such value exists.
+   * @throws MerkleStorageException If there is an error while accessing or decoding data from storage.
    */
-  fun getAsync(key: K): AsyncResult<V?>
+  suspend fun get(key: K): V?
+
+  /**
+   * Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.
+   *
+   * @param key The key of the value to be returned.
+   * @return A value that corresponds to the specified key, or {@code null} if no such value exists.
+   */
+  fun getAsync(key: K): AsyncResult<V?> = getAsync(Dispatchers.Default, key)
+
+  /**
+   * Returns the value that corresponds to the specified key, or an empty byte array if no such value exists.
+   *
+   * @param key The key of the value to be returned.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return A value that corresponds to the specified key, or {@code null} if no such value exists.
+   */
+  fun getAsync(dispatcher: CoroutineDispatcher, key: K): AsyncResult<V?> =
+    GlobalScope.asyncResult(dispatcher) { get(key) }
+
+  /**
+   * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
+   *
+   * If the value is null, deletes the value that corresponds to the specified key, if such a value exists.
+   *
+   * @param key The key that corresponds to the value to be updated.
+   * @param value The value to associate the key with.
+   * @throws MerkleStorageException If there is an error while writing to storage.
+   */
+  suspend fun put(key: K, value: V?)
 
   /**
    * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
@@ -48,7 +82,28 @@ interface MerkleTrie<in K, V> {
    * @param value The value to associate the key with.
    * @return A completion that will complete when the value has been put into the trie.
    */
-  fun putAsync(key: K, value: V?): AsyncCompletion
+  fun putAsync(key: K, value: V?): AsyncCompletion = putAsync(Dispatchers.Default, key, value)
+
+  /**
+   * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
+   *
+   * If the value is null, deletes the value that corresponds to the specified key, if such a value exists.
+   *
+   * @param key The key that corresponds to the value to be updated.
+   * @param value The value to associate the key with.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return A completion that will complete when the value has been put into the trie.
+   */
+  fun putAsync(dispatcher: CoroutineDispatcher, key: K, value: V?): AsyncCompletion =
+    GlobalScope.asyncCompletion(dispatcher) { put(key, value) }
+
+  /**
+   * Deletes the value that corresponds to the specified key, if such a value exists.
+   *
+   * @param key The key of the value to be deleted.
+   * @throws MerkleStorageException If there is an error while writing to storage.
+   */
+  suspend fun remove(key: K)
 
   /**
    * Deletes the value that corresponds to the specified key, if such a value exists.
@@ -56,7 +111,17 @@ interface MerkleTrie<in K, V> {
    * @param key The key of the value to be deleted.
    * @return A completion that will complete when the value has been removed.
    */
-  fun removeAsync(key: K): AsyncCompletion
+  fun removeAsync(key: K): AsyncCompletion = removeAsync(Dispatchers.Default, key)
+
+  /**
+   * Deletes the value that corresponds to the specified key, if such a value exists.
+   *
+   * @param key The key of the value to be deleted.
+   * @param dispatcher The co-routine dispatcher for asynchronous tasks.
+   * @return A completion that will complete when the value has been removed.
+   */
+  fun removeAsync(dispatcher: CoroutineDispatcher, key: K): AsyncCompletion =
+    GlobalScope.asyncCompletion(dispatcher) { remove(key) }
 
   /**
    * Returns the KECCAK256 hash of the root node of the trie.
