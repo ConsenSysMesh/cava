@@ -1,0 +1,64 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TomlTable.getBoolean - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.toml</a>&nbsp;/&nbsp;<a href="index.html">TomlTable</a>&nbsp;/&nbsp;<a href="./get-boolean.html">getBoolean</a><br/>
+<br/>
+<h1>getBoolean</h1>
+<a name="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.String)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.String)/dottedKey">dottedKey</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/TomlTable.java#L504">(source)</a>
+<p>Get a boolean from the TOML document.</p>
+<h3>Parameters</h3>
+<p><a name="dottedKey"></a>
+<code>dottedKey</code> - A dotted key (e.g. <code>"server.address.port"</code>).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the key cannot be parsed.</p>
+<p><a name="TomlInvalidTypeException"></a>
+<code>TomlInvalidTypeException</code> - If the value is present but not a boolean, or any element of the path preceding the final key is not a table.</p>
+<p><strong>Return</strong><br/>
+The value, or <code>null</code> if no value was set in the TOML document.</p>
+<a name="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.collections.MutableList((kotlin.String)))"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.collections.MutableList((kotlin.String)))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/TomlTable.java#L518">(source)</a>
+<p>Get a boolean from the TOML document.</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The key path.</p>
+<h3>Exceptions</h3>
+<p><a name="TomlInvalidTypeException"></a>
+<code>TomlInvalidTypeException</code> - If the value is present but not a boolean, or any element of the path preceding the final key is not a table.</p>
+<p><strong>Return</strong><br/>
+The value, or <code>null</code> if no value was set in the TOML document.</p>
+<a name="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.String, java.util.function.BooleanSupplier)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.String, java.util.function.BooleanSupplier)/dottedKey">dottedKey</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.String, java.util.function.BooleanSupplier)/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BooleanSupplier.html"><span class="identifier">BooleanSupplier</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/TomlTable.java#L539">(source)</a>
+<p>Get a boolean from the TOML document, or return a default.</p>
+<h3>Parameters</h3>
+<p><a name="dottedKey"></a>
+<code>dottedKey</code> - A dotted key (e.g. <code>"server.address.port"</code>).</p>
+<p><a name="defaultValue"></a>
+<code>defaultValue</code> - A supplier for the default value.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the key cannot be parsed.</p>
+<p><a name="TomlInvalidTypeException"></a>
+<code>TomlInvalidTypeException</code> - If the value is present but not a boolean, or any element of the path preceding the final key is not a table.</p>
+<p><strong>Return</strong><br/>
+The value, or the default.</p>
+<a name="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.collections.MutableList((kotlin.String)), java.util.function.BooleanSupplier)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.collections.MutableList((kotlin.String)), java.util.function.BooleanSupplier)/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.TomlTable$getBoolean(kotlin.collections.MutableList((kotlin.String)), java.util.function.BooleanSupplier)/defaultValue">defaultValue</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BooleanSupplier.html"><span class="identifier">BooleanSupplier</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/TomlTable.java#L553">(source)</a>
+<p>Get a boolean from the TOML document, or return a default.</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The key path.</p>
+<p><a name="defaultValue"></a>
+<code>defaultValue</code> - A supplier for the default value.</p>
+<h3>Exceptions</h3>
+<p><a name="TomlInvalidTypeException"></a>
+<code>TomlInvalidTypeException</code> - If the value is present but not a boolean, or any element of the path preceding the final key is not a table.</p>
+<p><strong>Return</strong><br/>
+The value, or the default.</p>
+</BODY>
+</HTML>

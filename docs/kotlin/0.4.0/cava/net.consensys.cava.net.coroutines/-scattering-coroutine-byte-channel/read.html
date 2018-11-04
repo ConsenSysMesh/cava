@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ScatteringCoroutineByteChannel.read - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">ScatteringCoroutineByteChannel</a>&nbsp;/&nbsp;<a href="./read.html">read</a><br/>
+<br/>
+<h1>read</h1>
+<a name="net.consensys.cava.net.coroutines.ScatteringCoroutineByteChannel$read(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">read</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.ScatteringCoroutineByteChannel$read(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/dsts">dsts</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.ScatteringCoroutineByteChannel$read(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.ScatteringCoroutineByteChannel$read(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;dsts.size<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineByteChannel.kt#L145">(source)</a>
+<p>Reads a sequence of bytes from this channel into a subsequence of the given buffers.</p>
+<h3>Parameters</h3>
+<p><a name="dsts"></a>
+<code>dsts</code> - The buffers into which bytes are to be transferred.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The offset within the buffer array of the first buffer into which bytes are to be transferred;
+must be non-negative and no larger than <code>dsts.length</code>.</p>
+<p><a name="length"></a>
+<code>length</code> - The maximum number of buffers to be accessed; must be non-negative and no larger than
+<code>dsts.length - offset</code>.</p>
+<h3>Exceptions</h3>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - If the preconditions on the offset and length parameters do not hold.</p>
+<p><a name="NonReadableChannelException"></a>
+<code>NonReadableChannelException</code> - If this channel was not opened for reading.</p>
+<p><a name="ClosedChannelException"></a>
+<code>ClosedChannelException</code> - If the channel is closed.</p>
+<p><a name="AsynchronousCloseException"></a>
+<code>AsynchronousCloseException</code> - If another thread closes this channel while the read operation is in progress.</p>
+<p><a name="ClosedByInterruptException"></a>
+<code>ClosedByInterruptException</code> - If another thread interrupts the current thread while the read operation is
+in progress, thereby closing the channel and setting the current thread's interrupt status.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If some other I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+The number of bytes read, possibly zero, or <code>-1</code> if the channel has reached end-of-stream.</p>
+</BODY>
+</HTML>

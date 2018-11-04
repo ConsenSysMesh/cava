@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineNetworkChannel.setOption - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineNetworkChannel</a>&nbsp;/&nbsp;<a href="./set-option.html">setOption</a><br/>
+<br/>
+<h1>setOption</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$setOption(java.net.SocketOption((net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)), net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">setOption</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$setOption(java.net.SocketOption((net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)), net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketOption.html"><span class="identifier">SocketOption</span></a><span class="symbol">&lt;</span><a href="set-option.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$setOption(java.net.SocketOption((net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)), net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)/value">value</span><span class="symbol">:</span>&nbsp;<a href="set-option.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/NetworkChannel.html"><span class="identifier">NetworkChannel</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineNetworkChannel.kt#L96">(source)</a>
+<p>Sets the value of a socket option.</p>
+<h3>Parameters</h3>
+<p><a name="name"></a>
+<code>name</code> - The socket option.</p>
+<p><a name="value"></a>
+<code>value</code> - The value of the socket option. A value of <code>null</code> may be a valid value for some socket options.</p>
+<h3>Exceptions</h3>
+<p><a name="UnsupportedOperationException"></a>
+<code>UnsupportedOperationException</code> - If the socket option is not supported by this channel.</p>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the value is not a valid value for this socket option.</p>
+<p><a name="ClosedChannelException"></a>
+<code>ClosedChannelException</code> - If this channel is closed.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Parameters</strong><br/>
+</p>
+<p><strong>Return</strong><br/>
+This channel</p>
+<p><strong>See Also</strong><br/>
+<p><a href="https://docs.oracle.com/javase/8/docs/api/java/net/StandardSocketOptions.html">java.net.StandardSocketOptions</a></p>
+</p>
+</BODY>
+</HTML>

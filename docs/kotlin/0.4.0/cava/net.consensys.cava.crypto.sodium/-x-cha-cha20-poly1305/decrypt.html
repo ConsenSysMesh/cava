@@ -1,0 +1,57 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>XChaCha20Poly1305.decrypt - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">XChaCha20Poly1305</a>&nbsp;/&nbsp;<a href="./decrypt.html">decrypt</a><br/>
+<br/>
+<h1>decrypt</h1>
+<a name="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/XChaCha20Poly1305.java#L619">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/XChaCha20Poly1305.java#L633">(source)</a>
+<p>Decrypt a message using a given key.</p>
+<h3>Parameters</h3>
+<p><a name="cipherText"></a>
+<code>cipherText</code> - The cipher text to decrypt.</p>
+<p><a name="key"></a>
+<code>key</code> - The key to use for decryption.</p>
+<p><a name="nonce"></a>
+<code>nonce</code> - The nonce that was used for encryption.</p>
+<p><strong>Return</strong><br/>
+The decrypted data, or <code>null</code> if verification failed.</p>
+<a name="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/data">data</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/XChaCha20Poly1305.java#L647">(source)</a>
+<p>Decrypt a message using a given key.</p>
+<h3>Parameters</h3>
+<p><a name="cipherText"></a>
+<code>cipherText</code> - The cipher text to decrypt.</p>
+<p><a name="data"></a>
+<code>data</code> - Extra non-confidential data that is included within the encrypted payload.</p>
+<p><a name="key"></a>
+<code>key</code> - The key to use for decryption.</p>
+<p><a name="nonce"></a>
+<code>nonce</code> - The nonce that was used for encryption.</p>
+<p><strong>Return</strong><br/>
+The decrypted data, or <code>null</code> if verification failed.</p>
+<a name="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decrypt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/data">data</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/key">key</span><span class="symbol">:</span>&nbsp;<a href="-key/index.html"><span class="identifier">Key</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.XChaCha20Poly1305$decrypt(kotlin.ByteArray, kotlin.ByteArray, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Key, net.consensys.cava.crypto.sodium.XChaCha20Poly1305.Nonce)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="-nonce/index.html"><span class="identifier">Nonce</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/XChaCha20Poly1305.java#L663">(source)</a>
+<p>Decrypt a message using a given key.</p>
+<h3>Parameters</h3>
+<p><a name="cipherText"></a>
+<code>cipherText</code> - The cipher text to decrypt.</p>
+<p><a name="data"></a>
+<code>data</code> - Extra non-confidential data that is included within the encrypted payload.</p>
+<p><a name="key"></a>
+<code>key</code> - The key to use for decryption.</p>
+<p><a name="nonce"></a>
+<code>nonce</code> - The nonce that was used for encryption.</p>
+<h3>Exceptions</h3>
+<p><a name="UnsupportedOperationException"></a>
+<code>UnsupportedOperationException</code> - If XChaCha20Poly1305 support is not available.</p>
+<p><strong>Return</strong><br/>
+The decrypted data, or <code>null</code> if verification failed.</p>
+</BODY>
+</HTML>

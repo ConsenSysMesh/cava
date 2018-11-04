@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.thenScheduleRun - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./then-schedule-run.html">thenScheduleRun</a><br/>
+<br/>
+<h1>thenScheduleRun</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$thenScheduleRun(Vertx, java.lang.Runnable)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">thenScheduleRun</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleRun(Vertx, java.lang.Runnable)/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$thenScheduleRun(Vertx, java.lang.Runnable)/runnable">runnable</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L376">(source)</a>
+<p>Returns a new completion that, when this result completes normally, completes after the given action is executed on the vertx context.</p>
+<h3>Parameters</h3>
+<p><a name="vertx"></a>
+<code>vertx</code> - The vertx context.</p>
+<p><a name="runnable"></a>
+<code>runnable</code> - The action to execute on the vertx context before completing the returned completion.</p>
+<p><strong>Return</strong><br/>
+A completion.</p>
+</BODY>
+</HTML>

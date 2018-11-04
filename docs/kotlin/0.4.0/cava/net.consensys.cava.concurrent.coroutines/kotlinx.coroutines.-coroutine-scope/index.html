@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.concurrent.coroutines.kotlinx.coroutines.CoroutineScope - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">kotlinx.coroutines.CoroutineScope</a><br/>
+<br/>
+<h3>Extensions for kotlinx.coroutines.CoroutineScope</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="async-completion.html">asyncCompletion</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="identifier">asyncCompletion</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncCompletion(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, kotlin.Unit)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.Default<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncCompletion(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, kotlin.Unit)))/start">start</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineStart</span>&nbsp;<span class="symbol">=</span>&nbsp;CoroutineStart.DEFAULT<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncCompletion(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, kotlin.Unit)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Starts new co-routine and returns its result as an implementation of <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a>.
+The running co-routine is cancelled when the resulting future is cancelled or otherwise completed.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="async-result.html">asyncResult</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="identifier">asyncResult</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.Default<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/start">start</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineStart</span>&nbsp;<span class="symbol">=</span>&nbsp;CoroutineStart.DEFAULT<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="async-result.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="async-result.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>Starts new co-routine and returns its result as an implementation of <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a>.
+The running co-outine is cancelled when the resulting future is cancelled or otherwise completed.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

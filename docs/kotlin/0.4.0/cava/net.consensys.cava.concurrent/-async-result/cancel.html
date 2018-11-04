@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.cancel - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./cancel.html">cancel</a><br/>
+<br/>
+<h1>cancel</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$cancel()"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">cancel</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L298">(source)</a>
+<p>Attempt to cancel execution of this task. 
+<p> This attempt will fail if the task has already completed, has already been cancelled, or could not be cancelled for some other reason. If successful, and this task has not started when <code>cancel</code> is called, this task should never run. </p>
+<p> After this method returns, subsequent calls to <code><a href="is-done.html">#isDone()</a></code> will always return <code>true</code>. Subsequent calls to <code><a href="is-cancelled.html">#isCancelled()</a></code> will always return <code>true</code> if this method returned <code>true</code>.</p>
+</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if this result transitioned to a cancelled state.</p>
+</BODY>
+</HTML>

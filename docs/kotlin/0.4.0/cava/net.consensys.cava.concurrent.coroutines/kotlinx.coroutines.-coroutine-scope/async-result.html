@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>asyncResult - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent.coroutines</a>&nbsp;/&nbsp;<a href="index.html">kotlinx.coroutines.CoroutineScope</a>&nbsp;/&nbsp;<a href="./async-result.html">asyncResult</a><br/>
+<br/>
+<h1>asyncResult</h1>
+<a name="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="identifier">asyncResult</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.coroutines/-coroutine-context/index.html"><span class="identifier">CoroutineContext</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.Default<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/start">start</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineStart</span>&nbsp;<span class="symbol">=</span>&nbsp;CoroutineStart.DEFAULT<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="identifier">CoroutineScope</span><span class="symbol">.</span><span class="symbol">(</span><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="async-result.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="async-result.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/AsyncResult.kt#L59">(source)</a>
+<p>Starts new co-routine and returns its result as an implementation of <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a>.
+The running co-outine is cancelled when the resulting future is cancelled or otherwise completed.</p>
+<p>Co-routine context is inherited from a <a href="#">CoroutineScope</a>, additional context elements can be specified with <a href="async-result.html#net.consensys.cava.concurrent.coroutines$asyncResult(kotlinx.coroutines.CoroutineScope, kotlin.coroutines.CoroutineContext, kotlinx.coroutines.CoroutineStart, kotlin.SuspendFunction1((kotlinx.coroutines.CoroutineScope, net.consensys.cava.concurrent.coroutines.asyncResult.T)))/context">context</a>
+argument. If the context does not have any dispatcher nor any other <a href="#">ContinuationInterceptor</a>, then
+<a href="#">Dispatchers.Default</a> is used. The parent job is inherited from a <a href="#">CoroutineScope</a> as well, but it can also be
+overridden with corresponding <a href="#">coroutineContext</a> element.</p>
+<p>By default, the co-routine is immediately scheduled for execution. Other options can be specified via <code>start</code>
+parameter. See <a href="#">CoroutineStart</a> for details. A value of <a href="#">CoroutineStart.LAZY</a> is not supported (since
+<code>AsyncResult</code> framework does not provide the corresponding capability) and produces <a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-illegal-argument-exception/index.html">IllegalArgumentException</a>.</p>
+<p>See <a href="#">newCoroutineContext</a> for a description of debugging facilities that are
+available for newly created co-routine.</p>
+<h3>Parameters</h3>
+<p><a name="context"></a>
+<code>context</code> - Additional to <a href="#">CoroutineScope.coroutineContext</a> context of the coroutine.</p>
+<p><a name="start"></a>
+<code>start</code> - Co-routine start option. The default value is <a href="#">CoroutineStart.DEFAULT</a>.</p>
+<p><a name="block"></a>
+<code>block</code> - The co-routine code.</p>
+</BODY>
+</HTML>

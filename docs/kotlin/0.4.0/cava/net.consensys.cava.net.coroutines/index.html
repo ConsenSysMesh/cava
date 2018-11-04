@@ -1,0 +1,130 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.net.coroutines - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.net.coroutines</a><br/>
+<br/>
+<h2>Package net.consensys.cava.net.coroutines</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-coroutine-byte-channel.html">CoroutineByteChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">CoroutineByteChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-readable-coroutine-byte-channel/index.html"><span class="identifier">ReadableCoroutineByteChannel</span></a><span class="symbol">, </span><a href="-writable-coroutine-byte-channel/index.html"><span class="identifier">WritableCoroutineByteChannel</span></a></code>
+<p>A co-routine channel that can read and write bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-coroutine-channel-group/index.html">CoroutineChannelGroup</a></p>
+</td>
+<td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">CoroutineChannelGroup</span></code>
+<p>A grouping of co-routine channels for the purpose of resource sharing.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-coroutine-datagram-channel/index.html">CoroutineDatagramChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineDatagramChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="-gathering-coroutine-byte-channel/index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="-coroutine-network-channel/index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based datagram-oriented network channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-coroutine-network-channel/index.html">CoroutineNetworkChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">CoroutineNetworkChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/NetworkChannel.html"><span class="identifier">NetworkChannel</span></a></code>
+<p>A co-routine based network channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-coroutine-selector/index.html">CoroutineSelector</a></p>
+</td>
+<td>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">CoroutineSelector</span></code>
+<p>A selector for co-routine based channel IO.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-coroutine-server-socket-channel/index.html">CoroutineServerSocketChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineServerSocketChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-coroutine-network-channel/index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based network channel for stream-oriented connection listening.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-coroutine-socket-channel/index.html">CoroutineSocketChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineSocketChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="-gathering-coroutine-byte-channel/index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="-coroutine-network-channel/index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based stream-oriented network channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-gathering-coroutine-byte-channel/index.html">GatheringCoroutineByteChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">GatheringCoroutineByteChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-writable-coroutine-byte-channel/index.html"><span class="identifier">WritableCoroutineByteChannel</span></a></code>
+<p>A channel that can write bytes from a sequence of buffers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-readable-coroutine-byte-channel/index.html">ReadableCoroutineByteChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">ReadableCoroutineByteChannel</span></code>
+<p>A co-routine channel that can read bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-scattering-coroutine-byte-channel/index.html">ScatteringCoroutineByteChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">ScatteringCoroutineByteChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-readable-coroutine-byte-channel/index.html"><span class="identifier">ReadableCoroutineByteChannel</span></a></code>
+<p>A channel that can read bytes into a sequence of buffers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-writable-coroutine-byte-channel/index.html">WritableCoroutineByteChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">WritableCoroutineByteChannel</span></code>
+<p>A co-routine channel that can write bytes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-common-coroutine-group.html">CommonCoroutineGroup</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">CommonCoroutineGroup</span><span class="symbol">: </span><a href="-coroutine-channel-group/index.html"><span class="identifier">CoroutineChannelGroup</span></a></code>
+<p>A common co-routine channel group.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

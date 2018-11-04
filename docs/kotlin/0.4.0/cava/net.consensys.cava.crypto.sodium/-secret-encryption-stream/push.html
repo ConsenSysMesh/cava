@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SecretEncryptionStream.push - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">SecretEncryptionStream</a>&nbsp;/&nbsp;<a href="./push.html">push</a><br/>
+<br/>
+<h1>push</h1>
+<a name="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">push</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(net.consensys.cava.bytes.Bytes)/clearText">clearText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretEncryptionStream.java#L38">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(kotlin.ByteArray)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">push</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(kotlin.ByteArray)/clearText">clearText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretEncryptionStream.java#L48">(source)</a>
+<p>Push a message to this secret stream.</p>
+<h3>Parameters</h3>
+<p><a name="clearText"></a>
+<code>clearText</code> - The message to encrypt.</p>
+<p><strong>Return</strong><br/>
+The encrypted message.</p>
+<a name="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(net.consensys.cava.bytes.Bytes, kotlin.Boolean)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">push</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/clearText">clearText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/isFinal">isFinal</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretEncryptionStream.java#L79">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(kotlin.ByteArray, kotlin.Boolean)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">push</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(kotlin.ByteArray, kotlin.Boolean)/clearText">clearText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretEncryptionStream$push(kotlin.ByteArray, kotlin.Boolean)/isFinal">isFinal</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretEncryptionStream.java#L90">(source)</a>
+<p>Push a message to this secret stream.</p>
+<h3>Parameters</h3>
+<p><a name="clearText"></a>
+<code>clearText</code> - The message to encrypt.</p>
+<p><a name="isFinal"></a>
+<code>isFinal</code> - <code>true</code> if this is the final message that will be sent on this stream.</p>
+<p><strong>Return</strong><br/>
+The encrypted message.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,101 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineSocketChannel - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">CoroutineSocketChannel</a><br/>
+<br/>
+<h1>CoroutineSocketChannel</h1>
+<code><span class="keyword">class </span><span class="identifier">CoroutineSocketChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-gathering-coroutine-byte-channel/index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-coroutine-network-channel/index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineSocketChannel.kt#L27">(source)</a>
+<p>A co-routine based stream-oriented network channel.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-connected.html">isConnected</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isConnected</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Indicates whether this channel is connected.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="remote-address.html">remoteAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">remoteAddress</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a></code>
+<p>Get the remote address to which this channel is connected.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="bind.html">bind</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bind</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSocketChannel$bind(java.net.SocketAddress)/local">local</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineSocketChannel</span></a></code>
+<p>Binds the channel's socket to a local address.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Closes this channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="connect.html">connect</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">connect</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSocketChannel$connect(java.net.SocketAddress)/remote">remote</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineSocketChannel</span></a></code>
+<p>Connect this channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="shutdown-input.html">shutdownInput</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">shutdownInput</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineSocketChannel</span></a></code>
+<p>Shutdown the connection for reading without closing the channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="shutdown-output.html">shutdownOutput</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">shutdownOutput</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineSocketChannel</span></a></code>
+<p>Shutdown the connection for writing without closing the channel.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="open.html">open</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">open</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSocketChannel.Companion$open(net.consensys.cava.net.coroutines.CoroutineChannelGroup)/group">group</span><span class="symbol">:</span>&nbsp;<a href="../-coroutine-channel-group/index.html"><span class="identifier">CoroutineChannelGroup</span></a>&nbsp;<span class="symbol">=</span>&nbsp;CommonCoroutineGroup<span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineSocketChannel</span></a></code>
+<p>Opens a socket channel.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

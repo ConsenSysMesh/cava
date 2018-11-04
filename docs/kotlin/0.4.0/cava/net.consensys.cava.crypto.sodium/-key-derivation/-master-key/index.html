@@ -1,0 +1,111 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KeyDerivation.MasterKey - cava</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">cava</a>&nbsp;/&nbsp;<a href="../../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="../index.html">KeyDerivation</a>&nbsp;/&nbsp;<a href="./index.html">MasterKey</a><br/>
+<br/>
+<h1>MasterKey</h1>
+<code><span class="keyword">class </span><span class="identifier">MasterKey</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/security/auth/Destroyable.html"><span class="identifier">Destroyable</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/KeyDerivation.java#L64">(source)</a>
+<p>A KeyDerivation master key.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="bytes.html">bytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="bytes-array.html">bytesArray</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">bytesArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="derive-key.html">deriveKey</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">deriveKey</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKey(kotlin.Int, kotlin.Long, kotlin.ByteArray)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKey(kotlin.Int, kotlin.Long, kotlin.ByteArray)/subkeyId">subkeyId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKey(kotlin.Int, kotlin.Long, kotlin.ByteArray)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">deriveKey</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKey(kotlin.Int, kotlin.Long, kotlin.String)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKey(kotlin.Int, kotlin.Long, kotlin.String)/subkeyId">subkeyId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKey(kotlin.Int, kotlin.Long, kotlin.String)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Derive a sub key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="derive-key-array.html">deriveKeyArray</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">deriveKeyArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)/subkeyId">subkeyId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">deriveKeyArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)/subkeyId">subkeyId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Derive a sub key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="destroy.html">destroy</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">destroy</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="from-bytes.html">fromBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$fromBytes(net.consensys.cava.bytes.Bytes)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MasterKey</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$fromBytes(kotlin.ByteArray)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MasterKey</span></a></code>
+<p>Create a MasterKey from an array of bytes. 
+<p> The byte array must be of length <code><a href="length.html">#length()</a></code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-destroyed.html">isDestroyed</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isDestroyed</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="length.html">length</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">length</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Obtain the length of the key in bytes (32).</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="random.html">random</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">random</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MasterKey</span></a></code>
+<p>Generate a new key using a random generator.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

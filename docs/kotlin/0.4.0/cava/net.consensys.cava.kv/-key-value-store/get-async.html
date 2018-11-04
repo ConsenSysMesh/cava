@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KeyValueStore.getAsync - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kv</a>&nbsp;/&nbsp;<a href="index.html">KeyValueStore</a>&nbsp;/&nbsp;<a href="./get-async.html">getAsync</a><br/>
+<br/>
+<h1>getAsync</h1>
+<a name="net.consensys.cava.kv.KeyValueStore$getAsync(net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/KeyValueStore.kt#L45">(source)</a>
+<p>Retrieves data from the store.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - The key for the content.</p>
+<p><strong>Return</strong><br/>
+An <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> that will complete with the stored content,
+    or an empty optional if no content was available.</p>
+<a name="net.consensys.cava.kv.KeyValueStore$getAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes)/dispatcher">dispatcher</span><span class="symbol">:</span>&nbsp;<span class="identifier">CoroutineDispatcher</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/KeyValueStore.kt#L55">(source)</a>
+<p>Retrieves data from the store.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - The key for the content.</p>
+<p><a name="dispatcher"></a>
+<code>dispatcher</code> - The co-routine dispatcher for asynchronous tasks.</p>
+<p><strong>Return</strong><br/>
+An <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> that will complete with the stored content,
+    or an empty optional if no content was available.</p>
+</BODY>
+</HTML>

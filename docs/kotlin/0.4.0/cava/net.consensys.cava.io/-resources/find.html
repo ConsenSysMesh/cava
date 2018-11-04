@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Resources.find - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.io</a>&nbsp;/&nbsp;<a href="index.html">Resources</a>&nbsp;/&nbsp;<a href="./find.html">find</a><br/>
+<br/>
+<h1>find</h1>
+<a name="net.consensys.cava.io.Resources$find(kotlin.String)"></a>
+<code><span class="identifier">@MustBeClosed</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">find</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.Resources$find(kotlin.String)/glob">glob</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/URL.html"><span class="identifier">URL</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/Resources.java#L83">(source)</a>
+<p>Resolve resources using the default class loader.</p>
+<h3>Parameters</h3>
+<p><a name="glob"></a>
+<code>glob</code> - The glob pattern for matching resource paths against.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+A stream of URLs to all resources.</p>
+<a name="net.consensys.cava.io.Resources$find(java.lang.ClassLoader, kotlin.String)"></a>
+<code><span class="identifier">@MustBeClosed</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">find</span><span class="symbol">(</span><span class="identifier">@Nullable</span> <span class="identifier" id="net.consensys.cava.io.Resources$find(java.lang.ClassLoader, kotlin.String)/classLoader">classLoader</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/ClassLoader.html"><span class="identifier">ClassLoader</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.Resources$find(java.lang.ClassLoader, kotlin.String)/glob">glob</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/URL.html"><span class="identifier">URL</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/Resources.java#L97">(source)</a>
+<p>Resolve resources using the default class loader.</p>
+<h3>Parameters</h3>
+<p><a name="classLoader"></a>
+<code>classLoader</code> - The class loader to use for resolving resources.</p>
+<p><a name="glob"></a>
+<code>glob</code> - The glob pattern for matching resource paths against.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+A stream of URLs to all resources.</p>
+</BODY>
+</HTML>

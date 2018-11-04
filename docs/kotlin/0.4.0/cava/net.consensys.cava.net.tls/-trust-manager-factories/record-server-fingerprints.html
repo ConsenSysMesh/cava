@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>TrustManagerFactories.recordServerFingerprints - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.tls</a>&nbsp;/&nbsp;<a href="index.html">TrustManagerFactories</a>&nbsp;/&nbsp;<a href="./record-server-fingerprints.html">recordServerFingerprints</a><br/>
+<br/>
+<h1>recordServerFingerprints</h1>
+<a name="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordServerFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TrustManagerFactories.java#L44">(source)</a>
+<p>Accept all server certificates, recording certificate fingerprints for those that are not CA-signed. 
+<p> Excepting when a server presents a CA-signed certificate, the server host+port and the certificate fingerprint will be written to <code>knownServersFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownServersFile"></a>
+<code>knownServersFile</code> - The path to a file in which to record fingerprints by host.</p>
+<p><strong>Return</strong><br/>
+A trust manager factory.</p>
+<a name="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path, kotlin.Boolean)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordServerFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path, kotlin.Boolean)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path, kotlin.Boolean)/skipCASigned">skipCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TrustManagerFactories.java#L63">(source)</a>
+<p>Accept all server certificates, recording certificate fingerprints. 
+<p> For all connections, the server host+port and the fingerprint of the presented certificate will be written to <code>knownServersFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownServersFile"></a>
+<code>knownServersFile</code> - The path to a file in which to record fingerprints by host.</p>
+<p><a name="skipCASigned"></a>
+<code>skipCASigned</code> - If <code>true</code>, CA-signed certificates are not recorded.</p>
+<p><strong>Return</strong><br/>
+A trust manager factory.</p>
+<a name="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordServerFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.TrustManagerFactories$recordServerFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/TrustManagerFactories.java#L82">(source)</a>
+<p>Accept all server certificates, recording certificate fingerprints for those that are not CA-signed. 
+<p> Excepting when a server presents a CA-signed certificate, the server host+port and the certificate fingerprint will be written to <code>knownServersFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="knownServersFile"></a>
+<code>knownServersFile</code> - The path to a file in which to record fingerprints by host.</p>
+<p><a name="tmf"></a>
+<code>tmf</code> - A TrustManagerFactory for checking server certificates against a CA.</p>
+<p><strong>Return</strong><br/>
+A trust manager factory.</p>
+</BODY>
+</HTML>

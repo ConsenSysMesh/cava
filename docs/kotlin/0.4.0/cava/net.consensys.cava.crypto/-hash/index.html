@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Hash - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto</a>&nbsp;/&nbsp;<a href="./index.html">Hash</a><br/>
+<br/>
+<h1>Hash</h1>
+<code><span class="keyword">class </span><span class="identifier">Hash</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/Hash.java#L29">(source)</a>
+<p>Various utilities for providing hashes (digests) of arbitrary data. Requires the BouncyCastleProvider to be loaded and available. See https://www.bouncycastle.org/wiki/display/JA1/Provider+Installation for detail.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="digest-using-algorithm.html">digestUsingAlgorithm</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">digestUsingAlgorithm</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(kotlin.ByteArray, kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(kotlin.ByteArray, kotlin.String)/alg">alg</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">digestUsingAlgorithm</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(net.consensys.cava.bytes.Bytes, kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.Hash$digestUsingAlgorithm(net.consensys.cava.bytes.Bytes, kotlin.String)/alg">alg</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Helper method to generate a digest using the provided algorithm.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="keccak256.html">keccak256</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">keccak256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$keccak256(kotlin.ByteArray)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">keccak256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$keccak256(net.consensys.cava.bytes.Bytes)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Digest using keccak-256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="keccak512.html">keccak512</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">keccak512</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$keccak512(kotlin.ByteArray)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">keccak512</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$keccak512(net.consensys.cava.bytes.Bytes)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Digest using keccak-512.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sha2_256.html">sha2_256</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha2_256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha2_256(kotlin.ByteArray)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha2_256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha2_256(net.consensys.cava.bytes.Bytes)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Digest using SHA2-256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sha2_512_256.html">sha2_512_256</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha2_512_256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha2_512_256(kotlin.ByteArray)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Digest using SHA2-512/256.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha2_512_256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha2_512_256(net.consensys.cava.bytes.Bytes)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Digest using SHA-512/256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sha3_256.html">sha3_256</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha3_256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha3_256(kotlin.ByteArray)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha3_256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha3_256(net.consensys.cava.bytes.Bytes)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>Digest using SHA3-256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sha3_512.html">sha3_512</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha3_512</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha3_512(kotlin.ByteArray)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">sha3_512</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.Hash$sha3_512(net.consensys.cava.bytes.Bytes)/input">input</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Digest using SHA3-512.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

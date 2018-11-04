@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Configuration.get - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">Configuration</a>&nbsp;/&nbsp;<a href="./get.html">get</a><br/>
+<br/>
+<h1>get</h1>
+<a name="net.consensys.cava.config.Configuration$get(kotlin.String)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$get(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L206">(source)</a>
+<p>Get an object from this configuration.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - A configuration key (e.g. <code>"server.address.hostname"</code>).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the key cannot be parsed.</p>
+<p><strong>Return</strong><br/>
+The value, or <code>null</code> if no value was set in the configuration.</p>
+</BODY>
+</HTML>

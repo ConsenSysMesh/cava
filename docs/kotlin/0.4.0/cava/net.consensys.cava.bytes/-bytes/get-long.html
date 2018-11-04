@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.getLong - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./get-long.html">getLong</a><br/>
+<br/>
+<h1>getLong</h1>
+<a name="net.consensys.cava.bytes.Bytes$getLong(kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$getLong(kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L518">(source)</a>
+<p>Retrieves the 8 bytes starting at the provided index in this value as a long.</p>
+<h3>Parameters</h3>
+<p><a name="i"></a>
+<code>i</code> - The index from which to get the long, which must less than or equal to <code>size() - 8</code>.</p>
+<h3>Exceptions</h3>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>i &amp;lt; 0</code> or <code>i &amp;gt; size() - 8</code>.</p>
+<p><strong>Return</strong><br/>
+A long whose value is the 8 bytes from this value starting at index <code>i</code>.</p>
+</BODY>
+</HTML>

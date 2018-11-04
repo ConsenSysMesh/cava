@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>await - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent.coroutines</a>&nbsp;/&nbsp;<a href="index.html">net.consensys.cava.concurrent.AsyncResult</a>&nbsp;/&nbsp;<a href="./await.html">await</a><br/>
+<br/>
+<h1>await</h1>
+<a name="net.consensys.cava.concurrent.coroutines$await(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.coroutines.await.T)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="await.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">.</span><span class="identifier">await</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="await.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/AsyncResult.kt#L145">(source)</a>
+<p>Awaits for completion of the <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> without blocking a thread.</p>
+<p>This suspending function is cancellable.
+If the <a href="#">Job</a> of the current coroutine is cancelled or completed while this suspending function is waiting, this function
+stops waiting for the <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> and immediately resumes with <a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CancellationException.html">CancellationException</a>.</p>
+<p>Note, that <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> does not support prompt removal of listeners, so on cancellation of this wait
+a few small objects will remain in the <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> stack of completion actions until it completes itself.
+However, care is taken to clear the reference to the waiting coroutine itself, so that its memory can be
+released even if the <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a> never completes.</p>
+</BODY>
+</HTML>
