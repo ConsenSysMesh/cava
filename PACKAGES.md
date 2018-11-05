@@ -14,11 +14,9 @@ Classes and utilities for working with concurrency.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-concurrent` (`cava-concurrent.jar`).
 
-# Package net.consensys.cava.concurrent.coroutines.experimental
+# Package net.consensys.cava.concurrent.coroutines
 
 Extensions for mapping [AsyncResult][net.consensys.cava.concurrent.AsyncResult] and [AsyncCompletion][net.consensys.cava.concurrent.AsyncCompletion] objects to and from Kotlin coroutines.
-
-Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
 
 # Package net.consensys.cava.config
 
@@ -40,11 +38,11 @@ Classes and utilities in this package provide an interface to the native Sodium 
 
 Classes in this package depend upon the JNR-FFI library, which is not automatically included when using the complete Cava distribution. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency `com.github.jnr:jnr-ffi`.
 
-# Package net.consensys.cava.eth.domain
+# Package net.consensys.cava.eth
 
-Classes and utilities for working with Ethereum domain objects.
+Classes and utilities for working in the Ethereum domain.
 
-These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-eth-domain` (`cava-eth-domain.jar`).
+These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-eth` (`cava-eth.jar`).
 
 # Package net.consensys.cava.io
 
@@ -68,11 +66,9 @@ Classes and utilities for working with key/value stores.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kv` (`cava-kv.jar`).
 
-# Package net.consensys.cava.kv.experimental
+# Package net.consensys.cava.kv
 
 Key/value stores implementations exposing Kotlin coroutine methods.
-
-Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kv` (`cava-kv.jar`).
 
@@ -81,6 +77,12 @@ These classes are included in the complete Cava distribution, or separately when
 Classes and utilities for working with networking.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-net` (`cava-net.jar`).
+
+# Package net.consensys.cava.net.coroutines
+
+Classes and utilities for coroutine based networking.
+
+These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-net-coroutines` (`cava-net-coroutines.jar`).
 
 # Package net.consensys.cava.net.tls
 
@@ -110,11 +112,9 @@ Implementations of the Ethereum Patricia Trie, as described at https://github.co
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-merkle-trie` (`cava-merkle-trie.jar`).
 
-# Package net.consensys.cava.trie.experimental
+# Package net.consensys.cava.trie
 
 Merkle Trie implementations using Kotlin coroutines.
-
-Note that these APIs are ready for production usage. The 'experimental' package name reflects the experimental nature of the coroutines design in Kotlin, as described at https://kotlinlang.org/docs/reference/coroutines.html#experimental-status-of-coroutines.
 
 # Package net.consensys.cava.units
 

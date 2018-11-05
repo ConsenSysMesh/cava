@@ -1,4 +1,4 @@
-description = 'Classes and utilities for coroutine networking.'
+description = 'Classes and utilities for coroutine based networking.'
 
 dependencies {
   compile 'com.google.guava:guava'

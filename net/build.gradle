@@ -10,7 +10,7 @@ dependencies {
   compileOnly 'org.bouncycastle:bcpkix-jdk15on'
 
   testCompile project(':junit')
-  testCompile 'com.squareup.okhttp3:okhttp:3.9.1'
+  testCompile 'com.squareup.okhttp3:okhttp'
   testCompile 'io.vertx:vertx-core'
   testCompile 'org.bouncycastle:bcprov-jdk15on'
   testCompile 'org.bouncycastle:bcpkix-jdk15on'
