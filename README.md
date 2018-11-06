@@ -1,7 +1,7 @@
 # Cava: ConsenSys Core Libraries for Java (& Kotlin)
 
 [![Build Status](https://circleci.com/gh/ConsenSys/cava.svg?style=shield&circle-token=440c81af8cae3c059b516a8e375471258d7e0229)](https://circleci.com/gh/ConsenSys/cava)
-[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/consensys/cava/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/ConsenSys/cava/blob/master/LICENSE)
 [![Download](https://api.bintray.com/packages/consensys/consensys/cava/images/download.svg?version=0.4.0) ](https://bintray.com/consensys/consensys/cava/0.4.0)
 
 In the spirit of [Google Guava](https://github.com/google/guava/), Cava is a set of libraries and other tools to aid development of blockchain and other decentralized software in Java and other JVM languages.
@@ -45,9 +45,9 @@ After a successful build, libraries will be available in `build/libs`.
 
 ## Links
 
-- [GitHub project](https://github.com/consensys/cava)
+- [GitHub project](https://github.com/ConsenSys/cava)
 - [Online Kotlin documentation](https://consensys.github.io/cava/docs/kotlin/0.4.0/cava)
 - [Online Java documentation](https://consensys.github.io/cava/docs/java/0.4.0)
-- [Issue tracker: Report a defect or feature request](https://github.com/google/cava/issues/new)
+- [Issue tracker: Report a defect or feature request](https://github.com/ConsenSys/cava/issues/new)
 - [StackOverflow: Ask "how-to" and "why-didn't-it-work" questions](https://stackoverflow.com/questions/ask?tags=cava+java)
 - [cava-discuss: For open-ended questions and discussion](http://groups.google.com/group/cava-discuss)
