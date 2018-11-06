@@ -40,7 +40,7 @@ dependencyManagement {
       entry 'spek-api'
       entry 'spek-junit-platform-engine'
     }
-    dependencySet(group: 'org.logl', version: '0.2.0') {
+    dependencySet(group: 'org.logl', version: '0.3.0') {
       entry 'logl-api'
       entry 'logl-logl'
     }
