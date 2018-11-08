@@ -8,7 +8,7 @@ jobs:
 
     environment:
       TERM: dumb
-      JAVA_TOOL_OPTIONS: -Xmx3096m
+      JAVA_TOOL_OPTIONS: -Xmx1024m
       GRADLE_OPTS: -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2
       GRADLE_MAX_TEST_FORKS: 2
 
