@@ -35,7 +35,7 @@ With Gradle: `compile 'net.consensys.cava:cava:0.4.0'`
 
 To build, clone this repo and run with `./gradlew` like so:
 
-```
+```sh
 git clone --recursive https://github.com/ConsenSys/cava
 cd cava
 ./gradlew
