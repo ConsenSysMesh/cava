@@ -19,7 +19,7 @@ The libraries are published to [ConsenSys bintray repository](https://consensys.
 You can import all modules using the cava jar.
 
 With Maven:
-```
+```xml
 <dependency>
   <groupId>net.consensys.cava</groupId>
   <artifactId>cava</artifactId>
