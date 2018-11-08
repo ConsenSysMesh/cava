@@ -19,7 +19,7 @@ The libraries are published to [ConsenSys bintray repository](https://consensys.
 You can import all modules using the cava jar.
 
 With Maven:
-```
+```xml
 <dependency>
   <groupId>net.consensys.cava</groupId>
   <artifactId>cava</artifactId>
@@ -35,7 +35,7 @@ With Gradle: `compile 'net.consensys.cava:cava:0.4.0'`
 
 To build, clone this repo and run with `./gradlew` like so:
 
-```
+```sh
 git clone --recursive https://github.com/ConsenSys/cava
 cd cava
 ./gradlew
