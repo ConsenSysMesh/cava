@@ -19,6 +19,15 @@ plugins {
 
 description = 'A set of libraries and other tools to aid development of blockchain and other decentralized software in Java and other JVM languages'
 
+
+//////
+// Sanity checks
+
+if (!file("${rootDir}/eth-reference-tests/src/test/resources/tests/README.md").exists()) {
+  throw new GradleException("eth-reference-tests/src/test/resources/tests/README.md missing: please clone submodules (git submodule update --init --recursive)")
+}
+
+
 //////
 // Version numbering
 
@@ -57,10 +66,10 @@ gradle.startParameter.taskNames.each {
 }
 gradle.startParameter.taskNames = expandedTaskList.flatten()
 
-//////
-// Source formatting
 
-apply plugin: 'com.diffplug.gradle.spotless'
+//////
+// Gradle script formatting
+
 spotless {
   groovyGradle {
     target '**/*.gradle'
@@ -69,17 +78,8 @@ spotless {
   }
 }
 
+
 subprojects {
-
-  jar {
-    destinationDir = file("${rootProject.buildDir}/libs")
-  }
-
-  task sourcesJar(type: Jar, dependsOn: classes) {
-    destinationDir = file("${rootProject.buildDir}/src")
-    classifier = 'sources'
-    from sourceSets.main.allSource
-  }
 
   //////
   // Source formatting
@@ -122,10 +122,18 @@ subprojects {
   task allDependencies(type: DependencyReportTask) {}
 }
 
+
+//////
+// Top-level target for deploy (bintrayUpload depends on it)
+
 task deploy() {}
 
 configurations.archives.artifacts.removeAll { PublishArtifact publishArtifact ->
   (publishArtifact.type == 'jar' && publishArtifact.name == 'cava')}
+
+
+//////
+// Project defaults
 
 allprojects {
   apply plugin: 'java-library'
@@ -142,21 +150,16 @@ allprojects {
 
   version = buildVersion
 
-  jacoco { toolVersion = '0.8.2' }
-
-  sourceCompatibility = '1.8'
-  targetCompatibility = '1.8'
-
   repositories { jcenter() }
-
-  //////
-  // Use JUnit5 for testing
-
-  test { useJUnitPlatform() { includeEngines 'spek', 'junit-jupiter' } }
 
 
   //////
   // Compiler arguments
+
+  sourceCompatibility = '1.8'
+  targetCompatibility = '1.8'
+
+  jacoco { toolVersion = '0.8.2' }
 
   dependencies {
     errorprone 'com.google.errorprone:error_prone_core'
@@ -198,6 +201,12 @@ allprojects {
 
 
   //////
+  // Use JUnit5 for testing
+
+  test { useJUnitPlatform() { includeEngines 'spek', 'junit-jupiter' } }
+
+
+  //////
   // Documentation
 
   dokka {
@@ -215,6 +224,32 @@ allprojects {
 
 
   //////
+  // Artifact locations
+
+  jar {
+    destinationDir = file("${rootProject.buildDir}/libs")
+  }
+
+  task sourcesJar(type: Jar, dependsOn: classes) {
+    destinationDir = file("${rootProject.buildDir}/src")
+    classifier = 'sources'
+    from sourceSets.main.allSource
+  }
+
+  task javadocJar(type: Jar, dependsOn: javadoc) {
+    destinationDir = file("${rootProject.buildDir}/docs")
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+  }
+
+  task dokkaJar(type: Jar, dependsOn: dokka) {
+    destinationDir = file("${rootProject.buildDir}/docs")
+    classifier = 'dokka'
+    from dokka.outputDirectory
+  }
+
+
+  //////
   // Packaging and deployment
 
   tasks.withType(Jar) {
@@ -227,12 +262,6 @@ allprojects {
       attributes('Implementation-Title': baseName,
       'Implementation-Version': project.version)
     }
-  }
-
-  task dokkaJar(type: Jar, dependsOn: dokka) {
-    destinationDir = file("${rootProject.buildDir}/docs")
-    classifier = 'dokka'
-    from dokka.outputDirectory
   }
 
   if (project.name != 'eth-reference-tests') {
@@ -418,7 +447,7 @@ allprojects {
 
 
 //////
-// Create a virtual package that depends on all components
+// Configure root project as a virtual package that depends on all components
 
 dependencies {
   subprojects.each { p ->
@@ -437,7 +466,6 @@ dependencies {
     }
   }
 }
-
 
 jar { enabled = false }
 
@@ -477,7 +505,7 @@ dokka {
   }
 
   externalDocumentationLink {
-    url = new URL('https://atoulme.github.io/kotlinx.coroutines/kotlinx-coroutines-core/')
+    url = new URL('https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/')
   }
 }
 
@@ -487,8 +515,4 @@ dokkaJar {
     attributes('Implementation-Title': baseName,
     'Implementation-Version': project.version)
   }
-}
-
-if (!file("${rootDir}/eth-reference-tests/src/test/resources/tests/README.md").exists()) {
-  throw new GradleException("eth-reference-tests/src/test/resources/tests/README.md missing: please clone submodules (git submodule update --init --recursive)")
 }
