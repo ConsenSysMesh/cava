@@ -373,7 +373,6 @@ allprojects {
                 extension = 'pom.asc'
               }
             }
-
           }
 
           if (System.getenv('ENABLE_SIGNING') == 'true') {
