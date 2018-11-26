@@ -24,6 +24,9 @@ import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
 import org.jetbrains.spek.api.dsl.it
 import java.nio.file.Files
+import java.nio.file.Paths
+import java.sql.DriverManager
+import java.util.concurrent.RejectedExecutionException
 
 object Vars {
   val foo = Bytes.wrap("foo".toByteArray())!!
@@ -128,6 +131,59 @@ object LevelDBKeyValueStoreSpec : Spek({
         try {
           kv2.put(foobar, foo)
         } catch (e: DBException) {
+          caught = true
+        }
+        caught.should.be.`true`
+      }
+    }
+  }
+})
+
+object SQLKeyValueStoreSpec : Spek({
+  Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), "testdb.mv.db"))
+  Files.deleteIfExists(Paths.get(System.getProperty("java.io.tmpdir"), "testdb.trace.db"))
+  val jdbcUrl = "jdbc:h2:${System.getProperty("java.io.tmpdir")}/testdb"
+  DriverManager.getConnection(jdbcUrl).use {
+    val st = it.createStatement()
+    st.executeUpdate("create table store(key binary, value binary, primary key(key))")
+    st.executeUpdate("create table store2(id binary, val binary, primary key(id))")
+  }
+  val kv = SQLKeyValueStore(jdbcUrl)
+  val otherkv = SQLKeyValueStore.open(jdbcUrl, "store2", "id", "val")
+  afterGroup {
+    kv.close()
+    otherkv.close()
+  }
+  describe("a SQL-backed key value store") {
+
+    it("should allow to retrieve values") {
+      runBlocking {
+        kv.put(foobar, foo)
+        kv.get(foobar).should.equal(foo)
+      }
+    }
+
+    it("should allow to retrieve values when configured with a different table") {
+      runBlocking {
+        otherkv.put(foobar, foo)
+        otherkv.get(foobar).should.equal(foo)
+      }
+    }
+
+    it("should return an empty optional when no value is present") {
+      runBlocking {
+        kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
+      }
+    }
+
+    it("should not allow usage after the DB is closed") {
+      val kv2 = SQLKeyValueStore("jdbc:h2:mem:testdb")
+      kv2.close()
+      runBlocking {
+        var caught = false
+        try {
+          kv2.put(foobar, foo)
+        } catch (e: RejectedExecutionException) {
           caught = true
         }
         caught.should.be.`true`
