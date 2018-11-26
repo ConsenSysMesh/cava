@@ -4,14 +4,19 @@ dependencies {
   compile project(':bytes')
   compile project(':concurrent-coroutines')
   compile 'org.jetbrains.kotlinx:kotlinx-coroutines-core'
+  compile 'org.jetbrains.kotlinx:kotlinx-coroutines-guava'
   compile 'org.jetbrains.kotlinx:kotlinx-coroutines-jdk8'
+  compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+  compileOnly 'com.jolbox:bonecp'
   compileOnly 'io.lettuce:lettuce-core'
   compileOnly 'org.fusesource.leveldbjni:leveldbjni-all'
   compileOnly 'org.mapdb:mapdb'
 
   testCompile project(':concurrent')
   testCompile project(':junit')
+  testCompile 'com.jolbox:bonecp'
   testCompile 'com.github.kstyrc:embedded-redis'
+  testCompile 'com.h2database:h2'
   testCompile 'com.winterbe:expekt'
   testCompile 'io.lettuce:lettuce-core'
   testCompile 'org.fusesource.leveldbjni:leveldbjni-all'
