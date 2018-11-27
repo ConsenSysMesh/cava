@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes32.fromHexStringLenient - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes32</a>&nbsp;/&nbsp;<a href="./from-hex-string-lenient.html">fromHexStringLenient</a><br/>
+<br/>
+<h1>fromHexStringLenient</h1>
+<a name="net.consensys.cava.bytes.Bytes32$fromHexStringLenient(kotlin.CharSequence)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromHexStringLenient</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes32$fromHexStringLenient(kotlin.CharSequence)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-char-sequence/index.html"><span class="identifier">CharSequence</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes32</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes32.java#L145">(source)</a>
+<p>Parse a hexadecimal string into a Bytes32. 
+<p> This method is lenient in that <code>str</code> may of an odd length, in which case it will behave exactly as if it had an additional 0 in front.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="str"></a>
+<code>str</code> - The hexadecimal string to parse, which may or may not start with "0x". That representation may contain less than 32 bytes, in which case the result is left padded with zeros (see <code><a href="#">#fromHexStringStrict</a></code> if this is not what you want).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>str</code> does not correspond to a valid hexadecimal representation or contains more than 32 bytes.</p>
+<p><strong>Return</strong><br/>
+The value corresponding to <code>str</code>.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,73 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.bytes - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.bytes</a><br/>
+<br/>
+<h2>Package net.consensys.cava.bytes</h2>
+<p>Classes and utilities for working with byte arrays.</p>
+<p>These classes are included in the complete Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-bytes</code> (<code>cava-bytes.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-abstract-bytes/index.html">AbstractBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AbstractBytes</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>An abstract Bytes value that provides implementations of <code><a href="#">#equals(Object)</a></code>, <code><a href="-abstract-bytes/hash-code.html">#hashCode()</a></code> and <code><a href="-abstract-bytes/to-string.html">#toString()</a></code>.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-bytes/index.html">Bytes</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Bytes</span></code>
+<p>A value made of bytes. 
+<p> This interface makes no thread-safety guarantee, and a Bytes value is generally not thread safe. However, specific implementations may be thread-safe. For instance, the value returned by <code><a href="-bytes/copy.html">#copy</a></code> is guaranteed to be thread-safe as it is immutable.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-bytes32/index.html">Bytes32</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Bytes32</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>A Bytes value that is guaranteed to contain exactly 32 bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-mutable-byte-buffer-wrapping-bytes/index.html">MutableByteBufferWrappingBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">MutableByteBufferWrappingBytes</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ByteBufferWrappingBytes</span><span class="symbol">, </span><a href="-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="-mutable-bytes/index.html">MutableBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">MutableBytes</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>A mutable Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-mutable-bytes32/index.html">MutableBytes32</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">MutableBytes32</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">, </span><a href="-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>A mutable Bytes32, that is a mutable Bytes value of exactly 32 bytes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

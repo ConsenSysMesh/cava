@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.handle - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./handle.html">handle</a><br/>
+<br/>
+<h1>handle</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$handle(java.util.function.BiFunction((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable, net.consensys.cava.concurrent.AsyncResult.handle.U)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">handle</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$handle(java.util.function.BiFunction((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable, net.consensys.cava.concurrent.AsyncResult.handle.U)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiFunction.html"><span class="identifier">BiFunction</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="handle.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="handle.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L505">(source)</a>
+<p>Returns a new result that, when this result completes either normally or exceptionally, completes with the value obtained from executing the supplied function with this result's value and exception as arguments. 
+<p> Either the value or the exception supplied to the function will be <code>null</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - The function to execute.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The type of the value returned from the function.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.copyTo - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./copy-to.html">copyTo</a><br/>
+<br/>
+<h1>copyTo</h1>
+<a name="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">copyTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes)/destination">destination</span><span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L988">(source)</a>
+<p>Copy the bytes of this value to the provided mutable one, which must have the same size.</p>
+<h3>Parameters</h3>
+<p><a name="destination"></a>
+<code>destination</code> - The mutable value to which to copy the bytes to, which must have the same size as this value. If you want to copy value where size differs, you should use <code><a href="slice.html">#slice</a></code> and/or <code><a href="#">MutableBytes#mutableSlice</a></code> and apply the copy to the result.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>this.size() != destination.size()</code>.</p>
+<a name="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes, kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">copyTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes, kotlin.Int)/destination">destination</span><span class="symbol">:</span>&nbsp;<a href="../-mutable-bytes/index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes, kotlin.Int)/destinationOffset">destinationOffset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L1011">(source)</a>
+<p>Copy the bytes of this value to the provided mutable one from a particular offset. 
+<p> This is a (potentially slightly more efficient) shortcut for <code>copyTo(destination.mutableSlice(destinationOffset, this.size()))</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="destination"></a>
+<code>destination</code> - The mutable value to which to copy the bytes to, which must have enough bytes from <code>destinationOffset</code> for the copied value.</p>
+<p><a name="destinationOffset"></a>
+<code>destinationOffset</code> - The offset in <code>destination</code> at which the copy starts.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if the destination doesn't have enough room, that is if <code>this.size() &amp;gt; (destination.size() - destinationOffset)</code>.</p>
+</BODY>
+</HTML>

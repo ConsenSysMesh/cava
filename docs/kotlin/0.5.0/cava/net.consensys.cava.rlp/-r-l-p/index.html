@@ -1,0 +1,204 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLP - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="./index.html">RLP</a><br/>
+<br/>
+<h1>RLP</h1>
+<code><span class="keyword">class </span><span class="identifier">RLP</span></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLP.java#L33">(source)</a>
+<p>Recursive Length Prefix (RLP) encoding and decoding.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="decode.html">decode</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode.html#T"><span class="identifier">T</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decode(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decode.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode.html#T"><span class="identifier">T</span></a></code>
+<p>Read and decode RLP from a Bytes value. 
+<p> Important: this method does not consume any list prefix from the source data. If you are reading a RLP encoded list of values, you usually want to use <code><a href="#">#decodeList(Bytes, Function)</a></code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-big-integer.html">decodeBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeBigInteger(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeBigInteger(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeBigInteger(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>Read an RLP encoded big integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int.html">decodeInt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeInt(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeInt(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeInt(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read an RLP encoded integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-list.html">decodeList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decodeList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode-list.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode-list.html#T"><span class="identifier">T</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decodeList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeList(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLP.decodeList.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode-list.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode-list.html#T"><span class="identifier">T</span></a></code>
+<p>Read an RLP encoded list of values from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-long.html">decodeLong</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeLong(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeLong(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeLong(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read an RLP encoded long from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-string.html">decodeString</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeString(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeString(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeString(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Read an RLP encoded string from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-to-list.html">decodeToList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeToList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeToList(net.consensys.cava.bytes.Bytes, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeToList(net.consensys.cava.bytes.Bytes, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeToList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeToList(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeToList(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeToList(net.consensys.cava.bytes.Bytes, kotlin.Boolean, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code>
+<p>Read an RLP encoded list of values from a Bytes value, populating a mutable output list.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-value.html">decodeValue</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeValue</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeValue(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeValue</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeValue(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$decodeValue(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read an RLP encoded value from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode.html">encode</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encode(java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode values to a Bytes value. 
+<p> Important: this method does not write any list prefix to the result. If you are writing a RLP encoded list of values, you usually want to use <code><a href="#">#encodeList(Consumer)</a></code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-big-integer.html">encodeBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeBigInteger(java.math.BigInteger)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a big integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-byte-array.html">encodeByteArray</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeByteArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeByteArray(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a value to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int.html">encodeInt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeInt(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-list.html">encodeList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeList(java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of values to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-list-to.html">encodeListTo</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeListTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeListTo(net.consensys.cava.rlp.RLP.encodeListTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-list-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeListTo(net.consensys.cava.rlp.RLP.encodeListTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="encode-list-to.html#T"><span class="identifier">T</span></a></code>
+<p>Encode a list of values to a ByteBuffer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-long.html">encodeLong</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeLong(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a long to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-string.html">encodeString</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeString(kotlin.String)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a string to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-to.html">encodeTo</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeTo(net.consensys.cava.rlp.RLP.encodeTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeTo(net.consensys.cava.rlp.RLP.encodeTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="encode-to.html#T"><span class="identifier">T</span></a></code>
+<p>Encode values to a ByteBuffer. 
+<p> Important: this method does not write any list prefix to the result. If you are writing a RLP encoded list of values, you usually want to use <code><a href="#">#encodeList(Consumer)</a></code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-value.html">encodeValue</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeValue</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeValue(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a value to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-list.html">isList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">isList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$isList(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if the Bytes value contains an RLP encoded list.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

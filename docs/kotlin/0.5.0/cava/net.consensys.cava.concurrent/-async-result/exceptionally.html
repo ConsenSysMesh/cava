@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.exceptionally - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./exceptionally.html">exceptionally</a><br/>
+<br/>
+<h1>exceptionally</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$exceptionally(java.util.function.Function((kotlin.Throwable, net.consensys.cava.concurrent.AsyncResult.T)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">exceptionally</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$exceptionally(java.util.function.Function((kotlin.Throwable, net.consensys.cava.concurrent.AsyncResult.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">out</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L482">(source)</a>
+<p>Returns a new result that, when this result completes exceptionally, completes with the value obtained from executing the supplied function with this result's exception as an argument. Otherwise, if this result completes normally, then the returned result also completes normally with the same value.</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - The function to execute.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

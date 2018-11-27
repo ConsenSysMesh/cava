@@ -1,0 +1,47 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Files.atomicReplace - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.io.file</a>&nbsp;/&nbsp;<a href="index.html">Files</a>&nbsp;/&nbsp;<a href="./atomic-replace.html">atomicReplace</a><br/>
+<br/>
+<h1>atomicReplace</h1>
+<a name="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, kotlin.ByteArray)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">atomicReplace</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, kotlin.ByteArray)/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, kotlin.ByteArray)/bytes">bytes</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L134">(source)</a>
+<p>Write a temporary file and then replace target.</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The target file to be replaced (if it exists).</p>
+<p><a name="bytes"></a>
+<code>bytes</code> - The bytes to be written.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<a name="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, net.consensys.cava.io.IOConsumer((java.io.Writer)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">atomicReplace</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, net.consensys.cava.io.IOConsumer((java.io.Writer)))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, net.consensys.cava.io.IOConsumer((java.io.Writer)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.io/-i-o-consumer/index.html"><span class="identifier">IOConsumer</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html"><span class="identifier">Writer</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L159">(source)</a>
+<p>Write a temporary file and then replace target.</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The target file to be replaced (if it exists).</p>
+<p><a name="fn"></a>
+<code>fn</code> - A consumer that will be provided a buffered Writer instance that will write to the file.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<a name="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">atomicReplace</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))/charset">charset</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/charset/Charset.html"><span class="identifier">Charset</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$atomicReplace(java.nio.file.Path, java.nio.charset.Charset, net.consensys.cava.io.IOConsumer((java.io.Writer)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.io/-i-o-consumer/index.html"><span class="identifier">IOConsumer</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/io/Writer.html"><span class="identifier">Writer</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L171">(source)</a>
+<p>Write a temporary file and then replace target.</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The target file to be replaced (if it exists).</p>
+<p><a name="charset"></a>
+<code>charset</code> - The charset of the file.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A consumer that will be provided a buffered Writer instance that will write to the file.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+</BODY>
+</HTML>

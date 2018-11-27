@@ -1,0 +1,20 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncCompletion.exceptionally - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncCompletion</a>&nbsp;/&nbsp;<a href="./exceptionally.html">exceptionally</a><br/>
+<br/>
+<h1>exceptionally</h1>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$exceptionally(java.util.function.Consumer((kotlin.Throwable)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">exceptionally</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$exceptionally(java.util.function.Consumer((kotlin.Throwable)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L443">(source)</a>
+<p>Returns a new completion that, when this result completes exceptionally, completes after executing the supplied function. Otherwise, if this result completes normally, then the returned result also completes normally with the same value.</p>
+<h3>Parameters</h3>
+<p><a name="consumer"></a>
+<code>consumer</code> - The function to execute.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

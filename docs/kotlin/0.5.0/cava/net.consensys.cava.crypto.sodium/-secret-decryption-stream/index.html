@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SecretDecryptionStream - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="./index.html">SecretDecryptionStream</a><br/>
+<br/>
+<h1>SecretDecryptionStream</h1>
+<code><span class="keyword">interface </span><span class="identifier">SecretDecryptionStream</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/security/auth/Destroyable.html"><span class="identifier">Destroyable</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretDecryptionStream.java#L22">(source)</a>
+<p>Used to decrypt a sequence of messages, or a single message split into arbitrary chunks.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-complete.html">isComplete</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">isComplete</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="pull.html">pull</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">pull</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretDecryptionStream$pull(net.consensys.cava.bytes.Bytes)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code><br/>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">pull</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretDecryptionStream$pull(kotlin.ByteArray)/cipherText">cipherText</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Pull a message from this secret stream.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

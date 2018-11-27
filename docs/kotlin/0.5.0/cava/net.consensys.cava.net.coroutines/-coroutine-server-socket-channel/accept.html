@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineServerSocketChannel.accept - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineServerSocketChannel</a>&nbsp;/&nbsp;<a href="./accept.html">accept</a><br/>
+<br/>
+<h1>accept</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineServerSocketChannel$accept()"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">accept</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-coroutine-socket-channel/index.html"><span class="identifier">CoroutineSocketChannel</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineServerSocketChannel.kt#L98">(source)</a>
+<p>Accepts a connection made to this channel's socket.</p>
+<h3>Exceptions</h3>
+<p><a name="ClosedChannelException"></a>
+<code>ClosedChannelException</code> - If the channel is closed.</p>
+<p><a name="AsynchronousCloseException"></a>
+<code>AsynchronousCloseException</code> - If another thread closes this channel while the accept operation is in
+progress.</p>
+<p><a name="ClosedByInterruptException"></a>
+<code>ClosedByInterruptException</code> - If another thread interrupts the current thread while the accept operation is
+in progress, thereby closing the channel and setting the current thread's interrupt status.</p>
+<p><a name="NotYetBoundException"></a>
+<code>NotYetBoundException</code> - If this channel's socket has not yet been bound.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+The socket channel for the new connection.</p>
+</BODY>
+</HTML>

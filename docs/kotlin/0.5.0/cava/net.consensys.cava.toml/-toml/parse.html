@@ -1,0 +1,126 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Toml.parse - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.toml</a>&nbsp;/&nbsp;<a href="index.html">Toml</a>&nbsp;/&nbsp;<a href="./parse.html">parse</a><br/>
+<br/>
+<h1>parse</h1>
+<a name="net.consensys.cava.toml.Toml$parse(kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L43">(source)</a>
+<p>Parse a TOML string.</p>
+<h3>Parameters</h3>
+<p><a name="input"></a>
+<code>input</code> - The input to parse.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(kotlin.String, net.consensys.cava.toml.TomlVersion)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(kotlin.String, net.consensys.cava.toml.TomlVersion)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(kotlin.String, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L54">(source)</a>
+<p>Parse a TOML string.</p>
+<h3>Parameters</h3>
+<p><a name="input"></a>
+<code>input</code> - The input to parse.</p>
+<p><a name="version"></a>
+<code>version</code> - The version level to parse at.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.nio.file.Path)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.file.Path)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L66">(source)</a>
+<p>Parse a TOML file.</p>
+<h3>Parameters</h3>
+<p><a name="file"></a>
+<code>file</code> - The input file to parse.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.nio.file.Path, net.consensys.cava.toml.TomlVersion)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.file.Path, net.consensys.cava.toml.TomlVersion)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.file.Path, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L78">(source)</a>
+<p>Parse a TOML file.</p>
+<h3>Parameters</h3>
+<p><a name="file"></a>
+<code>file</code> - The input file to parse.</p>
+<p><a name="version"></a>
+<code>version</code> - The version level to parse at.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.io.InputStream)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.InputStream)/is">is</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html"><span class="identifier">InputStream</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L90">(source)</a>
+<p>Parse a TOML input stream.</p>
+<h3>Parameters</h3>
+<p><a name="is"></a>
+<code>is</code> - The input stream to read the TOML document from.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.io.InputStream, net.consensys.cava.toml.TomlVersion)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.InputStream, net.consensys.cava.toml.TomlVersion)/is">is</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html"><span class="identifier">InputStream</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.InputStream, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L102">(source)</a>
+<p>Parse a TOML input stream.</p>
+<h3>Parameters</h3>
+<p><a name="is"></a>
+<code>is</code> - The input stream to read the TOML document from.</p>
+<p><a name="version"></a>
+<code>version</code> - The version level to parse at.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.io.Reader)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.Reader)/reader">reader</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Reader.html"><span class="identifier">Reader</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L114">(source)</a>
+<p>Parse a TOML reader.</p>
+<h3>Parameters</h3>
+<p><a name="reader"></a>
+<code>reader</code> - The reader to obtain the TOML document from.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.io.Reader, net.consensys.cava.toml.TomlVersion)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.Reader, net.consensys.cava.toml.TomlVersion)/reader">reader</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Reader.html"><span class="identifier">Reader</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.Reader, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L126">(source)</a>
+<p>Parse a TOML input stream.</p>
+<h3>Parameters</h3>
+<p><a name="reader"></a>
+<code>reader</code> - The reader to obtain the TOML document from.</p>
+<p><a name="version"></a>
+<code>version</code> - The version level to parse at.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/ReadableByteChannel.html"><span class="identifier">ReadableByteChannel</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L138">(source)</a>
+<p>Parse a TOML reader.</p>
+<h3>Parameters</h3>
+<p><a name="channel"></a>
+<code>channel</code> - The channel to read the TOML document from.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+<a name="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel, net.consensys.cava.toml.TomlVersion)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel, net.consensys.cava.toml.TomlVersion)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/ReadableByteChannel.html"><span class="identifier">ReadableByteChannel</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L150">(source)</a>
+<p>Parse a TOML input stream.</p>
+<h3>Parameters</h3>
+<p><a name="channel"></a>
+<code>channel</code> - The channel to read the TOML document from.</p>
+<p><a name="version"></a>
+<code>version</code> - The version level to parse at.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an IO error occurs.</p>
+<p><strong>Return</strong><br/>
+The parse result.</p>
+</BODY>
+</HTML>

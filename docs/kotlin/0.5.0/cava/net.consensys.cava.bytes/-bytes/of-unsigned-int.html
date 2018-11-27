@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.ofUnsignedInt - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./of-unsigned-int.html">ofUnsignedInt</a><br/>
+<br/>
+<h1>ofUnsignedInt</h1>
+<a name="net.consensys.cava.bytes.Bytes$ofUnsignedInt(kotlin.Long)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">ofUnsignedInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$ofUnsignedInt(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L303">(source)</a>
+<p>Return a 4 bytes value corresponding to the provided value interpreted as an unsigned int value.</p>
+<h3>Parameters</h3>
+<p><a name="value"></a>
+<code>value</code> - The value, which must fit an unsigned int.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>v &lt; 0</code> or <code>v</code> is too big to fit an unsigned 4-bytes int (that is, if <code>v &gt;= (1L &lt;&lt; 32)</code>).</p>
+<p><strong>Return</strong><br/>
+A 4 bytes value corresponding to <code>v</code>.</p>
+</BODY>
+</HTML>

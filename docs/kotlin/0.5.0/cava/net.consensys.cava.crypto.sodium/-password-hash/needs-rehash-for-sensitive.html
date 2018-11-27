@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PasswordHash.needsRehashForSensitive - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">PasswordHash</a>&nbsp;/&nbsp;<a href="./needs-rehash-for-sensitive.html">needsRehashForSensitive</a><br/>
+<br/>
+<h1>needsRehashForSensitive</h1>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$needsRehashForSensitive(kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">needsRehashForSensitive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.PasswordHash$needsRehashForSensitive(kotlin.String)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/PasswordHash.java#L878">(source)</a>
+<p>Check if a hash needs to be regenerated using limits on operations and memory that are suitable for sensitive use-cases. 
+<p> Equivalent to <code>needsRehash(hash, sensitiveOpsLimit(), sensitiveMemLimit())</code>. </p>
+<p> Note: only supported when the sodium native library version &gt;= 10.0.14 is available.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="hash"></a>
+<code>hash</code> - The hash.</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if the hash should be regenerated.</p>
+</BODY>
+</HTML>

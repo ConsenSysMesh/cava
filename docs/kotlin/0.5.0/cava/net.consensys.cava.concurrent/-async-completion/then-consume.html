@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncCompletion.thenConsume - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncCompletion</a>&nbsp;/&nbsp;<a href="./then-consume.html">thenConsume</a><br/>
+<br/>
+<h1>thenConsume</h1>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$thenConsume(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncCompletion.thenConsume.U)), java.util.function.Consumer((net.consensys.cava.concurrent.AsyncCompletion.thenConsume.U)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenConsume</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$thenConsume(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncCompletion.thenConsume.U)), java.util.function.Consumer((net.consensys.cava.concurrent.AsyncCompletion.thenConsume.U)))/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="then-consume.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$thenConsume(net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncCompletion.thenConsume.U)), java.util.function.Consumer((net.consensys.cava.concurrent.AsyncCompletion.thenConsume.U)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="then-consume.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L413">(source)</a>
+<p>Returns a completion that, when this completion and the supplied result both complete normally, completes after executing the supplied function with the value from the supplied result as an argument.</p>
+<h3>Parameters</h3>
+<p><a name="other"></a>
+<code>other</code> - The other result.</p>
+<p><a name="consumer"></a>
+<code>consumer</code> - The function to execute.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The type of the other's value.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

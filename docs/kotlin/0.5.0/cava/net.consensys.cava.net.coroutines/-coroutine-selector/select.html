@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineSelector.select - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineSelector</a>&nbsp;/&nbsp;<a href="./select.html">select</a><br/>
+<br/>
+<h1>select</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineSelector$select(java.nio.channels.SelectableChannel, kotlin.Int)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$select(java.nio.channels.SelectableChannel, kotlin.Int)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectableChannel.html"><span class="identifier">SelectableChannel</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$select(java.nio.channels.SelectableChannel, kotlin.Int)/ops">ops</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineSelector.kt#L83">(source)</a>
+<p>Wait for a channel to become ready for any of the specified operations.</p>
+<h3>Parameters</h3>
+<p><a name="channel"></a>
+<code>channel</code> - The channel.</p>
+<p><a name="ops"></a>
+<code>ops</code> - The interest set, as a combination of <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectionKey.html#OP_ACCEPT">SelectionKey.OP_ACCEPT</a>, <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectionKey.html#OP_CONNECT">SelectionKey.OP_CONNECT</a>,
+<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectionKey.html#OP_READ">SelectionKey.OP_READ</a> and/or <a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectionKey.html#OP_WRITE">SelectionKey.OP_WRITE</a>.</p>
+<h3>Exceptions</h3>
+<p><a name="ClosedSelectorException"></a>
+<code>ClosedSelectorException</code> - If the co-routine selector has been closed.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Configuration.getLong - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.config</a>&nbsp;/&nbsp;<a href="index.html">Configuration</a>&nbsp;/&nbsp;<a href="./get-long.html">getLong</a><br/>
+<br/>
+<h1>getLong</h1>
+<a name="net.consensys.cava.config.Configuration$getLong(kotlin.String)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.config.Configuration$getLong(kotlin.String)/key">key</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code> <a href="https://github.com/consensys/cava/blob/master//config/src/main/java/net/consensys/cava/config/Configuration.java#L249">(source)</a>
+<p>Get a long from this configuration.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - A configuration key (e.g. <code>"server.address.port"</code>).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the key cannot be parsed.</p>
+<p><a name="InvalidConfigurationPropertyTypeException"></a>
+<code>InvalidConfigurationPropertyTypeException</code> - If the value is not a long.</p>
+<p><a name="NoConfigurationPropertyException"></a>
+<code>NoConfigurationPropertyException</code> - If the key was not set in the configuration.</p>
+<p><strong>Return</strong><br/>
+The value.</p>
+</BODY>
+</HTML>

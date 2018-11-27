@@ -1,0 +1,92 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SECP256K1.KeyPair - cava</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">cava</a>&nbsp;/&nbsp;<a href="../../index.html">net.consensys.cava.crypto</a>&nbsp;/&nbsp;<a href="../index.html">SECP256K1</a>&nbsp;/&nbsp;<a href="./index.html">KeyPair</a><br/>
+<br/>
+<h1>KeyPair</h1>
+<code><span class="keyword">class </span><span class="identifier">KeyPair</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/SECP256K1.java#L661">(source)</a>
+<p>A SECP256K1 key pair.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="create.html">create</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">create</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.KeyPair$create(net.consensys.cava.crypto.SECP256K1.SecretKey, net.consensys.cava.crypto.SECP256K1.PublicKey)/secretKey">secretKey</span><span class="symbol">:</span>&nbsp;<a href="../-secret-key/index.html"><span class="identifier">SecretKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.KeyPair$create(net.consensys.cava.crypto.SECP256K1.SecretKey, net.consensys.cava.crypto.SECP256K1.PublicKey)/publicKey">publicKey</span><span class="symbol">:</span>&nbsp;<a href="../-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">KeyPair</span></a></code>
+<p>Create a keypair from a private and public key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.KeyPair$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="from-secret-key.html">fromSecretKey</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromSecretKey</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.KeyPair$fromSecretKey(net.consensys.cava.crypto.SECP256K1.SecretKey)/secretKey">secretKey</span><span class="symbol">:</span>&nbsp;<a href="../-secret-key/index.html"><span class="identifier">SecretKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">KeyPair</span></a></code>
+<p>Create a keypair using only a private key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="load.html">load</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">load</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.KeyPair$load(java.nio.file.Path)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">KeyPair</span></a></code>
+<p>Load a key pair from a path.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="public-key.html">publicKey</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">publicKey</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-public-key/index.html"><span class="identifier">PublicKey</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="random.html">random</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">random</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">KeyPair</span></a></code>
+<p>Generate a new keypair. Entropy for the generation is drawn from SecureRandom.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="secret-key.html">secretKey</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">secretKey</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-secret-key/index.html"><span class="identifier">SecretKey</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="store.html">store</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">store</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.KeyPair$store(java.nio.file.Path)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write the key pair to a file.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

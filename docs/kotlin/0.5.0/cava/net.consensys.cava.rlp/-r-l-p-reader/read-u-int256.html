@@ -1,0 +1,39 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLPReader.readUInt256 - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="index.html">RLPReader</a>&nbsp;/&nbsp;<a href="./read-u-int256.html">readUInt256</a><br/>
+<br/>
+<h1>readUInt256</h1>
+<a name="net.consensys.cava.rlp.RLPReader$readUInt256()"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt256</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPReader.java#L177">(source)</a>
+<p>Read a UInt256 value from the RLP source.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the next RLP value cannot be represented as a long.</p>
+<p><a name="EndOfRLPException"></a>
+<code>EndOfRLPException</code> - If there are no more RLP values to read.</p>
+<p><strong>Return</strong><br/>
+A UInt256 value.</p>
+<a name="net.consensys.cava.rlp.RLPReader$readUInt256(kotlin.Boolean)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readUInt256(kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPReader.java#L191">(source)</a>
+<p>Read a UInt256 value from the RLP source.</p>
+<h3>Parameters</h3>
+<p><a name="lenient"></a>
+<code>lenient</code> - If <code>false</code>, an exception will be thrown if the integer is not minimally encoded.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source, or the integer is not minimally encoded and `lenient` is <code>false</code>.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the next RLP value cannot be represented as a long.</p>
+<p><a name="EndOfRLPException"></a>
+<code>EndOfRLPException</code> - If there are no more RLP values to read.</p>
+<p><strong>Return</strong><br/>
+A UInt256 value.</p>
+</BODY>
+</HTML>

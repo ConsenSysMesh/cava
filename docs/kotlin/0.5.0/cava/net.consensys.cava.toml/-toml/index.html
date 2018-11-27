@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Toml - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.toml</a>&nbsp;/&nbsp;<a href="./index.html">Toml</a><br/>
+<br/>
+<h1>Toml</h1>
+<code><span class="keyword">class </span><span class="identifier">Toml</span></code> <a href="https://github.com/consensys/cava/blob/master//toml/src/main/java/net/consensys/cava/toml/Toml.java#L32">(source)</a>
+<p>Methods for parsing data stored in Tom's Obvious, Minimal Language (TOML).</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="canonical-dotted-key.html">canonicalDottedKey</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">canonicalDottedKey</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$canonicalDottedKey(kotlin.String)/dottedKey">dottedKey</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Get the canonical form of the dotted key.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="join-key-path.html">joinKeyPath</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">joinKeyPath</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$joinKeyPath(kotlin.collections.MutableList((kotlin.String)))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Join a list of keys into a single dotted key string.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="parse.html">parse</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(kotlin.String)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(kotlin.String, net.consensys.cava.toml.TomlVersion)/input">input</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(kotlin.String, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code>
+<p>Parse a TOML string.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.file.Path)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.file.Path, net.consensys.cava.toml.TomlVersion)/file">file</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.file.Path, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code>
+<p>Parse a TOML file.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.InputStream)/is">is</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html"><span class="identifier">InputStream</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.InputStream, net.consensys.cava.toml.TomlVersion)/is">is</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/InputStream.html"><span class="identifier">InputStream</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.InputStream, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.Reader, net.consensys.cava.toml.TomlVersion)/reader">reader</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Reader.html"><span class="identifier">Reader</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.Reader, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel, net.consensys.cava.toml.TomlVersion)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/ReadableByteChannel.html"><span class="identifier">ReadableByteChannel</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel, net.consensys.cava.toml.TomlVersion)/version">version</span><span class="symbol">:</span>&nbsp;<a href="../-toml-version/index.html"><span class="identifier">TomlVersion</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code>
+<p>Parse a TOML input stream.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.io.Reader)/reader">reader</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/Reader.html"><span class="identifier">Reader</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parse(java.nio.channels.ReadableByteChannel)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/ReadableByteChannel.html"><span class="identifier">ReadableByteChannel</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-toml-parse-result/index.html"><span class="identifier">TomlParseResult</span></a></code>
+<p>Parse a TOML reader.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="parse-dotted-key.html">parseDottedKey</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">parseDottedKey</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$parseDottedKey(kotlin.String)/dottedKey">dottedKey</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>Parse a dotted key into individual parts.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="toml-escape.html">tomlEscape</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">tomlEscape</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.toml.Toml$tomlEscape(kotlin.String)/text">text</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/StringBuilder.html"><span class="identifier">StringBuilder</span></a></code>
+<p>Escape a text string using the TOML escape sequences.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

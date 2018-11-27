@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MerkleStorage - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.trie</a>&nbsp;/&nbsp;<a href="./index.html">MerkleStorage</a><br/>
+<br/>
+<h1>MerkleStorage</h1>
+<code><span class="keyword">interface </span><span class="identifier">MerkleStorage</span></code> <a href="https://github.com/consensys/cava/blob/master//merkle-trie/src/main/kotlin/net/consensys/cava/trie/MerkleStorage.kt#L24">(source)</a>
+<p>Storage for use in a <a href="../-stored-merkle-patricia-trie/index.html">StoredMerklePatriciaTrie</a>.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.MerkleStorage$get(net.consensys.cava.bytes.Bytes32)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code>
+<p>Get the stored content under the given hash.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.trie.MerkleStorage$put(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.trie.MerkleStorage$put(net.consensys.cava.bytes.Bytes32, net.consensys.cava.bytes.Bytes)/content">content</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Store content with a given hash.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-async-merkle-storage/index.html">AsyncMerkleStorage</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">class </span><span class="identifier">AsyncMerkleStorage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MerkleStorage</span></a></code>
+<p>A <a href="./index.html">MerkleStorage</a> implementation using <a href="../../net.consensys.cava.concurrent/-async-result/index.html">AsyncResult</a>'s.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

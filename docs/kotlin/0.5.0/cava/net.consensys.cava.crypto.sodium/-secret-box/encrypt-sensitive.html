@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SecretBox.encryptSensitive - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">SecretBox</a>&nbsp;/&nbsp;<a href="./encrypt-sensitive.html">encryptSensitive</a><br/>
+<br/>
+<h1>encryptSensitive</h1>
+<a name="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptSensitive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretBox.java#L589">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptSensitive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretBox.java#L606">(source)</a>
+<p>Encrypt a message with a password, using PasswordHash for the key generation (with the currently recommended algorithm and limits on operations and memory that are suitable for sensitive use-cases).</p>
+<h3>Parameters</h3>
+<p><a name="message"></a>
+<code>message</code> - The message to encrypt.</p>
+<p><a name="password"></a>
+<code>password</code> - The password to use for encryption.</p>
+<p><strong>Return</strong><br/>
+The encrypted data.</p>
+<a name="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptSensitive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(net.consensys.cava.bytes.Bytes, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/algorithm">algorithm</span><span class="symbol">:</span>&nbsp;<a href="../-password-hash/-algorithm/index.html"><span class="identifier">Algorithm</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretBox.java#L624">(source)</a><br/>
+<a name="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encryptSensitive</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/password">password</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.SecretBox$encryptSensitive(kotlin.ByteArray, kotlin.String, net.consensys.cava.crypto.sodium.PasswordHash.Algorithm)/algorithm">algorithm</span><span class="symbol">:</span>&nbsp;<a href="../-password-hash/-algorithm/index.html"><span class="identifier">Algorithm</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/SecretBox.java#L637">(source)</a>
+<p>Encrypt a message with a password, using PasswordHash for the key generation (with limits on operations and memory that are suitable for sensitive use-cases).</p>
+<h3>Parameters</h3>
+<p><a name="message"></a>
+<code>message</code> - The message to encrypt.</p>
+<p><a name="password"></a>
+<code>password</code> - The password to use for encryption.</p>
+<p><a name="algorithm"></a>
+<code>algorithm</code> - The algorithm to use.</p>
+<p><strong>Return</strong><br/>
+The encrypted data.</p>
+</BODY>
+</HTML>

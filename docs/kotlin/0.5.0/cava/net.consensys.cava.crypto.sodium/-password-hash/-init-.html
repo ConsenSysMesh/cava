@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PasswordHash.<init> - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">PasswordHash</a>&nbsp;/&nbsp;<a href="./-init-.html">&lt;init&gt;</a><br/>
+<br/>
+<h1>&lt;init&gt;</h1>
+<a name="net.consensys.cava.crypto.sodium.PasswordHash$&lt;init&gt;()"></a>
+<code><span class="identifier">PasswordHash</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>The Argon2 memory-hard hashing function. 
+<p> Argon2 summarizes the state of the art in the design of memory-hard functions. </p>
+<p> It aims at the highest memory filling rate and effective use of multiple computing units, while still providing defense against tradeoff attacks. </p>
+<p> It prevents ASICs from having a significant advantage over software implementations. </p>
+Guidelines for choosing the parameters 
+<p> Start by determining how much memory the function can use. What will be the highest number of threads/processes evaluating the function simultaneously (ideally, no more than 1 per CPU core)? How much physical memory is guaranteed to be available? </p>
+<p> Set memlimit to the amount of memory you want to reserve for password hashing. </p>
+<p> Then, set opslimit to 3 and measure the time it takes to hash a password. </p>
+<p> If this it is way too long for your application, reduce memlimit, but keep opslimit set to 3. </p>
+<p> If the function is so fast that you can afford it to be more computationally intensive without any usability issues, increase opslimit. </p>
+<p> For online use (e.g. login in on a website), a 1 second computation is likely to be the acceptable maximum. </p>
+<p> For interactive use (e.g. a desktop application), a 5 second pause after having entered a password is acceptable if the password doesn't need to be entered more than once per session. </p>
+<p> For non-interactive use and infrequent use (e.g. restoring an encrypted backup), an even slower computation can be an option. </p>
+<p> This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.</p>
+</p>
+</BODY>
+</HTML>
