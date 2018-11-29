@@ -24,6 +24,17 @@ import net.consensys.cava.concurrent.coroutines.asyncResult
 import net.consensys.cava.crypto.Hash
 import net.consensys.cava.rlp.RLP
 
+// Workaround for a javadoc generation issue - extracting these method bodies out of the default method and into
+// private funcs appears to resolve it. It would be good to remove this workaround one day.
+private fun <K, V> getAsync(dispatcher: CoroutineDispatcher, key: K, trie: MerkleTrie<K, V>): AsyncResult<V?> =
+  GlobalScope.asyncResult(dispatcher) { trie.get(key) }
+private fun <K, V> putAsync(
+  dispatcher: CoroutineDispatcher,
+  key: K,
+  value: V?,
+  trie: MerkleTrie<K, V>
+): AsyncCompletion = GlobalScope.asyncCompletion(dispatcher) { trie.put(key, value) }
+
 /**
  * A Merkle Trie.
  */
@@ -59,8 +70,7 @@ interface MerkleTrie<in K, V> {
    * @param dispatcher The co-routine dispatcher for asynchronous tasks.
    * @return A value that corresponds to the specified key, or {@code null} if no such value exists.
    */
-  fun getAsync(dispatcher: CoroutineDispatcher, key: K): AsyncResult<V?> =
-    GlobalScope.asyncResult(dispatcher) { get(key) }
+  fun getAsync(dispatcher: CoroutineDispatcher, key: K): AsyncResult<V?> = getAsync(dispatcher, key, this)
 
   /**
    * Updates the value that corresponds to the specified key, creating the value if one does not already exist.
@@ -95,7 +105,7 @@ interface MerkleTrie<in K, V> {
    * @return A completion that will complete when the value has been put into the trie.
    */
   fun putAsync(dispatcher: CoroutineDispatcher, key: K, value: V?): AsyncCompletion =
-    GlobalScope.asyncCompletion(dispatcher) { put(key, value) }
+    putAsync(dispatcher, key, value, this)
 
   /**
    * Deletes the value that corresponds to the specified key, if such a value exists.
