@@ -13,6 +13,7 @@ include 'merkle-trie'
 include 'net'
 include 'net-coroutines'
 include 'rlp'
+include 'ssz'
 include 'toml'
 include 'units'
 

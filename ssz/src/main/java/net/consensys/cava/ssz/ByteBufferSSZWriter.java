@@ -1,0 +1,59 @@
+/*
+ * Copyright 2018 ConsenSys AG.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+ * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+ * specific language governing permissions and limitations under the License.
+ */
+package net.consensys.cava.ssz;
+
+import static net.consensys.cava.ssz.SSZ.encodeByteArray;
+import static net.consensys.cava.ssz.SSZ.encodeNumber;
+
+import net.consensys.cava.bytes.Bytes;
+
+import java.nio.ByteBuffer;
+
+final class ByteBufferSSZWriter implements SSZWriter {
+
+  private ByteBuffer buffer;
+
+  ByteBufferSSZWriter(ByteBuffer buffer) {
+    this.buffer = buffer;
+  }
+
+  @Override
+  public void writeSSZ(Bytes value) {
+    buffer.put(value.toArrayUnsafe());
+  }
+
+  @Override
+  public void writeValue(Bytes value) {
+    encodeByteArray(value.toArrayUnsafe(), buffer::put);
+  }
+
+  @Override
+  public void writeByteArray(byte[] value) {
+    encodeByteArray(value, buffer::put);
+  }
+
+  @Override
+  public void writeByte(byte value) {
+    encodeByteArray(new byte[] {value}, buffer::put);
+  }
+
+  @Override
+  public void writeLong(long value, int size) {
+    buffer.put(encodeNumber(value, size));
+  }
+
+  @Override
+  public void writeLong(long value) {
+    buffer.put(encodeNumber(value));
+  }
+}
