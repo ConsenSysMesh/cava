@@ -12,9 +12,6 @@
  */
 package net.consensys.cava.ssz;
 
-import static net.consensys.cava.ssz.SSZ.encodeByteArray;
-import static net.consensys.cava.ssz.SSZ.encodeNumber;
-
 import net.consensys.cava.bytes.Bytes;
 
 import java.nio.ByteBuffer;
@@ -33,27 +30,7 @@ final class ByteBufferSSZWriter implements SSZWriter {
   }
 
   @Override
-  public void writeValue(Bytes value) {
-    encodeByteArray(value.toArrayUnsafe(), buffer::put);
-  }
-
-  @Override
-  public void writeByteArray(byte[] value) {
-    encodeByteArray(value, buffer::put);
-  }
-
-  @Override
-  public void writeByte(byte value) {
-    encodeByteArray(new byte[] {value}, buffer::put);
-  }
-
-  @Override
-  public void writeLong(long value, int size) {
-    buffer.put(encodeNumber(value, size));
-  }
-
-  @Override
-  public void writeLong(long value) {
-    buffer.put(encodeNumber(value));
+  public void writeSSZ(byte[] value) {
+    buffer.put(value);
   }
 }

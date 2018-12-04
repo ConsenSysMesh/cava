@@ -32,7 +32,7 @@ class ByteBufferWriterTest {
   @CsvSource({"000003e8, 1000", "000186a0, 100000"})
   void shouldWriteSmallIntegers(String expectedHex, int value) {
     ByteBuffer buffer = ByteBuffer.allocate(64);
-    SSZ.encodeTo(buffer, writer -> writer.writeInt(value, 4));
+    SSZ.encodeTo(buffer, writer -> writer.writeInt(value, 32));
     buffer.flip();
     assertEquals(fromHexString(expectedHex), Bytes.wrapByteBuffer(buffer));
   }
@@ -40,7 +40,7 @@ class ByteBufferWriterTest {
   @Test
   void shouldWriteLongIntegers() {
     ByteBuffer buffer = ByteBuffer.allocate(64);
-    SSZ.encodeTo(buffer, writer -> writer.writeLong(100000L));
+    SSZ.encodeTo(buffer, writer -> writer.writeLong(100000L, 24));
     buffer.flip();
     assertEquals(fromHexString("0186a0"), Bytes.wrapByteBuffer(buffer));
   }
@@ -68,12 +68,12 @@ class ByteBufferWriterTest {
   @Test
   void shouldWriteBigIntegers() {
     ByteBuffer buffer = ByteBuffer.allocate(64);
-    SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(100000)));
+    SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(100000), 24));
     buffer.flip();
     assertEquals(fromHexString("0186a0"), Bytes.wrapByteBuffer(buffer));
 
     buffer.clear();
-    SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(127).pow(16)));
+    SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(127).pow(16), 112));
     buffer.flip();
     assertEquals(fromHexString("e1ceefa5bbd9ed1c97f17a1df801"), Bytes.wrapByteBuffer(buffer));
   }
@@ -108,7 +108,7 @@ class ByteBufferWriterTest {
         new String[] {"asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer"};
 
     ByteBuffer buffer = ByteBuffer.allocate(256);
-    SSZ.encodeListTo(buffer, strings);
+    SSZ.encodeTo(buffer, w -> w.writeStringList(strings));
     buffer.flip();
 
     assertEquals(

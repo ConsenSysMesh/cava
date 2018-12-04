@@ -529,6 +529,17 @@ abstract class CommonBytesTests {
   }
 
   @Test
+  void testNumberOfLeadingZeroBytes() {
+    assertEquals(0, Bytes.fromHexString("0x12").numberOfLeadingZeroBytes());
+    assertEquals(1, Bytes.fromHexString("0x0012").numberOfLeadingZeroBytes());
+    assertEquals(2, Bytes.fromHexString("0x000012").numberOfLeadingZeroBytes());
+    assertEquals(0, Bytes.fromHexString("0x").numberOfLeadingZeroBytes());
+    assertEquals(1, Bytes.fromHexString("0x00").numberOfLeadingZeroBytes());
+    assertEquals(2, Bytes.fromHexString("0x0000").numberOfLeadingZeroBytes());
+    assertEquals(3, Bytes.fromHexString("0x000000").numberOfLeadingZeroBytes());
+  }
+
+  @Test
   void testHasLeadingZeroBit() {
     assertFalse(Bytes.fromHexString("0x").hasLeadingZero());
     assertTrue(Bytes.fromHexString("0x01").hasLeadingZero());

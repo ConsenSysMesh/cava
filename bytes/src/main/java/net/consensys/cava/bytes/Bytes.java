@@ -450,8 +450,7 @@ public interface Bytes {
   /**
    * Retrieve the 4 bytes starting at the provided index in this value as an integer.
    *
-   * @param i The index from which to get the int, which must less than or equal to {@code size() -
-   *     4}.
+   * @param i The index from which to get the int, which must less than or equal to {@code size() - 4}.
    * @return An integer whose value is the 4 bytes from this value starting at index {@code i}.
    * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 4}.
    */
@@ -654,7 +653,7 @@ public interface Bytes {
     int size = size();
     for (int i = 0; i < size; i++) {
       if (get(i) != 0) {
-        return i - 1;
+        return i;
       }
     }
     return size;
@@ -936,6 +935,9 @@ public interface Bytes {
    * @throws IndexOutOfBoundsException if {@code i &lt; 0}.
    */
   default Bytes slice(int i) {
+    if (i == 0) {
+      return this;
+    }
     int size = size();
     if (i >= size) {
       return EMPTY;

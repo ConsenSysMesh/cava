@@ -12,15 +12,11 @@
  */
 package net.consensys.cava.ssz;
 
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static net.consensys.cava.ssz.SSZ.encodeNumber;
-
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
-import javax.annotation.Nullable;
-
 
 /**
  * A writer for encoding values to SSZ.
@@ -30,7 +26,6 @@ public interface SSZWriter {
   /**
    * Append an already SSZ encoded value.
    *
-   * <p>
    * Note that this method <b>may not</b> validate that {@code value} is a valid SSZ sequence. Appending an invalid SSZ
    * sequence will cause the entire SSZ encoding produced by this writer to also be invalid.
    *
@@ -39,90 +34,33 @@ public interface SSZWriter {
   void writeSSZ(Bytes value);
 
   /**
+   * Append an already SSZ encoded value.
+   *
+   * Note that this method <b>may not</b> validate that {@code value} is a valid SSZ sequence. Appending an invalid SSZ
+   * sequence will cause the entire SSZ encoding produced by this writer to also be invalid.
+   *
+   * @param value The SSZ encoded bytes to append.
+   */
+  default void writeSSZ(byte[] value) {
+    writeSSZ(Bytes.wrap(value));
+  }
+
+  /**
    * Encode a {@link Bytes} value to SSZ.
    *
    * @param value The byte array to encode.
    */
-  void writeValue(Bytes value);
+  default void writeBytes(Bytes value) {
+    SSZ.encodeBytesTo(value, this::writeSSZ);
+  }
 
   /**
    * Encode a byte array to SSZ.
    *
    * @param value The byte array to encode.
    */
-  default void writeByteArray(byte[] value) {
-    writeValue(Bytes.wrap(value));
-  }
-
-  /**
-   * Encode a byte to SSZ.
-   *
-   * @param value The byte value to encode.
-   */
-  default void writeByte(byte value) {
-    writeValue(Bytes.of(value));
-  }
-
-  /**
-   * Write an integer to the output.
-   *
-   * @param value The integer to write.
-   */
-  default void writeInt(int value) {
-    writeLong(value);
-  }
-
-  /**
-   * Write an integer to the output.
-   *
-   * @param value The integer to write.
-   * @param size The number of bytes to write.
-   */
-  default void writeInt(int value, int size) {
-    writeLong(value, size);
-  }
-
-  /**
-   * Write a long to the output.
-   *
-   * @param value The long value to write.
-   */
-  void writeLong(long value);
-
-  /**
-   * Write a long to the output.
-   *
-   * @param value The long value to write.
-   * @param size The number of bytes to write.
-   */
-  void writeLong(long value, int size);
-
-  /**
-   * Write a {@link UInt256} to the output.
-   *
-   * @param value The {@link UInt256} value to write.
-   */
-  default void writeUInt256(UInt256 value) {
-    writeSSZ(value.toBytes());
-  }
-
-  /**
-   * Write a big integer to the output.
-   *
-   * @param value The integer to write.
-   */
-  default void writeBigInteger(BigInteger value) {
-    writeSSZ(Bytes.wrap(encodeNumber(value)));
-  }
-
-  /**
-   * Write a big integer to the output.
-   *
-   * @param value The integer to write.
-   * @param size The number of bytes to write.
-   */
-  default void writeBigInteger(BigInteger value, int size) {
-    writeSSZ(Bytes.wrap(encodeNumber(value, size)));
+  default void writeBytes(byte[] value) {
+    SSZ.encodeByteArrayTo(value, this::writeSSZ);
   }
 
   /**
@@ -131,74 +69,226 @@ public interface SSZWriter {
    * @param str The string to write.
    */
   default void writeString(String str) {
-    writeByteArray(str.getBytes(UTF_8));
+    SSZ.encodeStringTo(str, this::writeSSZ);
+  }
+
+  /**
+   * Write a two's-compliment integer to the output.
+   *
+   * @param value The integer to write.
+   * @param bitLength The bit length of the integer value.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeInt(int value, int bitLength) {
+    writeSSZ(SSZ.encodeLongToByteArray(value, bitLength));
+  }
+
+  /**
+   * Write a two's-compliment long to the output.
+   *
+   * @param value The long value to write.
+   * @param bitLength The bit length of the integer value.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeLong(long value, int bitLength) {
+    writeSSZ(SSZ.encodeLongToByteArray(value, bitLength));
+  }
+
+  /**
+   * Write a big integer to the output.
+   *
+   * @param value The integer to write.
+   * @param bitLength The bit length of the integer value.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeBigInteger(BigInteger value, int bitLength) {
+    writeSSZ(SSZ.encodeBigIntegerToByteArray(value, bitLength));
+  }
+
+  /**
+   * Write an 8-bit two's-compliment integer to the output.
+   *
+   * @param value The integer to write.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeInt8(int value) {
+    writeInt(value, 8);
+  }
+
+  /**
+   * Write a 16-bit two's-compliment integer to the output.
+   *
+   * @param value The integer to write.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeInt16(int value) {
+    writeInt(value, 16);
+  }
+
+  /**
+   * Write a 32-bit two's-compliment integer to the output.
+   *
+   * @param value The integer to write.
+   */
+  default void writeInt32(int value) {
+    writeInt(value, 32);
+  }
+
+  /**
+   * Write a 64-bit two's-compliment integer to the output.
+   *
+   * @param value The long to write.
+   */
+  default void writeInt64(long value) {
+    writeLong(value, 64);
+  }
+
+  /**
+   * Write an unsigned integer to the output.
+   *
+   * @param value The integer to write.
+   * @param bitLength The bit length of the integer value.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeUInt(int value, int bitLength) {
+    writeSSZ(SSZ.encodeULongToByteArray(value, bitLength));
+  }
+
+  /**
+   * Write an unsigned long to the output.
+   *
+   * @param value The long value to write.
+   * @param bitLength The bit length of the integer value.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeULong(long value, int bitLength) {
+    writeSSZ(SSZ.encodeULongToByteArray(value, bitLength));
+  }
+
+  /**
+   * Write an 8-bit unsigned integer to the output.
+   *
+   * @param value The integer to write.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeUInt8(int value) {
+    writeUInt(value, 8);
+  }
+
+  /**
+   * Write a 16-bit unsigned integer to the output.
+   *
+   * @param value The integer to write.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   */
+  default void writeUInt16(int value) {
+    writeUInt(value, 16);
+  }
+
+  /**
+   * Write a 32-bit unsigned integer to the output.
+   *
+   * @param value The integer to write.
+   */
+  default void writeUInt32(long value) {
+    writeULong(value, 32);
+  }
+
+  /**
+   * Write a 64-bit unsigned integer to the output.
+   *
+   * @param value The long to write.
+   */
+  default void writeUInt64(long value) {
+    writeULong(value, 64);
+  }
+
+  /**
+   * Write a {@link UInt256} to the output.
+   *
+   * @param value The {@link UInt256} to write.
+   */
+  default void writeUInt256(UInt256 value) {
+    writeSSZ(SSZ.encodeUInt256(value));
+  }
+
+  /**
+   * Write a boolean to the output.
+   *
+   * @param value The boolean value.
+   */
+  default void writeBoolean(boolean value) {
+    writeSSZ(SSZ.encodeBoolean(value));
+  }
+
+  /**
+   * Write an address.
+   *
+   * @param address The address (must be exactly 20 bytes).
+   * @throws IllegalArgumentException If {@code address.size != 20}.
+   */
+  default void writeAddress(Bytes address) {
+    writeSSZ(SSZ.encodeAddress(address));
+  }
+
+  /**
+   * Write a hash.
+   *
+   * @param hash The hash.
+   */
+  default void writeHash(Bytes32 hash) {
+    writeSSZ(SSZ.encodeHash(hash));
+  }
+
+  /**
+   * Write a list of bytes.
+   *
+   * @param elements The bytes to write as a list.
+   */
+  default void writeBytesList(Bytes... elements) {
+    SSZ.encodeBytesListTo(elements, this::writeSSZ);
   }
 
   /**
    * Write a list of strings, which must be of the same length
    *
    * @param elements The strings to write as a list.
-   * @throws IllegalArgumentException if the elements are not of the same length
    */
-  default void writeList(String... elements) {
-    writeInt(elements.length, 4);
-    for (String value : elements) {
-      writeString(value);
-    }
+  default void writeStringList(String... elements) {
+    SSZ.encodeStringListTo(elements, this::writeSSZ);
   }
 
   /**
    * Write a list of integers.
    *
-   * @param size the number of bytes to allocate per element
+   * @param bitLength The bit length of each integer.
    * @param elements The integers to write as a list.
-   * @throws IllegalArgumentException if an integer cannot be stored in the number of bytes provided
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
    */
-  default void writeList(int size, int... elements) {
-    writeInt(elements.length, 4);
-    for (int value : elements) {
-      writeInt(value, size);
-    }
+  default void writeIntList(int bitLength, int... elements) {
+    SSZ.encodeIntListTo(bitLength, elements, this::writeSSZ);
   }
 
   /**
-   * Write a list of integers.
+   * Write a list of long integers.
    *
-   * @param size the number of bytes to allocate per element
-   * @param elements The integers to write as a list.
-   * @throws IllegalArgumentException if an integer cannot be stored in the number of bytes provided
+   * @param bitLength The bit length of each integer.
+   * @param elements The long integers to write as a list.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
    */
-  default void writeList(int size, long... elements) {
-    writeInt(elements.length, 4);
-    for (long value : elements) {
-      writeLong(value, size);
-    }
+  default void writeList(int bitLength, long... elements) {
+    SSZ.encodeLongIntListTo(bitLength, elements, this::writeSSZ);
   }
 
   /**
-   * Write a list of integers.
+   * Write a list of big integers.
    *
-   * @param size the number of bytes to allocate per element
+   * @param bitLength The bit length of each integer.
    * @param elements The integers to write as a list.
    * @throws IllegalArgumentException if an integer cannot be stored in the number of bytes provided
    */
-  default void writeList(int size, BigInteger... elements) {
-    writeInt(elements.length, 4);
-    for (BigInteger value : elements) {
-      writeBigInteger(value);
-    }
-  }
-
-  /**
-   * Write a list of booleans.
-   *
-   * @param elements The booleans to write as a list.
-   */
-  default void writeList(boolean... elements) {
-    writeInt(elements.length, 4);
-    for (boolean value : elements) {
-      writeBoolean(value);
-    }
+  default void writeList(int bitLength, BigInteger... elements) {
+    SSZ.encodeBigIntegerListTo(bitLength, elements, this::writeSSZ);
   }
 
   /**
@@ -207,95 +297,34 @@ public interface SSZWriter {
    * @param elements The integers to write as a list.
    */
   default void writeList(UInt256... elements) {
-    writeInt(elements.length, 4);
-    for (UInt256 value : elements) {
-      writeUInt256(value);
-    }
-  }
-
-  /**
-   * Write a list of addresses.
-   *
-   * @param addresses The addresses to write as a list.
-   * @throws IllegalArgumentException if the addresses are not 20 bytes long.
-   */
-  default void writeListOfAddresses(Bytes... addresses) {
-    writeList(20, addresses);
+    SSZ.encodeUInt256ListTo(elements, this::writeSSZ);
   }
 
   /**
    * Write a list of hashes.
    *
-   * @param hashes The hashes to write as a list.
-   * @throws IllegalArgumentException if the hashes are not 32 bytes long.
+   * @param elements The hashes to write as a list.
    */
-  default void writeListOfHashes(Bytes... hashes) {
-    writeList(32, hashes);
+  default void writeListOfHashes(Bytes32... elements) {
+    SSZ.encodeHashListTo(elements, this::writeSSZ);
   }
 
   /**
-   * Write a list of bytes.
+   * Write a list of addresses.
    *
-   * @param bytes The bytes to write as a list.
-   * @throws IllegalArgumentException if the byte values have different lengths.
+   * @param elements The addresses to write as a list.
+   * @throws IllegalArgumentException If any {@code address.size != 20}.
    */
-  default void writeList(Bytes... bytes) {
-    writeList(null, bytes);
+  default void writeListOfAddresses(Bytes... elements) {
+    SSZ.encodeAddressListTo(elements, this::writeSSZ);
   }
 
   /**
-   * Write a list of bytes.
+   * Write a list of booleans.
    *
-   * @param length if not null, the length of an element of the list
-   * @param bytes The bytes to write as a list.
-   * @throws IllegalArgumentException if the byte values length don't match expected length.
+   * @param elements The booleans to write as a list.
    */
-  default void writeList(@Nullable Integer length, Bytes... bytes) {
-    writeInt(bytes.length, 4);
-    for (Bytes value : bytes) {
-      if (length != null && value.size() != length) {
-        throw new IllegalArgumentException("value " + value.size() + " does not match expected length: " + length);
-      }
-      writeValue(value);
-    }
-  }
-
-  /**
-   * Write an address.
-   *
-   * @param address the address, exactly 20 bytes.
-   * @throws IllegalArgumentException if {@code address.size != 20}
-   */
-  default void writeAddress(Bytes address) {
-    if (address.size() != 20) {
-      throw new IllegalArgumentException("Address of wrong length: should be 20 bytes long exactly");
-    }
-    writeSSZ(address);
-  }
-
-  /**
-   * Write a hash.
-   *
-   * @param hash the hash, exactly 32 bytes.
-   * @throws IllegalArgumentException if {@code hash.size != 32}
-   */
-  default void writeHash(Bytes hash) {
-    if (hash.size() != 32) {
-      throw new IllegalArgumentException("Hash of wrong length: should be 32 bytes long exactly");
-    }
-    writeSSZ(hash);
-  }
-
-  /**
-   * Write a boolean.
-   *
-   * @param bool the boolean value
-   */
-  default void writeBoolean(Boolean bool) {
-    if (bool) {
-      writeSSZ(Bytes.of((byte) 0x01));
-    } else {
-      writeSSZ(Bytes.of((byte) 0x00));
-    }
+  default void writeList(boolean... elements) {
+    SSZ.encodeBooleanListTo(elements, this::writeSSZ);
   }
 }
