@@ -15,7 +15,6 @@ package net.consensys.cava.ssz;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
@@ -254,13 +253,14 @@ public interface SSZReader {
   Bytes readAddress();
 
   /**
-   * Read a 32-byte hash from the SSZ source.
+   * Read a hash from the SSZ source.
    *
+   * @param hashLength The length of the hash (in bytes).
    * @return The bytes of the hash.
    * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 32-byte hash.
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
-  Bytes32 readHash();
+  Bytes readHash(int hashLength);
 
   /**
    * Read a list of {@link Bytes} from the SSZ source.
@@ -528,14 +528,15 @@ public interface SSZReader {
   List<Bytes> readAddressList();
 
   /**
-   * Read a list of 32-byte hashes from the SSZ source.
+   * Read a list of hashes from the SSZ source.
    *
+   * @param hashLength The length of the hash (in bytes).
    * @return A list of 32-byte hashes.
    * @throws InvalidSSZTypeException If the next SSZ value is not a list, there are insufficient encoded bytes for any
    *         hash in the list.
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
-  List<Bytes32> readHashList();
+  List<Bytes> readHashList(int hashLength);
 
   /**
    * Read a list of booleans from the SSZ source.

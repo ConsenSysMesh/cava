@@ -15,7 +15,6 @@ package net.consensys.cava.ssz;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
@@ -109,9 +108,9 @@ final class BytesSSZReader implements SSZReader {
   }
 
   @Override
-  public Bytes32 readHash() {
-    ensureBytes(32, () -> "SSZ encoded data has insufficient length to read a 20-byte address");
-    return Bytes32.wrap(consumeBytes(32));
+  public Bytes readHash(int hashLength) {
+    ensureBytes(hashLength, () -> "SSZ encoded data has insufficient length to read a " + hashLength + "-byte hash");
+    return consumeBytes(hashLength);
   }
 
   @Override
@@ -155,8 +154,8 @@ final class BytesSSZReader implements SSZReader {
   }
 
   @Override
-  public List<Bytes32> readHashList() {
-    return readList(this::readHash);
+  public List<Bytes> readHashList(int hashLength) {
+    return readList(() -> readHash(hashLength));
   }
 
   @Override
