@@ -13,7 +13,6 @@
 package net.consensys.cava.ssz;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
@@ -236,7 +235,7 @@ public interface SSZWriter {
    *
    * @param hash The hash.
    */
-  default void writeHash(Bytes32 hash) {
+  default void writeHash(Bytes hash) {
     writeSSZ(SSZ.encodeHash(hash));
   }
 
@@ -305,7 +304,7 @@ public interface SSZWriter {
    *
    * @param elements The hashes to write as a list.
    */
-  default void writeListOfHashes(Bytes32... elements) {
+  default void writeListOfHashes(Bytes... elements) {
     SSZ.encodeHashListTo(elements, this::writeSSZ);
   }
 

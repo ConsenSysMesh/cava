@@ -17,7 +17,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
@@ -357,7 +356,7 @@ public final class SSZ {
   }
 
   /**
-   * Encode a boolean to a {@link Bytes} value.
+   * Encode a 20-byte address to a {@link Bytes} value.
    *
    * @param address The address (must be exactly 20 bytes).
    * @return The SSZ encoding in a {@link Bytes} value.
@@ -369,12 +368,12 @@ public final class SSZ {
   }
 
   /**
-   * Encode a boolean to a {@link Bytes} value.
+   * Encode a hash to a {@link Bytes} value.
    *
    * @param hash The hash.
    * @return The SSZ encoding in a {@link Bytes} value.
    */
-  public static Bytes encodeHash(Bytes32 hash) {
+  public static Bytes encodeHash(Bytes hash) {
     return hash;
   }
 
@@ -626,16 +625,24 @@ public final class SSZ {
    * @param elements The hashes to write.
    * @return SSZ encoding in a {@link Bytes} value.
    */
-  public static Bytes encodeHashList(Bytes32... elements) {
+  public static Bytes encodeHashList(Bytes... elements) {
     ArrayList<Bytes> encoded = new ArrayList<>(elements.length + 1);
     encodeHashListTo(elements, b -> encoded.add(Bytes.wrap(b)));
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
-  static void encodeHashListTo(Bytes32[] elements, Consumer<Bytes> appender) {
+  static void encodeHashListTo(Bytes[] elements, Consumer<Bytes> appender) {
+    int hashLength = 0;
+    for (Bytes bytes : elements) {
+      if (hashLength == 0) {
+        hashLength = bytes.size();
+      } else {
+        checkArgument(bytes.size() == hashLength, "Hashes must be all of the same size");
+      }
+    }
     appender.accept(encodeInt(elements.length, 32));
-    for (Bytes32 bytes : elements) {
-      appender.accept(encodeHash(bytes));
+    for (Bytes bytes : elements) {
+      appender.accept(bytes);
     }
   }
 
@@ -968,12 +975,13 @@ public final class SSZ {
    * Read a 32-byte hash from the SSZ source.
    *
    * @param source The SSZ encoded bytes.
+   * @param hashLength The length of the hash (in bytes).
    * @return The bytes of the hash.
    * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 32-byte hash.
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
-  public static Bytes32 decodeHash(Bytes source) {
-    return decode(source, SSZReader::readHash);
+  public static Bytes decodeHash(Bytes source, int hashLength) {
+    return decode(source, r -> r.readHash(hashLength));
   }
 
   /**
@@ -1281,13 +1289,14 @@ public final class SSZ {
    * Read a list of 32-byte hashes from the SSZ source.
    *
    * @param source The SSZ encoded bytes.
+   * @param hashLength The length of the hash (in bytes).
    * @return A list of 32-byte hashes.
    * @throws InvalidSSZTypeException If the next SSZ value is not a list, there are insufficient encoded bytes for any
    *         hash in the list.
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
-  public static List<Bytes32> decodeHashList(Bytes source) {
-    return decode(source, SSZReader::readHashList);
+  public static List<Bytes> decodeHashList(Bytes source, int hashLength) {
+    return decode(source, r -> r.readHashList(hashLength));
   }
 
   /**
