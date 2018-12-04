@@ -14,19 +14,22 @@ package net.consensys.cava.ssz;
 
 import net.consensys.cava.bytes.Bytes;
 
-import java.util.Deque;
+import java.util.ArrayList;
+import java.util.List;
 
-final class BytesSSZWriter extends DelegatingSSZWriter<AccumulatingSSZWriter> {
+final class BytesSSZWriter implements SSZWriter {
 
-  BytesSSZWriter() {
-    super(new AccumulatingSSZWriter());
+  private final List<Bytes> values = new ArrayList<>();
+
+  @Override
+  public void writeSSZ(Bytes value) {
+    values.add(value);
   }
 
   Bytes toBytes() {
-    Deque<byte[]> values = delegate.values();
     if (values.isEmpty()) {
       return Bytes.EMPTY;
     }
-    return Bytes.wrap(values.stream().map(Bytes::wrap).toArray(Bytes[]::new));
+    return Bytes.wrap(values.toArray(new Bytes[0]));
   }
 }

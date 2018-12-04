@@ -45,8 +45,7 @@ class BytesSSZReaderTest {
   @Test
   void shouldParseFullObjects() {
     Bytes bytes = fromHexString("0x00000003426F62040000000000000000000000000000000000000000000000000000011F71B70768");
-    SomeObject readObject =
-        SSZ.decode(bytes, reader -> new SomeObject(reader.readString(), reader.readInt(1), reader.readBigInteger(32)));
+    SomeObject readObject = SSZ.decode(bytes, r -> new SomeObject(r.readString(), r.readInt8(), r.readBigInteger(256)));
 
     assertEquals("Bob", readObject.name);
     assertEquals(4, readObject.number);
@@ -54,12 +53,29 @@ class BytesSSZReaderTest {
   }
 
   @ParameterizedTest
-  @CsvSource({"00, 0", "01, 1", "10, 16", "4f, 79", "7f, 127", "0080, 128", "03e8, 1000", "000186a0, 100000"})
+  @CsvSource({
+      "00, 0",
+      "01, 1",
+      "10, 16",
+      "4f, 79",
+      "7f, 127",
+      "0080, 128",
+      "03e8, 1000",
+      "000186a0, 100000",
+      "0000000186a0, 100000"})
   void shouldReadIntegers(String hex, int value) {
     assertTrue(SSZ.<Boolean>decode(fromHexString(hex), reader -> {
-      assertEquals(value, reader.readInt(hex.length() / 2));
+      assertEquals(value, reader.readInt(hex.length() * 4));
       return true;
     }));
+  }
+
+  @Test
+  void shouldThrowWhenReadingOversizedInt() {
+    InvalidSSZTypeException ex = assertThrows(InvalidSSZTypeException.class, () -> {
+      SSZ.decode(fromHexString("1122334455667788"), r -> r.readInt(64));
+    });
+    assertEquals("decoded integer is too large for an int", ex.getMessage());
   }
 
   @ParameterizedTest
@@ -94,10 +110,10 @@ class BytesSSZReaderTest {
 
   @Test
   void shouldThrowWheSourceIsTruncated() {
-    EndOfSSZException ex = assertThrows(
-        EndOfSSZException.class,
-        () -> SSZ.decode(fromHexString("0000000f830186"), reader -> reader.readValue()));
-    assertEquals("End of SSZ source reached", ex.getMessage());
+    InvalidSSZTypeException ex = assertThrows(
+        InvalidSSZTypeException.class,
+        () -> SSZ.decode(fromHexString("0000000f830186"), SSZReader::readBytes));
+    assertEquals("SSZ encoded data has insufficient bytes for decoded byte array length", ex.getMessage());
   }
 
   @Test
@@ -105,8 +121,7 @@ class BytesSSZReaderTest {
     List<String> expected =
         Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer");
 
-    List<String> result = SSZ.decodeListOfStrings(SHORT_LIST, 4);
-
+    List<String> result = SSZ.decodeStringList(SHORT_LIST);
     assertEquals(expected, result);
   }
 }
