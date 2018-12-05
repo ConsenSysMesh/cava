@@ -246,14 +246,14 @@ class BytesSSZWriterTest {
   @Test
   void shouldWriteListsOfStrings() {
     assertEquals(
-        fromHexString("0000000300000003626F62000000046A616E65000000056A616E6574"),
+        fromHexString("0000001800000003626F62000000046A616E65000000056A616E6574"),
         SSZ.encodeStringList("bob", "jane", "janet"));
   }
 
   @Test
   void shouldWriteListsOfBytes() {
     assertEquals(
-        fromHexString("0000000300000003626F62000000046A616E65000000056A616E6574"),
+        fromHexString("0000001800000003626F62000000046A616E65000000056A616E6574"),
         SSZ.encodeBytesList(
             Bytes.wrap("bob".getBytes(Charsets.UTF_8)),
             Bytes.wrap("jane".getBytes(Charsets.UTF_8)),

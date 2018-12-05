@@ -217,6 +217,50 @@ public interface SSZReader {
   BigInteger readUnsignedBigInteger(int bitLength);
 
   /**
+   * Read an 8-bit unsigned integer from the SSZ source.
+   *
+   * @return An int.
+   * @throws InvalidSSZTypeException If there are insufficient encoded bytes for an 8-bit int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  default int readUInt8() {
+    return readUInt(8);
+  }
+
+  /**
+   * Read a 16-bit unsigned integer from the SSZ source.
+   *
+   * @return An int.
+   * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 16-bit int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  default int readUInt16() {
+    return readUInt(16);
+  }
+
+  /**
+   * Read a 32-bit unsigned integer from the SSZ source.
+   *
+   * @return An int.
+   * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 32-bit int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  default long readUInt32() {
+    return readULong(32);
+  }
+
+  /**
+   * Read an 64-bit unsigned integer from the SSZ source.
+   *
+   * @return A long.
+   * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 64-bit int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  default long readUInt64() {
+    return readULong(64);
+  }
+
+  /**
    * Read a {@link UInt256} from the SSZ source.
    *
    * @return A {@link UInt256}.
