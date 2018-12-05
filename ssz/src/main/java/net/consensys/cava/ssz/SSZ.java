@@ -390,7 +390,17 @@ public final class SSZ {
   }
 
   static void encodeBytesListTo(Bytes[] elements, Consumer<Bytes> appender) {
-    appender.accept(encodeInt(elements.length, 32));
+    // pre-calculate the list size - relies on knowing how encodeBytesTo does its serialization, but is worth it
+    // to avoid having to pre-serialize all the elements
+    long listSize = 0;
+    for (Bytes bytes : elements) {
+      listSize += 4;
+      listSize += bytes.size();
+      if (listSize > Integer.MAX_VALUE) {
+        throw new IllegalArgumentException("Cannot serialize list: overall length is too large");
+      }
+    }
+    appender.accept(encodeUInt32(listSize));
     for (Bytes bytes : elements) {
       encodeBytesTo(bytes, appender);
     }
@@ -408,11 +418,12 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
-  static void encodeStringListTo(String[] elements, Consumer<byte[]> appender) {
-    appender.accept(encodeLongToByteArray(elements.length, 32));
-    for (String str : elements) {
-      encodeStringTo(str, appender);
+  static void encodeStringListTo(String[] elements, Consumer<Bytes> appender) {
+    Bytes[] elementBytes = new Bytes[elements.length];
+    for (int i = 0; i < elements.length; ++i) {
+      elementBytes[i] = Bytes.wrap(elements[i].getBytes(UTF_8));
     }
+    encodeBytesListTo(elementBytes, appender);
   }
 
   /**
@@ -430,7 +441,8 @@ public final class SSZ {
   }
 
   static void encodeIntListTo(int bitLength, int[] elements, Consumer<byte[]> appender) {
-    appender.accept(encodeLongToByteArray(elements.length, 32));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.length, bitLength / 8));
     for (int value : elements) {
       appender.accept(encodeLongToByteArray(value, bitLength));
     }
@@ -451,7 +463,8 @@ public final class SSZ {
   }
 
   static void encodeLongIntListTo(int bitLength, long[] elements, Consumer<byte[]> appender) {
-    appender.accept(encodeLongToByteArray(elements.length, 32));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.length, bitLength / 8));
     for (long value : elements) {
       appender.accept(encodeLongToByteArray(value, bitLength));
     }
@@ -472,7 +485,8 @@ public final class SSZ {
   }
 
   static void encodeBigIntegerListTo(int bitLength, BigInteger[] elements, Consumer<byte[]> appender) {
-    appender.accept(encodeLongToByteArray(elements.length, 32));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.length, bitLength / 8));
     for (BigInteger value : elements) {
       appender.accept(encodeBigIntegerToByteArray(value, bitLength));
     }
@@ -533,7 +547,8 @@ public final class SSZ {
   }
 
   static void encodeUIntListTo(int bitLength, int[] elements, Consumer<byte[]> appender) {
-    appender.accept(encodeLongToByteArray(elements.length, 32));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.length, bitLength / 8));
     for (int value : elements) {
       appender.accept(encodeULongToByteArray(value, bitLength));
     }
@@ -554,7 +569,8 @@ public final class SSZ {
   }
 
   static void encodeULongIntListTo(int bitLength, long[] elements, Consumer<byte[]> appender) {
-    appender.accept(encodeLongToByteArray(elements.length, 32));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.length, bitLength / 8));
     for (long value : elements) {
       appender.accept(encodeULongToByteArray(value, bitLength));
     }
@@ -613,7 +629,7 @@ public final class SSZ {
   }
 
   static void encodeUInt256ListTo(UInt256[] elements, Consumer<Bytes> appender) {
-    appender.accept(encodeLong(elements.length, 32));
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 256 / 8)));
     for (UInt256 value : elements) {
       appender.accept(encodeUInt256(value));
     }
@@ -640,7 +656,7 @@ public final class SSZ {
         checkArgument(bytes.size() == hashLength, "Hashes must be all of the same size");
       }
     }
-    appender.accept(encodeInt(elements.length, 32));
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 32)));
     for (Bytes bytes : elements) {
       appender.accept(bytes);
     }
@@ -660,7 +676,7 @@ public final class SSZ {
   }
 
   static void encodeAddressListTo(Bytes[] elements, Consumer<Bytes> appender) {
-    appender.accept(encodeInt(elements.length, 32));
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 20)));
     for (Bytes bytes : elements) {
       appender.accept(encodeAddress(bytes));
     }
@@ -679,11 +695,25 @@ public final class SSZ {
   }
 
   static void encodeBooleanListTo(boolean[] elements, Consumer<Bytes> appender) {
-    appender.accept(encodeInt(elements.length, 32));
+    appender.accept(encodeInt32(elements.length));
     for (boolean value : elements) {
       appender.accept(encodeBoolean(value));
     }
   }
+
+  private static byte[] listLengthPrefix(long nElements, int elementBytes) {
+    long listSize;
+    try {
+      listSize = Math.multiplyExact(nElements, elementBytes);
+    } catch (ArithmeticException e) {
+      listSize = Long.MAX_VALUE;
+    }
+    if (listSize > Integer.MAX_VALUE) {
+      throw new IllegalArgumentException("Cannot serialize list: overall length is too large");
+    }
+    return encodeLongToByteArray(listSize, 32);
+  }
+
 
   // Decoding
 

@@ -13,6 +13,7 @@
 package net.consensys.cava.ssz;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.nio.charset.StandardCharsets.UTF_8;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.units.bigints.UInt256;
@@ -20,6 +21,8 @@ import net.consensys.cava.units.bigints.UInt256;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
+import java.util.function.LongFunction;
 import java.util.function.Supplier;
 
 final class BytesSSZReader implements SSZReader {
@@ -115,52 +118,56 @@ final class BytesSSZReader implements SSZReader {
 
   @Override
   public List<Bytes> readBytesList(int limit) {
-    return readList(() -> readBytes(limit));
+    return readList(remaining -> readByteArray(limit), Bytes::wrap);
   }
 
   @Override
   public List<String> readStringList(int limit) {
-    return readList(() -> readString(limit));
+    return readList(remaining -> readByteArray(limit), byteArray -> new String(byteArray, UTF_8));
   }
 
   @Override
   public List<Integer> readIntList(int bitLength) {
-    return readList(() -> readInt(bitLength));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    return readList(bitLength / 8, () -> readInt(bitLength));
   }
 
   @Override
   public List<Long> readLongIntList(int bitLength) {
-    return readList(() -> readLong(bitLength));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    return readList(bitLength / 8, () -> readLong(bitLength));
   }
 
   @Override
   public List<BigInteger> readBigIntegerList(int bitLength) {
-    return readList(() -> readBigInteger(bitLength));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    return readList(bitLength / 8, () -> readBigInteger(bitLength));
   }
 
   @Override
   public List<BigInteger> readUnsignedBigIntegerList(int bitLength) {
-    return readList(() -> readUnsignedBigInteger(bitLength));
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    return readList(bitLength / 8, () -> readUnsignedBigInteger(bitLength));
   }
 
   @Override
   public List<UInt256> readUInt256List() {
-    return readList(this::readUInt256);
+    return readList(256 / 8, this::readUInt256);
   }
 
   @Override
   public List<Bytes> readAddressList() {
-    return readList(this::readAddress);
+    return readList(20, this::readAddress);
   }
 
   @Override
   public List<Bytes> readHashList(int hashLength) {
-    return readList(() -> readHash(hashLength));
+    return readList(hashLength, () -> readHash(hashLength));
   }
 
   @Override
   public List<Boolean> readBooleanList() {
-    return readList(this::readBoolean);
+    return readList(1, this::readBoolean);
   }
 
   @Override
@@ -183,14 +190,41 @@ final class BytesSSZReader implements SSZReader {
     return bytes;
   }
 
-  private <T> List<T> readList(Supplier<T> elementSupplier) {
+  private <T> List<T> readList(LongFunction<byte[]> bytesSupplier, Function<byte[], T> converter) {
+    ensureBytes(4, () -> "SSZ encoded data is not a list");
+    int originalIndex = this.index;
+    List<T> elements;
+    try {
+      // use a long to simulate reading unsigned
+      long listSize = consumeBytes(4).toLong();
+      elements = new ArrayList<>();
+      while (listSize > 0) {
+        byte[] bytes = bytesSupplier.apply(listSize);
+        elements.add(converter.apply(bytes));
+        listSize -= bytes.length;
+        if (listSize < 0) {
+          throw new InvalidSSZTypeException("SSZ encoded list length does not align with lengths of its elements");
+        }
+      }
+    } catch (Exception e) {
+      this.index = originalIndex;
+      throw e;
+    }
+    return elements;
+  }
+
+  private <T> List<T> readList(int elementSize, Supplier<T> elementSupplier) {
     ensureBytes(4, () -> "SSZ encoded data is not a list");
     int originalIndex = this.index;
     List<T> bytesList;
     try {
-      int size = consumeBytes(4).toInt();
-      bytesList = new ArrayList<>(size);
-      for (int i = 0; i < size; ++i) {
+      int listSize = consumeBytes(4).toInt();
+      if ((listSize % elementSize) != 0) {
+        throw new InvalidSSZTypeException("SSZ encoded list length does not align with lengths of its elements");
+      }
+      int nElements = listSize / elementSize;
+      bytesList = new ArrayList<>(nElements);
+      for (int i = 0; i < nElements; ++i) {
         bytesList.add(elementSupplier.get());
       }
     } catch (Exception e) {
