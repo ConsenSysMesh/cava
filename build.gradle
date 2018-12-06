@@ -194,6 +194,7 @@ allprojects {
       allWarningsAsErrors = true
       freeCompilerArgs = [
         '-Xjsr305=strict',
+        '-Xjvm-default=enable',
         '-Xuse-experimental=kotlin.Experimental'
       ]
     }
