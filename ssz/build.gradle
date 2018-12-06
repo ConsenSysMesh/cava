@@ -3,6 +3,7 @@ description = 'Simple Serialize (SSZ) encoding and decoding.'
 dependencies {
   compile project(':bytes')
   compileOnly project(':units')
+  compile 'org.jetbrains.kotlin:kotlin-stdlib'
 
   testCompile project(':units')
   testCompile 'org.junit.jupiter:junit-jupiter-api'
