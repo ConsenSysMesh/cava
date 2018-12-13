@@ -10,22 +10,12 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.junit;
+package net.consensys.cava.devp2p;
 
-import java.security.Security;
+final class PeerDiscoveryServiceException extends RuntimeException {
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.junit.jupiter.api.extension.BeforeAllCallback;
-import org.junit.jupiter.api.extension.ExtensionContext;
-
-/**
- * A junit5 extension, that installs a BouncyCastle security provider.
- *
- */
-public class BouncyCastleExtension implements BeforeAllCallback {
-
-  @Override
-  public void beforeAll(ExtensionContext context) throws Exception {
-    Security.addProvider(new BouncyCastleProvider());
+  PeerDiscoveryServiceException(String message) {
+    super(message);
   }
+
 }
