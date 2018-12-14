@@ -14,12 +14,7 @@ package net.consensys.cava.crypto;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static net.consensys.cava.bytes.Bytes.fromHexString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
@@ -341,5 +336,23 @@ class SECP256K1Test {
     Signature sig = SECP256K1.sign(Bytes.of(1, 2, 3), kp);
     assertEquals(65, sig.bytes().size());
     assertTrue(sig.bytes().get(64) <= 3 && sig.bytes().get(64) >= 0);
+  }
+
+  @Test
+  void testSharedSecret() {
+    KeyPair kp = SECP256K1.KeyPair.random();
+    KeyPair otherKP = SECP256K1.KeyPair.random();
+    BigInteger sharedSecret = SECP256K1.calculateKeyAgreement(kp.secretKey(), otherKP.publicKey());
+    BigInteger otherSharedSecret = SECP256K1.calculateKeyAgreement(otherKP.secretKey(), kp.publicKey());
+    assertEquals(sharedSecret, otherSharedSecret);
+  }
+
+  @Test
+  void testSharedSecretBytes() {
+    KeyPair kp = SECP256K1.KeyPair.random();
+    KeyPair otherKP = SECP256K1.KeyPair.random();
+    Bytes32 sharedSecret = SECP256K1.calculateKeyAgreementBytes(kp.secretKey(), otherKP.publicKey());
+    Bytes32 otherSharedSecret = SECP256K1.calculateKeyAgreementBytes(otherKP.secretKey(), kp.publicKey());
+    assertEquals(sharedSecret, otherSharedSecret);
   }
 }
