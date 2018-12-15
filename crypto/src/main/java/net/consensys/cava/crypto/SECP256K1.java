@@ -349,13 +349,14 @@ public final class SECP256K1 {
   }
 
   /**
-   * Calculates an ECDH key agreement between the private and the public key of another party.
+   * Calculates an ECDH key agreement between the private and the public key of another party, formatted as a 32 bytes
+   * array.
    *
    * @param privKey the private key
    * @param theirPubKey the public key
-   * @return shared secret as a BigInteger object
+   * @return shared secret as 32 bytes
    */
-  public static BigInteger calculateKeyAgreement(SecretKey privKey, PublicKey theirPubKey) {
+  public static Bytes32 calculateKeyAgreement(SecretKey privKey, PublicKey theirPubKey) {
     checkArgument(privKey != null, "missing private key");
     checkArgument(theirPubKey != null, "missing remote public key");
 
@@ -365,19 +366,7 @@ public final class SECP256K1 {
 
     ECDHBasicAgreement agreement = new ECDHBasicAgreement();
     agreement.init(privKeyP);
-    return agreement.calculateAgreement(pubKeyP);
-  }
-
-  /**
-   * Calculates an ECDH key agreement between the private and the public key of another party, formatted as a 32 bytes
-   * array.
-   *
-   * @param privKey the private key
-   * @param theirPubKey the public key
-   * @return shared secret as 32 bytes
-   */
-  public static Bytes32 calculateKeyAgreementBytes(SecretKey privKey, PublicKey theirPubKey) {
-    return UInt256.valueOf(calculateKeyAgreement(privKey, theirPubKey)).toBytes();
+    return UInt256.valueOf(agreement.calculateAgreement(pubKeyP)).toBytes();
   }
 
   /**
