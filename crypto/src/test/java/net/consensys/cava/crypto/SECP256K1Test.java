@@ -339,20 +339,11 @@ class SECP256K1Test {
   }
 
   @Test
-  void testSharedSecret() {
-    KeyPair kp = SECP256K1.KeyPair.random();
-    KeyPair otherKP = SECP256K1.KeyPair.random();
-    BigInteger sharedSecret = SECP256K1.calculateKeyAgreement(kp.secretKey(), otherKP.publicKey());
-    BigInteger otherSharedSecret = SECP256K1.calculateKeyAgreement(otherKP.secretKey(), kp.publicKey());
-    assertEquals(sharedSecret, otherSharedSecret);
-  }
-
-  @Test
   void testSharedSecretBytes() {
     KeyPair kp = SECP256K1.KeyPair.random();
     KeyPair otherKP = SECP256K1.KeyPair.random();
-    Bytes32 sharedSecret = SECP256K1.calculateKeyAgreementBytes(kp.secretKey(), otherKP.publicKey());
-    Bytes32 otherSharedSecret = SECP256K1.calculateKeyAgreementBytes(otherKP.secretKey(), kp.publicKey());
+    Bytes32 sharedSecret = SECP256K1.calculateKeyAgreement(kp.secretKey(), otherKP.publicKey());
+    Bytes32 otherSharedSecret = SECP256K1.calculateKeyAgreement(otherKP.secretKey(), kp.publicKey());
     assertEquals(sharedSecret, otherSharedSecret);
   }
 }
