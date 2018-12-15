@@ -677,7 +677,12 @@ public final class SECP256K1 {
       return keyBytes.toArrayUnsafe();
     }
 
-    private ECPoint asEcPoint() {
+    /**
+     * Computes the public key as a point on the elliptic curve.
+     *
+     * @return the public key as a BouncyCastle elliptic curve point
+     */
+    public ECPoint asEcPoint() {
       // 0x04 is the prefix for uncompressed keys.
       Bytes val = Bytes.concatenate(Bytes.of(0x04), keyBytes);
       return CURVE.getCurve().decodePoint(val.toArrayUnsafe());
