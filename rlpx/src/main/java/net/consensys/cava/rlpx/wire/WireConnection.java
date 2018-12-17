@@ -15,6 +15,7 @@ package net.consensys.cava.rlpx.wire;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.rlpx.RLPxMessage;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -24,6 +25,7 @@ import com.google.common.collect.BoundType;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
+import org.logl.Logger;
 
 /**
  * A stateful connection between two peers under the Devp2p wire protocol.
@@ -69,10 +71,11 @@ public final class WireConnection {
     }
   }
 
+  private final Logger logger;
   private final String id;
   private final Consumer<RLPxMessage> writer;
   private final Runnable disconnectHandler;
-  private final List<SubProtocol> subprotocols;
+  private final LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols;
 
   private HelloMessage myHelloMessage;
   private HelloMessage peerHelloMessage;
@@ -88,10 +91,12 @@ public final class WireConnection {
    */
   public WireConnection(
       String id,
+      Logger logger,
       Consumer<RLPxMessage> writer,
       Runnable disconnectHandler,
-      List<SubProtocol> subprotocols) {
+      LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols) {
     this.id = id;
+    this.logger = logger;
     this.writer = writer;
     this.disconnectHandler = disconnectHandler;
     this.subprotocols = subprotocols;
@@ -105,6 +110,9 @@ public final class WireConnection {
       if (myHelloMessage == null) {
         sendHello();
       }
+      for (SubProtocol subProtocol : subprotocolRangeMap.asMapOfRanges().values()) {
+        subprotocols.get(subProtocol).newPeerConnection(this);
+      }
     } else if (message.messageId() == 1) {
       DisconnectMessage.read(message.content());
       disconnectHandler.run();
@@ -117,7 +125,7 @@ public final class WireConnection {
     } else {
       Map.Entry<Range<Integer>, SubProtocol> subProtocolEntry = subprotocolRangeMap.getEntry(message.messageId());
       if (subProtocolEntry == null) {
-        // TODO drop
+        throw new UnsupportedOperationException("unimplemented");
       } else {
         int offset = subProtocolEntry.getKey().lowerEndpoint();
         WireSubprotocolMessageImpl wireProtocolMessage = new WireSubprotocolMessageImpl(
@@ -125,7 +133,7 @@ public final class WireConnection {
             message.content(),
             message.messageId() - offset,
             id());
-        subProtocolEntry.getValue().handle(wireProtocolMessage);
+        subprotocols.get(subProtocolEntry.getValue()).handle(wireProtocolMessage);
       }
     }
   }
@@ -133,7 +141,7 @@ public final class WireConnection {
   private void initSupportedRange(List<Capability> capabilities) {
     int startRange = 17;
     for (Capability cap : capabilities) {
-      for (SubProtocol sp : subprotocols) {
+      for (SubProtocol sp : subprotocols.keySet()) {
         if (sp.supports(SubProtocolIdentifier.of(cap.name(), cap.version()))) {
           int numberOfMessageTypes = sp.versionRange(cap.version());
           subprotocolRangeMap
@@ -155,14 +163,14 @@ public final class WireConnection {
   }
 
   private void sendHello() {
-    myHelloMessage = new HelloMessage(
+    myHelloMessage = new HelloMessage(//TODO fix those parameters!
         Bytes.of(1),
         0,
         "abc",
         1,
-        subprotocols.stream().map(sp -> new Capability(sp.id().name(), sp.id().version())).collect(
+        subprotocols.keySet().stream().map(sp -> new Capability(sp.id().name(), sp.id().version())).collect(
             Collectors.toList()));
-    writer.accept(new RLPxMessage(1, new DisconnectMessage(8).toBytes()));
+    writer.accept(new RLPxMessage(0, myHelloMessage.toBytes()));
   }
 
   public String id() {
@@ -172,13 +180,18 @@ public final class WireConnection {
   public void sendMessage(WireSubProtocolMessage message) {
     Integer offset = null;
     for (Map.Entry<Range<Integer>, SubProtocol> entry : subprotocolRangeMap.asMapOfRanges().entrySet()) {
-      if (entry.getValue().id().equals(message.subProtocolIdentifier())) {
+      if (entry.getValue().supports(message.subProtocolIdentifier())) {
         offset = entry.getKey().lowerEndpoint();
+        break;
       }
     }
     if (offset == null) {
       throw new UnsupportedOperationException(); // no subprotocol mapped to this connection. Exit.
     }
     writer.accept(new RLPxMessage(message.messageType() + offset, message.toBytes()));
+  }
+
+  public void handleConnectionStart() {
+    sendHello();
   }
 }

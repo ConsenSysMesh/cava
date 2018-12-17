@@ -13,7 +13,7 @@
 package net.consensys.cava.rlpx.wire;
 
 
-import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.rlpx.RLPxService;
 
 /**
  * Defines a subprotocol to be used for wire connections
@@ -39,14 +39,11 @@ public interface SubProtocol {
    */
   int versionRange(String version);
 
-  void handle(WireSubProtocolMessage message);
-
-  void newPeerConnection(WireConnection conn);
-
   /**
-   * Stops a subprotocol operations.
+   * Creates a new handler for the subprotocol.
    *
-   * @return a handle to track when the subprotocol operations have stopped
+   * @param service the rlpx service that will use the handler
+   * @return a new handler for the subprotocol, bound to the service.
    */
-  AsyncCompletion stop();
+  SubProtocolHandler createHandler(RLPxService service);
 }
