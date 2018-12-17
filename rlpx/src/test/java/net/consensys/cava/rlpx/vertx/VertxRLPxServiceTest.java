@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.logl.Level;
 import org.logl.Logger;
 import org.logl.LoggerProvider;
 import org.logl.logl.SimpleLogger;
@@ -41,13 +42,73 @@ class VertxRLPxServiceTest {
   void invalidPort(@VertxInstance Vertx vertx) {
     assertThrows(
         IllegalArgumentException.class,
-        () -> new VertxRLPxService(vertx, Logger.nullLogger(), -1, SECP256K1.KeyPair.random(), new ArrayList<>()));
+        () -> new VertxRLPxService(
+            vertx,
+            Logger.nullLogger(),
+            -1,
+            "localhost",
+            30,
+            SECP256K1.KeyPair.random(),
+            new ArrayList<>(),
+            "a"));
+  }
+
+  @Test
+  void invalidAdvertisedPort(@VertxInstance Vertx vertx) {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new VertxRLPxService(
+            vertx,
+            Logger.nullLogger(),
+            3,
+            "localhost",
+            -1,
+            SECP256K1.KeyPair.random(),
+            new ArrayList<>(),
+            "a"));
+  }
+
+  @Test
+  void invalidClientId(@VertxInstance Vertx vertx) {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new VertxRLPxService(
+            vertx,
+            Logger.nullLogger(),
+            34,
+            "localhost",
+            23,
+            SECP256K1.KeyPair.random(),
+            new ArrayList<>(),
+            null));
+  }
+
+  @Test
+  void invalidClientIdSpaces(@VertxInstance Vertx vertx) {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> new VertxRLPxService(
+            vertx,
+            Logger.nullLogger(),
+            34,
+            "localhost",
+            23,
+            SECP256K1.KeyPair.random(),
+            new ArrayList<>(),
+            "   "));
   }
 
   @Test
   void startAndStopService(@VertxInstance Vertx vertx) throws InterruptedException {
-    VertxRLPxService service =
-        new VertxRLPxService(vertx, Logger.nullLogger(), 10000, SECP256K1.KeyPair.random(), new ArrayList<>());
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        Logger.nullLogger(),
+        10000,
+        "localhost",
+        10000,
+        SECP256K1.KeyPair.random(),
+        new ArrayList<>(),
+        "a");
 
     service.start().join();
     try {
@@ -59,12 +120,20 @@ class VertxRLPxServiceTest {
 
   @Test
   void startServiceWithPortZero(@VertxInstance Vertx vertx) throws InterruptedException {
-    VertxRLPxService service =
-        new VertxRLPxService(vertx, Logger.nullLogger(), 0, SECP256K1.KeyPair.random(), new ArrayList<>());
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        Logger.nullLogger(),
+        0,
+        "localhost",
+        0,
+        SECP256K1.KeyPair.random(),
+        new ArrayList<>(),
+        "a");
 
     service.start().join();
     try {
       assertTrue(service.actualPort() != 0);
+      assertEquals(service.actualPort(), service.advertisedPort());
     } finally {
       service.stop();
     }
@@ -72,8 +141,15 @@ class VertxRLPxServiceTest {
 
   @Test
   void stopServiceWithoutStartingItFirst(@VertxInstance Vertx vertx) {
-    VertxRLPxService service =
-        new VertxRLPxService(vertx, Logger.nullLogger(), 0, SECP256K1.KeyPair.random(), new ArrayList<>());
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        Logger.nullLogger(),
+        0,
+        "localhost",
+        10000,
+        SECP256K1.KeyPair.random(),
+        new ArrayList<>(),
+        "abc");
     AsyncCompletion completion = service.stop();
     assertTrue(completion.isDone());
   }
@@ -82,10 +158,12 @@ class VertxRLPxServiceTest {
   void connectToOtherPeer(@VertxInstance Vertx vertx) throws Exception {
     SECP256K1.KeyPair ourPair = SECP256K1.KeyPair.random();
     SECP256K1.KeyPair peerPair = SECP256K1.KeyPair.random();
-    VertxRLPxService service = new VertxRLPxService(vertx, Logger.nullLogger(), 0, ourPair, new ArrayList<>());
+    VertxRLPxService service =
+        new VertxRLPxService(vertx, Logger.nullLogger(), 0, "localhost", 10000, ourPair, new ArrayList<>(), "abc");
     service.start().join();
 
-    VertxRLPxService peerService = new VertxRLPxService(vertx, Logger.nullLogger(), 0, peerPair, new ArrayList<>());
+    VertxRLPxService peerService =
+        new VertxRLPxService(vertx, Logger.nullLogger(), 0, "localhost", 10000, peerPair, new ArrayList<>(), "abc");
     peerService.start().join();
 
     try {
@@ -101,19 +179,33 @@ class VertxRLPxServiceTest {
     SECP256K1.KeyPair ourPair = SECP256K1.KeyPair.random();
     SECP256K1.KeyPair peerPair = SECP256K1.KeyPair.random();
 
-    LoggerProvider logProvider =
-        SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
 
-    VertxRLPxService service =
-        new VertxRLPxService(vertx, logProvider.getLogger("rlpx"), 0, ourPair, new ArrayList<>());
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        logProvider.getLogger("rlpx"),
+        0,
+        "localhost",
+        10000,
+        ourPair,
+        new ArrayList<>(),
+        "abc");
     service.start().join();
 
-    VertxRLPxService peerService =
-        new VertxRLPxService(vertx, logProvider.getLogger("rlpx2"), 0, peerPair, new ArrayList<>());
+    VertxRLPxService peerService = new VertxRLPxService(
+        vertx,
+        logProvider.getLogger("rlpx2"),
+        0,
+        "localhost",
+        10000,
+        peerPair,
+        new ArrayList<>(),
+        "abc");
     peerService.start().join();
 
     try {
-      service.connectTo(peerPair.publicKey(), new InetSocketAddress(peerService.actualPort()));
+      service.connectTo(peerPair.publicKey(), new InetSocketAddress("localhost", peerService.actualPort()));
       Thread.sleep(3000);
       assertEquals(1, service.wireConnections().size());
 

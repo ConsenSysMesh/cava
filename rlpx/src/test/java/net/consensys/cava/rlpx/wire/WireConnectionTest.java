@@ -44,7 +44,10 @@ class WireConnectionTest {
         capturedDisconnect::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        3,
+        "abc",
+        10000);
 
     conn.messageReceived(new RLPxMessage(45, Bytes.EMPTY));
     assertEquals(1, capturedDisconnect.get().messageId());
@@ -64,7 +67,10 @@ class WireConnectionTest {
         capturedDisconnect::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        4,
+        "abc",
+        10000);
     conn.sendHello();
     conn.messageReceived(new RLPxMessage(45, Bytes.EMPTY));
     assertEquals(1, capturedDisconnect.get().messageId());
@@ -84,12 +90,15 @@ class WireConnectionTest {
         capturedDisconnect::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        28,
+        "abc",
+        10000);
     conn.sendHello();
     conn.messageReceived(
         new RLPxMessage(
             0,
-            new HelloMessage(Bytes.fromHexString("deadbeef"), 30303, "blah", 1, Collections.emptyList()).toBytes()));
+            HelloMessage.create(Bytes.fromHexString("deadbeef"), 30303, 3, "blah", Collections.emptyList()).toBytes()));
     conn.messageReceived(new RLPxMessage(45, Bytes.EMPTY));
     assertEquals(1, capturedDisconnect.get().messageId());
     DisconnectMessage msg = DisconnectMessage.read(capturedDisconnect.get().content());
@@ -108,10 +117,13 @@ class WireConnectionTest {
         capturedDisconnect::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        32,
+        "abc",
+        10000);
     conn.sendHello();
     conn.messageReceived(
-        new RLPxMessage(0, new HelloMessage(Bytes.EMPTY, 30303, "blah", 1, Collections.emptyList()).toBytes()));
+        new RLPxMessage(0, HelloMessage.create(Bytes.EMPTY, 30303, 4, "blah", Collections.emptyList()).toBytes()));
 
     assertEquals(1, capturedDisconnect.get().messageId());
     DisconnectMessage msg = DisconnectMessage.read(capturedDisconnect.get().content());
@@ -130,12 +142,15 @@ class WireConnectionTest {
         capturedDisconnect::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        32,
+        "abc",
+        10000);
     conn.sendHello();
     conn.messageReceived(
         new RLPxMessage(
             0,
-            new HelloMessage(Bytes.of(1, 2, 3, 4), 30303, "blah", 1, Collections.emptyList()).toBytes()));
+            HelloMessage.create(Bytes.of(1, 2, 3, 4), 30303, 3, "blah", Collections.emptyList()).toBytes()));
 
     assertEquals(1, capturedDisconnect.get().messageId());
     DisconnectMessage msg = DisconnectMessage.read(capturedDisconnect.get().content());
@@ -154,14 +169,42 @@ class WireConnectionTest {
         capturedDisconnect::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        33,
+        "abc",
+        10000);
     conn.sendHello();
     conn.messageReceived(
-        new RLPxMessage(0, new HelloMessage(nodeId, 30303, "blah", 1, Collections.emptyList()).toBytes()));
+        new RLPxMessage(0, HelloMessage.create(nodeId, 30303, 1, "blah", Collections.emptyList()).toBytes()));
 
     assertEquals(1, capturedDisconnect.get().messageId());
     DisconnectMessage msg = DisconnectMessage.read(capturedDisconnect.get().content());
 
     assertEquals(DisconnectReason.CONNECTED_TO_SELF.code, msg.reason());
+  }
+
+  @Test
+  void disconnectIfInvalidP2PConnection() {
+    AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
+    WireConnection conn = new WireConnection(
+        "abc",
+        nodeId,
+        peerNodeId,
+        LoggerProvider.nullProvider().getLogger("rlpx"),
+        capturedDisconnect::set,
+        () -> {
+        },
+        new LinkedHashMap<>(),
+        5,
+        "abc",
+        10000);
+    conn.sendHello();
+    conn.messageReceived(
+        new RLPxMessage(0, HelloMessage.create(peerNodeId, 30303, 6, "blah", Collections.emptyList()).toBytes()));
+
+    assertEquals(1, capturedDisconnect.get().messageId());
+    DisconnectMessage msg = DisconnectMessage.read(capturedDisconnect.get().content());
+
+    assertEquals(DisconnectReason.INCOMPATIBLE_DEVP2P_VERSION.code, msg.reason());
   }
 }

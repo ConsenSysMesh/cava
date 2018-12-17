@@ -21,19 +21,27 @@ import java.util.Objects;
 
 final class HelloMessage implements WireProtocolMessage {
 
-  private static final int P2P_VERSION = 4;
   private final Bytes nodeId;
   private final int listenPort;
   private final String clientId;
   private final int p2pVersion;
   private final List<Capability> capabilities;
 
-  HelloMessage(Bytes nodeId, int listenPort, String clientId, int p2pVersion, List<Capability> capabilities) {
+  private HelloMessage(Bytes nodeId, int listenPort, String clientId, int p2pVersion, List<Capability> capabilities) {
     this.nodeId = nodeId;
     this.listenPort = listenPort;
     this.clientId = clientId;
     this.p2pVersion = p2pVersion;
     this.capabilities = capabilities;
+  }
+
+  static HelloMessage create(
+      Bytes nodeId,
+      int listenPort,
+      int p2pVersion,
+      String clientId,
+      List<Capability> capabilities) {
+    return new HelloMessage(nodeId, listenPort, clientId, p2pVersion, capabilities);
   }
 
   static HelloMessage read(Bytes data) {
@@ -53,10 +61,6 @@ final class HelloMessage implements WireProtocolMessage {
       Bytes nodeId = reader.readValue();
       return new HelloMessage(nodeId, listenPort, clientId, p2pVersion, capabilities);
     });
-  }
-
-  static HelloMessage create(Bytes nodeId, int listenPort, String clientId, List<Capability> capabilities) {
-    return new HelloMessage(nodeId, listenPort, clientId, P2P_VERSION, capabilities);
   }
 
   @Override
@@ -88,6 +92,14 @@ final class HelloMessage implements WireProtocolMessage {
 
   List<Capability> capabilities() {
     return capabilities;
+  }
+
+  int p2pVersion() {
+    return p2pVersion;
+  }
+
+  String clientId() {
+    return clientId;
   }
 
   @Override

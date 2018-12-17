@@ -36,6 +36,7 @@ public final class WireConnection {
 
   private static class WireSubprotocolMessageImpl implements WireSubProtocolMessage {
 
+
     private final SubProtocolIdentifier subProtocolIdentifier;
     private final Bytes data;
     private final int messageType;
@@ -73,7 +74,6 @@ public final class WireConnection {
     }
   }
 
-
   private final Bytes nodeId;
   private final Bytes peerNodeId;
   private final Logger logger;
@@ -81,6 +81,9 @@ public final class WireConnection {
   private final Consumer<RLPxMessage> writer;
   private final Runnable disconnectHandler;
   private final LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols;
+  private final int p2pVersion;
+  private final String clientId;
+  private final int advertisedPort;
 
   private CompletableAsyncCompletion awaitingPong;
   private HelloMessage myHelloMessage;
@@ -94,6 +97,9 @@ public final class WireConnection {
    * @param writer the message writer
    * @param disconnectHandler the handler to run upon receiving a disconnect message
    * @param subprotocols the subprotocols supported by this connection
+   * @param p2pVersion the version of the devp2p protocol supported by this client
+   * @param clientId the client ID to announce in HELLO messages
+   * @param advertisedPort the port we listen to, to announce in HELLO messages
    */
   public WireConnection(
       String id,
@@ -102,7 +108,10 @@ public final class WireConnection {
       Logger logger,
       Consumer<RLPxMessage> writer,
       Runnable disconnectHandler,
-      LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols) {
+      LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols,
+      int p2pVersion,
+      String clientId,
+      int advertisedPort) {
     this.id = id;
     this.nodeId = nodeId;
     this.peerNodeId = peerNodeId;
@@ -110,6 +119,9 @@ public final class WireConnection {
     this.writer = writer;
     this.disconnectHandler = disconnectHandler;
     this.subprotocols = subprotocols;
+    this.p2pVersion = p2pVersion;
+    this.clientId = clientId;
+    this.advertisedPort = advertisedPort;
   }
 
   public void messageReceived(RLPxMessage message) {
@@ -128,6 +140,11 @@ public final class WireConnection {
 
       if (peerHelloMessage.nodeId().equals(nodeId)) {
         disconnect(DisconnectReason.CONNECTED_TO_SELF);
+        return;
+      }
+
+      if (peerHelloMessage.p2pVersion() > p2pVersion) {
+        disconnect(DisconnectReason.INCOMPATIBLE_DEVP2P_VERSION);
         return;
       }
 
@@ -212,11 +229,11 @@ public final class WireConnection {
   }
 
   void sendHello() {
-    myHelloMessage = new HelloMessage(//TODO fix those parameters!
-        Bytes.of(1),
-        0,
-        "abc",
-        1,
+    myHelloMessage = HelloMessage.create(
+        nodeId,
+        advertisedPort,
+        p2pVersion,
+        clientId,
         subprotocols.keySet().stream().map(sp -> new Capability(sp.id().name(), sp.id().version())).collect(
             Collectors.toList()));
     writer.accept(new RLPxMessage(0, myHelloMessage.toBytes()));

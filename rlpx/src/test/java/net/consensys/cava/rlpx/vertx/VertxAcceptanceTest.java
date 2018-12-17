@@ -143,10 +143,24 @@ class VertxAcceptanceTest {
     MyCustomSubProtocol secondSp = new MyCustomSubProtocol(2);
     LoggerProvider logProvider =
         SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
-    VertxRLPxService service =
-        new VertxRLPxService(vertx, logProvider.getLogger("rlpx"), 0, kp, Collections.singletonList(sp));
-    VertxRLPxService secondService =
-        new VertxRLPxService(vertx, logProvider.getLogger("rlpx2"), 0, secondKp, Collections.singletonList(secondSp));
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        logProvider.getLogger("rlpx"),
+        0,
+        "localhost",
+        10000,
+        kp,
+        Collections.singletonList(sp),
+        "Client 1");
+    VertxRLPxService secondService = new VertxRLPxService(
+        vertx,
+        logProvider.getLogger("rlpx2"),
+        0,
+        "localhost",
+        10000,
+        secondKp,
+        Collections.singletonList(secondSp),
+        "Client 2");
     service.start().join();
     secondService.start().join();
 

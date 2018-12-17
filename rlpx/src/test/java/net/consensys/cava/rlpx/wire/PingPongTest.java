@@ -44,7 +44,10 @@ class PingPongTest {
         capturedPing::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        2,
+        "abc",
+        10000);
 
     AsyncCompletion completion = conn.sendPing();
     assertFalse(completion.isDone());
@@ -65,7 +68,10 @@ class PingPongTest {
         capturedPong::set,
         () -> {
         },
-        new LinkedHashMap<>());
+        new LinkedHashMap<>(),
+        1,
+        "abc",
+        10000);
 
     conn.messageReceived(new RLPxMessage(2, Bytes.EMPTY));
     assertNotNull(capturedPong.get());
