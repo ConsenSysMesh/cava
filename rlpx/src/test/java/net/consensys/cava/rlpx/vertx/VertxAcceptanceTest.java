@@ -14,6 +14,7 @@ package net.consensys.cava.rlpx.vertx;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
@@ -151,12 +152,17 @@ class VertxAcceptanceTest {
 
     try {
       service.connectTo(secondKp.publicKey(), new InetSocketAddress("localhost", secondService.actualPort()));
+
       Thread.sleep(3000);
       assertEquals(1, service.wireConnections().size());
       assertEquals(1, secondService.wireConnections().size());
 
       assertEquals(1, sp.handler.messages.size());
       assertEquals(1, secondSp.handler.messages.size());
+
+      AsyncCompletion completion = service.wireConnections().iterator().next().sendPing();
+      completion.join();
+      assertTrue(completion.isDone());
     } finally {
       AsyncCompletion.allOf(service.stop(), secondService.stop());
     }

@@ -13,6 +13,8 @@
 package net.consensys.cava.rlpx.wire;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.rlpx.RLPxMessage;
 
 import java.util.LinkedHashMap;
@@ -31,6 +33,9 @@ import org.logl.Logger;
  * A stateful connection between two peers under the Devp2p wire protocol.
  */
 public final class WireConnection {
+
+
+  private CompletableAsyncCompletion awaitingPong;
 
   private static class WireSubprotocolMessageImpl implements WireSubProtocolMessage {
 
@@ -117,11 +122,11 @@ public final class WireConnection {
       DisconnectMessage.read(message.content());
       disconnectHandler.run();
     } else if (message.messageId() == 2) {
-      PingMessage pingMessage = PingMessage.read(message.content());
-      // TODO implement
+      sendPong();
     } else if (message.messageId() == 3) {
-      PongMessage pongMessage = PongMessage.read(message.content());
-      // TODO implement
+      if (awaitingPong != null) {
+        awaitingPong.complete();
+      }
     } else {
       Map.Entry<Range<Integer>, SubProtocol> subProtocolEntry = subprotocolRangeMap.getEntry(message.messageId());
       if (subProtocolEntry == null) {
@@ -160,6 +165,19 @@ public final class WireConnection {
    */
   public void disconnect(int reason) {
     writer.accept(new RLPxMessage(1, new DisconnectMessage(reason).toBytes()));
+  }
+
+  /**
+   * Sends a ping message
+   */
+  public AsyncCompletion sendPing() {
+    writer.accept(new RLPxMessage(2, Bytes.EMPTY));
+    this.awaitingPong = AsyncCompletion.incomplete();
+    return awaitingPong;
+  }
+
+  private void sendPong() {
+    writer.accept(new RLPxMessage(3, Bytes.EMPTY));
   }
 
   private void sendHello() {
