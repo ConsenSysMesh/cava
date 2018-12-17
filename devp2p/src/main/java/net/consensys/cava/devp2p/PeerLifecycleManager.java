@@ -15,6 +15,7 @@ package net.consensys.cava.devp2p;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.concurrent.ExpiringMap;
 import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.devp2p.NeighborsPayload.Neighbor;
 
@@ -87,7 +88,8 @@ final class PeerLifecycleManager {
     Endpoint to = peer.endpoint().get();
     peerRoutingTable.add(peer);
     Packet<PingPayload> pingPacket = Packet.createPing(this.endpoint, to, now + EXPIRATION_PERIOD_MS, keyPair);
-    awaitingPongs.put(pingPacket.header().hash(), peer.nodeId(), Instant.ofEpochMilli(now + PONG_EXPIRATION));
+    awaitingPongs
+        .put(pingPacket.header().hash(), peer.nodeId(), Instant.ofEpochMilli(now + PONG_EXPIRATION).toEpochMilli());
     packetSender.accept(to, pingPacket);
   }
 
