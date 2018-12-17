@@ -16,22 +16,38 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.crypto.SECP256K1;
+import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.rlpx.RLPxMessage;
 
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.logl.LoggerProvider;
 
+@ExtendWith(BouncyCastleExtension.class)
 class PingPongTest {
+
+  private static final Bytes nodeId = SECP256K1.KeyPair.random().publicKey().bytes();
+  private static final Bytes peerNodeId = SECP256K1.KeyPair.random().publicKey().bytes();
 
   @Test
   void pingPongRoundtrip() {
     AtomicReference<RLPxMessage> capturedPing = new AtomicReference<>();
-    WireConnection conn =
-        new WireConnection("abc", LoggerProvider.nullProvider().getLogger("rlpx"), capturedPing::set, () -> {
-        }, new LinkedHashMap<>());
+    WireConnection conn = new WireConnection(
+        "abc",
+        nodeId,
+        peerNodeId,
+        LoggerProvider.nullProvider().getLogger("rlpx"),
+        capturedPing::set,
+        () -> {
+        },
+        new LinkedHashMap<>(),
+        2,
+        "abc",
+        10000);
 
     AsyncCompletion completion = conn.sendPing();
     assertFalse(completion.isDone());
@@ -44,9 +60,18 @@ class PingPongTest {
   @Test
   void pongPingRoundtrip() {
     AtomicReference<RLPxMessage> capturedPong = new AtomicReference<>();
-    WireConnection conn =
-        new WireConnection("abc", LoggerProvider.nullProvider().getLogger("rlpx"), capturedPong::set, () -> {
-        }, new LinkedHashMap<>());
+    WireConnection conn = new WireConnection(
+        "abc",
+        nodeId,
+        peerNodeId,
+        LoggerProvider.nullProvider().getLogger("rlpx"),
+        capturedPong::set,
+        () -> {
+        },
+        new LinkedHashMap<>(),
+        1,
+        "abc",
+        10000);
 
     conn.messageReceived(new RLPxMessage(2, Bytes.EMPTY));
     assertNotNull(capturedPong.get());

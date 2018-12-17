@@ -19,10 +19,7 @@ import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.rlpx.*;
-import net.consensys.cava.rlpx.wire.SubProtocol;
-import net.consensys.cava.rlpx.wire.SubProtocolHandler;
-import net.consensys.cava.rlpx.wire.WireConnection;
-import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
+import net.consensys.cava.rlpx.wire.*;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -40,12 +37,17 @@ import org.logl.Logger;
  */
 public final class VertxRLPxService implements RLPxService {
 
+  private final static int DEVP2P_VERSION = 5;
+
   private final Logger logger;
   private final AtomicBoolean started = new AtomicBoolean(false);
   private final Vertx vertx;
   private final int listenPort;
+  private final String networkInterface;
+  private final int advertisedPort;
   private final KeyPair keyPair;
   private final List<SubProtocol> subProtocols;
+  private final String clientId;
 
   private LinkedHashMap<SubProtocol, SubProtocolHandler> handlers;
   private NetClient client;
@@ -53,20 +55,46 @@ public final class VertxRLPxService implements RLPxService {
 
   private final Map<String, WireConnection> wireConnections = new ConcurrentHashMap<>();
 
+  private static void checkPort(int port) {
+    if (port < 0 || port > 65536) {
+      throw new IllegalArgumentException("Invalid port: " + port);
+    }
+  }
+
+  /**
+   * Default constructor.
+   *
+   * @param vertx Vert.x object used to build the network components
+   * @param logger logger to log messages
+   * @param listenPort the port to listen to
+   * @param networkInterface the network interface to bind to
+   * @param advertisedPort the port to advertise in HELLO messages to peers
+   * @param identityKeyPair the identity of this client
+   * @param subProtocols subprotocols supported
+   * @param clientId the client identifier, such as "RLPX 1.2/build 389"
+   */
   public VertxRLPxService(
       Vertx vertx,
       Logger logger,
       int listenPort,
+      String networkInterface,
+      int advertisedPort,
       KeyPair identityKeyPair,
-      List<SubProtocol> subProtocols) {
-    if (listenPort < 0 || listenPort > 65536) {
-      throw new IllegalArgumentException("Invalid port: " + listenPort);
+      List<SubProtocol> subProtocols,
+      String clientId) {
+    checkPort(listenPort);
+    checkPort(advertisedPort);
+    if (clientId == null || clientId.trim().isEmpty()) {
+      throw new IllegalArgumentException("Client ID must contain a valid identifier");
     }
     this.vertx = vertx;
     this.logger = logger;
     this.listenPort = listenPort;
+    this.networkInterface = networkInterface;
+    this.advertisedPort = advertisedPort;
     this.keyPair = identityKeyPair;
     this.subProtocols = subProtocols;
+    this.clientId = clientId;
   }
 
   @Override
@@ -77,7 +105,9 @@ public final class VertxRLPxService implements RLPxService {
         handlers.put(subProtocol, subProtocol.createHandler(this));
       }
       client = vertx.createNetClient(new NetClientOptions());
-      server = vertx.createNetServer(new NetServerOptions().setPort(listenPort)).connectHandler(this::receiveMessage);
+      server =
+          vertx.createNetServer(new NetServerOptions().setPort(listenPort).setHost(networkInterface)).connectHandler(
+              this::receiveMessage);
       CompletableAsyncCompletion complete = AsyncCompletion.incomplete();
       server.listen(res -> {
         if (res.succeeded()) {
@@ -123,16 +153,21 @@ public final class VertxRLPxService implements RLPxService {
         if (conn == null) {
           conn = RLPxConnectionFactory.respondToHandshake(
               Bytes.wrapBuffer(buffer),
-              keyPair.secretKey(),
+              keyPair,
               bytes -> netSocket.write(Buffer.buffer(bytes.toArrayUnsafe())));
           if (wireConnection == null) {
             String id = UUID.randomUUID().toString();
             wireConnection = new WireConnection(
                 id,
+                conn.publicKey().bytes(),
+                conn.peerPublicKey().bytes(),
                 logger,
                 message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
                 netSocket::end,
-                handlers);
+                handlers,
+                DEVP2P_VERSION,
+                clientId,
+                advertisedPort());
             initiateConnection(wireConnection);
           }
         } else {
@@ -146,7 +181,7 @@ public final class VertxRLPxService implements RLPxService {
   public AsyncCompletion stop() {
     if (started.compareAndSet(true, false)) {
       for (WireConnection conn : wireConnections.values()) {
-        conn.disconnect(8); //TODO reason hardcoded for now.
+        conn.disconnect(DisconnectReason.CLIENT_QUITTING);
       }
       wireConnections.clear();
       client.close();
@@ -176,8 +211,21 @@ public final class VertxRLPxService implements RLPxService {
     return server.actualPort();
   }
 
+  /**
+   *
+   * @return the port advertised by the server
+   * @throws IllegalStateException if the service is not started
+   */
+  public int advertisedPort() {
+    if (!started.get()) {
+      throw new IllegalStateException("The RLPx service is not active");
+    }
+    return listenPort == 0 ? actualPort() : advertisedPort;
+  }
+
   @Override
   public void connectTo(PublicKey peerPublicKey, InetSocketAddress peerAddress) {
+    logger.debug("Connecting to {} with public key {}", peerAddress, peerPublicKey);
     client.connect(
         peerAddress.getPort(),
         peerAddress.getHostString(),
@@ -185,6 +233,7 @@ public final class VertxRLPxService implements RLPxService {
           Bytes32 nonce = RLPxConnectionFactory.generateRandomBytes32();
           KeyPair ephemeralKeyPair = KeyPair.random();
           Bytes initHandshakeMessage = RLPxConnectionFactory.init(keyPair, peerPublicKey, ephemeralKeyPair, nonce);
+          logger.debug("Initiating handshake to {}", peerAddress);
           netSocket.write(Buffer.buffer(initHandshakeMessage.toArrayUnsafe()));
 
           netSocket.handler(new Handler<Buffer>() {
@@ -207,14 +256,21 @@ public final class VertxRLPxService implements RLPxService {
                       ephemeralKeyPair.secretKey(),
                       responseMessage.ephemeralPublicKey(),
                       nonce,
-                      responseMessage.nonce());
+                      responseMessage.nonce(),
+                      keyPair.publicKey(),
+                      peerPublicKey);
                   String id = UUID.randomUUID().toString();
                   wireConnection = new WireConnection(
                       id,
+                      conn.publicKey().bytes(),
+                      conn.peerPublicKey().bytes(),
                       logger,
                       message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
                       netSocket::end,
-                      handlers);
+                      handlers,
+                      DEVP2P_VERSION,
+                      clientId,
+                      advertisedPort());
                   initiateConnection(wireConnection);
                   wireConnection.handleConnectionStart();
                 } else {

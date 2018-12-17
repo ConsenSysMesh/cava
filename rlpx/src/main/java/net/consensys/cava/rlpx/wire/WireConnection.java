@@ -34,10 +34,8 @@ import org.logl.Logger;
  */
 public final class WireConnection {
 
-
-  private CompletableAsyncCompletion awaitingPong;
-
   private static class WireSubprotocolMessageImpl implements WireSubProtocolMessage {
+
 
     private final SubProtocolIdentifier subProtocolIdentifier;
     private final Bytes data;
@@ -76,12 +74,18 @@ public final class WireConnection {
     }
   }
 
+  private final Bytes nodeId;
+  private final Bytes peerNodeId;
   private final Logger logger;
   private final String id;
   private final Consumer<RLPxMessage> writer;
   private final Runnable disconnectHandler;
   private final LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols;
+  private final int p2pVersion;
+  private final String clientId;
+  private final int advertisedPort;
 
+  private CompletableAsyncCompletion awaitingPong;
   private HelloMessage myHelloMessage;
   private HelloMessage peerHelloMessage;
   private RangeMap<Integer, SubProtocol> subprotocolRangeMap = TreeRangeMap.create();
@@ -93,24 +97,57 @@ public final class WireConnection {
    * @param writer the message writer
    * @param disconnectHandler the handler to run upon receiving a disconnect message
    * @param subprotocols the subprotocols supported by this connection
+   * @param p2pVersion the version of the devp2p protocol supported by this client
+   * @param clientId the client ID to announce in HELLO messages
+   * @param advertisedPort the port we listen to, to announce in HELLO messages
    */
   public WireConnection(
       String id,
+      Bytes nodeId,
+      Bytes peerNodeId,
       Logger logger,
       Consumer<RLPxMessage> writer,
       Runnable disconnectHandler,
-      LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols) {
+      LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols,
+      int p2pVersion,
+      String clientId,
+      int advertisedPort) {
     this.id = id;
+    this.nodeId = nodeId;
+    this.peerNodeId = peerNodeId;
     this.logger = logger;
     this.writer = writer;
     this.disconnectHandler = disconnectHandler;
     this.subprotocols = subprotocols;
+    this.p2pVersion = p2pVersion;
+    this.clientId = clientId;
+    this.advertisedPort = advertisedPort;
   }
 
   public void messageReceived(RLPxMessage message) {
     if (message.messageId() == 0) {
-      HelloMessage helloMessage = HelloMessage.read(message.content());
-      peerHelloMessage = helloMessage;
+      peerHelloMessage = HelloMessage.read(message.content());
+
+      if (peerHelloMessage.nodeId() == null || peerHelloMessage.nodeId().isEmpty()) {
+        disconnect(DisconnectReason.NULL_NODE_IDENTITY_RECEIVED);
+        return;
+      }
+
+      if (!peerHelloMessage.nodeId().equals(peerNodeId)) {
+        disconnect(DisconnectReason.UNEXPECTED_IDENTITY);
+        return;
+      }
+
+      if (peerHelloMessage.nodeId().equals(nodeId)) {
+        disconnect(DisconnectReason.CONNECTED_TO_SELF);
+        return;
+      }
+
+      if (peerHelloMessage.p2pVersion() > p2pVersion) {
+        disconnect(DisconnectReason.INCOMPATIBLE_DEVP2P_VERSION);
+        return;
+      }
+
       initSupportedRange(peerHelloMessage.capabilities());
       if (myHelloMessage == null) {
         sendHello();
@@ -118,10 +155,18 @@ public final class WireConnection {
       for (SubProtocol subProtocol : subprotocolRangeMap.asMapOfRanges().values()) {
         subprotocols.get(subProtocol).newPeerConnection(this);
       }
+      return;
     } else if (message.messageId() == 1) {
       DisconnectMessage.read(message.content());
       disconnectHandler.run();
-    } else if (message.messageId() == 2) {
+      return;
+    }
+
+    if (peerHelloMessage == null || myHelloMessage == null) {
+      disconnect(DisconnectReason.PROTOCOL_BREACH);
+    }
+
+    if (message.messageId() == 2) {
       sendPong();
     } else if (message.messageId() == 3) {
       if (awaitingPong != null) {
@@ -130,7 +175,7 @@ public final class WireConnection {
     } else {
       Map.Entry<Range<Integer>, SubProtocol> subProtocolEntry = subprotocolRangeMap.getEntry(message.messageId());
       if (subProtocolEntry == null) {
-        throw new UnsupportedOperationException("unimplemented");
+        disconnect(DisconnectReason.PROTOCOL_BREACH);
       } else {
         int offset = subProtocolEntry.getKey().lowerEndpoint();
         WireSubprotocolMessageImpl wireProtocolMessage = new WireSubprotocolMessageImpl(
@@ -163,12 +208,15 @@ public final class WireConnection {
    *
    * @param reason the reason for disconnection
    */
-  public void disconnect(int reason) {
+  public void disconnect(DisconnectReason reason) {
     writer.accept(new RLPxMessage(1, new DisconnectMessage(reason).toBytes()));
+    disconnectHandler.run();
   }
 
   /**
-   * Sends a ping message
+   * Sends a ping message to the remote peer.
+   * 
+   * @return a handler marking completion when a pong response is received
    */
   public AsyncCompletion sendPing() {
     writer.accept(new RLPxMessage(2, Bytes.EMPTY));
@@ -180,12 +228,12 @@ public final class WireConnection {
     writer.accept(new RLPxMessage(3, Bytes.EMPTY));
   }
 
-  private void sendHello() {
-    myHelloMessage = new HelloMessage(//TODO fix those parameters!
-        Bytes.of(1),
-        0,
-        "abc",
-        1,
+  void sendHello() {
+    myHelloMessage = HelloMessage.create(
+        nodeId,
+        advertisedPort,
+        p2pVersion,
+        clientId,
         subprotocols.keySet().stream().map(sp -> new Capability(sp.id().name(), sp.id().version())).collect(
             Collectors.toList()));
     writer.accept(new RLPxMessage(0, myHelloMessage.toBytes()));

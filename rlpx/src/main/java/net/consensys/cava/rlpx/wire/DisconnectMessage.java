@@ -19,6 +19,10 @@ final class DisconnectMessage implements WireProtocolMessage {
 
   private final int reason;
 
+  DisconnectMessage(DisconnectReason reason) {
+    this(reason.code);
+  }
+
   DisconnectMessage(int reason) {
     this.reason = reason;
   }

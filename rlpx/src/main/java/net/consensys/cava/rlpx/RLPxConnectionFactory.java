@@ -76,7 +76,9 @@ public final class RLPxConnectionFactory {
           ephemeralKeyPair.secretKey(),
           responseMessage.ephemeralPublicKey(),
           nonce,
-          responseMessage.nonce());
+          responseMessage.nonce(),
+          keyPair.publicKey(),
+          remotePublicKey);
     });
   }
 
@@ -84,15 +86,15 @@ public final class RLPxConnectionFactory {
    * Creates a RLPxConnection in response to a handshake initiation message.
    *
    * @param initiatorMessageBytes the initiation message raw bytes
-   * @param privateKey our private key
+   * @param keyPair our key pair
    * @param responseHandler a function to respond back to the peer that we acknowledged the connection
    * @return a valid RLPxConnection
    */
   public static RLPxConnection respondToHandshake(
       Bytes initiatorMessageBytes,
-      SecretKey privateKey,
+      KeyPair keyPair,
       Consumer<Bytes> responseHandler) {
-    InitiatorHandshakeMessage initiatorHandshakeMessage = read(initiatorMessageBytes, privateKey);
+    InitiatorHandshakeMessage initiatorHandshakeMessage = read(initiatorMessageBytes, keyPair.secretKey());
     Bytes32 nonce = Bytes32.wrap(new byte[32]);
     random.nextBytes(nonce.toArrayUnsafe());
     KeyPair ephemeralKeyPair = KeyPair.random();
@@ -110,7 +112,9 @@ public final class RLPxConnectionFactory {
         ephemeralKeyPair.secretKey(),
         initiatorHandshakeMessage.ephemeralPublicKey(),
         initiatorHandshakeMessage.nonce(),
-        nonce);
+        nonce,
+        keyPair.publicKey(),
+        initiatorPublicKey);
   }
 
   /**
@@ -174,7 +178,9 @@ public final class RLPxConnectionFactory {
       SecretKey ourEphemeralPrivateKey,
       PublicKey peerEphemeralPublicKey,
       Bytes32 initiatorNonce,
-      Bytes32 responderNonce) {
+      Bytes32 responderNonce,
+      PublicKey ourPublicKey,
+      PublicKey peerPublicKey) {
 
     Bytes agreedSecret = calculateKeyAgreement(ourEphemeralPrivateKey, peerEphemeralPublicKey);
     Bytes sharedSecret = keccak256(concatenate(agreedSecret, keccak256(concatenate(responderNonce, initiatorNonce))));
@@ -187,9 +193,9 @@ public final class RLPxConnectionFactory {
     Bytes responderMac = concatenate(macSecret.xor(initiatorNonce), responderMessage);
 
     if (initiator) {
-      return new RLPxConnection(aesSecret, macSecret, token, initiatorMac, responderMac);
+      return new RLPxConnection(aesSecret, macSecret, token, initiatorMac, responderMac, ourPublicKey, peerPublicKey);
     } else {
-      return new RLPxConnection(aesSecret, macSecret, token, responderMac, initiatorMac);
+      return new RLPxConnection(aesSecret, macSecret, token, responderMac, initiatorMac, ourPublicKey, peerPublicKey);
     }
   }
 
