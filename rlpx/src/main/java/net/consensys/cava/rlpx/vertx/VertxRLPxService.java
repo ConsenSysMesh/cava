@@ -19,10 +19,7 @@ import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.rlpx.*;
-import net.consensys.cava.rlpx.wire.SubProtocol;
-import net.consensys.cava.rlpx.wire.SubProtocolHandler;
-import net.consensys.cava.rlpx.wire.WireConnection;
-import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
+import net.consensys.cava.rlpx.wire.*;
 
 import java.net.InetSocketAddress;
 import java.util.*;
@@ -123,12 +120,14 @@ public final class VertxRLPxService implements RLPxService {
         if (conn == null) {
           conn = RLPxConnectionFactory.respondToHandshake(
               Bytes.wrapBuffer(buffer),
-              keyPair.secretKey(),
+              keyPair,
               bytes -> netSocket.write(Buffer.buffer(bytes.toArrayUnsafe())));
           if (wireConnection == null) {
             String id = UUID.randomUUID().toString();
             wireConnection = new WireConnection(
                 id,
+                conn.publicKey().bytes(),
+                conn.peerPublicKey().bytes(),
                 logger,
                 message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
                 netSocket::end,
@@ -146,7 +145,7 @@ public final class VertxRLPxService implements RLPxService {
   public AsyncCompletion stop() {
     if (started.compareAndSet(true, false)) {
       for (WireConnection conn : wireConnections.values()) {
-        conn.disconnect(8); //TODO reason hardcoded for now.
+        conn.disconnect(DisconnectReason.CLIENT_QUITTING);
       }
       wireConnections.clear();
       client.close();
@@ -207,10 +206,14 @@ public final class VertxRLPxService implements RLPxService {
                       ephemeralKeyPair.secretKey(),
                       responseMessage.ephemeralPublicKey(),
                       nonce,
-                      responseMessage.nonce());
+                      responseMessage.nonce(),
+                      keyPair.publicKey(),
+                      peerPublicKey);
                   String id = UUID.randomUUID().toString();
                   wireConnection = new WireConnection(
                       id,
+                      conn.publicKey().bytes(),
+                      conn.peerPublicKey().bytes(),
                       logger,
                       message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
                       netSocket::end,

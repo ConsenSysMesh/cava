@@ -15,6 +15,7 @@ package net.consensys.cava.rlpx;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.bytes.MutableBytes;
+import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.rlp.RLP;
 
 import java.io.IOException;
@@ -67,12 +68,21 @@ public final class RLPxConnection {
   private final Bytes32 token;
   private final KeccakDigest egressMac = new KeccakDigest(Bytes32.SIZE * 8);
   private final KeccakDigest ingressMac = new KeccakDigest(Bytes32.SIZE * 8);
+  private final SECP256K1.PublicKey publicKey;
+  private final SECP256K1.PublicKey peerPublicKey;
 
   private final AESEngine macEncryptionEngine;
 
   private boolean applySnappyCompression = false;
 
-  RLPxConnection(Bytes32 aesSecret, Bytes32 macSecret, Bytes32 token, Bytes egressMac, Bytes ingressMac) {
+  RLPxConnection(
+      Bytes32 aesSecret,
+      Bytes32 macSecret,
+      Bytes32 token,
+      Bytes egressMac,
+      Bytes ingressMac,
+      SECP256K1.PublicKey publicKey,
+      SECP256K1.PublicKey peerPublicKey) {
     this.aesSecret = aesSecret;
     this.macSecret = macSecret;
     this.token = token;
@@ -83,22 +93,24 @@ public final class RLPxConnection {
 
     updateEgress(egressMac);
     updateIngress(ingressMac);
+    this.publicKey = publicKey;
+    this.peerPublicKey = peerPublicKey;
   }
 
-  private Bytes calculateMac(Bytes input, boolean ingress) {
-    Bytes mac = Bytes.wrap(new byte[16]);
-    macEncryptionEngine.processBlock(
-        snapshot(ingress ? ingressMac : egressMac).slice(0, 16).toArrayUnsafe(),
-        0,
-        mac.toArrayUnsafe(),
-        0);
-    mac = mac.xor(input);
-    if (ingress) {
-      mac = updateIngress(mac).slice(0, 16);
-    } else {
-      mac = updateEgress(mac).slice(0, 16);
-    }
-    return mac.slice(0, 16);
+  /**
+   *
+   * @return our public key associated with this connection
+   */
+  public SECP256K1.PublicKey publicKey() {
+    return publicKey;
+  }
+
+  /**
+   *
+   * @return the public key of the peer associated with this connection
+   */
+  public SECP256K1.PublicKey peerPublicKey() {
+    return peerPublicKey;
   }
 
   private Bytes buffer = Bytes.EMPTY;
@@ -248,6 +260,22 @@ public final class RLPxConnection {
 
     Bytes finalBytes = Bytes.concatenate(encryptedHeaderBytes, headerMac, encryptedPayload, payloadMac);
     return finalBytes;
+  }
+
+  private Bytes calculateMac(Bytes input, boolean ingress) {
+    Bytes mac = Bytes.wrap(new byte[16]);
+    macEncryptionEngine.processBlock(
+        snapshot(ingress ? ingressMac : egressMac).slice(0, 16).toArrayUnsafe(),
+        0,
+        mac.toArrayUnsafe(),
+        0);
+    mac = mac.xor(input);
+    if (ingress) {
+      mac = updateIngress(mac).slice(0, 16);
+    } else {
+      mac = updateEgress(mac).slice(0, 16);
+    }
+    return mac.slice(0, 16);
   }
 
   private Bytes32 updateEgress(Bytes bytes) {

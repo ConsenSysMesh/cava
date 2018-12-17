@@ -43,8 +43,7 @@ class RLPxConnectionMessageExchangeTest {
 
     Function<Bytes, AsyncResult<Bytes>> wireBytes = (bytes) -> {
       AtomicReference<Bytes> responseReference = new AtomicReference<>();
-      peerConnectionReference
-          .set(RLPxConnectionFactory.respondToHandshake(bytes, peerKeyPair.secretKey(), responseReference::set));
+      peerConnectionReference.set(RLPxConnectionFactory.respondToHandshake(bytes, peerKeyPair, responseReference::set));
       return AsyncResult.completed(responseReference.get());
     };
     AsyncResult<RLPxConnection> futureConn =

@@ -82,6 +82,10 @@ final class HelloMessage implements WireProtocolMessage {
     return 0;
   }
 
+  Bytes nodeId() {
+    return nodeId;
+  }
+
   List<Capability> capabilities() {
     return capabilities;
   }
