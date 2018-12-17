@@ -197,13 +197,13 @@ public final class RLPxConnectionFactory {
     return InitiatorHandshakeMessage.decode(decryptMessage(payload, privateKey), privateKey);
   }
 
-  private static Bytes encryptMessage(Bytes message, PublicKey remoteKey) {
+  static Bytes encryptMessage(Bytes message, PublicKey remoteKey) {
     byte[] ivb = new byte[16];
     random.nextBytes(ivb);
     Bytes iv = Bytes.wrap(ivb);
     KeyPair ephemeralKeyPair = KeyPair.random();
     Bytes bytes = addPadding(message);
-    int size = bytes.size() + 32 + 65 + 16 + 3;
+    int size = bytes.size() + 65 + 16 + 32;
     Bytes sizePrefix = Bytes.of((byte) (size >>> 8), (byte) size);
     EthereumIESEncryptionEngine engine = forEncryption(remoteKey, iv, sizePrefix, ephemeralKeyPair);
     byte[] encrypted;
@@ -214,11 +214,12 @@ public final class RLPxConnectionFactory {
     }
     // Create the output message by concatenating the ephemeral public key (prefixed with
     // 0x04 to designate uncompressed), IV, and encrypted bytes.
-    return concatenate(
+    Bytes finalBytes = concatenate(
         Bytes.of(sizePrefix.get(0), sizePrefix.get(1), (byte) 0x04),
         ephemeralKeyPair.publicKey().bytes(),
         iv,
         Bytes.wrap(encrypted));
+    return finalBytes;
   }
 
   private static EthereumIESEncryptionEngine forEncryption(
@@ -253,22 +254,19 @@ public final class RLPxConnectionFactory {
     return engine;
   }
 
-  private static Bytes decryptMessage(Bytes msgBytes, SecretKey ourKey) {
-    PublicKey ephemeralPublicKey = PublicKey.fromBytes(msgBytes.slice(3, 64));
-
-    // Strip off the IV to use.
+  static Bytes decryptMessage(Bytes msgBytes, SecretKey ourKey) {
     Bytes commonMac = msgBytes.slice(0, 2);
+    int size = (commonMac.get(1) & 0xFF) + ((commonMac.get(0) & 0xFF) << 8);
+    PublicKey ephemeralPublicKey = PublicKey.fromBytes(msgBytes.slice(3, 64));
     Bytes iv = msgBytes.slice(67, 16);
-
-    // Extract the encrypted payload.
-    Bytes encrypted = msgBytes.slice(83);
+    Bytes encrypted = msgBytes.slice(83, size - 81);
 
     EthereumIESEncryptionEngine decryptor = forDecryption(ourKey, ephemeralPublicKey, iv, commonMac);
     byte[] result;
     try {
       result = decryptor.processBlock(encrypted.toArrayUnsafe(), 0, encrypted.size());
     } catch (InvalidCipherTextException e) {
-      throw new IllegalArgumentException(e);
+      throw new InvalidMACException(e);
     }
     return Bytes.wrap(result);
   }

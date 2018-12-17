@@ -58,7 +58,7 @@ class RLPxConnectionMessageExchangeTest {
         HelloMessage.create(Bytes.of(1, 2, 3), 30303, "ClientID 1.0", Arrays.asList(new Capability("eth", "63")));
     RLPxMessage messageToWrite = new RLPxMessage(0, message.toBytes());
     Bytes messageBytes = peerConn.write(messageToWrite);
-    RLPxMessage readMessage = conn.read(messageBytes);
+    RLPxMessage readMessage = conn.readFrame(messageBytes);
     assertEquals(messageToWrite, readMessage);
   }
 }

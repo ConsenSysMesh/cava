@@ -27,10 +27,20 @@ public final class RLPxMessage {
 
   private final int messageId; // messageId with the proper offset
   private final Bytes content;
+  private final int bytesLength;
 
   public RLPxMessage(int messageId, Bytes content) {
+    this(messageId, content, 0);
+  }
+
+  RLPxMessage(int messageId, Bytes content, int bytesLength) {
     this.messageId = messageId;
     this.content = content;
+    this.bytesLength = bytesLength;
+  }
+
+  int bytesLength() {
+    return bytesLength;
   }
 
   /**
