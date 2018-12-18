@@ -138,7 +138,6 @@ public final class VertxRLPxService implements RLPxService {
     for (WireConnection conn : wireConnections.values()) {
       conn.sendMessage(message);
     }
-
   }
 
   private void receiveMessage(NetSocket netSocket) {
@@ -156,19 +155,7 @@ public final class VertxRLPxService implements RLPxService {
               keyPair,
               bytes -> netSocket.write(Buffer.buffer(bytes.toArrayUnsafe())));
           if (wireConnection == null) {
-            String id = UUID.randomUUID().toString();
-            wireConnection = new WireConnection(
-                id,
-                conn.publicKey().bytes(),
-                conn.peerPublicKey().bytes(),
-                logger,
-                message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
-                netSocket::end,
-                handlers,
-                DEVP2P_VERSION,
-                clientId,
-                advertisedPort());
-            initiateConnection(wireConnection);
+            this.wireConnection = createConnection(conn, netSocket);
           }
         } else {
           conn.stream(Bytes.wrapBuffer(buffer), wireConnection::messageReceived);
@@ -259,19 +246,8 @@ public final class VertxRLPxService implements RLPxService {
                       responseMessage.nonce(),
                       keyPair.publicKey(),
                       peerPublicKey);
-                  String id = UUID.randomUUID().toString();
-                  wireConnection = new WireConnection(
-                      id,
-                      conn.publicKey().bytes(),
-                      conn.peerPublicKey().bytes(),
-                      logger,
-                      message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
-                      netSocket::end,
-                      handlers,
-                      DEVP2P_VERSION,
-                      clientId,
-                      advertisedPort());
-                  initiateConnection(wireConnection);
+
+                  this.wireConnection = createConnection(conn, netSocket);
                   wireConnection.handleConnectionStart();
                 } else {
                   conn.stream(Bytes.wrapBuffer(buffer), wireConnection::messageReceived);
@@ -289,8 +265,21 @@ public final class VertxRLPxService implements RLPxService {
     return wireConnections.values();
   }
 
-  private void initiateConnection(WireConnection wireConnection) {
+  private WireConnection createConnection(RLPxConnection conn, NetSocket netSocket) {
+    String id = UUID.randomUUID().toString();
+    WireConnection wireConnection = new WireConnection(
+        id,
+        conn.publicKey().bytes(),
+        conn.peerPublicKey().bytes(),
+        logger,
+        message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
+        netSocket::end,
+        handlers,
+        DEVP2P_VERSION,
+        clientId,
+        advertisedPort());
     wireConnections.put(wireConnection.id(), wireConnection);
+    return wireConnection;
   }
 
   private WireConnection wireConnection(String id) {
