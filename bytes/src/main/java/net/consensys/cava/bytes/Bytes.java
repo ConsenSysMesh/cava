@@ -1131,9 +1131,7 @@ public interface Bytes {
    */
   default void update(MessageDigest digest) {
     checkNotNull(digest);
-    for (int i = 0; i < size(); i++) {
-      digest.update(get(i));
-    }
+    digest.update(toArrayUnsafe());
   }
 
   /**
