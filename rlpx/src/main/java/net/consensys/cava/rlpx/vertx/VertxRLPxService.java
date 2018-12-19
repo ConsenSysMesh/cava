@@ -18,18 +18,34 @@ import net.consensys.cava.concurrent.AsyncCompletion;
 import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
-import net.consensys.cava.rlpx.*;
-import net.consensys.cava.rlpx.wire.*;
+import net.consensys.cava.rlpx.HandshakeMessage;
+import net.consensys.cava.rlpx.InvalidMACException;
+import net.consensys.cava.rlpx.RLPxConnection;
+import net.consensys.cava.rlpx.RLPxConnectionFactory;
+import net.consensys.cava.rlpx.RLPxService;
+import net.consensys.cava.rlpx.wire.DisconnectReason;
+import net.consensys.cava.rlpx.wire.SubProtocol;
+import net.consensys.cava.rlpx.wire.SubProtocolHandler;
+import net.consensys.cava.rlpx.wire.WireConnection;
+import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
 
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
-import io.vertx.core.net.*;
+import io.vertx.core.net.NetClient;
+import io.vertx.core.net.NetClientOptions;
+import io.vertx.core.net.NetServer;
+import io.vertx.core.net.NetServerOptions;
+import io.vertx.core.net.NetSocket;
 import org.logl.Logger;
 
 /**
@@ -267,17 +283,13 @@ public final class VertxRLPxService implements RLPxService {
 
   private WireConnection createConnection(RLPxConnection conn, NetSocket netSocket) {
     String id = UUID.randomUUID().toString();
-    WireConnection wireConnection = new WireConnection(
-        id,
-        conn.publicKey().bytes(),
-        conn.peerPublicKey().bytes(),
-        logger,
-        message -> netSocket.write(Buffer.buffer(conn.write(message).toArrayUnsafe())),
-        netSocket::end,
-        handlers,
-        DEVP2P_VERSION,
-        clientId,
-        advertisedPort());
+    WireConnection wireConnection =
+        new WireConnection(id, conn.publicKey().bytes(), conn.peerPublicKey().bytes(), logger, message -> {
+          synchronized (conn) {
+            Bytes bytes = conn.write(message);
+            vertx.eventBus().send(netSocket.writeHandlerID(), Buffer.buffer(bytes.toArrayUnsafe()));
+          }
+        }, netSocket::end, handlers, DEVP2P_VERSION, clientId, advertisedPort());
     wireConnections.put(wireConnection.id(), wireConnection);
     return wireConnection;
   }
