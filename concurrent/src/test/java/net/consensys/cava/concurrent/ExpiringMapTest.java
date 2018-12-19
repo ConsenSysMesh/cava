@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Instant;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -75,7 +76,7 @@ class ExpiringMapTest {
 
   @Test
   void itemIsExpiredAfterExpiry() {
-    Instant futureTime = Instant.now().plusSeconds(10);
+    Instant futureTime = currentTime.plusSeconds(10);
     map.put(1, "foo", futureTime.toEpochMilli());
     assertTrue(map.containsKey(1));
     assertEquals("foo", map.get(1));
@@ -85,7 +86,7 @@ class ExpiringMapTest {
 
   @Test
   void itemIsMissingAfterExpiry() {
-    Instant futureTime = Instant.now().plusSeconds(10);
+    Instant futureTime = currentTime.plusSeconds(10);
     map.put(1, "foo", futureTime.toEpochMilli());
     assertTrue(map.containsKey(1));
     assertEquals("foo", map.get(1));
@@ -103,11 +104,41 @@ class ExpiringMapTest {
 
   @Test
   void doesNotExpireItemThatWasReplaced() {
-    Instant futureTime = Instant.now().plusSeconds(10);
+    Instant futureTime = currentTime.plusSeconds(10);
     map.put(1, "foo", futureTime.toEpochMilli());
     map.put(1, "bar", futureTime.plusSeconds(1).toEpochMilli());
     currentTime = futureTime;
     assertTrue(map.containsKey(1));
     assertEquals("bar", map.get(1));
+  }
+
+  @Test
+  void shouldReturnNextExpiryTimeWhenPurging() {
+    Instant futureTime1 = currentTime.plusSeconds(15);
+    Instant futureTime2 = currentTime.plusSeconds(12);
+    Instant futureTime3 = currentTime.plusSeconds(10);
+    map.put(1, "foo", futureTime1.toEpochMilli());
+    map.put(2, "bar", futureTime2.toEpochMilli());
+    map.put(3, "baz", futureTime3.toEpochMilli());
+    currentTime = futureTime3;
+    assertEquals(futureTime2.toEpochMilli(), map.purgeExpired());
+    currentTime = futureTime2;
+    assertEquals(futureTime1.toEpochMilli(), map.purgeExpired());
+    currentTime = futureTime1;
+    assertEquals(Long.MAX_VALUE, map.purgeExpired());
+  }
+
+  @Test
+  void shouldCallExpiryListener() {
+    AtomicBoolean removed1 = new AtomicBoolean(false);
+    AtomicBoolean removed2 = new AtomicBoolean(false);
+    Instant futureTime = currentTime.plusSeconds(15);
+    map.put(1, "foo", currentTime.toEpochMilli(), (k, v) -> removed1.set(true));
+    assertTrue(removed1.get());
+    map.put(2, "bar", futureTime.toEpochMilli(), (k, v) -> removed2.set(true));
+    assertFalse(removed2.get());
+    currentTime = futureTime;
+    map.purgeExpired();
+    assertTrue(removed2.get());
   }
 }

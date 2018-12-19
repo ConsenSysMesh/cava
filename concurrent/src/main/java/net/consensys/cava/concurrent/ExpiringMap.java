@@ -14,13 +14,13 @@ package net.consensys.cava.concurrent;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
+import java.util.function.BiConsumer;
 import java.util.function.LongSupplier;
 import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 
 import com.google.common.annotations.VisibleForTesting;
 
@@ -36,18 +36,19 @@ import com.google.common.annotations.VisibleForTesting;
  */
 public final class ExpiringMap<K, V> implements Map<K, V> {
 
-  private static final long MAX_EXPIRY = Long.MAX_VALUE;
-
   // Uses object equality, to ensure uniqueness as a value in the storage map
   private static final class ExpiringEntry<K, V> implements Comparable<ExpiringEntry<K, V>> {
     private K key;
     private V value;
     private long expiry;
+    @Nullable
+    private BiConsumer<K, V> expiryListener;
 
-    ExpiringEntry(K key, V value, long expiry) {
+    ExpiringEntry(K key, V value, long expiry, @Nullable BiConsumer<K, V> expiryListener) {
       this.key = key;
       this.value = value;
       this.expiry = expiry;
+      this.expiryListener = expiryListener;
     }
 
     @Override
@@ -72,6 +73,7 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     this.currentTimeSupplier = currentTimeSupplier;
   }
 
+  @Nullable
   @Override
   public V get(Object key) {
     requireNonNull(key);
@@ -106,12 +108,13 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     return storage.isEmpty();
   }
 
+  @Nullable
   @Override
   public V put(K key, V value) {
     requireNonNull(key);
     requireNonNull(value);
     purgeExpired();
-    ExpiringEntry<K, V> oldEntry = storage.put(key, new ExpiringEntry<>(key, value, MAX_EXPIRY));
+    ExpiringEntry<K, V> oldEntry = storage.put(key, new ExpiringEntry<>(key, value, Long.MAX_VALUE, null));
     return (oldEntry == null) ? null : oldEntry.value;
   }
 
@@ -125,22 +128,47 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
    * @param expiry The expiry time for the value, in milliseconds since the epoch.
    * @return The previous value associated with {@code key}, or {@code null} if there was no mapping for {@code key}.
    */
-  public synchronized V put(K key, V value, long expiry) {
+  @Nullable
+  public V put(K key, V value, long expiry) {
+    return put(key, value, expiry, null);
+  }
+
+  /**
+   * Associates the specified value with the specified key in this map, and expires the entry when the specified expiry
+   * time is reached. If the map previously contained a mapping for the key, the old value is replaced by the specified
+   * value.
+   *
+   * @param key The key with which the specified value is to be associated.
+   * @param value The value to be associated with the specified key.
+   * @param expiry The expiry time for the value, in milliseconds since the epoch.
+   * @param expiryListener A listener that will be invoked when the entry expires.
+   * @return The previous value associated with {@code key}, or {@code null} if there was no mapping for {@code key}.
+   */
+  @Nullable
+  public V put(K key, V value, long expiry, @Nullable BiConsumer<K, V> expiryListener) {
     requireNonNull(key);
     requireNonNull(value);
-    if (expiry >= MAX_EXPIRY) {
+    if (expiry >= Long.MAX_VALUE) {
       return put(key, value);
     }
 
     long now = currentTimeSupplier.getAsLong();
+    purgeExpired(now);
+
     if (expiry <= now) {
-      return remove(key);
+      V previous = remove(key);
+      if (expiryListener != null) {
+        expiryListener.accept(key, value);
+      }
+      return previous;
     }
 
-    purgeExpired(now);
-    ExpiringEntry<K, V> newEntry = new ExpiringEntry<>(key, value, expiry);
+    ExpiringEntry<K, V> newEntry = new ExpiringEntry<>(key, value, expiry, expiryListener);
     ExpiringEntry<K, V> oldEntry = storage.put(key, newEntry);
     expiryQueue.offer(newEntry);
+    if (oldEntry != null && oldEntry.expiry < Long.MAX_VALUE) {
+      expiryQueue.remove(oldEntry);
+    }
     return (oldEntry == null) ? null : oldEntry.value;
   }
 
@@ -149,7 +177,7 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     requireNonNull(m);
     purgeExpired();
     for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
-      storage.put(e.getKey(), new ExpiringEntry<>(e.getKey(), e.getValue(), MAX_EXPIRY));
+      storage.put(e.getKey(), new ExpiringEntry<>(e.getKey(), e.getValue(), Long.MAX_VALUE, null));
     }
   }
 
@@ -161,14 +189,14 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     if (entry == null) {
       return null;
     }
-    if (entry.expiry < MAX_EXPIRY) {
+    if (entry.expiry < Long.MAX_VALUE) {
       expiryQueue.remove(entry);
     }
     return entry.value;
   }
 
   @Override
-  public synchronized boolean remove(Object key, Object value) {
+  public boolean remove(Object key, Object value) {
     requireNonNull(key);
     requireNonNull(value);
     purgeExpired();
@@ -176,15 +204,17 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     if (entry == null || !value.equals(entry.value)) {
       return false;
     }
-    storage.remove(key);
-    if (entry.expiry < MAX_EXPIRY) {
+    if (!storage.remove(key, entry)) {
+      return false;
+    }
+    if (entry.expiry < Long.MAX_VALUE) {
       expiryQueue.remove(entry);
     }
     return true;
   }
 
   @Override
-  public synchronized void clear() {
+  public void clear() {
     expiryQueue.clear();
     storage.clear();
   }
@@ -224,18 +254,25 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
 
   /**
    * Force immediate expiration of any key/value pairs that have reached their expiry.
+   *
+   * @return The earliest expiry time for the current entries in the map (in milliseconds since the epoch), or
+   *         {@code Long.MAX_VALUE} if there are no entries due to expire.
    */
-  public void purgeExpired() {
-    purgeExpired(currentTimeSupplier.getAsLong());
+  public long purgeExpired() {
+    return purgeExpired(currentTimeSupplier.getAsLong());
   }
 
-  private synchronized void purgeExpired(long oldest) {
-    ExpiringEntry<K, V> head;
-    while ((head = expiryQueue.peek()) != null && head.expiry <= oldest) {
-      // only remove if it's still mapped to the same entry (object equality is used)
-      storage.remove(head.key, head);
-      expiryQueue.remove();
+  private long purgeExpired(long oldest) {
+    ExpiringEntry<K, V> entry;
+    while ((entry = expiryQueue.peek()) != null && entry.expiry <= oldest) {
+      if (!expiryQueue.remove(entry) || !storage.remove(entry.key, entry)) {
+        continue;
+      }
+      if (entry.expiryListener != null) {
+        entry.expiryListener.accept(entry.key, entry.value);
+      }
     }
+    return entry == null ? Long.MAX_VALUE : entry.expiry;
   }
 
   @SuppressWarnings("rawtypes")
