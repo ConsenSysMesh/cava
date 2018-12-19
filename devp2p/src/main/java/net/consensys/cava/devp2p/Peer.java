@@ -43,7 +43,7 @@ public interface Peer {
    * Check if this peer has the given capability.
    *
    * @param capability The capability to check for.
-   * @return <tt>true</tt> if this peer has the specified capability.
+   * @return {@code true} if this peer has the specified capability.
    */
   boolean hasCapability(String capability);
 
@@ -53,7 +53,7 @@ public interface Peer {
    * An active peer is a peer that the Ethereum client is currently communicating with at the discovery layer. It will
    * therefore have endpoint information available.
    *
-   * @return <tt>true</tt> if this peer is active.
+   * @return {@code true} if this peer is active.
    */
   boolean isActive();
 

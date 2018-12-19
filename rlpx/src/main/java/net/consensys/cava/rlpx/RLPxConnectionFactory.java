@@ -169,6 +169,8 @@ public final class RLPxConnectionFactory {
    * @param peerEphemeralPublicKey the peer ephemeral public key
    * @param initiatorNonce the initiation random nonce
    * @param responderNonce the responder random nonce
+   * @param ourPublicKey our public key
+   * @param peerPublicKey the public key of the peer
    * @return a valid RPLx connection to communicate between peers
    */
   public static RLPxConnection createConnection(

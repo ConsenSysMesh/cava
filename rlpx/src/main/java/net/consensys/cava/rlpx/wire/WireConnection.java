@@ -94,6 +94,9 @@ public final class WireConnection {
    * Default constructor.
    *
    * @param id the id of the connection
+   * @param nodeId the node id of this node
+   * @param peerNodeId the node id of the peer
+   * @param logger a logger
    * @param writer the message writer
    * @param disconnectHandler the handler to run upon receiving a disconnect message
    * @param subprotocols the subprotocols supported by this connection

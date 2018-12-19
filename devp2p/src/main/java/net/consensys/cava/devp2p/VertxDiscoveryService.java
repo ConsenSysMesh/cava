@@ -65,7 +65,7 @@ public final class VertxDiscoveryService {
    * @param peerRoutingTable the peer routing table
    * @param keyPair the encryption key pair to associate with the server communications
    * @param wireProtocolPort the port to advertise as
-   * @param timeSupplier
+   * @param timeSupplier A supplier for the current time in milliseconds since the epoch.
    */
   public VertxDiscoveryService(
       Vertx vertx,
