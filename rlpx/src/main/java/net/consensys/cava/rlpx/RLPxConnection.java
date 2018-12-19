@@ -115,7 +115,7 @@ public final class RLPxConnection {
 
   private Bytes buffer = Bytes.EMPTY;
 
-  public void stream(Bytes newBytes, Consumer<RLPxMessage> messageConsumer) {
+  public synchronized void stream(Bytes newBytes, Consumer<RLPxMessage> messageConsumer) {
     buffer = Bytes.concatenate(buffer, newBytes);
     RLPxMessage message = null;
     do {

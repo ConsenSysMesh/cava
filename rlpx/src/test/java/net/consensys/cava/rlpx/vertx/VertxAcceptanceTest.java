@@ -18,12 +18,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
 import net.consensys.cava.rlpx.RLPxService;
-import net.consensys.cava.rlpx.wire.*;
+import net.consensys.cava.rlpx.wire.SubProtocol;
+import net.consensys.cava.rlpx.wire.SubProtocolHandler;
+import net.consensys.cava.rlpx.wire.SubProtocolIdentifier;
+import net.consensys.cava.rlpx.wire.WireConnection;
+import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
@@ -32,6 +37,9 @@ import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Test;
@@ -177,6 +185,73 @@ class VertxAcceptanceTest {
       AsyncCompletion completion = service.wireConnections().iterator().next().sendPing();
       completion.join();
       assertTrue(completion.isDone());
+    } finally {
+      AsyncCompletion.allOf(service.stop(), secondService.stop());
+    }
+  }
+
+  @Test
+  void testTwoServicesSendingMessagesOfCustomSubProtocolToEachOtherSimultaneously(@VertxInstance Vertx vertx)
+      throws Exception {
+    Vertx vertx2 = Vertx.vertx();
+    SECP256K1.KeyPair kp = SECP256K1.KeyPair.random();
+    SECP256K1.KeyPair secondKp = SECP256K1.KeyPair.random();
+    MyCustomSubProtocol sp = new MyCustomSubProtocol(1);
+    MyCustomSubProtocol secondSp = new MyCustomSubProtocol(2);
+    LoggerProvider logProvider =
+        SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        logProvider.getLogger("rlpx"),
+        0,
+        "localhost",
+        10000,
+        kp,
+        Collections.singletonList(sp),
+        "Client 1");
+    VertxRLPxService secondService = new VertxRLPxService(
+        vertx2,
+        logProvider.getLogger("rlpx2"),
+        0,
+        "localhost",
+        10000,
+        secondKp,
+        Collections.singletonList(secondSp),
+        "Client 2");
+    service.start().join();
+    secondService.start().join();
+
+    try {
+      service.connectTo(secondKp.publicKey(), new InetSocketAddress("localhost", secondService.actualPort()));
+
+      Thread.sleep(3000);
+      assertEquals(1, service.wireConnections().size());
+      assertEquals(1, secondService.wireConnections().size());
+
+      assertEquals(1, sp.handler.messages.size());
+      assertEquals(1, secondSp.handler.messages.size());
+
+      List<AsyncCompletion> completionList = new ArrayList<>();
+      ExecutorService threadPool = Executors.newFixedThreadPool(16);
+      for (int i = 0; i < 128; i++) {
+        CompletableAsyncCompletion task = AsyncCompletion.incomplete();
+        completionList.add(task);
+        threadPool.submit(() -> {
+          try {
+
+            service.wireConnections().iterator().next().sendPing();
+            task.complete();
+          } catch (Throwable t) {
+            task.completeExceptionally(t);
+          }
+        });
+      }
+      threadPool.shutdown();
+
+      AsyncCompletion allTasks = AsyncCompletion.allOf(completionList);
+      allTasks.join(30, TimeUnit.SECONDS);
+      assertTrue(allTasks.isDone());
+
     } finally {
       AsyncCompletion.allOf(service.stop(), secondService.stop());
     }
