@@ -144,7 +144,7 @@ public final class PeerRepository {
    * Note that the observer will be called while a lock is held on the Peer, so it should return promptly.
    *
    * @param fn The callback that will be supplied with the {@link Peer} is added.
-   * @return <tt>true</tt> if the callback function was not already registered for observing.
+   * @return {@code true} if the callback function was not already registered for observing.
    */
   public boolean observePeerAddition(Consumer<Peer> fn) {
     return peerAdditionObservers.add(fn);
@@ -154,7 +154,7 @@ public final class PeerRepository {
    * Remove an observer.
    *
    * @param fn The callback function that was registered using {@link PeerRepository#observePeerAddition(Consumer)}.
-   * @return <tt>true</tt> if the callback function was registered for observing.
+   * @return {@code true} if the callback function was registered for observing.
    */
   public boolean unObservePeerAddition(Consumer<Peer> fn) {
     return peerAdditionObservers.remove(fn);
@@ -166,7 +166,7 @@ public final class PeerRepository {
    * Note that the observer will be called while a lock is held on the Peer, so it should return promptly.
    *
    * @param fn The callback that will be supplied with the {@link Peer} that has become active.
-   * @return <tt>true</tt> if the callback function was not already registered for observing.
+   * @return {@code true} if the callback function was not already registered for observing.
    */
   public boolean observePeerActive(Consumer<Peer> fn) {
     return peerActiveObservers.add(fn);
@@ -176,7 +176,7 @@ public final class PeerRepository {
    * Remove an observer.
    *
    * @param fn The callback function that was registered using {@link PeerRepository#observePeerActive(Consumer)}.
-   * @return <tt>true</tt> if the callback function was registered for observing.
+   * @return {@code true} if the callback function was registered for observing.
    */
   public boolean unObservePeerActive(Consumer<Peer> fn) {
     return peerActiveObservers.remove(fn);
@@ -188,7 +188,7 @@ public final class PeerRepository {
    * Note that the observer will be called while a lock is held on the Peer, so it should return promptly.
    *
    * @param fn The callback that will be supplied with the {@link Peer} that has become inactive.
-   * @return <tt>true</tt> if the callback function was not already registered for observing.
+   * @return {@code true} if the callback function was not already registered for observing.
    */
   public boolean observePeerInactive(Consumer<Peer> fn) {
     return peerInactiveObservers.add(fn);
@@ -198,7 +198,7 @@ public final class PeerRepository {
    * Remove an observer.
    *
    * @param fn The callback function that was registered using {@link PeerRepository#observePeerInactive(Consumer)}.
-   * @return <tt>true</tt> if the callback function was registered for observing.
+   * @return {@code true} if the callback function was registered for observing.
    */
   public boolean unObservePeerInactive(Consumer<Peer> fn) {
     return peerInactiveObservers.remove(fn);
@@ -210,7 +210,7 @@ public final class PeerRepository {
    * Note that the observer will be called while a lock is held on the Peer, so it should return promptly.
    *
    * @param fn The callback that will be supplied with the old capability set and the {@link Peer}.
-   * @return <tt>true</tt> if the callback function was not already registered for observing.
+   * @return {@code true} if the callback function was not already registered for observing.
    */
   public boolean observePeerCapabilities(BiConsumer<Set<String>, Peer> fn) {
     return peerCapabilityObservers.add(fn);
@@ -221,7 +221,7 @@ public final class PeerRepository {
    *
    * @param fn The callback function that was registered using
    *        {@link PeerRepository#observePeerCapabilities(BiConsumer)}.
-   * @return <tt>true</tt> if the callback function was registered for observing.
+   * @return {@code true} if the callback function was registered for observing.
    */
   public boolean unObservePeerCapabilities(BiConsumer<Set<String>, Peer> fn) {
     return peerCapabilityObservers.remove(fn);
