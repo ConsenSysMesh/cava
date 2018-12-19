@@ -18,7 +18,3 @@ include 'rlpx'
 include 'ssz'
 include 'toml'
 include 'units'
-
-//////
-// Enable feature preview for compatibility with Gradle 5.0
-enableFeaturePreview('STABLE_PUBLISHING')
