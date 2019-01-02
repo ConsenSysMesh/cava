@@ -28,13 +28,16 @@ import java.nio.channels.WritableByteChannel
 
 /**
  * A co-routine channel that can read bytes.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface ReadableCoroutineByteChannel {
   /**
    * Reads a sequence of bytes from this channel into the given buffer.
    *
    * An attempt is made to read up to r bytes from the channel, where r is the number of bytes remaining in the buffer,
-   * that is, dst.remaining(), at the moment this method is invoked.
+   * that is, dst.remaining(), at the moment this method is invoked. If no bytes are available, then this method
+   * suspends until at least some bytes can be read.
    *
    * @param dst The buffer into which bytes are to be transferred.
    * @return The number of bytes read, possibly zero, or `-1` if the channel has reached end-of-stream.
@@ -69,14 +72,18 @@ internal class ReadableCoroutineByteChannelMixin<T>(
 
 /**
  * A co-routine channel that can write bytes.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface WritableCoroutineByteChannel {
 
   /**
    * Writes a sequence of bytes to this channel from the given buffer.
    *
+   * This method will suspend until some bytes can be written to the channel, or an error occurs.
+   *
    * @param src The buffer from which bytes are to be retrieved.
-   * @return The number of bytes written, possibly zero.
+   * @return The number of bytes written.
    * @throws NonWritableChannelException If this channel was not opened for writing.
    * @throws ClosedChannelException If the channel is closed.
    * @throws AsynchronousCloseException If another thread closes this channel while the write operation is in progress.
@@ -108,6 +115,8 @@ internal class WritableCoroutineByteChannelMixin<T>(
 
 /**
  * A co-routine channel that can read and write bytes.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface CoroutineByteChannel : ReadableCoroutineByteChannel, WritableCoroutineByteChannel
 
@@ -123,6 +132,8 @@ internal class CoroutineByteChannelMixin<T>(
 
 /**
  * A channel that can read bytes into a sequence of buffers.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface ScatteringCoroutineByteChannel : ReadableCoroutineByteChannel {
   /**
@@ -167,17 +178,21 @@ internal class ScatteringCoroutineByteChannelMixin<T>(
 
 /**
  * A channel that can write bytes from a sequence of buffers.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface GatheringCoroutineByteChannel : WritableCoroutineByteChannel {
   /**
    * Writes a sequence of bytes to this channel from a subsequence of the given buffers.
+   *
+   * This method will suspend until some bytes can be written to the channel, or an error occurs.
    *
    * @param srcs The buffers from which bytes are to be retrieved.
    * @param offset The offset within the buffer array of the first buffer from which bytes are to be retrieved;
    *   must be non-negative and no larger than `srcs.length`.
    * @param length The maximum number of buffers to be accessed; must be non-negative and no larger than
    *   `srcs.length - offset`.
-   * @return The number of bytes written, possibly zero.
+   * @return The number of bytes written.
    * @throws IndexOutOfBoundsException If the preconditions on the offset and length parameters do not hold.
    * @throws NonWritableChannelException If this channel was not opened for writing.
    * @throws ClosedChannelException If the channel is closed.

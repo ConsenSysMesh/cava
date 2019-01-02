@@ -37,6 +37,8 @@ val CommonCoroutineGroup: CoroutineChannelGroup = CoroutineChannelGroup.open()
  *
  * A co-routine channel group encapsulates the mechanics required to handle completion of suspended I/O operations
  * initiated on channels bound to the group.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 sealed class CoroutineChannelGroup {
 

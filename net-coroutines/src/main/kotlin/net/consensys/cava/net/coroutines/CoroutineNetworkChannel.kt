@@ -23,6 +23,8 @@ import java.nio.channels.UnsupportedAddressTypeException
 
 /**
  * A co-routine based network channel.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface CoroutineNetworkChannel : NetworkChannel {
 
@@ -66,7 +68,6 @@ interface CoroutineNetworkChannel : NetworkChannel {
    * Returns the socket address that this channel's socket is bound to.
    *
    * @return The socket address that the socket is bound to, or `null` if the channel's socket is not bound.
-   *
    * @throws ClosedChannelException If the channel is closed.
    * @throws IOException If an I/O error occurs.
    */

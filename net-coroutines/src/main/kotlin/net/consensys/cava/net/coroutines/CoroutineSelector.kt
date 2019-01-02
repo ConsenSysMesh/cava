@@ -34,6 +34,8 @@ import kotlin.coroutines.resumeWithException
 
 /**
  * A selector for co-routine based channel IO.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 sealed class CoroutineSelector {
 

@@ -25,6 +25,8 @@ import java.nio.channels.UnsupportedAddressTypeException
 
 /**
  * A co-routine based network channel for stream-oriented connection listening.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 class CoroutineServerSocketChannel private constructor(
   private val channel: ServerSocketChannel,
