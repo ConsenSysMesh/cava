@@ -58,8 +58,7 @@ class CoroutineLatch(initial: Int) {
   fun countDown(): Boolean {
     var toAwaken: List<Continuation<Unit>>? = null
     synchronized(this) {
-      val result = atomicCount.decrementAndGet()
-      if (result == 0) {
+      if (atomicCount.decrementAndGet() == 0) {
         toAwaken = waitingCoroutines
         waitingCoroutines = mutableListOf()
       }
