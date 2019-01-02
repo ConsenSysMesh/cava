@@ -118,9 +118,9 @@ class CoroutineDatagramChannel private constructor(
    */
   suspend fun receive(dst: ByteBuffer): SocketAddress {
     while (true) {
-      val n = channel.receive(dst)
-      if (n != null) {
-        return n
+      val address = channel.receive(dst)
+      if (address != null) {
+        return address
       }
       // slow path
       group.select(channel, SelectionKey.OP_READ)

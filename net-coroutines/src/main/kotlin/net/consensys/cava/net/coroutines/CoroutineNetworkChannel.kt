@@ -13,6 +13,7 @@
 package net.consensys.cava.net.coroutines
 
 import java.io.IOException
+import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.SocketAddress
 import java.net.SocketOption
@@ -74,6 +75,25 @@ interface CoroutineNetworkChannel : NetworkChannel {
   override fun getLocalAddress(): SocketAddress?
 
   /**
+   * Returns the InetAddress corresponding to the interface this channel's socket is bound to.
+   *
+   * @return The InetAddress that the socket is bound to, or `null` if the channel's socket is not bound.
+   * @throws IllegalStateException If the channel is not bound to an inet address
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws IOException If an I/O error occurs.
+   */
+  fun getAdvertisableAddress(): InetAddress? {
+    val localAddress = localAddress ?: return null
+    val localInetAddress = (localAddress as? InetSocketAddress)?.address
+      ?: throw IllegalStateException("Channel bound to non-inet interface")
+    if (!localInetAddress.isAnyLocalAddress) {
+      return localInetAddress
+    }
+    // This will typically work ok on hosts with only a single interface
+    return InetAddress.getLocalHost()
+  }
+
+  /**
    * The port number on the local host to which this socket is bound.
    *
    * The port number on the local host to which this socket is bound, -1 if the socket is closed, or 0 if it is not
@@ -126,10 +146,7 @@ internal class CoroutineNetworkChannelMixin(
       if (!isOpen) {
         return -1
       }
-      if (localAddress !is InetSocketAddress) {
-        return 0
-      }
-      return (localAddress as InetSocketAddress).port
+      return (localAddress as? InetSocketAddress)?.port ?: 0
     }
 
   override fun bind(local: SocketAddress?): CoroutineNetworkChannel {
