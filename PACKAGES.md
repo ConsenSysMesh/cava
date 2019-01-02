@@ -60,15 +60,15 @@ Utilities for better junit testing.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-junit` (`cava-junit.jar`).
 
+# Package net.consensys.cava.kademlia
+
+An implementation of the kademlia distributed hash (routing) table.
+
+These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kademlia` (`cava-kademlia.jar`).
+
 # Package net.consensys.cava.kv
 
 Classes and utilities for working with key/value stores.
-
-These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kv` (`cava-kv.jar`).
-
-# Package net.consensys.cava.kv
-
-Key/value stores implementations exposing Kotlin coroutine methods.
 
 These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-kv` (`cava-kv.jar`).
 
