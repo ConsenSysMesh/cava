@@ -18,6 +18,8 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.LongSupplier;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
@@ -80,6 +82,12 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     purgeExpired();
     ExpiringEntry<K, V> entry = storage.get(key);
     return (entry == null) ? null : entry.value;
+  }
+
+  @Override
+  public V getOrDefault(Object key, V defaultValue) {
+    V v;
+    return (((v = get(key)) != null)) ? v : defaultValue;
   }
 
   @Override
@@ -181,6 +189,153 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
     }
   }
 
+  @Nullable
+  @Override
+  public V putIfAbsent(K key, V value) {
+    requireNonNull(key);
+    requireNonNull(value);
+    purgeExpired();
+    ExpiringEntry<K, V> oldEntry = storage.putIfAbsent(key, new ExpiringEntry<>(key, value, Long.MAX_VALUE, null));
+    return (oldEntry == null) ? null : oldEntry.value;
+  }
+
+  /**
+   * If the specified key is not already associated with a value, associates the specified value with the specified key
+   * in this map, and expires the entry when the specified expiry time is reached.
+   *
+   * @param key The key with which the specified value is to be associated.
+   * @param value The value to be associated with the specified key.
+   * @param expiry The expiry time for the value, in milliseconds since the epoch.
+   * @return The previous value associated with {@code key}, or {@code null} if there was no mapping for {@code key}.
+   */
+  @Nullable
+  public V putIfAbsent(K key, V value, long expiry) {
+    return putIfAbsent(key, value, expiry, null);
+  }
+
+  /**
+   * If the specified key is not already associated with a value, associates the specified value with the specified key
+   * in this map, and expires the entry when the specified expiry time is reached.
+   *
+   * @param key The key with which the specified value is to be associated.
+   * @param value The value to be associated with the specified key.
+   * @param expiry The expiry time for the value, in milliseconds since the epoch.
+   * @param expiryListener A listener that will be invoked when the entry expires.
+   * @return The previous value associated with {@code key}, or {@code null} if there was no mapping for {@code key}.
+   */
+  @Nullable
+  public V putIfAbsent(K key, V value, long expiry, @Nullable BiConsumer<K, V> expiryListener) {
+    requireNonNull(key);
+    requireNonNull(value);
+    if (expiry >= Long.MAX_VALUE) {
+      return put(key, value);
+    }
+
+    long now = currentTimeSupplier.getAsLong();
+    purgeExpired(now);
+
+    if (expiry <= now) {
+      V previous = remove(key);
+      if (expiryListener != null) {
+        expiryListener.accept(key, value);
+      }
+      return previous;
+    }
+
+    ExpiringEntry<K, V> newEntry = new ExpiringEntry<>(key, value, expiry, expiryListener);
+    ExpiringEntry<K, V> oldEntry = storage.putIfAbsent(key, newEntry);
+    if (oldEntry == null) {
+      expiryQueue.offer(newEntry);
+      return null;
+    }
+    return oldEntry.value;
+  }
+
+  @Override
+  public V compute(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+    ExpiringEntry<K, V> newEntry = storage.compute(key, (k, oldEntry) -> {
+      if (oldEntry != null && oldEntry.expiry < Long.MAX_VALUE) {
+        expiryQueue.remove(oldEntry);
+      }
+      V oldValue = (oldEntry == null) ? null : oldEntry.value;
+      V newValue = remappingFunction.apply(k, oldValue);
+      return (newValue == null) ? null : new ExpiringEntry<>(k, newValue, Long.MAX_VALUE, null);
+    });
+    return (newEntry == null) ? null : newEntry.value;
+  }
+
+  @Override
+  public V computeIfAbsent(K key, Function<? super K, ? extends V> mappingFunction) {
+    ExpiringEntry<K, V> newEntry = storage.computeIfAbsent(key, k -> {
+      V newValue = mappingFunction.apply(k);
+      return (newValue == null) ? null : new ExpiringEntry<>(k, newValue, Long.MAX_VALUE, null);
+    });
+    return (newEntry == null) ? null : newEntry.value;
+  }
+
+  @Override
+  public V computeIfPresent(K key, BiFunction<? super K, ? super V, ? extends V> remappingFunction) {
+    ExpiringEntry<K, V> newEntry = storage.computeIfPresent(key, (k, oldEntry) -> {
+      if (oldEntry.expiry < Long.MAX_VALUE) {
+        expiryQueue.remove(oldEntry);
+      }
+      V newValue = remappingFunction.apply(k, oldEntry.value);
+      return (newValue == null) ? null : new ExpiringEntry<>(k, newValue, Long.MAX_VALUE, null);
+    });
+    return (newEntry == null) ? null : newEntry.value;
+  }
+
+  @Override
+  public V merge(K key, V value, BiFunction<? super V, ? super V, ? extends V> remappingFunction) {
+    ExpiringEntry<K, V> entry =
+        storage.merge(key, new ExpiringEntry<>(key, value, Long.MAX_VALUE, null), (oldEntry, newEntry) -> {
+          if (oldEntry.expiry < Long.MAX_VALUE) {
+            expiryQueue.remove(oldEntry);
+          }
+          V newValue = remappingFunction.apply(oldEntry.value, newEntry.value);
+          return (newValue == null) ? null : new ExpiringEntry<>(key, newValue, Long.MAX_VALUE, null);
+        });
+    return (entry == null) ? null : entry.value;
+  }
+
+  @Override
+  public V replace(K key, V value) {
+    ExpiringEntry<K, V> oldEntry = storage.replace(key, new ExpiringEntry<>(key, value, Long.MAX_VALUE, null));
+    if (oldEntry != null) {
+      if (oldEntry.expiry < Long.MAX_VALUE) {
+        expiryQueue.remove(oldEntry);
+      }
+      return oldEntry.value;
+    }
+    return null;
+  }
+
+  @Override
+  public boolean replace(K key, V oldValue, V newValue) {
+    requireNonNull(oldValue);
+    requireNonNull(newValue);
+    ExpiringEntry<K, V> entry = storage.computeIfPresent(key, (k, oldEntry) -> {
+      if (oldEntry.value.equals(oldValue)) {
+        if (oldEntry.expiry < Long.MAX_VALUE) {
+          expiryQueue.remove(oldEntry);
+        }
+        return new ExpiringEntry<>(k, newValue, Long.MAX_VALUE, null);
+      }
+      return oldEntry;
+    });
+    return (entry != null) && entry.value.equals(newValue);
+  }
+
+  @Override
+  public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+    storage.replaceAll((k, oldEntry) -> {
+      if (oldEntry.expiry < Long.MAX_VALUE) {
+        expiryQueue.remove(oldEntry);
+      }
+      return new ExpiringEntry<>(k, requireNonNull(function.apply(k, oldEntry.value)), Long.MAX_VALUE, null);
+    });
+  }
+
   @Override
   public V remove(Object key) {
     requireNonNull(key);
@@ -250,6 +405,11 @@ public final class ExpiringMap<K, V> implements Map<K, V> {
         throw new UnsupportedOperationException();
       }
     }).collect(Collectors.toSet());
+  }
+
+  @Override
+  public void forEach(BiConsumer<? super K, ? super V> action) {
+    storage.forEach((k, v) -> action.accept(k, v.value));
   }
 
   /**
