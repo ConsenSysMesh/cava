@@ -583,6 +583,16 @@ public final class SECP256K1 {
     }
 
     /**
+     * Create the public key from a hex string.
+     *
+     * @param str The hexadecimal string to parse, which may or may not start with "0x".
+     * @return The public key.
+     */
+    public static PublicKey fromHexString(CharSequence str) {
+      return new PublicKey(Bytes.fromHexString(str));
+    }
+
+    /**
      * Recover a public key using a digital signature and the data it signs.
      *
      * @param data The signed data.
@@ -680,6 +690,13 @@ public final class SECP256K1 {
     @Override
     public String toString() {
       return keyBytes.toString();
+    }
+
+    /**
+     * @return This key represented as hexadecimal, starting with "0x".
+     */
+    public String toHexString() {
+      return keyBytes.toHexString();
     }
   }
 
