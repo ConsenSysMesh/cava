@@ -15,6 +15,9 @@ package net.consensys.cava.bytes;
 import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
+import java.security.SecureRandom;
+import java.util.Random;
+
 /**
  * A {@link Bytes} value that is guaranteed to contain exactly 32 bytes.
  */
@@ -163,6 +166,27 @@ public interface Bytes32 extends Bytes {
   static Bytes32 fromHexString(CharSequence str) {
     checkNotNull(str);
     return wrap(BytesValues.fromRawHexString(str, SIZE, false));
+  }
+
+  /**
+   * Generate random bytes.
+   *
+   * @return A value containing random bytes.
+   */
+  static Bytes32 random() {
+    return random(new SecureRandom());
+  }
+
+  /**
+   * Generate random bytes.
+   *
+   * @param generator The generator for random bytes.
+   * @return A value containing random bytes.
+   */
+  static Bytes32 random(Random generator) {
+    byte[] array = new byte[32];
+    generator.nextBytes(array);
+    return wrap(array);
   }
 
   /**
