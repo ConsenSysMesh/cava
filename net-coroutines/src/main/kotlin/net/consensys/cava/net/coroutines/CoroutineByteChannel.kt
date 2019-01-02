@@ -28,10 +28,30 @@ import java.nio.channels.WritableByteChannel
 
 /**
  * A co-routine channel that can read bytes.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface ReadableCoroutineByteChannel {
   /**
    * Reads a sequence of bytes from this channel into the given buffer.
+   *
+   * An attempt is made to read up to r bytes from the channel, where r is the number of bytes remaining in the buffer,
+   * that is, dst.remaining(), at the moment this method is invoked. If no bytes are available, then this method
+   * suspends until at least some bytes can be read.
+   *
+   * @param dst The buffer into which bytes are to be transferred.
+   * @return The number of bytes read, possibly zero, or `-1` if the channel has reached end-of-stream.
+   * @throws NonReadableChannelException If this channel was not opened for reading.
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws AsynchronousCloseException If another thread closes this channel while the read operation is in progress.
+   * @throws ClosedByInterruptException If another thread interrupts the current thread while the read operation is
+   *   in progress, thereby closing the channel and setting the current thread's interrupt status.
+   * @throws IOException If some other I/O error occurs.
+   */
+  suspend fun read(dst: ByteBuffer): Int
+
+  /**
+   * Reads a sequence of bytes from this channel into the given buffer, if any bytes are immediately available.
    *
    * An attempt is made to read up to r bytes from the channel, where r is the number of bytes remaining in the buffer,
    * that is, dst.remaining(), at the moment this method is invoked.
@@ -45,7 +65,7 @@ interface ReadableCoroutineByteChannel {
    *   in progress, thereby closing the channel and setting the current thread's interrupt status.
    * @throws IOException If some other I/O error occurs.
    */
-  suspend fun read(dst: ByteBuffer): Int
+  fun tryRead(dst: ByteBuffer): Int
 }
 
 internal class ReadableCoroutineByteChannelMixin<T>(
@@ -65,15 +85,35 @@ internal class ReadableCoroutineByteChannelMixin<T>(
       group.select(channel, SelectionKey.OP_READ)
     }
   }
+
+  override fun tryRead(dst: ByteBuffer): Int = channel.read(dst)
 }
 
 /**
  * A co-routine channel that can write bytes.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface WritableCoroutineByteChannel {
 
   /**
    * Writes a sequence of bytes to this channel from the given buffer.
+   *
+   * This method will suspend until some bytes can be written to the channel, or an error occurs.
+   *
+   * @param src The buffer from which bytes are to be retrieved.
+   * @return The number of bytes written.
+   * @throws NonWritableChannelException If this channel was not opened for writing.
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws AsynchronousCloseException If another thread closes this channel while the write operation is in progress.
+   * @throws ClosedByInterruptException If another thread interrupts the current thread while the write operation is
+   *   in progress, thereby closing the channel and setting the current thread's interrupt status.
+   * @throws IOException If some other I/O error occurs.
+   */
+  suspend fun write(src: ByteBuffer): Int
+
+  /**
+   * Writes a sequence of bytes to this channel from the given buffer, if the channel is ready for writing.
    *
    * @param src The buffer from which bytes are to be retrieved.
    * @return The number of bytes written, possibly zero.
@@ -84,7 +124,7 @@ interface WritableCoroutineByteChannel {
    *   in progress, thereby closing the channel and setting the current thread's interrupt status.
    * @throws IOException If some other I/O error occurs.
    */
-  suspend fun write(src: ByteBuffer): Int
+  fun tryWrite(src: ByteBuffer): Int
 }
 
 internal class WritableCoroutineByteChannelMixin<T>(
@@ -104,10 +144,14 @@ internal class WritableCoroutineByteChannelMixin<T>(
       group.select(channel, SelectionKey.OP_WRITE)
     }
   }
+
+  override fun tryWrite(src: ByteBuffer): Int = channel.write(src)
 }
 
 /**
  * A co-routine channel that can read and write bytes.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface CoroutineByteChannel : ReadableCoroutineByteChannel, WritableCoroutineByteChannel
 
@@ -123,6 +167,8 @@ internal class CoroutineByteChannelMixin<T>(
 
 /**
  * A channel that can read bytes into a sequence of buffers.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface ScatteringCoroutineByteChannel : ReadableCoroutineByteChannel {
   /**
@@ -143,6 +189,25 @@ interface ScatteringCoroutineByteChannel : ReadableCoroutineByteChannel {
    * @throws IOException If some other I/O error occurs.
    */
   suspend fun read(dsts: Array<ByteBuffer>, offset: Int = 0, length: Int = dsts.size): Long
+
+  /**
+   * Reads a sequence of bytes from this channel into a subsequence of the given buffers, if any are available.
+   *
+   * @param dsts The buffers into which bytes are to be transferred.
+   * @param offset The offset within the buffer array of the first buffer into which bytes are to be transferred;
+   *   must be non-negative and no larger than `dsts.length`.
+   * @param length The maximum number of buffers to be accessed; must be non-negative and no larger than
+   *   `dsts.length - offset`.
+   * @return The number of bytes read, possibly zero, or `-1` if the channel has reached end-of-stream.
+   * @throws IndexOutOfBoundsException If the preconditions on the offset and length parameters do not hold.
+   * @throws NonReadableChannelException If this channel was not opened for reading.
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws AsynchronousCloseException If another thread closes this channel while the read operation is in progress.
+   * @throws ClosedByInterruptException If another thread interrupts the current thread while the read operation is
+   *   in progress, thereby closing the channel and setting the current thread's interrupt status.
+   * @throws IOException If some other I/O error occurs.
+   */
+  fun tryRead(dsts: Array<ByteBuffer>, offset: Int = 0, length: Int = dsts.size): Long
 }
 
 internal class ScatteringCoroutineByteChannelMixin<T>(
@@ -163,14 +228,39 @@ internal class ScatteringCoroutineByteChannelMixin<T>(
       group.select(channel, SelectionKey.OP_READ)
     }
   }
+
+  override fun tryRead(dsts: Array<ByteBuffer>, offset: Int, length: Int): Long = channel.read(dsts, offset, length)
 }
 
 /**
  * A channel that can write bytes from a sequence of buffers.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 interface GatheringCoroutineByteChannel : WritableCoroutineByteChannel {
   /**
    * Writes a sequence of bytes to this channel from a subsequence of the given buffers.
+   *
+   * This method will suspend until some bytes can be written to the channel, or an error occurs.
+   *
+   * @param srcs The buffers from which bytes are to be retrieved.
+   * @param offset The offset within the buffer array of the first buffer from which bytes are to be retrieved;
+   *   must be non-negative and no larger than `srcs.length`.
+   * @param length The maximum number of buffers to be accessed; must be non-negative and no larger than
+   *   `srcs.length - offset`.
+   * @return The number of bytes written.
+   * @throws IndexOutOfBoundsException If the preconditions on the offset and length parameters do not hold.
+   * @throws NonWritableChannelException If this channel was not opened for writing.
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws AsynchronousCloseException If another thread closes this channel while the write operation is in progress.
+   * @throws ClosedByInterruptException If another thread interrupts the current thread while the write operation is
+   *   in progress, thereby closing the channel and setting the current thread's interrupt status.
+   * @throws IOException If some other I/O error occurs.
+   */
+  suspend fun write(srcs: Array<ByteBuffer>, offset: Int = 0, length: Int = srcs.size): Long
+
+  /**
+   * Writes a sequence of bytes to this channel from a subsequence of the given buffers, if the channel is ready for writing.
    *
    * @param srcs The buffers from which bytes are to be retrieved.
    * @param offset The offset within the buffer array of the first buffer from which bytes are to be retrieved;
@@ -186,7 +276,7 @@ interface GatheringCoroutineByteChannel : WritableCoroutineByteChannel {
    *   in progress, thereby closing the channel and setting the current thread's interrupt status.
    * @throws IOException If some other I/O error occurs.
    */
-  suspend fun write(srcs: Array<ByteBuffer>, offset: Int = 0, length: Int = srcs.size): Long
+  fun tryWrite(srcs: Array<ByteBuffer>, offset: Int = 0, length: Int = srcs.size): Long
 }
 
 internal class GatheringCoroutineByteChannelMixin<T>(
@@ -207,6 +297,8 @@ internal class GatheringCoroutineByteChannelMixin<T>(
       group.select(channel, SelectionKey.OP_WRITE)
     }
   }
+
+  override fun tryWrite(srcs: Array<ByteBuffer>, offset: Int, length: Int): Long = channel.write(srcs, offset, length)
 }
 
 private fun buffersAreEmpty(buffers: Array<ByteBuffer>, offset: Int, length: Int): Boolean {

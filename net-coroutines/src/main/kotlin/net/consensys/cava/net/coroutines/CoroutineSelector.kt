@@ -14,6 +14,7 @@ package net.consensys.cava.net.coroutines
 
 import com.google.common.util.concurrent.ThreadFactoryBuilder
 import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.suspendCancellableCoroutine
 import org.logl.LogMessage
 import org.logl.LoggerProvider
@@ -23,7 +24,6 @@ import java.nio.channels.ClosedSelectorException
 import java.nio.channels.SelectableChannel
 import java.nio.channels.SelectionKey
 import java.nio.channels.Selector
-import java.util.concurrent.ConcurrentLinkedQueue
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 import java.util.concurrent.atomic.AtomicInteger
@@ -34,6 +34,8 @@ import kotlin.coroutines.resumeWithException
 
 /**
  * A selector for co-routine based channel IO.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 sealed class CoroutineSelector {
 
@@ -120,9 +122,9 @@ internal class SingleThreadCoroutineSelector(
 
   private val logger = loggerProvider.getLogger(CoroutineSelector::class.java)
 
-  private val pendingInterests = ConcurrentLinkedQueue<SelectionInterest>()
-  private val pendingCancellations = ConcurrentLinkedQueue<SelectionCancellation>()
-  private val pendingCloses = ConcurrentLinkedQueue<Continuation<Unit>>()
+  private val pendingInterests = Channel<SelectionInterest>(capacity = Channel.UNLIMITED)
+  private val pendingCancellations = Channel<SelectionCancellation>(capacity = Channel.UNLIMITED)
+  private val pendingCloses = Channel<Continuation<Unit>>(capacity = Channel.UNLIMITED)
   private val outstandingTasks = AtomicInteger(0)
   private val registeredKeys = HashSet<SelectionKey>()
 
@@ -144,7 +146,7 @@ internal class SingleThreadCoroutineSelector(
       try {
         // increment tasks first to keep selection loop running while we add a new pending interest
         val isRunning = incrementTasks()
-        pendingInterests.add(SelectionInterest(cont, channel, ops))
+        pendingInterests.offer(SelectionInterest(cont, channel, ops))
         wakeup(isRunning)
       } catch (e: Throwable) {
         cont.resumeWithException(e)
@@ -161,7 +163,7 @@ internal class SingleThreadCoroutineSelector(
       try {
         // increment tasks first to keep selection loop running while we add a new pending cancellation
         val isRunning = incrementTasks()
-        pendingCancellations.add(SelectionCancellation(channel, cause, cont))
+        pendingCancellations.offer(SelectionCancellation(channel, cause, cont))
         wakeup(isRunning)
       } catch (e: Throwable) {
         cont.resumeWithException(e)
@@ -184,7 +186,7 @@ internal class SingleThreadCoroutineSelector(
     selector.close()
     suspendCoroutine { cont: Continuation<Unit> ->
       try {
-        pendingCloses.add(cont)
+        pendingCloses.offer(cont)
         if (outstandingTasks.get() == 0) {
           processPendingCloses()
         }
@@ -434,14 +436,19 @@ internal class SingleThreadCoroutineSelector(
   }
 
   private fun cancelAll(e: Throwable) {
-    pendingInterests.forEach { it.cont.resumeWithException(e) }
-    pendingInterests.clear()
+    while (true) {
+      val it = pendingInterests.poll() ?: break
+      it.cont.resumeWithException(e)
+    }
     registeredKeys.forEach { key ->
       @Suppress("UNCHECKED_CAST")
       (key.attachment() as ArrayList<SelectionInterest>).forEach { it.cont.resumeWithException(e) }
     }
     registeredKeys.clear()
-    pendingCancellations.clear()
+    while (true) {
+      val it = pendingCancellations.poll() ?: break
+      it.cont.resumeWithException(e)
+    }
     outstandingTasks.set(0)
   }
 

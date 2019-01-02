@@ -23,6 +23,8 @@ import java.nio.channels.SelectionKey
 
 /**
  * A co-routine based datagram-oriented network channel.
+ *
+ * @author Chris Leishman - https://cleishm.github.io/
  */
 class CoroutineDatagramChannel private constructor(
   private val channel: DatagramChannel,
@@ -116,14 +118,28 @@ class CoroutineDatagramChannel private constructor(
    */
   suspend fun receive(dst: ByteBuffer): SocketAddress {
     while (true) {
-      val n = channel.receive(dst)
-      if (n != null) {
-        return n
+      val address = channel.receive(dst)
+      if (address != null) {
+        return address
       }
       // slow path
       group.select(channel, SelectionKey.OP_READ)
     }
   }
+
+  /**
+   * Receives a datagram via this channel, if one is immediately available.
+   *
+   * @param dst The buffer into which the datagram is to be transferred.
+   * @return The datagram's source address, or `null` if no datagram was available to be received.
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws AsynchronousCloseException If another thread closes this channel while the receive operation is in
+   *   progress.
+   * @throws ClosedByInterruptException If another thread interrupts the current thread while the receive operation is
+   *   in progress, thereby closing the channel and setting the current thread's interrupt status.
+   * @throws IOException If some other I/O error occurs.
+   */
+  fun tryReceive(dst: ByteBuffer): SocketAddress? = channel.receive(dst)
 
   /**
    * Sends a datagram via this channel.
@@ -147,4 +163,18 @@ class CoroutineDatagramChannel private constructor(
       group.select(channel, SelectionKey.OP_WRITE)
     }
   }
+
+  /**
+   * Sends a datagram via this channel, if it can be sent immediately.
+   *
+   * @param src The buffer containing the datagram to be sent.
+   * @param target The address to which the datagram is to be sent.
+   * @return The number of bytes sent, which will be zero if the channel was not ready to send.
+   * @throws ClosedChannelException If the channel is closed.
+   * @throws AsynchronousCloseException If another thread closes this channel while the send operation is in progress.
+   * @throws ClosedByInterruptException If another thread interrupts the current thread while the send operation is
+   *   in progress, thereby closing the channel and setting the current thread's interrupt status.
+   * @throws IOException If some other I/O error occurs.
+   */
+  fun trySend(src: ByteBuffer, target: SocketAddress): Int = channel.send(src, target)
 }
