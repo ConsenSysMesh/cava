@@ -38,6 +38,12 @@ Classes and utilities in this package provide an interface to the native Sodium 
 
 Classes in this package depend upon the JNR-FFI library, which is not automatically included when using the complete Cava distribution. See https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency `com.github.jnr:jnr-ffi`.
 
+# Package net.consensys.cava.devp2p
+
+Kotlin coroutine based implementation of the Ethereum ÐΞVp2p protocol.
+
+These classes are included in the complete Cava distribution, or separately when using the gradle dependency `net.consensys.cava:cava-devp2p` (`cava-devp2p.jar`).
+
 # Package net.consensys.cava.eth
 
 Classes and utilities for working in the Ethereum domain.
