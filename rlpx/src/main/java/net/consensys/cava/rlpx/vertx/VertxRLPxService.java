@@ -121,9 +121,9 @@ public final class VertxRLPxService implements RLPxService {
         handlers.put(subProtocol, subProtocol.createHandler(this));
       }
       client = vertx.createNetClient(new NetClientOptions());
-      server =
-          vertx.createNetServer(new NetServerOptions().setPort(listenPort).setHost(networkInterface)).connectHandler(
-              this::receiveMessage);
+      server = vertx
+          .createNetServer(new NetServerOptions().setPort(listenPort).setHost(networkInterface).setTcpKeepAlive(true))
+          .connectHandler(this::receiveMessage);
       CompletableAsyncCompletion complete = AsyncCompletion.incomplete();
       server.listen(res -> {
         if (res.succeeded()) {
