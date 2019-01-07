@@ -74,7 +74,7 @@ final class BytesSSZReader implements SSZReader {
     int byteLength = bitLength / 8;
     ensureBytes(byteLength, () -> "SSZ encoded data has insufficient length to read a " + bitLength + "-bit integer");
     Bytes bytes = content.slice(index, byteLength);
-    int zeroBytes = content.numberOfLeadingZeroBytes();
+    int zeroBytes = bytes.numberOfLeadingZeroBytes();
     if ((byteLength - zeroBytes) > 8) {
       throw new InvalidSSZTypeException("decoded integer is too large for an int");
     }

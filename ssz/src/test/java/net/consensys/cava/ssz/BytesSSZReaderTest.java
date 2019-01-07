@@ -42,6 +42,16 @@ class BytesSSZReaderTest {
     }
   }
 
+  private static class AnotherObject {
+    private final long number1;
+    private final long number2;
+
+    public AnotherObject(long number1, long number2) {
+      this.number1 = number1;
+      this.number2 = number2;
+    }
+  }
+
   @Test
   void shouldParseFullObjects() {
     Bytes bytes = fromHexString("0x00000003426F62040000000000000000000000000000000000000000000000000000011F71B70768");
@@ -68,6 +78,19 @@ class BytesSSZReaderTest {
       assertEquals(value, reader.readInt(hex.length() * 4));
       return true;
     }));
+  }
+
+  /**
+   * Related to the bug when {@link BytesSSZReader#readLong(int)} calculates lead zeroes from beginning of whole content
+   * instead of the current value
+   */
+  @Test
+  void shouldCorrectlyParseLongs() {
+    Bytes bytes = fromHexString("000000000000007b" + "00007fffffffffff");
+    AnotherObject readObject = SSZ.decode(bytes, r -> new AnotherObject(r.readLong(64), r.readLong(64)));
+
+    assertEquals(123, readObject.number1);
+    assertEquals(140737488355327L, readObject.number2);
   }
 
   @Test
