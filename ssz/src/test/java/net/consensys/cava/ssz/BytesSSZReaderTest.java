@@ -81,8 +81,8 @@ class BytesSSZReaderTest {
   }
 
   /**
-   * Related to the bug when {@link BytesSSZReader#readLong(int)} calculates lead zeroes
-   * from beginning of whole content instead of the current value
+   * Related to the bug when {@link BytesSSZReader#readLong(int)} calculates lead zeroes from beginning of whole content
+   * instead of the current value
    */
   @Test
   void shouldCorrectlyParseLongs() {
