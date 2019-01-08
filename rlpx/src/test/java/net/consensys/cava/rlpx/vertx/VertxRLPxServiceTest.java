@@ -13,13 +13,16 @@
 package net.consensys.cava.rlpx.vertx;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.concurrent.AsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
+import net.consensys.cava.rlpx.MemoryWireConnectionsRepository;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
@@ -31,7 +34,6 @@ import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.logl.Level;
-import org.logl.Logger;
 import org.logl.LoggerProvider;
 import org.logl.logl.SimpleLogger;
 
@@ -44,7 +46,7 @@ class VertxRLPxServiceTest {
         IllegalArgumentException.class,
         () -> new VertxRLPxService(
             vertx,
-            Logger.nullLogger(),
+            LoggerProvider.nullProvider(),
             -1,
             "localhost",
             30,
@@ -59,7 +61,7 @@ class VertxRLPxServiceTest {
         IllegalArgumentException.class,
         () -> new VertxRLPxService(
             vertx,
-            Logger.nullLogger(),
+            LoggerProvider.nullProvider(),
             3,
             "localhost",
             -1,
@@ -74,7 +76,7 @@ class VertxRLPxServiceTest {
         IllegalArgumentException.class,
         () -> new VertxRLPxService(
             vertx,
-            Logger.nullLogger(),
+            LoggerProvider.nullProvider(),
             34,
             "localhost",
             23,
@@ -89,7 +91,7 @@ class VertxRLPxServiceTest {
         IllegalArgumentException.class,
         () -> new VertxRLPxService(
             vertx,
-            Logger.nullLogger(),
+            LoggerProvider.nullProvider(),
             34,
             "localhost",
             23,
@@ -102,7 +104,7 @@ class VertxRLPxServiceTest {
   void startAndStopService(@VertxInstance Vertx vertx) throws InterruptedException {
     VertxRLPxService service = new VertxRLPxService(
         vertx,
-        Logger.nullLogger(),
+        LoggerProvider.nullProvider(),
         10000,
         "localhost",
         10000,
@@ -122,7 +124,7 @@ class VertxRLPxServiceTest {
   void startServiceWithPortZero(@VertxInstance Vertx vertx) throws InterruptedException {
     VertxRLPxService service = new VertxRLPxService(
         vertx,
-        Logger.nullLogger(),
+        LoggerProvider.nullProvider(),
         0,
         "localhost",
         0,
@@ -143,7 +145,7 @@ class VertxRLPxServiceTest {
   void stopServiceWithoutStartingItFirst(@VertxInstance Vertx vertx) {
     VertxRLPxService service = new VertxRLPxService(
         vertx,
-        Logger.nullLogger(),
+        LoggerProvider.nullProvider(),
         0,
         "localhost",
         10000,
@@ -158,12 +160,26 @@ class VertxRLPxServiceTest {
   void connectToOtherPeer(@VertxInstance Vertx vertx) throws Exception {
     SECP256K1.KeyPair ourPair = SECP256K1.KeyPair.random();
     SECP256K1.KeyPair peerPair = SECP256K1.KeyPair.random();
-    VertxRLPxService service =
-        new VertxRLPxService(vertx, Logger.nullLogger(), 0, "localhost", 10000, ourPair, new ArrayList<>(), "abc");
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        LoggerProvider.nullProvider(),
+        0,
+        "localhost",
+        10000,
+        ourPair,
+        new ArrayList<>(),
+        "abc");
     service.start().join();
 
-    VertxRLPxService peerService =
-        new VertxRLPxService(vertx, Logger.nullLogger(), 0, "localhost", 10000, peerPair, new ArrayList<>(), "abc");
+    VertxRLPxService peerService = new VertxRLPxService(
+        vertx,
+        LoggerProvider.nullProvider(),
+        0,
+        "localhost",
+        10000,
+        peerPair,
+        new ArrayList<>(),
+        "abc");
     peerService.start().join();
 
     try {
@@ -182,32 +198,28 @@ class VertxRLPxServiceTest {
     LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
         new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
 
-    VertxRLPxService service = new VertxRLPxService(
-        vertx,
-        logProvider.getLogger("rlpx"),
-        0,
-        "localhost",
-        10000,
-        ourPair,
-        new ArrayList<>(),
-        "abc");
+    MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
+    VertxRLPxService service =
+        new VertxRLPxService(vertx, logProvider, 0, "localhost", 10000, ourPair, new ArrayList<>(), "abc", repository);
     service.start().join();
 
+    MemoryWireConnectionsRepository peerRepository = new MemoryWireConnectionsRepository();
     VertxRLPxService peerService = new VertxRLPxService(
         vertx,
-        logProvider.getLogger("rlpx2"),
+        logProvider,
         0,
         "localhost",
         10000,
         peerPair,
         new ArrayList<>(),
-        "abc");
+        "abc",
+        peerRepository);
     peerService.start().join();
 
     try {
       service.connectTo(peerPair.publicKey(), new InetSocketAddress("localhost", peerService.actualPort()));
       Thread.sleep(3000);
-      assertEquals(1, service.wireConnections().size());
+      assertEquals(1, repository.asMap().size());
 
     } finally {
       service.stop();

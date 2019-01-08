@@ -47,16 +47,23 @@ public interface RLPxService {
   AsyncCompletion stop();
 
   /**
-   * Sends a wire message to a peer
+   * Sends a wire message to a peer.
    * 
    * @param message the message, addressed to a connection.
    */
   void send(WireSubProtocolMessage message);
 
   /**
-   * Sends a wire message to all connected peers
+   * Sends a wire message to all connected peers.
    * 
-   * @param message the message to broadcast
+   * @param message the message to broadcast.
    */
   void broadcast(WireSubProtocolMessage message);
+
+  /**
+   * Gets the wire connections repository associated with this service.
+   *
+   * @return the repository of wire connections associated with this service.
+   */
+  WireConnectionRepository repository();
 }
