@@ -130,6 +130,7 @@ public final class WireConnection {
   public void messageReceived(RLPxMessage message) {
     if (message.messageId() == 0) {
       peerHelloMessage = HelloMessage.read(message.content());
+      logger.debug("Received peer Hello message {}", peerHelloMessage);
 
       if (peerHelloMessage.nodeId() == null || peerHelloMessage.nodeId().isEmpty()) {
         disconnect(DisconnectReason.NULL_NODE_IDENTITY_RECEIVED);
@@ -212,6 +213,7 @@ public final class WireConnection {
    * @param reason the reason for disconnection
    */
   public void disconnect(DisconnectReason reason) {
+    logger.debug("Sending disconnect message with reason {}", reason);
     writer.accept(new RLPxMessage(1, new DisconnectMessage(reason).toBytes()));
     disconnectHandler.run();
   }
@@ -222,12 +224,14 @@ public final class WireConnection {
    * @return a handler marking completion when a pong response is received
    */
   public AsyncCompletion sendPing() {
+    logger.debug("Sending ping message");
     writer.accept(new RLPxMessage(2, Bytes.EMPTY));
     this.awaitingPong = AsyncCompletion.incomplete();
     return awaitingPong;
   }
 
   private void sendPong() {
+    logger.debug("Sending pong message");
     writer.accept(new RLPxMessage(3, Bytes.EMPTY));
   }
 
@@ -239,6 +243,7 @@ public final class WireConnection {
         clientId,
         subprotocols.keySet().stream().map(sp -> new Capability(sp.id().name(), sp.id().version())).collect(
             Collectors.toList()));
+    logger.debug("Sending a hello message {}", myHelloMessage);
     writer.accept(new RLPxMessage(0, myHelloMessage.toBytes()));
   }
 

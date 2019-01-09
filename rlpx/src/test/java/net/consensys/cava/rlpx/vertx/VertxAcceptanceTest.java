@@ -23,6 +23,7 @@ import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.junit.BouncyCastleExtension;
 import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
+import net.consensys.cava.rlpx.MemoryWireConnectionsRepository;
 import net.consensys.cava.rlpx.RLPxService;
 import net.consensys.cava.rlpx.wire.SubProtocol;
 import net.consensys.cava.rlpx.wire.SubProtocolHandler;
@@ -151,24 +152,29 @@ class VertxAcceptanceTest {
     MyCustomSubProtocol secondSp = new MyCustomSubProtocol(2);
     LoggerProvider logProvider =
         SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
     VertxRLPxService service = new VertxRLPxService(
         vertx,
-        logProvider.getLogger("rlpx"),
+        logProvider,
         0,
         "localhost",
         10000,
         kp,
         Collections.singletonList(sp),
-        "Client 1");
+        "Client 1",
+        repository);
+    MemoryWireConnectionsRepository secondRepository = new MemoryWireConnectionsRepository();
+
     VertxRLPxService secondService = new VertxRLPxService(
         vertx,
-        logProvider.getLogger("rlpx2"),
+        logProvider,
         0,
         "localhost",
         10000,
         secondKp,
         Collections.singletonList(secondSp),
-        "Client 2");
+        "Client 2",
+        secondRepository);
     service.start().join();
     secondService.start().join();
 
@@ -176,13 +182,13 @@ class VertxAcceptanceTest {
       service.connectTo(secondKp.publicKey(), new InetSocketAddress("localhost", secondService.actualPort()));
 
       Thread.sleep(3000);
-      assertEquals(1, service.wireConnections().size());
-      assertEquals(1, secondService.wireConnections().size());
+      assertEquals(1, repository.asMap().size());
+      assertEquals(1, secondRepository.asMap().size());
 
       assertEquals(1, sp.handler.messages.size());
       assertEquals(1, secondSp.handler.messages.size());
 
-      AsyncCompletion completion = service.wireConnections().iterator().next().sendPing();
+      AsyncCompletion completion = repository.asMap().values().iterator().next().sendPing();
       completion.join();
       assertTrue(completion.isDone());
     } finally {
@@ -198,26 +204,32 @@ class VertxAcceptanceTest {
     SECP256K1.KeyPair secondKp = SECP256K1.KeyPair.random();
     MyCustomSubProtocol sp = new MyCustomSubProtocol(1);
     MyCustomSubProtocol secondSp = new MyCustomSubProtocol(2);
+    MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
+    MemoryWireConnectionsRepository secondRepository = new MemoryWireConnectionsRepository();
+
+
     LoggerProvider logProvider =
         SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
     VertxRLPxService service = new VertxRLPxService(
         vertx,
-        logProvider.getLogger("rlpx"),
+        logProvider,
         0,
         "localhost",
         10000,
         kp,
         Collections.singletonList(sp),
-        "Client 1");
+        "Client 1",
+        repository);
     VertxRLPxService secondService = new VertxRLPxService(
         vertx2,
-        logProvider.getLogger("rlpx2"),
+        logProvider,
         0,
         "localhost",
         10000,
         secondKp,
         Collections.singletonList(secondSp),
-        "Client 2");
+        "Client 2",
+        secondRepository);
     service.start().join();
     secondService.start().join();
 
@@ -225,8 +237,8 @@ class VertxAcceptanceTest {
       service.connectTo(secondKp.publicKey(), new InetSocketAddress("localhost", secondService.actualPort()));
 
       Thread.sleep(3000);
-      assertEquals(1, service.wireConnections().size());
-      assertEquals(1, secondService.wireConnections().size());
+      assertEquals(1, repository.asMap().size());
+      assertEquals(1, secondRepository.asMap().size());
 
       assertEquals(1, sp.handler.messages.size());
       assertEquals(1, secondSp.handler.messages.size());
@@ -239,7 +251,7 @@ class VertxAcceptanceTest {
         threadPool.submit(() -> {
           try {
 
-            service.wireConnections().iterator().next().sendPing();
+            repository.asMap().values().iterator().next().sendPing();
             task.complete();
           } catch (Throwable t) {
             task.completeExceptionally(t);

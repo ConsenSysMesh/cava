@@ -128,4 +128,21 @@ final class HelloMessage implements WireProtocolMessage {
   public int hashCode() {
     return Objects.hash(nodeId, listenPort, clientId, p2pVersion, capabilities);
   }
+
+  @Override
+  public String toString() {
+    return "HelloMessage{"
+        + "nodeId="
+        + nodeId
+        + ", listenPort="
+        + listenPort
+        + ", clientId='"
+        + clientId
+        + '\''
+        + ", p2pVersion="
+        + p2pVersion
+        + ", capabilities="
+        + capabilities
+        + '}';
+  }
 }
