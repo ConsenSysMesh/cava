@@ -48,4 +48,9 @@ final class Capability {
   public int hashCode() {
     return Objects.hash(name, version);
   }
+
+  @Override
+  public String toString() {
+    return "Capability{" + "name='" + name + '\'' + ", version='" + version + '\'' + '}';
+  }
 }
