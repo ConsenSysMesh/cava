@@ -28,8 +28,9 @@ public interface RLPxService {
    *
    * @param peerPublicKey the peer public key
    * @param peerAddress the peer host and port
+   * @return a handle that completes if the peer connects successfully.
    */
-  void connectTo(SECP256K1.PublicKey peerPublicKey, InetSocketAddress peerAddress);
+  AsyncCompletion connectTo(SECP256K1.PublicKey peerPublicKey, InetSocketAddress peerAddress);
 
 
   /**
