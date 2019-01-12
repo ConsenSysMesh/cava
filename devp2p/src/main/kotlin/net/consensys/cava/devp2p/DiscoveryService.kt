@@ -104,6 +104,7 @@ interface DiscoveryService {
      * @param bufferAllocator a [ByteBuffer] allocator, which must return buffers of size 1280 bytes or larger
      * @param timeSupplier a function supplying the current time, in milliseconds since the epoch
      */
+    @JvmOverloads
     fun open(
       keyPair: SECP256K1.KeyPair,
       port: Int = 0,
@@ -155,6 +156,7 @@ interface DiscoveryService {
      * @param bufferAllocator a [ByteBuffer] allocator, which must return buffers of size 1280 bytes or larger
      * @param timeSupplier a function supplying the current time, in milliseconds since the epoch
      */
+    @JvmOverloads
     fun open(
       keyPair: SECP256K1.KeyPair,
       bindAddress: InetSocketAddress,
