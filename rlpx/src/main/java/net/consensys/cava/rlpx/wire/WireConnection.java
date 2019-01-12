@@ -268,4 +268,9 @@ public final class WireConnection {
   public void handleConnectionStart() {
     sendHello();
   }
+
+  @Override
+  public String toString() {
+    return peerNodeId.toHexString();
+  }
 }

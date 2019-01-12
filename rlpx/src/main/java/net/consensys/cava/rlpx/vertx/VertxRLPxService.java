@@ -270,7 +270,8 @@ public final class VertxRLPxService implements RLPxService {
   }
 
   @Override
-  public void connectTo(PublicKey peerPublicKey, InetSocketAddress peerAddress) {
+  public AsyncCompletion connectTo(PublicKey peerPublicKey, InetSocketAddress peerAddress) {
+    CompletableAsyncCompletion connected = AsyncCompletion.incomplete();
     logger.debug("Connecting to {} with public key {}", peerAddress, peerPublicKey);
     client.connect(
         peerAddress.getPort(),
@@ -308,16 +309,20 @@ public final class VertxRLPxService implements RLPxService {
 
                   this.wireConnection = createConnection(conn, netSocket);
                   wireConnection.handleConnectionStart();
+                  connected.complete();
                 } else {
                   conn.stream(Bytes.wrapBuffer(buffer), wireConnection::messageReceived);
                 }
               } catch (InvalidMACException e) {
                 logger.error(e.getMessage(), e);
+                connected.completeExceptionally(e);
+                netSocket.close();
               }
             }
           });
           return null;
         }));
+    return connected;
   }
 
   private WireConnection createConnection(RLPxConnection conn, NetSocket netSocket) {
