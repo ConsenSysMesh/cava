@@ -37,7 +37,11 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.yield
 import net.consensys.cava.bytes.Bytes32
+import net.consensys.cava.concurrent.AsyncCompletion
+import net.consensys.cava.concurrent.AsyncResult
 import net.consensys.cava.concurrent.coroutines.CoroutineLatch
+import net.consensys.cava.concurrent.coroutines.asyncCompletion
+import net.consensys.cava.concurrent.coroutines.asyncResult
 import net.consensys.cava.crypto.SECP256K1
 import net.consensys.cava.kademlia.orderedInsert
 import net.consensys.cava.kademlia.xorDistCmp
@@ -92,11 +96,11 @@ interface DiscoveryService {
      * @param host the host name or IP address of the interface to bind to (defaults to `null`, which will cause the
      *         service to listen on all interfaces
      * @param bootstrapURIs the URIs for bootstrap nodes
+     * @param peerRepository a [PeerRepository] for obtaining [Peer] instances
      * @param advertiseAddress the IP address to advertise to peers, or `null` if the address of the first bound
      *         interface should be used.
      * @param advertiseUdpPort the UDP port to advertise to peers, or `null` if the bound port should to be used.
      * @param advertiseTcpPort the TCP port to advertise to peers, or `null` if it should be the same as the UDP port.
-     * @param peerRepository a [PeerRepository] for obtaining [Peer] instances
      * @param routingTable a [PeerRoutingTable] which handles the ÐΞVp2p routing table
      * @param packetFilter a filter for incoming packets
      * @param loggerProvider a provider for a logger
@@ -110,10 +114,10 @@ interface DiscoveryService {
       port: Int = 0,
       host: String? = null,
       bootstrapURIs: List<URI> = emptyList(),
+      peerRepository: PeerRepository = EphemeralPeerRepository(),
       advertiseAddress: InetAddress? = null,
       advertiseUdpPort: Int? = null,
       advertiseTcpPort: Int? = null,
-      peerRepository: PeerRepository = EphemeralPeerRepository(),
       routingTable: PeerRoutingTable = DevP2PPeerRoutingTable(keyPair.publicKey()),
       packetFilter: ((SECP256K1.PublicKey, InetSocketAddress) -> Boolean)? = null,
       loggerProvider: LoggerProvider = LoggerProvider.nullProvider(),
@@ -126,10 +130,10 @@ interface DiscoveryService {
         keyPair,
         bindAddress,
         bootstrapURIs,
+        peerRepository,
         advertiseAddress,
         advertiseUdpPort,
         advertiseTcpPort,
-        peerRepository,
         routingTable,
         packetFilter,
         loggerProvider,
@@ -145,10 +149,10 @@ interface DiscoveryService {
      * @param keyPair the local node's keypair
      * @param bindAddress the address to listen on
      * @param bootstrapURIs the URIs for bootstrap nodes
+     * @param peerRepository a [PeerRepository] for obtaining [Peer] instances
      * @param advertiseAddress the IP address to advertise for incoming packets
      * @param advertiseUdpPort the UDP port to advertise to peers, or `null` if the bound port should to be used.
      * @param advertiseTcpPort the TCP port to advertise to peers, or `null` if it should be the same as the UDP port.
-     * @param peerRepository a [PeerRepository] for obtaining [Peer] instances
      * @param routingTable a [PeerRoutingTable] which handles the ÐΞVp2p routing table
      * @param packetFilter a filter for incoming packets
      * @param loggerProvider a provider for a logger
@@ -161,10 +165,10 @@ interface DiscoveryService {
       keyPair: SECP256K1.KeyPair,
       bindAddress: InetSocketAddress,
       bootstrapURIs: List<URI> = emptyList(),
+      peerRepository: PeerRepository = EphemeralPeerRepository(),
       advertiseAddress: InetAddress? = null,
       advertiseUdpPort: Int? = null,
       advertiseTcpPort: Int? = null,
-      peerRepository: PeerRepository = EphemeralPeerRepository(),
       routingTable: PeerRoutingTable = DevP2PPeerRoutingTable(keyPair.publicKey()),
       packetFilter: ((SECP256K1.PublicKey, InetSocketAddress) -> Boolean)? = null,
       loggerProvider: LoggerProvider = LoggerProvider.nullProvider(),
@@ -215,6 +219,14 @@ interface DiscoveryService {
   suspend fun lookup(target: SECP256K1.PublicKey): List<Peer>
 
   /**
+   * Attempt to find a specific peer, or peers close to it asynchronously.
+   *
+   * @param target the node-id to search for
+   * @return a future of a list of 16 peers, ordered by their distance to the target node-id.
+   */
+  fun lookupAsync(target: SECP256K1.PublicKey): AsyncResult<List<Peer>>
+
+  /**
    * Request shutdown of this service. The service will terminate at a later time (see [DiscoveryService.awaitTermination]).
    */
   fun shutdown()
@@ -223,6 +235,13 @@ interface DiscoveryService {
    * Suspend until this service has terminated.
    */
   suspend fun awaitTermination()
+
+  /**
+   * Provide a completion that will complete when the service has terminated.
+   *
+   * @return A completion that will complete when the service has terminated.
+   */
+  fun awaitTerminationAsync(): AsyncCompletion
 
   /**
    * Shutdown this service immediately.
@@ -428,6 +447,8 @@ internal class CoroutineDiscoveryService(
     activityLatch.await()
   }
 
+  override fun awaitTerminationAsync(): AsyncCompletion = asyncCompletion { awaitTermination() }
+
   override fun shutdownNow() {
     job.cancel()
   }
@@ -464,6 +485,8 @@ internal class CoroutineDiscoveryService(
       nodes.close()
     }
   }
+
+  override fun lookupAsync(target: SECP256K1.PublicKey) = asyncResult { lookup(target) }
 
   private suspend fun refresh() {
     logger.debug("{}: table refresh triggered", serviceDescriptor)
