@@ -42,35 +42,7 @@ interface PeerRepository {
    * @param nodeId the node id
    * @return the peer
    */
-  fun getAsync(nodeId: SECP256K1.PublicKey): AsyncResult<Peer> = GlobalScope.asyncResult { get(nodeId) }
-
-  /**
-   * Get a Peer based on a URI.
-   * The known endpoint of the peer will be updated to match the details supplied
-   * in the URI. If the peer has no known endpoint, then its known endpoint will always be updated.
-   *
-   * The returned peer will use the endpoint from the URI, unless the peer is already active, in
-   * which case its endpoint will be unchanged.
-   *
-   * @param uri the enode URI
-   * @return the peer
-   * @throws IllegalArgumentException if the URI is not a valid enode URI
-   */
-  suspend fun compute(uri: URI): Peer
-
-  /**
-   * Get a Peer based on a URI string.
-   * The known endpoint of the peer will be updated to match the details supplied
-   * in the URI. If the peer has no known endpoint, then its known endpoint will always be updated.
-   *
-   * The returned peer will use the endpoint from the URI, unless the peer is already active, in
-   * which case its endpoint will be unchanged.
-   *
-   * @param uri the enode URI
-   * @return the peer
-   * @throws IllegalArgumentException if the URI is not a valid enode URI
-   */
-  suspend fun compute(uri: String): Peer = compute(URI.create(uri))
+  fun getAsync(nodeId: SECP256K1.PublicKey): AsyncResult<Peer>
 
   /**
    * Get a Peer based on a URI.
@@ -94,7 +66,7 @@ interface PeerRepository {
    * @return the peer
    * @throws IllegalArgumentException if the URI is not a valid enode URI
    */
-  fun getAsync(uri: URI): AsyncResult<Peer> = GlobalScope.asyncResult { get(uri) }
+  fun getAsync(uri: URI): AsyncResult<Peer>
 
   /**
    * Get a Peer based on a URI string.
@@ -118,7 +90,7 @@ interface PeerRepository {
    * @return the peer
    * @throws IllegalArgumentException if the URI is not a valid enode URI
    */
-  fun getAsync(uri: String): AsyncResult<Peer> = GlobalScope.asyncResult { get(uri) }
+  fun getAsync(uri: String): AsyncResult<Peer>
 }
 
 /**
@@ -133,22 +105,24 @@ class EphemeralPeerRepository : PeerRepository {
   override suspend fun get(nodeId: SECP256K1.PublicKey) =
     peers.compute(nodeId) { _, peer -> peer ?: EphemeralPeer(nodeId) } as Peer
 
-  override suspend fun compute(uri: URI) = get(uri, true)
+  override fun getAsync(nodeId: SECP256K1.PublicKey): AsyncResult<Peer> = GlobalScope.asyncResult { get(nodeId) }
 
-  override suspend fun get(uri: URI) = get(uri, false)
-
-  private suspend fun get(uri: URI, overwriteEndpoint: Boolean): Peer {
+  override suspend fun get(uri: URI): Peer {
     val (nodeId, endpoint) = parseEnodeUri(uri)
     val peer = get(nodeId) as EphemeralPeer
-    if (overwriteEndpoint || peer.endpoint == null) {
+    if (peer.endpoint == null) {
       synchronized(peer) {
-        if (overwriteEndpoint || peer.endpoint == null) {
+        if (peer.endpoint == null) {
           peer.endpoint = endpoint
         }
       }
     }
     return peer
   }
+
+  override fun getAsync(uri: URI): AsyncResult<Peer> = GlobalScope.asyncResult { get(uri) }
+
+  override fun getAsync(uri: String): AsyncResult<Peer> = GlobalScope.asyncResult { get(uri) }
 
   private inner class EphemeralPeer(
     override val nodeId: SECP256K1.PublicKey,

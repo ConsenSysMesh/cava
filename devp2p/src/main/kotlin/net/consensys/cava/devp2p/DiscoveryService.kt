@@ -21,7 +21,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.ObsoleteCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
@@ -225,7 +224,7 @@ interface DiscoveryService {
    * @param target the node-id to search for
    * @return a future of a list of 16 peers, ordered by their distance to the target node-id.
    */
-  fun lookupAsync(target: SECP256K1.PublicKey): AsyncResult<List<Peer>> = GlobalScope.asyncResult { lookup(target) }
+  fun lookupAsync(target: SECP256K1.PublicKey): AsyncResult<List<Peer>>
 
   /**
    * Request shutdown of this service. The service will terminate at a later time (see [DiscoveryService.awaitTermination]).
@@ -242,7 +241,7 @@ interface DiscoveryService {
    *
    * @return A completion that will complete when the service has terminated.
    */
-  fun awaitTerminationAsync(): AsyncCompletion = GlobalScope.asyncCompletion { awaitTermination() }
+  fun awaitTerminationAsync(): AsyncCompletion
 
   /**
    * Shutdown this service immediately.
@@ -448,6 +447,8 @@ internal class CoroutineDiscoveryService(
     activityLatch.await()
   }
 
+  override fun awaitTerminationAsync(): AsyncCompletion = asyncCompletion { awaitTermination() }
+
   override fun shutdownNow() {
     job.cancel()
   }
@@ -484,6 +485,8 @@ internal class CoroutineDiscoveryService(
       nodes.close()
     }
   }
+
+  override fun lookupAsync(target: SECP256K1.PublicKey) = asyncResult { lookup(target) }
 
   private suspend fun refresh() {
     logger.debug("{}: table refresh triggered", serviceDescriptor)

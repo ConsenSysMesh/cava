@@ -16,10 +16,8 @@ import kotlinx.coroutines.runBlocking
 import net.consensys.cava.crypto.SECP256K1
 import net.consensys.cava.junit.BouncyCastleExtension
 import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
 import org.junit.jupiter.api.Assertions.assertNull
-import org.junit.jupiter.api.Assertions.assertSame
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
@@ -181,34 +179,6 @@ internal class EphemeralPeerRepositoryTest {
     assertEquals(InetAddress.getByName("172.20.0.4"), peer.endpoint?.address)
     assertEquals(23456, peer.endpoint?.udpPort)
     assertEquals(54789, peer.endpoint?.tcpPort)
-  }
-
-  @Test
-  fun shouldNotOverwriteEndpointByDefault() = runBlocking {
-    val peer1 = peerRepository.get(
-      "enode://c7849b663d12a2b5bf05b1ebf5810364f4870d5f1053fbd7500d38bc54" +
-        "c705b453d7511ca8a4a86003d34d4c8ee0bbfcd387aa724f5b240b3ab4bbb994a1e09b@172.20.0.4:54789"
-    )
-    assertNotNull(peer1.endpoint)
-    assertNull(peer1.lastSeen)
-    assertNull(peer1.lastVerified)
-    val endpoint1 = peer1.endpoint!!
-
-    val peer2 = peerRepository.get(
-      "enode://c7849b663d12a2b5bf05b1ebf5810364f4870d5f1053fbd7500d38bc54" +
-        "c705b453d7511ca8a4a86003d34d4c8ee0bbfcd387aa724f5b240b3ab4bbb994a1e09b@172.20.0.5:9876"
-    )
-    assertSame(peer2, peer1)
-    assertEquals(endpoint1, peer2.endpoint)
-
-    val peer3 = peerRepository.compute(
-      uri = "enode://c7849b663d12a2b5bf05b1ebf5810364f4870d5f1053fbd7500d38bc54" +
-        "c705b453d7511ca8a4a86003d34d4c8ee0bbfcd387aa724f5b240b3ab4bbb994a1e09b@172.20.0.5:9876"
-    )
-    assertSame(peer3, peer1)
-    assertNotEquals(endpoint1, peer3.endpoint)
-    assertNull(peer3.lastSeen)
-    assertNull(peer3.lastVerified)
   }
 
   @Test
