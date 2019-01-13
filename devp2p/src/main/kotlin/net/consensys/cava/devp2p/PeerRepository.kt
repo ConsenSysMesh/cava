@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.devp2p
 
+import kotlinx.coroutines.GlobalScope
+import net.consensys.cava.concurrent.AsyncResult
+import net.consensys.cava.concurrent.coroutines.asyncResult
 import net.consensys.cava.crypto.SECP256K1
 import java.net.URI
 import java.util.concurrent.ConcurrentHashMap
@@ -34,19 +37,64 @@ interface PeerRepository {
   suspend fun get(nodeId: SECP256K1.PublicKey): Peer
 
   /**
+   * Get a peer.
+   *
+   * @param nodeId the node id
+   * @return the peer
+   */
+  fun getAsync(nodeId: SECP256K1.PublicKey): AsyncResult<Peer> = GlobalScope.asyncResult { get(nodeId) }
+
+  /**
+   * Get a Peer based on a URI.
+   * The known endpoint of the peer will be updated to match the details supplied
+   * in the URI. If the peer has no known endpoint, then its known endpoint will always be updated.
+   *
+   * The returned peer will use the endpoint from the URI, unless the peer is already active, in
+   * which case its endpoint will be unchanged.
+   *
+   * @param uri the enode URI
+   * @return the peer
+   * @throws IllegalArgumentException if the URI is not a valid enode URI
+   */
+  suspend fun compute(uri: URI): Peer
+
+  /**
+   * Get a Peer based on a URI string.
+   * The known endpoint of the peer will be updated to match the details supplied
+   * in the URI. If the peer has no known endpoint, then its known endpoint will always be updated.
+   *
+   * The returned peer will use the endpoint from the URI, unless the peer is already active, in
+   * which case its endpoint will be unchanged.
+   *
+   * @param uri the enode URI
+   * @return the peer
+   * @throws IllegalArgumentException if the URI is not a valid enode URI
+   */
+  suspend fun compute(uri: String): Peer = compute(URI.create(uri))
+
+  /**
    * Get a Peer based on a URI.
    *
    * The returned peer will use the endpoint from the URI, unless the peer is already active, in
    * which case its endpoint will be unchanged.
    *
    * @param uri the enode URI
-   * @param overwriteEndpoint if `true`, the known endpoint of the peer will be updated to match the details supplied
-   *         in the URI. If the peer has no known endpoint, then its known endpoint will always be updated. Defaults
-   *         to `false`.
    * @return the peer
    * @throws IllegalArgumentException if the URI is not a valid enode URI
    */
-  suspend fun get(uri: URI, overwriteEndpoint: Boolean = false): Peer
+  suspend fun get(uri: URI): Peer
+
+  /**
+   * Get a Peer based on a URI.
+   *
+   * The returned peer will use the endpoint from the URI, unless the peer is already active, in
+   * which case its endpoint will be unchanged.
+   *
+   * @param uri the enode URI
+   * @return the peer
+   * @throws IllegalArgumentException if the URI is not a valid enode URI
+   */
+  fun getAsync(uri: URI): AsyncResult<Peer> = GlobalScope.asyncResult { get(uri) }
 
   /**
    * Get a Peer based on a URI string.
@@ -55,13 +103,22 @@ interface PeerRepository {
    * which case its endpoint will be unchanged.
    *
    * @param uri the enode URI
-   * @param overwriteEndpoint if `true`, the known endpoint of the peer will be updated to match the details supplied
-   *         in the URI. If the peer has no known endpoint, then its known endpoint will always be updated. Defaults
-   *         to `false`.
    * @return the peer
    * @throws IllegalArgumentException if the URI is not a valid enode URI
    */
-  suspend fun get(uri: String, overwriteEndpoint: Boolean = false) = get(URI.create(uri), overwriteEndpoint)
+  suspend fun get(uri: String) = get(URI.create(uri))
+
+  /**
+   * Get a Peer based on a URI string.
+   *
+   * The returned peer will use the endpoint from the URI, unless the peer is already active, in
+   * which case its endpoint will be unchanged.
+   *
+   * @param uri the enode URI
+   * @return the peer
+   * @throws IllegalArgumentException if the URI is not a valid enode URI
+   */
+  fun getAsync(uri: String): AsyncResult<Peer> = GlobalScope.asyncResult { get(uri) }
 }
 
 /**
@@ -76,7 +133,11 @@ class EphemeralPeerRepository : PeerRepository {
   override suspend fun get(nodeId: SECP256K1.PublicKey) =
     peers.compute(nodeId) { _, peer -> peer ?: EphemeralPeer(nodeId) } as Peer
 
-  override suspend fun get(uri: URI, overwriteEndpoint: Boolean): Peer {
+  override suspend fun compute(uri: URI) = get(uri, true)
+
+  override suspend fun get(uri: URI) = get(uri, false)
+
+  private suspend fun get(uri: URI, overwriteEndpoint: Boolean): Peer {
     val (nodeId, endpoint) = parseEnodeUri(uri)
     val peer = get(nodeId) as EphemeralPeer
     if (overwriteEndpoint || peer.endpoint == null) {

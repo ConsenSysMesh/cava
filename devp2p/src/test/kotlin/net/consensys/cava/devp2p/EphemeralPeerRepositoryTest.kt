@@ -201,8 +201,7 @@ internal class EphemeralPeerRepositoryTest {
     assertSame(peer2, peer1)
     assertEquals(endpoint1, peer2.endpoint)
 
-    val peer3 = peerRepository.get(
-      overwriteEndpoint = true,
+    val peer3 = peerRepository.compute(
       uri = "enode://c7849b663d12a2b5bf05b1ebf5810364f4870d5f1053fbd7500d38bc54" +
         "c705b453d7511ca8a4a86003d34d4c8ee0bbfcd387aa724f5b240b3ab4bbb994a1e09b@172.20.0.5:9876"
     )
