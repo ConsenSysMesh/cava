@@ -37,7 +37,7 @@ public interface SubProtocol {
    * @param version the version of the subprotocol to associate with the range
    * @return the length of the range of message types supported by the subprotocol for a given version
    */
-  int versionRange(String version);
+  int versionRange(int version);
 
   /**
    * Creates a new handler for the subprotocol.

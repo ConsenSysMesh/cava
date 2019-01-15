@@ -18,10 +18,10 @@ final class Capability {
 
   private final String name;
 
-  private final String version;
+  private final int version;
 
 
-  Capability(String name, String version) {
+  Capability(String name, int version) {
     this.name = name;
     this.version = version;
   }
@@ -30,7 +30,7 @@ final class Capability {
     return name;
   }
 
-  String version() {
+  int version() {
     return version;
   }
 

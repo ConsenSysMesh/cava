@@ -17,7 +17,7 @@ package net.consensys.cava.rlpx.wire;
  */
 public interface SubProtocolIdentifier {
 
-  static SubProtocolIdentifier of(String name, String version) {
+  static SubProtocolIdentifier of(String name, int version) {
     return new DefaultSubProtocolIdentifier(name, version);
   }
 
@@ -31,5 +31,5 @@ public interface SubProtocolIdentifier {
    *
    * @return the version of the subprotocol
    */
-  String version();
+  int version();
 }

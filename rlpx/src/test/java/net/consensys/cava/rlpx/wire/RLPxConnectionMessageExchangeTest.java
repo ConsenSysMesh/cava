@@ -54,7 +54,7 @@ class RLPxConnectionMessageExchangeTest {
     assertTrue(RLPxConnection.isComplementedBy(conn, peerConn));
 
     HelloMessage message =
-        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 28, "ClientID 1.0", Arrays.asList(new Capability("eth", "63")));
+        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 28, "ClientID 1.0", Arrays.asList(new Capability("eth", 63)));
     RLPxMessage messageToWrite = new RLPxMessage(0, message.toBytes());
     Bytes messageBytes = peerConn.write(messageToWrite);
     RLPxMessage readMessage = conn.readFrame(messageBytes);
@@ -81,7 +81,7 @@ class RLPxConnectionMessageExchangeTest {
     assertTrue(RLPxConnection.isComplementedBy(conn, peerConn));
 
     HelloMessage hello =
-        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 5, "ClientID 1.0", Arrays.asList(new Capability("eth", "63")));
+        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 5, "ClientID 1.0", Arrays.asList(new Capability("eth", 63)));
 
     conn.configureAfterHandshake(hello);
     peerConn.configureAfterHandshake(hello);
@@ -111,7 +111,7 @@ class RLPxConnectionMessageExchangeTest {
     assertTrue(RLPxConnection.isComplementedBy(conn, peerConn));
 
     HelloMessage hello =
-        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 4, "ClientID 1.0", Arrays.asList(new Capability("eth", "63")));
+        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 4, "ClientID 1.0", Arrays.asList(new Capability("eth", 63)));
 
     conn.configureAfterHandshake(hello);
     peerConn.configureAfterHandshake(hello);

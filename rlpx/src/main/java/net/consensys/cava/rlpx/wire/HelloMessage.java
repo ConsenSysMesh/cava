@@ -53,7 +53,7 @@ public final class HelloMessage implements WireProtocolMessage {
         while (!capabilitiesReader.isComplete()) {
           caps.add(
               capabilitiesReader.readList(
-                  capabilityReader -> new Capability(capabilityReader.readString(), capabilityReader.readString())));
+                  capabilityReader -> new Capability(capabilityReader.readString(), capabilityReader.readInt())));
         }
         return caps;
       });
@@ -72,7 +72,7 @@ public final class HelloMessage implements WireProtocolMessage {
         for (Capability cap : capabilities) {
           capabilitiesWriter.writeList(capabilityWriter -> {
             capabilityWriter.writeString(cap.name());
-            capabilityWriter.writeString(cap.version());
+            capabilityWriter.writeInt(cap.version());
           });
         }
       });

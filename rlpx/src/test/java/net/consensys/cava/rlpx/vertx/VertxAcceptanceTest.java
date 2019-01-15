@@ -91,12 +91,10 @@ class VertxAcceptanceTest {
 
     private final RLPxService rlpxService;
     private final SubProtocolIdentifier identifier;
-    private final int i;
 
-    public MyCustomSubProtocolHandler(RLPxService rlpxService, SubProtocolIdentifier identifier, int i) {
+    public MyCustomSubProtocolHandler(RLPxService rlpxService, SubProtocolIdentifier identifier) {
       this.rlpxService = rlpxService;
       this.identifier = identifier;
-      this.i = i;
     }
 
     @Override
@@ -127,22 +125,22 @@ class VertxAcceptanceTest {
 
     @Override
     public SubProtocolIdentifier id() {
-      return SubProtocolIdentifier.of("cus", "1");
+      return SubProtocolIdentifier.of("cus", 1);
     }
 
     @Override
     public boolean supports(SubProtocolIdentifier subProtocolIdentifier) {
-      return "cus".equals(subProtocolIdentifier.name()) && "1".equals(subProtocolIdentifier.version());
+      return "cus".equals(subProtocolIdentifier.name()) && 1 == subProtocolIdentifier.version();
     }
 
     @Override
-    public int versionRange(String version) {
+    public int versionRange(int version) {
       return 1;
     }
 
     @Override
     public SubProtocolHandler createHandler(RLPxService service) {
-      handler = new MyCustomSubProtocolHandler(service, id(), i);
+      handler = new MyCustomSubProtocolHandler(service, id());
       return handler;
     }
   }
@@ -297,12 +295,12 @@ class VertxAcceptanceTest {
             return new SubProtocolIdentifier() {
               @Override
               public String name() {
-                return "exp";
+                return "shh";
               }
 
               @Override
-              public String version() {
-                return "1.0";
+              public int version() {
+                return 6;
               }
             };
           }
@@ -313,7 +311,7 @@ class VertxAcceptanceTest {
           }
 
           @Override
-          public int versionRange(String version) {
+          public int versionRange(int version) {
             return 0;
           }
 
@@ -331,6 +329,7 @@ class VertxAcceptanceTest {
             "7a8fbb31bff7c48179f8504b047313ebb7446a0233175ffda6eb4c27aaa5d2aedcef4dd9501b4f17b4f16588f0fd037f9b9416b8caca655bee3b14b4ef67441a"),
         new InetSocketAddress("localhost", 30303));
     completion.join();
+    Thread.sleep(10000);
 
     service.stop().join();
   }
