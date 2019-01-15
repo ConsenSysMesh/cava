@@ -345,6 +345,7 @@ public final class VertxRLPxService implements RLPxService {
             vertx.eventBus().send(netSocket.writeHandlerID(), Buffer.buffer(bytes.toArrayUnsafe()));
           }
         },
+        conn::configureAfterHandshake,
         netSocket::end,
         handlers,
         DEVP2P_VERSION,

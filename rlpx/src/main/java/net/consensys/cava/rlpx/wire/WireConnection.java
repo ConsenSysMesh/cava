@@ -79,6 +79,7 @@ public final class WireConnection {
   private final Logger logger;
   private final String id;
   private final Consumer<RLPxMessage> writer;
+  private final Consumer<HelloMessage> afterHandshakeListener;
   private final Runnable disconnectHandler;
   private final LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols;
   private final int p2pVersion;
@@ -98,6 +99,7 @@ public final class WireConnection {
    * @param peerNodeId the node id of the peer
    * @param logger a logger
    * @param writer the message writer
+   * @param afterHandshakeListener a listener called after the handshake is complete with the peer hello message.
    * @param disconnectHandler the handler to run upon receiving a disconnect message
    * @param subprotocols the subprotocols supported by this connection
    * @param p2pVersion the version of the devp2p protocol supported by this client
@@ -110,6 +112,7 @@ public final class WireConnection {
       Bytes peerNodeId,
       Logger logger,
       Consumer<RLPxMessage> writer,
+      Consumer<HelloMessage> afterHandshakeListener,
       Runnable disconnectHandler,
       LinkedHashMap<SubProtocol, SubProtocolHandler> subprotocols,
       int p2pVersion,
@@ -120,6 +123,7 @@ public final class WireConnection {
     this.peerNodeId = peerNodeId;
     this.logger = logger;
     this.writer = writer;
+    this.afterHandshakeListener = afterHandshakeListener;
     this.disconnectHandler = disconnectHandler;
     this.subprotocols = subprotocols;
     this.p2pVersion = p2pVersion;
@@ -131,6 +135,7 @@ public final class WireConnection {
     if (message.messageId() == 0) {
       peerHelloMessage = HelloMessage.read(message.content());
       logger.debug("Received peer Hello message {}", peerHelloMessage);
+      afterHandshakeListener.accept(peerHelloMessage);
 
       if (peerHelloMessage.nodeId() == null || peerHelloMessage.nodeId().isEmpty()) {
         disconnect(DisconnectReason.NULL_NODE_IDENTITY_RECEIVED);

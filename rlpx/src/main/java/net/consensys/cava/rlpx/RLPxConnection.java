@@ -17,6 +17,7 @@ import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.bytes.MutableBytes;
 import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.rlp.RLP;
+import net.consensys.cava.rlpx.wire.HelloMessage;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -70,10 +71,10 @@ public final class RLPxConnection {
   private final KeccakDigest ingressMac = new KeccakDigest(Bytes32.SIZE * 8);
   private final SECP256K1.PublicKey publicKey;
   private final SECP256K1.PublicKey peerPublicKey;
-
   private final AESEngine macEncryptionEngine;
 
   private boolean applySnappyCompression = false;
+  private Bytes buffer = Bytes.EMPTY;
 
   RLPxConnection(
       Bytes32 aesSecret,
@@ -113,7 +114,9 @@ public final class RLPxConnection {
     return peerPublicKey;
   }
 
-  private Bytes buffer = Bytes.EMPTY;
+  public void configureAfterHandshake(HelloMessage helloMessage) {
+    this.applySnappyCompression = helloMessage.p2pVersion() >= 5;
+  }
 
   public synchronized void stream(Bytes newBytes, Consumer<RLPxMessage> messageConsumer) {
     buffer = Bytes.concatenate(buffer, newBytes);

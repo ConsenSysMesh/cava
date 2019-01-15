@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-final class HelloMessage implements WireProtocolMessage {
+public final class HelloMessage implements WireProtocolMessage {
 
   private final Bytes nodeId;
   private final int listenPort;
@@ -94,7 +94,7 @@ final class HelloMessage implements WireProtocolMessage {
     return capabilities;
   }
 
-  int p2pVersion() {
+  public int p2pVersion() {
     return p2pVersion;
   }
 

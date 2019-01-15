@@ -60,4 +60,64 @@ class RLPxConnectionMessageExchangeTest {
     RLPxMessage readMessage = conn.readFrame(messageBytes);
     assertEquals(messageToWrite, readMessage);
   }
+
+  @Test
+  void exchangeHelloAndSomeMoreMessagesWithCompression() throws Exception {
+    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
+    SECP256K1.KeyPair peerKeyPair = SECP256K1.KeyPair.random();
+
+    AtomicReference<RLPxConnection> peerConnectionReference = new AtomicReference<>();
+
+    Function<Bytes, AsyncResult<Bytes>> wireBytes = (bytes) -> {
+      AtomicReference<Bytes> responseReference = new AtomicReference<>();
+      peerConnectionReference.set(RLPxConnectionFactory.respondToHandshake(bytes, peerKeyPair, responseReference::set));
+      return AsyncResult.completed(responseReference.get());
+    };
+    AsyncResult<RLPxConnection> futureConn =
+        RLPxConnectionFactory.createHandshake(keyPair, peerKeyPair.publicKey(), wireBytes);
+
+    RLPxConnection peerConn = peerConnectionReference.get();
+    RLPxConnection conn = futureConn.get(1, TimeUnit.SECONDS);
+    assertTrue(RLPxConnection.isComplementedBy(conn, peerConn));
+
+    HelloMessage hello =
+        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 5, "ClientID 1.0", Arrays.asList(new Capability("eth", "63")));
+
+    conn.configureAfterHandshake(hello);
+    peerConn.configureAfterHandshake(hello);
+
+    Bytes message = conn.write(new RLPxMessage(23, Bytes.fromHexString("deadbeef")));
+    RLPxMessage readMessage = peerConn.readFrame(message);
+    assertEquals(Bytes.fromHexString("deadbeef"), readMessage.content());
+  }
+
+  @Test
+  void exchangeHelloAndSomeMoreMessagesWithoutCompression() throws Exception {
+    SECP256K1.KeyPair keyPair = SECP256K1.KeyPair.random();
+    SECP256K1.KeyPair peerKeyPair = SECP256K1.KeyPair.random();
+
+    AtomicReference<RLPxConnection> peerConnectionReference = new AtomicReference<>();
+
+    Function<Bytes, AsyncResult<Bytes>> wireBytes = (bytes) -> {
+      AtomicReference<Bytes> responseReference = new AtomicReference<>();
+      peerConnectionReference.set(RLPxConnectionFactory.respondToHandshake(bytes, peerKeyPair, responseReference::set));
+      return AsyncResult.completed(responseReference.get());
+    };
+    AsyncResult<RLPxConnection> futureConn =
+        RLPxConnectionFactory.createHandshake(keyPair, peerKeyPair.publicKey(), wireBytes);
+
+    RLPxConnection peerConn = peerConnectionReference.get();
+    RLPxConnection conn = futureConn.get(1, TimeUnit.SECONDS);
+    assertTrue(RLPxConnection.isComplementedBy(conn, peerConn));
+
+    HelloMessage hello =
+        HelloMessage.create(Bytes.of(1, 2, 3), 30303, 4, "ClientID 1.0", Arrays.asList(new Capability("eth", "63")));
+
+    conn.configureAfterHandshake(hello);
+    peerConn.configureAfterHandshake(hello);
+
+    Bytes message = conn.write(new RLPxMessage(23, Bytes.fromHexString("deadbeef")));
+    RLPxMessage readMessage = peerConn.readFrame(message);
+    assertEquals(Bytes.fromHexString("deadbeef"), readMessage.content());
+  }
 }
