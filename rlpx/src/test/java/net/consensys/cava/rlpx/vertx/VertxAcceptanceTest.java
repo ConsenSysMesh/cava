@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.concurrent.AsyncCompletion;
 import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1;
@@ -43,8 +44,10 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import io.vertx.core.Vertx;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.logl.Level;
 import org.logl.LoggerProvider;
 import org.logl.logl.SimpleLogger;
 
@@ -199,7 +202,6 @@ class VertxAcceptanceTest {
   @Test
   void testTwoServicesSendingMessagesOfCustomSubProtocolToEachOtherSimultaneously(@VertxInstance Vertx vertx)
       throws Exception {
-    Vertx vertx2 = Vertx.vertx();
     SECP256K1.KeyPair kp = SECP256K1.KeyPair.random();
     SECP256K1.KeyPair secondKp = SECP256K1.KeyPair.random();
     MyCustomSubProtocol sp = new MyCustomSubProtocol(1);
@@ -221,7 +223,7 @@ class VertxAcceptanceTest {
         "Client 1",
         repository);
     VertxRLPxService secondService = new VertxRLPxService(
-        vertx2,
+        vertx,
         logProvider,
         0,
         "localhost",
@@ -267,5 +269,69 @@ class VertxAcceptanceTest {
     } finally {
       AsyncCompletion.allOf(service.stop(), secondService.stop());
     }
+  }
+
+  @Test
+  @Disabled
+  void connectToPeer(@VertxInstance Vertx vertx) throws Exception {
+    SECP256K1.KeyPair kp = SECP256K1.KeyPair.fromSecretKey(
+        SECP256K1.SecretKey
+            .fromBytes(Bytes32.fromHexString("0x2CADB9DDEA3E675CC5349A1AF053CF2E144AF657016A6155DF4AD767F561F18E")));
+    System.out.println(kp.secretKey().bytes().toHexString());
+
+    System.out.println("enode://" + kp.publicKey().toHexString() + "@127.0.0.1:36000");
+    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
+
+    VertxRLPxService service = new VertxRLPxService(
+        vertx,
+        logProvider,
+        36000,
+        "localhost",
+        36000,
+        kp,
+        Collections.singletonList(new SubProtocol() {
+          @Override
+          public SubProtocolIdentifier id() {
+            return new SubProtocolIdentifier() {
+              @Override
+              public String name() {
+                return "exp";
+              }
+
+              @Override
+              public String version() {
+                return "1.0";
+              }
+            };
+          }
+
+          @Override
+          public boolean supports(SubProtocolIdentifier subProtocolIdentifier) {
+            return false;
+          }
+
+          @Override
+          public int versionRange(String version) {
+            return 0;
+          }
+
+          @Override
+          public SubProtocolHandler createHandler(RLPxService service) {
+            return null;
+          }
+        }),
+        "Client 1",
+        repository);
+    service.start().join();
+
+    AsyncCompletion completion = service.connectTo(
+        SECP256K1.PublicKey.fromHexString(
+            "7a8fbb31bff7c48179f8504b047313ebb7446a0233175ffda6eb4c27aaa5d2aedcef4dd9501b4f17b4f16588f0fd037f9b9416b8caca655bee3b14b4ef67441a"),
+        new InetSocketAddress("localhost", 30303));
+    completion.join();
+
+    service.stop().join();
   }
 }

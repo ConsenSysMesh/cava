@@ -12,7 +12,11 @@
  */
 package net.consensys.cava.rlpx;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
@@ -138,6 +142,12 @@ class RLPxConnectionFactoryTest {
     {
       Bytes message = conn.write(new RLPxMessage(1, Bytes.fromHexString("deadbeef")));
       RLPxMessage readMessage = conn2.readFrame(message);
+      assertEquals(Bytes.fromHexString("deadbeef"), readMessage.content());
+      assertEquals(1, readMessage.messageId());
+    }
+    {
+      Bytes message = conn2.write(new RLPxMessage(1, Bytes.fromHexString("deadbeef")));
+      RLPxMessage readMessage = conn.readFrame(message);
       assertEquals(Bytes.fromHexString("deadbeef"), readMessage.content());
       assertEquals(1, readMessage.messageId());
     }

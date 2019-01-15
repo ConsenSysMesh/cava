@@ -49,10 +49,10 @@ final class InitiatorHandshakeMessage implements HandshakeMessage {
       KeyPair ephemeralKeyPair,
       Bytes32 staticSharedSecret,
       Bytes32 nonce) {
-    Bytes toSign = staticSharedSecret.xor(nonce);
+    Bytes32 toSign = staticSharedSecret.xor(nonce);
     return new InitiatorHandshakeMessage(
         ourPubKey,
-        SECP256K1.sign(toSign, ephemeralKeyPair),
+        SECP256K1.signHashed(toSign, ephemeralKeyPair),
         ephemeralKeyPair.publicKey(),
         nonce);
   }
@@ -63,8 +63,8 @@ final class InitiatorHandshakeMessage implements HandshakeMessage {
       PublicKey pubKey = PublicKey.fromBytes(reader.readValue());
       Bytes32 nonce = Bytes32.wrap(reader.readValue());
       Bytes32 staticSharedSecret = SECP256K1.calculateKeyAgreement(privateKey, pubKey);
-      Bytes toSign = staticSharedSecret.xor(nonce);
-      PublicKey ephemeralPublicKey = PublicKey.recoverFromSignature(toSign, signature);
+      Bytes32 toSign = staticSharedSecret.xor(nonce);
+      PublicKey ephemeralPublicKey = PublicKey.recoverFromHashAndSignature(toSign, signature);
       return new InitiatorHandshakeMessage(pubKey, signature, ephemeralPublicKey, nonce);
     });
   }

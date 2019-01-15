@@ -178,6 +178,9 @@ public final class VertxRLPxService implements RLPxService {
 
   @Override
   public void send(WireSubProtocolMessage message) {
+    if (!started.get()) {
+      throw new IllegalStateException("The RLPx service is not active");
+    }
     WireConnection conn = wireConnection(message.connectionId());
     if (conn != null) {
       conn.sendMessage(message);
@@ -210,6 +213,7 @@ public final class VertxRLPxService implements RLPxService {
               bytes -> netSocket.write(Buffer.buffer(bytes.toArrayUnsafe())));
           if (wireConnection == null) {
             this.wireConnection = createConnection(conn, netSocket);
+            wireConnection.handleConnectionStart();
           }
         } else {
           conn.stream(Bytes.wrapBuffer(buffer), wireConnection::messageReceived);
@@ -271,6 +275,9 @@ public final class VertxRLPxService implements RLPxService {
 
   @Override
   public AsyncCompletion connectTo(PublicKey peerPublicKey, InetSocketAddress peerAddress) {
+    if (!started.get()) {
+      throw new IllegalStateException("The RLPx service is not active");
+    }
     CompletableAsyncCompletion connected = AsyncCompletion.incomplete();
     logger.debug("Connecting to {} with public key {}", peerAddress, peerPublicKey);
     client.connect(
