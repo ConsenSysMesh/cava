@@ -1,0 +1,89 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineSelector - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">CoroutineSelector</a><br/>
+<br/>
+<h1>CoroutineSelector</h1>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">CoroutineSelector</span></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineSelector.kt#L40">(source)</a>
+<p>A selector for co-routine based channel IO.</p>
+<p><strong>Author</strong><br/>
+Chris Leishman - https://cleishm.github.io/</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="cancel-selections.html">cancelSelections</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">cancelSelections</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$cancelSelections(java.nio.channels.SelectableChannel, kotlin.Throwable)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectableChannel.html"><span class="identifier">SelectableChannel</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$cancelSelections(java.nio.channels.SelectableChannel, kotlin.Throwable)/cause">cause</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Cancel any suspended calls to <a href="select.html">select</a> for the specified channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Close the co-routine selector.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="close-now.html">closeNow</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">closeNow</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Close the co-routine selector and wait for all suspensions to be cancelled.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-open.html">isOpen</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">isOpen</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Indicates whether the selector is open or not.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="select.html">select</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">select</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$select(java.nio.channels.SelectableChannel, kotlin.Int)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectableChannel.html"><span class="identifier">SelectableChannel</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$select(java.nio.channels.SelectableChannel, kotlin.Int)/ops">ops</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Wait for a channel to become ready for any of the specified operations.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="wakeup.html">wakeup</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">wakeup</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Force the selection loop, if running, to wake up and process any closed channels.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="open.html">open</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">open</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector.Companion$open(java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/executor">executor</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html"><span class="identifier">Executor</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Executors.newSingleThreadExecutor(DEFAULT_THREAD_FACTORY)<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector.Companion$open(java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/loggerProvider">loggerProvider</span><span class="symbol">:</span>&nbsp;<span class="identifier">LoggerProvider</span>&nbsp;<span class="symbol">=</span>&nbsp;LoggerProvider.nullProvider()<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector.Companion$open(java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/selectTimeout">selectTimeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;1000<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector.Companion$open(java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/idleTimeout">idleTimeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;10000<span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineSelector</span></a></code>
+<p>Open a co-routine selector.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

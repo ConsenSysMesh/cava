@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.decodeUInt32 - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./decode-u-int32.html">decodeUInt32</a><br/>
+<br/>
+<h1>decodeUInt32</h1>
+<a name="net.consensys.cava.ssz.SSZ$decodeUInt32(net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt32(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L952">(source)</a>
+<p>Read a 32-bit unsigned integer from the SSZ source.</p>
+<h3>Parameters</h3>
+<p><a name="source"></a>
+<code>source</code> - The SSZ encoded bytes.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If there are insufficient encoded bytes for an 32-bit int.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+An int.</p>
+</BODY>
+</HTML>

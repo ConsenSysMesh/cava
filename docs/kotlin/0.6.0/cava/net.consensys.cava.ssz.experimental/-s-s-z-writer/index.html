@@ -1,0 +1,372 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZWriter - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="./index.html">SSZWriter</a><br/>
+<br/>
+<h1>SSZWriter</h1>
+<code><span class="keyword">interface </span><span class="identifier">SSZWriter</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZWriter.kt#L21">(source)</a>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="write-address.html">writeAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeAddress</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeAddress(net.consensys.cava.bytes.Bytes)/address">address</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write an address.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-address-list.html">writeAddressList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeAddressList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeAddressList(kotlin.Array((net.consensys.cava.bytes.Bytes)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of addresses.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-big-integer.html">writeBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBigInteger(java.math.BigInteger, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBigInteger(java.math.BigInteger, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a big integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-big-integer-list.html">writeBigIntegerList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeBigIntegerList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBigIntegerList(kotlin.Int, kotlin.Array((java.math.BigInteger)))/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBigIntegerList(kotlin.Int, kotlin.Array((java.math.BigInteger)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of big integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-boolean.html">writeBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBoolean(kotlin.Boolean)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a boolean to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-boolean-list.html">writeBooleanList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeBooleanList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBooleanList(kotlin.BooleanArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of booleans.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-bytes.html">writeBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBytes(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Encode a <a href="../../net.consensys.cava.bytes/-bytes/index.html">Bytes</a> value to SSZ.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBytes(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Encode a byte array to SSZ.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-bytes-list.html">writeBytesList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeBytesList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeBytesList(kotlin.Array((net.consensys.cava.bytes.Bytes)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-hash.html">writeHash</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeHash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeHash(net.consensys.cava.bytes.Bytes)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a hash.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-hash-list.html">writeHashList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeHashList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeHashList(kotlin.Array((net.consensys.cava.bytes.Bytes)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of hashes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int.html">writeInt</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt(kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt(kotlin.Int, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a two's-compliment integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int16.html">writeInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt16(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a 16-bit two's-compliment integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int16-list.html">writeInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt16List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt16List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 16-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int32.html">writeInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt32(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a 32-bit two's-compliment integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int32-list.html">writeInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt32List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt32List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 32-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int64.html">writeInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt64(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a 64-bit two's-compliment integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int64-list.html">writeInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt64List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt64List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 64-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int8.html">writeInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt8(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write an 8-bit two's-compliment integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int8-list.html">writeInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeInt8List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeInt8List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 8-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-int-list.html">writeIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeIntList(kotlin.Int, kotlin.IntArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeIntList(kotlin.Int, kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-long.html">writeLong</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeLong(kotlin.Long, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeLong(kotlin.Long, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a two's-compliment long to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-long-int-list.html">writeLongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeLongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeLongIntList(kotlin.Int, kotlin.LongArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeLongIntList(kotlin.Int, kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of two's compliment long integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-s-s-z.html">writeSSZ</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeSSZ</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeSSZ(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeSSZ</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeSSZ(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Append an already SSZ encoded value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-string.html">writeString</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeString(kotlin.String)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a string to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-string-list.html">writeStringList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeStringList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeStringList(kotlin.Array((kotlin.String)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of strings, which must be of the same length</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int.html">writeUInt</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt(, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt(, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write an unsigned integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int16.html">writeUInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt16()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a 16-bit unsigned integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int16-list.html">writeUInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt16List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt16List(kotlin.Array(()))/elements">elements</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 16-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int256.html">writeUInt256</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt256(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a <a href="../../net.consensys.cava.units.bigints/-u-int256/index.html">UInt256</a> to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int256-list.html">writeUInt256List</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeUInt256List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt256List(kotlin.Array((net.consensys.cava.units.bigints.UInt256)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of unsigned 256-bit integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int32.html">writeUInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt32()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a 32-bit unsigned integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int32-list.html">writeUInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt32List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt32List(kotlin.Array(()))/elements">elements</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 32-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int64.html">writeUInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt64()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a 64-bit unsigned integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int64-list.html">writeUInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt64List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt64List(kotlin.Array(()))/elements">elements</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 64-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int8.html">writeUInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt8()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write an 8-bit unsigned integer to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int8-list.html">writeUInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeUInt8List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUInt8List(kotlin.Array(()))/elements">elements</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of 8-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-int-list.html">writeUIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeUIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUIntList(kotlin.Int, kotlin.Array(()))/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeUIntList(kotlin.Int, kotlin.Array(()))/elements">elements</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-long.html">writeULong</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeULong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeULong(, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeULong(, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write an unsigned long to the output.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write-u-long-int-list.html">writeULongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeULongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeULongIntList(kotlin.Int, kotlin.Array(()))/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeULongIntList(kotlin.Int, kotlin.Array(()))/elements">elements</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write a list of unsigned long integers.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

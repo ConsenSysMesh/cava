@@ -1,0 +1,54 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WireProtocolMessage - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx.wire</a>&nbsp;/&nbsp;<a href="./index.html">WireProtocolMessage</a><br/>
+<br/>
+<h1>WireProtocolMessage</h1>
+<code><span class="keyword">interface </span><span class="identifier">WireProtocolMessage</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/wire/WireProtocolMessage.java#L20">(source)</a>
+<p>A set of bytes made available to a subprotocol after it has been successfully decrypted.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="message-type.html">messageType</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">messageType</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-bytes.html">toBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-hello-message/index.html">HelloMessage</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">HelloMessage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">WireProtocolMessage</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-wire-sub-protocol-message/index.html">WireSubProtocolMessage</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">WireSubProtocolMessage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">WireProtocolMessage</span></a></code>
+<p>A message specific to a subprotocol of the wire protocol.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

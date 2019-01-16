@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZReader.readByteArrayList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="index.html">SSZReader</a>&nbsp;/&nbsp;<a href="./read-byte-array-list.html">readByteArrayList</a><br/>
+<br/>
+<h1>readByteArrayList</h1>
+<a name="net.consensys.cava.ssz.experimental.SSZReader$readByteArrayList()"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readByteArrayList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZReader.kt#L269">(source)</a>
+<p>Read a list of byte arrays from the SSZ source.</p>
+<p>Note: prefer to use <a href="#">.readByteArrayList</a> instead, especially when reading untrusted data.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If the next SSZ value is not a list, any value in the list is not a byte array, or
+any byte array is too large (greater than 2^32 bytes).</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+A list of byte arrays.</p>
+<a name="net.consensys.cava.ssz.experimental.SSZReader$readByteArrayList(kotlin.Int)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readByteArrayList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readByteArrayList(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZReader.kt#L280">(source)</a>
+<p>Read a list of byte arrays from the SSZ source.</p>
+<h3>Parameters</h3>
+<p><a name="limit"></a>
+<code>limit</code> - The maximum number of bytes to read for each list element.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If the next SSZ value is not a list, any value in the list is not a byte array, or
+the size of any byte array would exceed the limit.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+A list of byte arrays.</p>
+</BODY>
+</HTML>

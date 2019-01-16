@@ -1,0 +1,42 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KademliaRoutingTable.create - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kademlia</a>&nbsp;/&nbsp;<a href="index.html">KademliaRoutingTable</a>&nbsp;/&nbsp;<a href="./create.html">create</a><br/>
+<br/>
+<h1>create</h1>
+<a name="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))"></a>
+<code><span class="identifier">@JvmStatic</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">create</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/selfId">selfId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/k">k</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">KademliaRoutingTable</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//kademlia/src/main/kotlin/net/consensys/cava/kademlia/KademliaRoutingTable.kt#L107">(source)</a>
+<p>Create a new routing table.</p>
+<h3>Parameters</h3>
+<p><a name="selfId"></a>
+<code>selfId</code> - the ID of the local node</p>
+<p><a name="k"></a>
+<code>k</code> - the size of each bucket (k value)</p>
+<p><a name="nodeId"></a>
+<code>nodeId</code> - a function for obtaining the id of a network node</p>
+<p><strong>Parameters</strong><br/>
+</p>
+<p><strong>Return</strong><br/>
+A new routing table</p>
+<a name="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))"></a>
+<code><span class="identifier">@JvmStatic</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">create</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/selfId">selfId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/k">k</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/maxReplacements">maxReplacements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">KademliaRoutingTable</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//kademlia/src/main/kotlin/net/consensys/cava/kademlia/KademliaRoutingTable.kt#L121">(source)</a>
+<p>Create a new routing table.</p>
+<h3>Parameters</h3>
+<p><a name="selfId"></a>
+<code>selfId</code> - the ID of the local node</p>
+<p><a name="k"></a>
+<code>k</code> - the size of each bucket (k value)</p>
+<p><a name="maxReplacements"></a>
+<code>maxReplacements</code> - the maximum number of replacements to cache in each bucket</p>
+<p><a name="nodeId"></a>
+<code>nodeId</code> - a function for obtaining the id of a network node</p>
+<p><strong>Parameters</strong><br/>
+</p>
+<p><strong>Return</strong><br/>
+A new routing table</p>
+</BODY>
+</HTML>

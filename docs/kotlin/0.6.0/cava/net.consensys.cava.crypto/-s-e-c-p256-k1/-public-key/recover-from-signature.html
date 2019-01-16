@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SECP256K1.PublicKey.recoverFromSignature - cava</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">cava</a>&nbsp;/&nbsp;<a href="../../index.html">net.consensys.cava.crypto</a>&nbsp;/&nbsp;<a href="../index.html">SECP256K1</a>&nbsp;/&nbsp;<a href="index.html">PublicKey</a>&nbsp;/&nbsp;<a href="./recover-from-signature.html">recoverFromSignature</a><br/>
+<br/>
+<h1>recoverFromSignature</h1>
+<a name="net.consensys.cava.crypto.SECP256K1.PublicKey$recoverFromSignature(kotlin.ByteArray, net.consensys.cava.crypto.SECP256K1.Signature)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recoverFromSignature</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.PublicKey$recoverFromSignature(kotlin.ByteArray, net.consensys.cava.crypto.SECP256K1.Signature)/data">data</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.PublicKey$recoverFromSignature(kotlin.ByteArray, net.consensys.cava.crypto.SECP256K1.Signature)/signature">signature</span><span class="symbol">:</span>&nbsp;<a href="../-signature/index.html"><span class="identifier">Signature</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">PublicKey</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/SECP256K1.java#L603">(source)</a><br/>
+<a name="net.consensys.cava.crypto.SECP256K1.PublicKey$recoverFromSignature(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)"></a>
+<code><span class="identifier">@Nullable</span> <span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recoverFromSignature</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.PublicKey$recoverFromSignature(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/data">data</span><span class="symbol">:</span>&nbsp;<a href="../../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.SECP256K1.PublicKey$recoverFromSignature(net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/signature">signature</span><span class="symbol">:</span>&nbsp;<a href="../-signature/index.html"><span class="identifier">Signature</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">PublicKey</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/SECP256K1.java#L615">(source)</a>
+<p>Recover a public key using a digital signature and the data it signs.</p>
+<h3>Parameters</h3>
+<p><a name="data"></a>
+<code>data</code> - The signed data.</p>
+<p><a name="signature"></a>
+<code>signature</code> - The digital signature.</p>
+<p><strong>Return</strong><br/>
+The associated public key, or <code>null</code> if recovery wasn't possible.</p>
+</BODY>
+</HTML>

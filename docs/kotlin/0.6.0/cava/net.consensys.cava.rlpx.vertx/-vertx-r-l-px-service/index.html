@@ -1,0 +1,90 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>VertxRLPxService - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx.vertx</a>&nbsp;/&nbsp;<a href="./index.html">VertxRLPxService</a><br/>
+<br/>
+<h1>VertxRLPxService</h1>
+<code><span class="keyword">class </span><span class="identifier">VertxRLPxService</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx/-r-l-px-service/index.html"><span class="identifier">RLPxService</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/vertx/VertxRLPxService.java#L53">(source)</a>
+<p>Implementation of RLPx service using Vert.x.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">VertxRLPxService</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/loggerProvider">loggerProvider</span><span class="symbol">:</span>&nbsp;<span class="identifier">LoggerProvider</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/listenPort">listenPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/networkInterface">networkInterface</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/advertisedPort">advertisedPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/identityKeyPair">identityKeyPair</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/subProtocols">subProtocols</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.rlpx.wire/-sub-protocol/index.html"><span class="identifier">SubProtocol</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">VertxRLPxService</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/loggerProvider">loggerProvider</span><span class="symbol">:</span>&nbsp;<span class="identifier">LoggerProvider</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/listenPort">listenPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/networkInterface">networkInterface</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/advertisedPort">advertisedPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/identityKeyPair">identityKeyPair</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/subProtocols">subProtocols</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.rlpx.wire/-sub-protocol/index.html"><span class="identifier">SubProtocol</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$<init>(io.vertx.core.Vertx, org.logl.LoggerProvider, kotlin.Int, kotlin.String, kotlin.Int, net.consensys.cava.crypto.SECP256K1.KeyPair, kotlin.collections.MutableList((net.consensys.cava.rlpx.wire.SubProtocol)), kotlin.String, net.consensys.cava.rlpx.WireConnectionRepository)/repository">repository</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx/-wire-connection-repository/index.html"><span class="identifier">WireConnectionRepository</span></a><span class="symbol">)</span></code>
+<p>Default constructor.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="actual-port.html">actualPort</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">actualPort</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="advertised-port.html">advertisedPort</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">advertisedPort</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="broadcast.html">broadcast</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">broadcast</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$broadcast(net.consensys.cava.rlpx.wire.WireSubProtocolMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx.wire/-wire-sub-protocol-message/index.html"><span class="identifier">WireSubProtocolMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="connect-to.html">connectTo</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">connectTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$connectTo(net.consensys.cava.crypto.SECP256K1.PublicKey, java.net.InetSocketAddress)/peerPublicKey">peerPublicKey</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$connectTo(net.consensys.cava.crypto.SECP256K1.PublicKey, java.net.InetSocketAddress)/peerAddress">peerAddress</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetSocketAddress.html"><span class="identifier">InetSocketAddress</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="repository.html">repository</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">repository</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.rlpx/-wire-connection-repository/index.html"><span class="identifier">WireConnectionRepository</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="send.html">send</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">send</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.vertx.VertxRLPxService$send(net.consensys.cava.rlpx.wire.WireSubProtocolMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx.wire/-wire-sub-protocol-message/index.html"><span class="identifier">WireSubProtocolMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="start.html">start</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">start</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="stop.html">stop</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">stop</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

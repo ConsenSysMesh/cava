@@ -1,0 +1,31 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.appendTo - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./append-to.html">appendTo</a><br/>
+<br/>
+<h1>appendTo</h1>
+<a name="net.consensys.cava.bytes.Bytes$appendTo(java.nio.ByteBuffer)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">appendTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$appendTo(java.nio.ByteBuffer)/byteBuffer">byteBuffer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L1045">(source)</a>
+<p>Append the bytes of this value to the ByteBuffer.</p>
+<h3>Parameters</h3>
+<p><a name="byteBuffer"></a>
+<code>byteBuffer</code> - The ByteBuffer to which to append this value.</p>
+<h3>Exceptions</h3>
+<p><a name="BufferOverflowException"></a>
+<code>BufferOverflowException</code> - If the writer attempts to write more than the provided buffer can hold.</p>
+<p><a name="ReadOnlyBufferException"></a>
+<code>ReadOnlyBufferException</code> - If the provided buffer is read-only.</p>
+<a name="net.consensys.cava.bytes.Bytes$appendTo(io.vertx.core.buffer.Buffer)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">appendTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$appendTo(io.vertx.core.buffer.Buffer)/buffer">buffer</span><span class="symbol">:</span>&nbsp;<span class="identifier">Buffer</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L1060">(source)</a>
+<p>Append the bytes of this value to the provided Vert.x Buffer. 
+<p> Note that since a Vert.x Buffer will grow as necessary, this method never fails.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="buffer"></a>
+<code>buffer</code> - The Buffer to which to append this value.</p>
+</BODY>
+</HTML>

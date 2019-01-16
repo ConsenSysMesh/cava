@@ -1,0 +1,40 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Files.copyResource - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.io.file</a>&nbsp;/&nbsp;<a href="index.html">Files</a>&nbsp;/&nbsp;<a href="./copy-resource.html">copyResource</a><br/>
+<br/>
+<h1>copyResource</h1>
+<a name="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.nio.file.Path, kotlin.Array((java.nio.file.OpenOption)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">copyResource</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.nio.file.Path, kotlin.Array((java.nio.file.OpenOption)))/resourceName">resourceName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.nio.file.Path, kotlin.Array((java.nio.file.OpenOption)))/destination">destination</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.nio.file.Path, kotlin.Array((java.nio.file.OpenOption)))/options">options</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/OpenOption.html"><span class="identifier">OpenOption</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L96">(source)</a>
+<p>Copies the content of a resource to a file.</p>
+<h3>Parameters</h3>
+<p><a name="resourceName"></a>
+<code>resourceName</code> - The resource name.</p>
+<p><a name="destination"></a>
+<code>destination</code> - The destination file.</p>
+<p><a name="options"></a>
+<code>options</code> - Options specifying how the destination file should be opened.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+The destination file.</p>
+<a name="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.io.OutputStream)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">copyResource</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.io.OutputStream)/resourceName">resourceName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.io.file.Files$copyResource(kotlin.String, java.io.OutputStream)/out">out</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/io/OutputStream.html"><span class="identifier">OutputStream</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L114">(source)</a>
+<p>Copies the content of a resource to an output stream.</p>
+<h3>Parameters</h3>
+<p><a name="resourceName"></a>
+<code>resourceName</code> - The resource name.</p>
+<p><a name="out"></a>
+<code>out</code> - The output stream.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+The total bytes written.</p>
+</BODY>
+</HTML>

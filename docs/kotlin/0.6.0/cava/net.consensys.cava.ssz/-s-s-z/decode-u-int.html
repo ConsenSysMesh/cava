@@ -1,0 +1,27 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.decodeUInt - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./decode-u-int.html">decodeUInt</a><br/>
+<br/>
+<h1>decodeUInt</h1>
+<a name="net.consensys.cava.ssz.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L889">(source)</a>
+<p>Read a SSZ encoded unsigned integer from a Bytes value.</p>
+<h3>Parameters</h3>
+<p><a name="source"></a>
+<code>source</code> - The SSZ encoded bytes.</p>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the integer to read (a multiple of 8).</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If there are insufficient encoded bytes for the desired bit length, or the decoded value was too large to fit into an int.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+An unsigned int.</p>
+</BODY>
+</HTML>

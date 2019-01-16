@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>retry - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent.coroutines</a>&nbsp;/&nbsp;<a href="index.html">kotlinx.coroutines.CoroutineScope</a>&nbsp;/&nbsp;<a href="./retry.html">retry</a><br/>
+<br/>
+<h1>retry</h1>
+<a name="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span class="symbol">&gt;</span> <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html"><span class="identifier">CoroutineScope</span></a><span class="symbol">.</span><span class="identifier">retry</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/retryDelay">retryDelay</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="retry.html#R"><span class="identifier">R</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/Retryable.kt#L30">(source)</a>
+<p>Retry a suspending block until a non-null result is obtained.</p>
+<h3>Parameters</h3>
+<p><a name="retryDelay"></a>
+<code>retryDelay</code> - the delay between each attempt</p>
+<p><a name="block"></a>
+<code>block</code> - the suspending block to be executed</p>
+<p><strong>Return</strong><br/>
+the first non-null result</p>
+<a name="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span class="symbol">&gt;</span> <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html"><span class="identifier">CoroutineScope</span></a><span class="symbol">.</span><span class="identifier">retry</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/retryDelay">retryDelay</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/maxRetries">maxRetries</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/Retryable.kt#L43">(source)</a>
+<p>Retry a suspending block until a non-null result is obtained.</p>
+<h3>Parameters</h3>
+<p><a name="retryDelay"></a>
+<code>retryDelay</code> - the delay between each attempt</p>
+<p><a name="maxRetries"></a>
+<code>maxRetries</code> - the maximum number of attempts</p>
+<p><a name="block"></a>
+<code>block</code> - the suspending block to be executed</p>
+<p><strong>Return</strong><br/>
+the first non-null result, or <code>null</code> if all attempts fail</p>
+<a name="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Int, kotlin.Long)), kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span class="symbol">&gt;</span> <a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-scope/index.html"><span class="identifier">CoroutineScope</span></a><span class="symbol">.</span><span class="identifier">retry</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Int, kotlin.Long)), kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/retryDelay">retryDelay</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$retry(kotlinx.coroutines.CoroutineScope, kotlin.Function1((kotlin.Int, kotlin.Long)), kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.retry.R)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/Retryable.kt#L58">(source)</a>
+<p>Retry a suspending block until a non-null result is obtained.</p>
+<h3>Parameters</h3>
+<p><a name="retryDelay"></a>
+<code>retryDelay</code> - a function returning the delay that should follow each attempt, or <code>null</code> if no further attempts
+    should be made</p>
+<p><a name="block"></a>
+<code>block</code> - the suspending block to be executed</p>
+<p><strong>Return</strong><br/>
+the first non-null result, or <code>null</code> if all attempts fail</p>
+</BODY>
+</HTML>

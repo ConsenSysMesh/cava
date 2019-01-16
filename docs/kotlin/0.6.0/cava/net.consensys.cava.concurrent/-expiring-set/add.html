@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ExpiringSet.add - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">ExpiringSet</a>&nbsp;/&nbsp;<a href="./add.html">add</a><br/>
+<br/>
+<h1>add</h1>
+<a name="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E)"></a>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/ExpiringSet.java#L123">(source)</a><a name="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long)"></a>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long)/expiry">expiry</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/ExpiringSet.java#L138">(source)</a>
+<p>Adds the specified element to this set if it is not already present, and expires the entry when the specified expiry time is reached.</p>
+<h3>Parameters</h3>
+<p><a name="element"></a>
+<code>element</code> - The element to add to the set.</p>
+<p><a name="expiry"></a>
+<code>expiry</code> - The expiry time for the element, in milliseconds since the epoch.</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if this set did not already contain the specified element.</p>
+<a name="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))"></a>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))/expiry">expiry</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier">@Nullable</span> <span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))/expiryListener">expiryListener</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/ExpiringSet.java#L151">(source)</a>
+<p>Adds the specified element to this set if it is not already present, and expires the entry when the specified expiry time is reached.</p>
+<h3>Parameters</h3>
+<p><a name="element"></a>
+<code>element</code> - The element to add to the set.</p>
+<p><a name="expiry"></a>
+<code>expiry</code> - The expiry time for the element, in milliseconds since the epoch.</p>
+<p><a name="expiryListener"></a>
+<code>expiryListener</code> - A listener that will be invoked when the entry expires.</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if this set did not already contain the specified element.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.encodeTo - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./encode-to.html">encodeTo</a><br/>
+<br/>
+<h1>encodeTo</h1>
+<a name="net.consensys.cava.ssz.SSZ$encodeTo(net.consensys.cava.ssz.SSZ.encodeTo.T, java.util.function.Consumer((net.consensys.cava.ssz.SSZWriter)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeTo(net.consensys.cava.ssz.SSZ.encodeTo.T, java.util.function.Consumer((net.consensys.cava.ssz.SSZWriter)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeTo(net.consensys.cava.ssz.SSZ.encodeTo.T, java.util.function.Consumer((net.consensys.cava.ssz.SSZWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-s-s-z-writer/index.html"><span class="identifier">SSZWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="encode-to.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L66">(source)</a>
+<p>Encode values to a ByteBuffer.</p>
+<h3>Parameters</h3>
+<p><a name="buffer"></a>
+<code>buffer</code> - The buffer to write into, starting from its current position.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A consumer that will be provided with a SSZWriter that can consume values.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the buffer.</p>
+<h3>Exceptions</h3>
+<p><a name="BufferOverflowException"></a>
+<code>BufferOverflowException</code> - If the writer attempts to write more than the provided buffer can hold.</p>
+<p><a name="ReadOnlyBufferException"></a>
+<code>ReadOnlyBufferException</code> - If the provided buffer is read-only.</p>
+<p><strong>Return</strong><br/>
+The buffer.</p>
+</BODY>
+</HTML>

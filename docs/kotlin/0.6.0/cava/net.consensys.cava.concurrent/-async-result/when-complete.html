@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.whenComplete - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./when-complete.html">whenComplete</a><br/>
+<br/>
+<h1>whenComplete</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$whenComplete(java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">whenComplete</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$whenComplete(java.util.function.BiConsumer((net.consensys.cava.concurrent.AsyncResult.T, kotlin.Throwable)))/action">action</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L493">(source)</a>
+<p>Returns a new result that completes with the same value or exception as this result, after executing the given action with this result's value or exception. 
+<p> Either the value or the exception supplied to the action will be <code>null</code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="action"></a>
+<code>action</code> - The action to execute.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

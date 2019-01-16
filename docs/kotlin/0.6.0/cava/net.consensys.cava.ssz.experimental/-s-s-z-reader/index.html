@@ -1,0 +1,414 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZReader - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="./index.html">SSZReader</a><br/>
+<br/>
+<h1>SSZReader</h1>
+<code><span class="keyword">interface </span><span class="identifier">SSZReader</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZReader.kt#L27">(source)</a>
+<p>A reader for consuming values from an SSZ encoded source.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-complete.html">isComplete</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">isComplete</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if all values have been read.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="read-address.html">readAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readAddress</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read a 20-byte address from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-address-list.html">readAddressList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readAddressList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 20-byte addresses from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-big-integer.html">readBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readBigInteger(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>Read a big integer value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-big-integer-list.html">readBigIntegerList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readBigIntegerList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readBigIntegerList(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of two's-compliment big integer values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-boolean.html">readBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readBoolean</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Read a boolean from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-boolean-list.html">readBooleanList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readBooleanList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of booleans from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-byte-array.html">readByteArray</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readByteArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readByteArray(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Integer.MAX_VALUE<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Read a byte array from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-byte-array-list.html">readByteArrayList</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readByteArrayList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readByteArrayList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readByteArrayList(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of byte arrays from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-bytes.html">readBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readBytes(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read bytes from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-bytes-list.html">readBytesList</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readBytesList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readBytesList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readBytesList(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of <a href="../../net.consensys.cava.bytes/-bytes/index.html">Bytes</a> from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-hash.html">readHash</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readHash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readHash(kotlin.Int)/hashLength">hashLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read a hash from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-hash-list.html">readHashList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readHashList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readHashList(kotlin.Int)/hashLength">hashLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of hashes from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int.html">readInt</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readInt(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a two's-compliment int value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int16.html">readInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt16</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a 16-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int16-list.html">readInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt16List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 16-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int32.html">readInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt32</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a 32-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int32-list.html">readInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt32List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 32-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int64.html">readInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt64</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read an 64-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int64-list.html">readInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt64List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 64-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int8.html">readInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt8</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read an 8-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int8-list.html">readInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readInt8List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 8-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-int-list.html">readIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readIntList(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-long.html">readLong</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readLong(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read a two's-compliment long value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-long-int-list.html">readLongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readLongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readLongIntList(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of two's-compliment long int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-string.html">readString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readString(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Read a string value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-string-list.html">readStringList</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readStringList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readStringList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readStringList(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of strings from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int.html">readUInt</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readUInt(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read an unsigned int value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int16.html">readUInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt16</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a 16-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int16-list.html">readUInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt16List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&gt;</span></code>
+<p>Read a list of 16-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int256.html">readUInt256</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readUInt256</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code>
+<p>Read a <a href="../../net.consensys.cava.units.bigints/-u-int256/index.html">UInt256</a> from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int256-list.html">readUInt256List</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readUInt256List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 256-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int32.html">readUInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt32</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a 32-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int32-list.html">readUInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt32List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&gt;</span></code>
+<p>Read a list of 32-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int64.html">readUInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt64</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read an 64-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int64-list.html">readUInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt64List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&gt;</span></code>
+<p>Read a list of 64-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int8.html">readUInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt8</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read an 8-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int8-list.html">readUInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt8List</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&gt;</span></code>
+<p>Read a list of 8-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-int-list.html">readUIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readUIntList(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&gt;</span></code>
+<p>Read a list of unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-long.html">readULong</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readULong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readULong(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read an unsigned long value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-u-long-int-list.html">readULongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readULongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readULongIntList(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">&gt;</span></code>
+<p>Read a list of unsigned long int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-unsigned-big-integer.html">readUnsignedBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readUnsignedBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readUnsignedBigInteger(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>Read an unsigned big integer value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="read-unsigned-big-integer-list.html">readUnsignedBigIntegerList</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readUnsignedBigIntegerList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readUnsignedBigIntegerList(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of unsigned big integer values from the SSZ source.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

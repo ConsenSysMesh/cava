@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.decodeUInt16List - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./decode-u-int16-list.html">decodeUInt16List</a><br/>
+<br/>
+<h1>decodeUInt16List</h1>
+<a name="net.consensys.cava.ssz.SSZ$decodeUInt16List(net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt16List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt16List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L1262">(source)</a>
+<p>Read a list of 16-bit unsigned int values from the SSZ source.</p>
+<h3>Parameters</h3>
+<p><a name="source"></a>
+<code>source</code> - The SSZ encoded bytes.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If the next SSZ value is not a list, there are insufficient encoded bytes for the desired bit length or any value in the list, or any decoded value was too large to fit into an int.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+A list of ints.</p>
+</BODY>
+</HTML>

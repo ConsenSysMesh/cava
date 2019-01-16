@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLPxService - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="./index.html">RLPxService</a><br/>
+<br/>
+<h1>RLPxService</h1>
+<code><span class="keyword">interface </span><span class="identifier">RLPxService</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/RLPxService.java#L24">(source)</a>
+<p>Service allowing connections to remote peers over RLPx connections.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="broadcast.html">broadcast</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">broadcast</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.RLPxService$broadcast(net.consensys.cava.rlpx.wire.WireSubProtocolMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx.wire/-wire-sub-protocol-message/index.html"><span class="identifier">WireSubProtocolMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Sends a wire message to all connected peers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="connect-to.html">connectTo</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">connectTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.RLPxService$connectTo(net.consensys.cava.crypto.SECP256K1.PublicKey, java.net.InetSocketAddress)/peerPublicKey">peerPublicKey</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.RLPxService$connectTo(net.consensys.cava.crypto.SECP256K1.PublicKey, java.net.InetSocketAddress)/peerAddress">peerAddress</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetSocketAddress.html"><span class="identifier">InetSocketAddress</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Connects to a remote peer</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="repository.html">repository</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">repository</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-wire-connection-repository/index.html"><span class="identifier">WireConnectionRepository</span></a></code>
+<p>Gets the wire connections repository associated with this service.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="send.html">send</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">send</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.RLPxService$send(net.consensys.cava.rlpx.wire.WireSubProtocolMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx.wire/-wire-sub-protocol-message/index.html"><span class="identifier">WireSubProtocolMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Sends a wire message to a peer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="start.html">start</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">start</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Starts the service.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="stop.html">stop</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">stop</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Stops the service.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../../net.consensys.cava.rlpx.vertx/-vertx-r-l-px-service/index.html">VertxRLPxService</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">VertxRLPxService</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">RLPxService</span></a></code>
+<p>Implementation of RLPx service using Vert.x.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

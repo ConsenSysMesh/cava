@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineSelector.cancelSelections - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineSelector</a>&nbsp;/&nbsp;<a href="./cancel-selections.html">cancelSelections</a><br/>
+<br/>
+<h1>cancelSelections</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineSelector$cancelSelections(java.nio.channels.SelectableChannel, kotlin.Throwable)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">cancelSelections</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$cancelSelections(java.nio.channels.SelectableChannel, kotlin.Throwable)/channel">channel</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/SelectableChannel.html"><span class="identifier">SelectableChannel</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineSelector$cancelSelections(java.nio.channels.SelectableChannel, kotlin.Throwable)/cause">cause</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineSelector.kt#L95">(source)</a>
+<p>Cancel any suspended calls to <a href="select.html">select</a> for the specified channel.</p>
+<h3>Parameters</h3>
+<p><a name="channel"></a>
+<code>channel</code> - The channel.</p>
+<p><a name="cause"></a>
+<code>cause</code> - An optional cause for the cancellation.</p>
+<h3>Exceptions</h3>
+<p><a name="ClosedSelectorException"></a>
+<code>ClosedSelectorException</code> - If the co-routine selector has been closed.</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if any suspensions were cancelled.</p>
+</BODY>
+</HTML>

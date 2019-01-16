@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KeyValueStore.putAsync - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kv</a>&nbsp;/&nbsp;<a href="index.html">KeyValueStore</a>&nbsp;/&nbsp;<a href="./put-async.html">putAsync</a><br/>
+<br/>
+<h1>putAsync</h1>
+<a name="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/KeyValueStore.kt#L76">(source)</a>
+<p>Puts data into the store.</p>
+<p>Note: if the storage implementation already contains content for the given key, it does not need to replace the
+existing content.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - The key to associate with the data, for use when retrieving.</p>
+<p><a name="value"></a>
+<code>value</code> - The data to store.</p>
+<p><strong>Return</strong><br/>
+An <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> that will complete when the content is stored.</p>
+<a name="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/dispatcher">dispatcher</span><span class="symbol">:</span>&nbsp;<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html"><span class="identifier">CoroutineDispatcher</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/KeyValueStore.kt#L89">(source)</a>
+<p>Puts data into the store.</p>
+<p>Note: if the storage implementation already contains content for the given key, it does not need to replace the
+existing content.</p>
+<h3>Parameters</h3>
+<p><a name="key"></a>
+<code>key</code> - The key to associate with the data, for use when retrieving.</p>
+<p><a name="value"></a>
+<code>value</code> - The data to store.</p>
+<p><a name="dispatcher"></a>
+<code>dispatcher</code> - The co-routine dispatcher for asynchronous tasks.</p>
+<p><strong>Return</strong><br/>
+An <a href="../../net.consensys.cava.concurrent/-async-completion/index.html">AsyncCompletion</a> that will complete when the content is stored.</p>
+</BODY>
+</HTML>

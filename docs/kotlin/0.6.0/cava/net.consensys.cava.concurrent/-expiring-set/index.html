@@ -1,0 +1,152 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ExpiringSet - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="./index.html">ExpiringSet</a><br/>
+<br/>
+<h1>ExpiringSet</h1>
+<code><span class="keyword">class </span><span class="identifier">ExpiringSet</span><span class="symbol">&lt;</span><span class="identifier">E</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-set/index.html"><span class="identifier">MutableSet</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/ExpiringSet.java#L37">(source)</a>
+<p>A concurrent hash set that stores values along with an expiry. Elements are stored in the set until their expiry is reached, after which they will no longer be available and will appear as if removed. The actual removal is done lazily whenever the set is accessed, or when the <code><a href="purge-expired.html">#purgeExpired()</a></code> method is invoked.</p>
+<h3>Parameters</h3>
+<p><a name="&lt;E&gt;"></a>
+<code><E></code> - The element type.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">ExpiringSet</span><span class="symbol">(</span><span class="symbol">)</span></code>
+<p>Construct an empty map.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="size.html">size</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">size</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code><code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long)/expiry">expiry</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))/expiry">expiry</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$add(net.consensys.cava.concurrent.ExpiringSet.E, kotlin.Long, java.util.function.Consumer((net.consensys.cava.concurrent.ExpiringSet.E)))/expiryListener">expiryListener</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Adds the specified element to this set if it is not already present, and expires the entry when the specified expiry time is reached.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="add-all.html">addAll</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">addAll</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$addAll(kotlin.collections.Collection((net.consensys.cava.concurrent.ExpiringSet.E)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="clear.html">clear</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">clear</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="contains.html">contains</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">contains</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$contains(net.consensys.cava.concurrent.ExpiringSet.E)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="contains-all.html">containsAll</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">containsAll</span><span class="symbol">(</span><span class="identifier" id="kotlin.collections.Collection$containsAll(kotlin.collections.Collection((kotlin.collections.Collection.E)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-empty.html">isEmpty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isEmpty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="iterator.html">iterator</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">iterator</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-iterator/index.html"><span class="identifier">MutableIterator</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="purge-expired.html">purgeExpired</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">purgeExpired</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Force immediate expiration of any key/value pairs that have reached their expiry.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="remove.html">remove</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">remove</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$remove(net.consensys.cava.concurrent.ExpiringSet.E)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="remove-all.html">removeAll</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">removeAll</span><span class="symbol">(</span><span class="identifier" id="kotlin.collections.MutableCollection$removeAll(kotlin.collections.Collection((kotlin.collections.MutableCollection.E)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="retain-all.html">retainAll</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">retainAll</span><span class="symbol">(</span><span class="identifier" id="kotlin.collections.MutableCollection$retainAll(kotlin.collections.Collection((kotlin.collections.MutableCollection.E)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="index.html#E"><span class="identifier">E</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-array.html">toArray</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">toArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.ExpiringSet$toArray(kotlin.Array((net.consensys.cava.concurrent.ExpiringSet.toArray.T)))/a">a</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="to-array.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="to-array.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

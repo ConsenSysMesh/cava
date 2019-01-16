@@ -1,0 +1,148 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SQLKeyValueStore - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kv</a>&nbsp;/&nbsp;<a href="./index.html">SQLKeyValueStore</a><br/>
+<br/>
+<h1>SQLKeyValueStore</h1>
+<code><span class="keyword">class </span><span class="identifier">SQLKeyValueStore</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-key-value-store/index.html"><span class="identifier">KeyValueStore</span></a></code> <a href="https://github.com/consensys/cava/blob/master//kv/src/main/kotlin/net/consensys/cava/kv/SQLKeyValueStore.kt#L36">(source)</a>
+<p>A key-value store backed by a relational database.</p>
+<h3>Parameters</h3>
+<p><a name="jdbcurl"></a>
+<code>jdbcurl</code> - The JDBC url to connect to the database.</p>
+<p><a name="tableName"></a>
+<code>tableName</code> - the name of the table to use for storage.</p>
+<p><a name="keyColumn"></a>
+<code>keyColumn</code> - the key column of the store.</p>
+<p><a name="valueColumn"></a>
+<code>valueColumn</code> - the value column of the store.</p>
+<p><a name="dispatcher"></a>
+<code>dispatcher</code> - The co-routine context for blocking tasks.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+A key-value store.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SQLKeyValueStore</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.String, kotlinx.coroutines.CoroutineDispatcher)/jdbcurl">jdbcurl</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.String, kotlinx.coroutines.CoroutineDispatcher)/tableName">tableName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;"store"<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.String, kotlinx.coroutines.CoroutineDispatcher)/keyColumn">keyColumn</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;"key"<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.String, kotlinx.coroutines.CoroutineDispatcher)/valueColumn">valueColumn</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a>&nbsp;<span class="symbol">=</span>&nbsp;"value"<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$<init>(kotlin.String, kotlin.String, kotlin.String, kotlin.String, kotlinx.coroutines.CoroutineDispatcher)/dispatcher">dispatcher</span><span class="symbol">:</span>&nbsp;<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html"><span class="identifier">CoroutineDispatcher</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Dispatchers.IO<span class="symbol">)</span></code>
+<p>Open a relational database backed key-value store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="key-column.html">keyColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">keyColumn</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the key column of the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="table-name.html">tableName</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">tableName</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the name of the table to use for storage.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="value-column.html">valueColumn</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">valueColumn</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>the value column of the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Closes the underlying connection pool.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$get(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span></code>
+<p>Retrieves data from the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="put.html">put</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">put</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore$put(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Puts data into the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-key-value-store/get-async.html">getAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes)/dispatcher">dispatcher</span><span class="symbol">:</span>&nbsp;<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html"><span class="identifier">CoroutineDispatcher</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$getAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">?</span><span class="symbol">&gt;</span></code>
+<p>Retrieves data from the store.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-key-value-store/put-async.html">putAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">putAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/dispatcher">dispatcher</span><span class="symbol">:</span>&nbsp;<a href="https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines/-coroutine-dispatcher/index.html"><span class="identifier">CoroutineDispatcher</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/key">key</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.KeyValueStore$putAsync(kotlinx.coroutines.CoroutineDispatcher, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Puts data into the store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="open.html">open</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">open</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore.Companion$open(kotlin.String)/jdbcUrl">jdbcUrl</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SQLKeyValueStore</span></a></code><br/>
+<code><span class="keyword">fun </span><span class="identifier">open</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore.Companion$open(kotlin.String, kotlin.String, kotlin.String, kotlin.String)/jdbcUrl">jdbcUrl</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore.Companion$open(kotlin.String, kotlin.String, kotlin.String, kotlin.String)/tableName">tableName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore.Companion$open(kotlin.String, kotlin.String, kotlin.String, kotlin.String)/keyColumn">keyColumn</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kv.SQLKeyValueStore.Companion$open(kotlin.String, kotlin.String, kotlin.String, kotlin.String)/valueColumn">valueColumn</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">SQLKeyValueStore</span></a></code>
+<p>Open a relational database backed key-value store.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZException - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="./index.html">SSZException</a><br/>
+<br/>
+<h1>SSZException</h1>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SSZException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZException.java#L18">(source)</a>
+<p>Base type for all SSZ encoding and decoding exceptions.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">SSZException</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZException$<init>(kotlin.String)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">SSZException</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZException$<init>(kotlin.Throwable)/cause">cause</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">SSZException</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZException$<init>(kotlin.String, kotlin.Throwable)/message">message</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZException$<init>(kotlin.String, kotlin.Throwable)/cause">cause</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">)</span></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-end-of-s-s-z-exception/index.html">EndOfSSZException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">EndOfSSZException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SSZException</span></a></code>
+<p>Indicates the end of the SSZ source has been reached unexpectedly.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-invalid-s-s-z-type-exception/index.html">InvalidSSZTypeException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">InvalidSSZTypeException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">SSZException</span></a></code>
+<p>Indicates that an unexpected type was encountered when decoding SSZ.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

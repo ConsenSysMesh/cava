@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLPxConnectionFactory.init - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="index.html">RLPxConnectionFactory</a>&nbsp;/&nbsp;<a href="./init.html">init</a><br/>
+<br/>
+<h1>init</h1>
+<a name="net.consensys.cava.rlpx.RLPxConnectionFactory$init(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.bytes.Bytes32)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$init(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.bytes.Bytes32)/keyPair">keyPair</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$init(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.bytes.Bytes32)/remotePublicKey">remotePublicKey</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$init(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.bytes.Bytes32)/ephemeralKeyPair">ephemeralKeyPair</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$init(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.bytes.Bytes32)/initiatorNonce">initiatorNonce</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes32/index.html"><span class="identifier">Bytes32</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/RLPxConnectionFactory.java#L133">(source)</a>
+<p>Creates a handshake initiation message using ephemeral keys and a random nonce.</p>
+<h3>Parameters</h3>
+<p><a name="keyPair"></a>
+<code>keyPair</code> - our key pair</p>
+<p><a name="remotePublicKey"></a>
+<code>remotePublicKey</code> - the peer public key</p>
+<p><a name="ephemeralKeyPair"></a>
+<code>ephemeralKeyPair</code> - our ephemeral key pair for this connection</p>
+<p><a name="initiatorNonce"></a>
+<code>initiatorNonce</code> - our random nonce</p>
+<p><strong>Return</strong><br/>
+the bytes of a handshake initiation message for a given peer</p>
+</BODY>
+</HTML>

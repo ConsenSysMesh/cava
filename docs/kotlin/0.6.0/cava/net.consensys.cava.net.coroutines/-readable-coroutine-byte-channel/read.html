@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>ReadableCoroutineByteChannel.read - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">ReadableCoroutineByteChannel</a>&nbsp;/&nbsp;<a href="./read.html">read</a><br/>
+<br/>
+<h1>read</h1>
+<a name="net.consensys.cava.net.coroutines.ReadableCoroutineByteChannel$read(java.nio.ByteBuffer)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">read</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.ReadableCoroutineByteChannel$read(java.nio.ByteBuffer)/dst">dst</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineByteChannel.kt#L51">(source)</a>
+<p>Reads a sequence of bytes from this channel into the given buffer.</p>
+<p>An attempt is made to read up to r bytes from the channel, where r is the number of bytes remaining in the buffer,
+that is, dst.remaining(), at the moment this method is invoked. If no bytes are available, then this method
+suspends until at least some bytes can be read.</p>
+<h3>Parameters</h3>
+<p><a name="dst"></a>
+<code>dst</code> - The buffer into which bytes are to be transferred.</p>
+<h3>Exceptions</h3>
+<p><a name="NonReadableChannelException"></a>
+<code>NonReadableChannelException</code> - If this channel was not opened for reading.</p>
+<p><a name="ClosedChannelException"></a>
+<code>ClosedChannelException</code> - If the channel is closed.</p>
+<p><a name="AsynchronousCloseException"></a>
+<code>AsynchronousCloseException</code> - If another thread closes this channel while the read operation is in progress.</p>
+<p><a name="ClosedByInterruptException"></a>
+<code>ClosedByInterruptException</code> - If another thread interrupts the current thread while the read operation is
+in progress, thereby closing the channel and setting the current thread's interrupt status.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If some other I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+The number of bytes read, possibly zero, or <code>-1</code> if the channel has reached end-of-stream.</p>
+</BODY>
+</HTML>

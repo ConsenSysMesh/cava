@@ -1,0 +1,69 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WireConnectionRepository - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="./index.html">WireConnectionRepository</a><br/>
+<br/>
+<h1>WireConnectionRepository</h1>
+<code><span class="keyword">interface </span><span class="identifier">WireConnectionRepository</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/WireConnectionRepository.java#L21">(source)</a>
+<p>A repository managing wire connections.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.WireConnectionRepository$add(net.consensys.cava.rlpx.wire.WireConnection)/wireConnection">wireConnection</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx.wire/-wire-connection/index.html"><span class="identifier">WireConnection</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Adds a new wire connection to the repository.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="as-iterable.html">asIterable</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">asIterable</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-iterable/index.html"><span class="identifier">MutableIterable</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.rlpx.wire/-wire-connection/index.html"><span class="identifier">WireConnection</span></a><span class="symbol">&gt;</span></code>
+<p>Provides a view of the wire connections as an iterable. There is no guarantee of sorting wire connections.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Closes the repository. After it has been closed, the repository should no longer be able to add or retrieve connections.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.WireConnectionRepository$get(kotlin.String)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.rlpx.wire/-wire-connection/index.html"><span class="identifier">WireConnection</span></a></code>
+<p>Gets a wire connection by its identifier, as provided by <code>net.consensys.cava.rlpx.wire.WireConnection#id</code></p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-memory-wire-connections-repository/index.html">MemoryWireConnectionsRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">MemoryWireConnectionsRepository</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">WireConnectionRepository</span></a></code>
+<p>In-memory implementation of the wire connections repository.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

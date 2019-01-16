@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>xorDistCmp - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kademlia</a>&nbsp;/&nbsp;<a href="index.html">kotlin.ByteArray</a>&nbsp;/&nbsp;<a href="./xor-dist-cmp.html">xorDistCmp</a><br/>
+<br/>
+<h1>xorDistCmp</h1>
+<a name="net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)"></a>
+<code><span class="keyword">fun </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">.</span><span class="identifier">xorDistCmp</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)/a">a</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)/b">b</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code> <a href="https://github.com/consensys/cava/blob/master//kademlia/src/main/kotlin/net/consensys/cava/kademlia/KademliaRoutingTable.kt#L49">(source)</a>
+<p>Compare two equal-length byte arrays for their XOR-distance to this.</p>
+<h3>Parameters</h3>
+<p><a name="a"></a>
+<code>a</code> - the first byte array</p>
+<p><a name="b"></a>
+<code>b</code> - the second byte array</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <a href="xor-dist-cmp.html#net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)/a">a</a> or <a href="xor-dist-cmp.html#net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)/b">b</a> are not the same length as this</p>
+<p><strong>Return</strong><br/>
+-1 if <a href="xor-dist-cmp.html#net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)/a">a</a> is closer, +1 if <a href="xor-dist-cmp.html#net.consensys.cava.kademlia$xorDistCmp(kotlin.ByteArray, kotlin.ByteArray, kotlin.ByteArray)/b">b</a> is closer, or 0 if they are the same distance to this</p>
+</BODY>
+</HTML>

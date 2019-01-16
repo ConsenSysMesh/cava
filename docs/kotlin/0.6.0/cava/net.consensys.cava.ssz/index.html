@@ -1,0 +1,76 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.ssz - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.ssz</a><br/>
+<br/>
+<h2>Package net.consensys.cava.ssz</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-s-s-z/index.html">SSZ</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">SSZ</span></code>
+<p>Simple Serialize (SSZ) encoding and decoding.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-s-s-z-reader/index.html">SSZReader</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">SSZReader</span></code>
+<p>A reader for consuming values from an SSZ encoded source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-s-s-z-writer/index.html">SSZWriter</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">SSZWriter</span></code>
+<p>A writer for encoding values to SSZ.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-end-of-s-s-z-exception/index.html">EndOfSSZException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">EndOfSSZException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-s-s-z-exception/index.html"><span class="identifier">SSZException</span></a></code>
+<p>Indicates the end of the SSZ source has been reached unexpectedly.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-invalid-s-s-z-type-exception/index.html">InvalidSSZTypeException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">InvalidSSZTypeException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-s-s-z-exception/index.html"><span class="identifier">SSZException</span></a></code>
+<p>Indicates that an unexpected type was encountered when decoding SSZ.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-s-s-z-exception/index.html">SSZException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">SSZException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>Base type for all SSZ encoding and decoding exceptions.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

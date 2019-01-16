@@ -1,0 +1,86 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WireConnection - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx.wire</a>&nbsp;/&nbsp;<a href="./index.html">WireConnection</a><br/>
+<br/>
+<h1>WireConnection</h1>
+<code><span class="keyword">class </span><span class="identifier">WireConnection</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/wire/WireConnection.java#L35">(source)</a>
+<p>A stateful connection between two peers under the Devp2p wire protocol.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">WireConnection</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/id">id</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/peerNodeId">peerNodeId</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/logger">logger</span><span class="symbol">:</span>&nbsp;<span class="identifier">Logger</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/writer">writer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.rlpx/-r-l-px-message/index.html"><span class="identifier">RLPxMessage</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/afterHandshakeListener">afterHandshakeListener</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-hello-message/index.html"><span class="identifier">HelloMessage</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/disconnectHandler">disconnectHandler</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Runnable.html"><span class="identifier">Runnable</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/subprotocols">subprotocols</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/LinkedHashMap.html"><span class="identifier">LinkedHashMap</span></a><span class="symbol">&lt;</span><a href="../-sub-protocol/index.html"><span class="identifier">SubProtocol</span></a><span class="symbol">,</span>&nbsp;<a href="../-sub-protocol-handler/index.html"><span class="identifier">SubProtocolHandler</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/p2pVersion">p2pVersion</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/clientId">clientId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$<init>(kotlin.String, net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes, org.logl.Logger, java.util.function.Consumer((net.consensys.cava.rlpx.RLPxMessage)), java.util.function.Consumer((net.consensys.cava.rlpx.wire.HelloMessage)), java.lang.Runnable, java.util.LinkedHashMap((net.consensys.cava.rlpx.wire.SubProtocol, net.consensys.cava.rlpx.wire.SubProtocolHandler)), kotlin.Int, kotlin.String, kotlin.Int)/advertisedPort">advertisedPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code>
+<p>Default constructor.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="disconnect.html">disconnect</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">disconnect</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$disconnect(net.consensys.cava.rlpx.wire.DisconnectReason)/reason">reason</span><span class="symbol">:</span>&nbsp;<a href="../-disconnect-reason/index.html"><span class="identifier">DisconnectReason</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Sends a message to the peer explaining that we are about to disconnect.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="handle-connection-start.html">handleConnectionStart</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">handleConnectionStart</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">id</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="message-received.html">messageReceived</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">messageReceived</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$messageReceived(net.consensys.cava.rlpx.RLPxMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx/-r-l-px-message/index.html"><span class="identifier">RLPxMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="send-message.html">sendMessage</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">sendMessage</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.WireConnection$sendMessage(net.consensys.cava.rlpx.wire.WireSubProtocolMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../-wire-sub-protocol-message/index.html"><span class="identifier">WireSubProtocolMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="send-ping.html">sendPing</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">sendPing</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Sends a ping message to the remote peer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,35 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZReader.readString - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZReader</a>&nbsp;/&nbsp;<a href="./read-string.html">readString</a><br/>
+<br/>
+<h1>readString</h1>
+<a name="net.consensys.cava.ssz.SSZReader$readString()"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZReader.java#L89">(source)</a>
+<p>Read a string value from the SSZ source. Note: prefer to use <code><a href="./read-string.html">#readString(int)</a></code> instead, especially when reading untrusted data.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If the next SSZ value is not a byte array, or is too large (greater than 2^32 bytes).</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+A string.</p>
+<a name="net.consensys.cava.ssz.SSZReader$readString(kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZReader$readString(kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZReader.java#L101">(source)</a>
+<p>Read a string value from the SSZ source.</p>
+<h3>Parameters</h3>
+<p><a name="limit"></a>
+<code>limit</code> - The maximum number of bytes to read.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If the next SSZ value is not a byte array, or would exceed the limit.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+A string.</p>
+</BODY>
+</HTML>

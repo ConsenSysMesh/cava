@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZWriter.writeIntList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="index.html">SSZWriter</a>&nbsp;/&nbsp;<a href="./write-int-list.html">writeIntList</a><br/>
+<br/>
+<h1>writeIntList</h1>
+<a name="net.consensys.cava.ssz.experimental.SSZWriter$writeIntList(kotlin.Int, kotlin.IntArray)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">writeIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeIntList(kotlin.Int, kotlin.IntArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.experimental.SSZWriter$writeIntList(kotlin.Int, kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZWriter.kt#L245">(source)</a>
+<p>Write a list of two's compliment integers.</p>
+<h3>Parameters</h3>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the encoded integers (must be a multiple of 8).</p>
+<p><a name="elements"></a>
+<code>elements</code> - The integers to write as a list.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If any values are too large for the specified bit length.</p>
+</BODY>
+</HTML>

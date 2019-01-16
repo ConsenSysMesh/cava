@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.encodeUInt - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./encode-u-int.html">encodeUInt</a><br/>
+<br/>
+<h1>encodeUInt</h1>
+<a name="net.consensys.cava.ssz.SSZ$encodeUInt(kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt(kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt(kotlin.Int, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L261">(source)</a>
+<p>Encode an unsigned integer to a Bytes value.</p>
+<h3>Parameters</h3>
+<p><a name="value"></a>
+<code>value</code> - The integer to encode.</p>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the encoded integer value (must be a multiple of 8).</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If the value is too large for the specified <code>bitLength</code>.</p>
+<p><strong>Return</strong><br/>
+The SSZ encoding in a Bytes value.</p>
+</BODY>
+</HTML>

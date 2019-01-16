@@ -1,0 +1,37 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineDatagramChannel.bind - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineDatagramChannel</a>&nbsp;/&nbsp;<a href="./bind.html">bind</a><br/>
+<br/>
+<h1>bind</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineDatagramChannel$bind(java.net.SocketAddress)"></a>
+<code><span class="keyword">fun </span><span class="identifier">bind</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineDatagramChannel$bind(java.net.SocketAddress)/local">local</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">CoroutineDatagramChannel</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineDatagramChannel.kt#L73">(source)</a>
+<p>Overrides <a href="../-coroutine-network-channel/bind.html">CoroutineNetworkChannel.bind</a></p>
+<p>Binds the channel's socket to a local address.</p>
+<p>This method is used to establish an association between the socket and a local address. Once an association is
+established then the socket remains bound until the channel is closed. If the <code>local</code> parameter has the value
+<code>null</code> then the socket will be bound to an address that is assigned automatically.</p>
+<h3>Parameters</h3>
+<p><a name="local"></a>
+<code>local</code> - The address to bind the socket, or <code>null</code> to bind the socket to an automatically assigned socket
+    address.</p>
+<h3>Exceptions</h3>
+<p><a name="AlreadyBoundException"></a>
+<code>AlreadyBoundException</code> - If the socket is already bound.</p>
+<p><a name="UnsupportedAddressTypeException"></a>
+<code>UnsupportedAddressTypeException</code> - If the type of the given address is not supported.</p>
+<p><a name="ClosedChannelException"></a>
+<code>ClosedChannelException</code> - If the channel is closed.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If some other I/O error occurs.</p>
+<p><a name="SecurityException"></a>
+<code>SecurityException</code> - If a security manager is installed and it denies an unspecified permission. An
+    implementation of this interface should specify any required permissions.</p>
+<p><strong>Return</strong><br/>
+This channel.</p>
+</BODY>
+</HTML>

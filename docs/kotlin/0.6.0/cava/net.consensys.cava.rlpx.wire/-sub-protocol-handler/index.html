@@ -1,0 +1,46 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SubProtocolHandler - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx.wire</a>&nbsp;/&nbsp;<a href="./index.html">SubProtocolHandler</a><br/>
+<br/>
+<h1>SubProtocolHandler</h1>
+<code><span class="keyword">interface </span><span class="identifier">SubProtocolHandler</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/wire/SubProtocolHandler.java#L20">(source)</a>
+<p>Handler managing messages and new connections of peers related for a given subprotocol.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="handle.html">handle</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">handle</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.SubProtocolHandler$handle(net.consensys.cava.rlpx.wire.WireSubProtocolMessage)/message">message</span><span class="symbol">:</span>&nbsp;<a href="../-wire-sub-protocol-message/index.html"><span class="identifier">WireSubProtocolMessage</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Handle an incoming wire protocol message</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="new-peer-connection.html">newPeerConnection</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">newPeerConnection</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.SubProtocolHandler$newPeerConnection(net.consensys.cava.rlpx.wire.WireConnection)/conn">conn</span><span class="symbol">:</span>&nbsp;<a href="../-wire-connection/index.html"><span class="identifier">WireConnection</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Handle a new peer connection</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="stop.html">stop</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">stop</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-completion/index.html"><span class="identifier">AsyncCompletion</span></a></code>
+<p>Stops a subprotocol operations.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

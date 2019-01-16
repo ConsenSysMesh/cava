@@ -1,0 +1,34 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncCompletion.thenSupply - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncCompletion</a>&nbsp;/&nbsp;<a href="./then-supply.html">thenSupply</a><br/>
+<br/>
+<h1>thenSupply</h1>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$thenSupply(java.util.function.Supplier((net.consensys.cava.concurrent.AsyncCompletion.thenSupply.U)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenSupply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$thenSupply(java.util.function.Supplier((net.consensys.cava.concurrent.AsyncCompletion.thenSupply.U)))/supplier">supplier</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="then-supply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="then-supply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L391">(source)</a>
+<p>Returns a completion that, when this result completes normally, completes with the value obtained after executing the supplied function.</p>
+<h3>Parameters</h3>
+<p><a name="supplier"></a>
+<code>supplier</code> - The function to use to compute the value of the returned result.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The function's return type.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$thenSupply(io.vertx.core.Vertx, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncCompletion.thenSupply.U)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">U</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">thenSupply</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$thenSupply(io.vertx.core.Vertx, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncCompletion.thenSupply.U)))/vertx">vertx</span><span class="symbol">:</span>&nbsp;<span class="identifier">Vertx</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$thenSupply(io.vertx.core.Vertx, java.util.function.Supplier((net.consensys.cava.concurrent.AsyncCompletion.thenSupply.U)))/supplier">supplier</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Supplier.html"><span class="identifier">Supplier</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="then-supply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="then-supply.html#U"><span class="identifier">U</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L402">(source)</a>
+<p>Returns a completion that, when this result completes normally, completes with the value obtained after executing the supplied function on the vertx context.</p>
+<h3>Parameters</h3>
+<p><a name="vertx"></a>
+<code>vertx</code> - The vertx context.</p>
+<p><a name="supplier"></a>
+<code>supplier</code> - The function to use to compute the value of the returned result.</p>
+<p><a name="&lt;U&gt;"></a>
+<code><U></code> - The function's return type.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

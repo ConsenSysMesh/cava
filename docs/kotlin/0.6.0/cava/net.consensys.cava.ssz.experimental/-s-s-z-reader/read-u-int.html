@@ -1,0 +1,26 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZReader.readUInt - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="index.html">SSZReader</a>&nbsp;/&nbsp;<a href="./read-u-int.html">readUInt</a><br/>
+<br/>
+<h1>readUInt</h1>
+<a name="net.consensys.cava.ssz.experimental.SSZReader$readUInt(kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZReader$readUInt(kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZReader.kt#L136">(source)</a>
+<p>Read an unsigned int value from the SSZ source.</p>
+<h3>Parameters</h3>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the integer to read (a multiple of 8).</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If there are insufficient encoded bytes for the desired bit length, or the decoded
+value was too large to fit into an int.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+An unsigned int.</p>
+</BODY>
+</HTML>

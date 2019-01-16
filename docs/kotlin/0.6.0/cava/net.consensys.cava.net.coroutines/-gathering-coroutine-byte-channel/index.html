@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>GatheringCoroutineByteChannel - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">GatheringCoroutineByteChannel</a><br/>
+<br/>
+<h1>GatheringCoroutineByteChannel</h1>
+<code><span class="keyword">interface </span><span class="identifier">GatheringCoroutineByteChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-writable-coroutine-byte-channel/index.html"><span class="identifier">WritableCoroutineByteChannel</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineByteChannel.kt#L240">(source)</a>
+<p>A channel that can write bytes from a sequence of buffers.</p>
+<p><strong>Author</strong><br/>
+Chris Leishman - https://cleishm.github.io/</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="try-write.html">tryWrite</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">tryWrite</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.GatheringCoroutineByteChannel$tryWrite(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/srcs">srcs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.GatheringCoroutineByteChannel$tryWrite(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.GatheringCoroutineByteChannel$tryWrite(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;srcs.size<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Writes a sequence of bytes to this channel from a subsequence of the given buffers, if the channel is ready for writing.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="write.html">write</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">write</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.GatheringCoroutineByteChannel$write(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/srcs">srcs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-array/index.html"><span class="identifier">Array</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.GatheringCoroutineByteChannel$write(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;0<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.GatheringCoroutineByteChannel$write(kotlin.Array((java.nio.ByteBuffer)), kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;srcs.size<span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Writes a sequence of bytes to this channel from a subsequence of the given buffers.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-writable-coroutine-byte-channel/try-write.html">tryWrite</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">tryWrite</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.WritableCoroutineByteChannel$tryWrite(java.nio.ByteBuffer)/src">src</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Writes a sequence of bytes to this channel from the given buffer, if the channel is ready for writing.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-writable-coroutine-byte-channel/write.html">write</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">write</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.WritableCoroutineByteChannel$write(java.nio.ByteBuffer)/src">src</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Writes a sequence of bytes to this channel from the given buffer.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-coroutine-datagram-channel/index.html">CoroutineDatagramChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineDatagramChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-coroutine-network-channel/index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based datagram-oriented network channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-coroutine-socket-channel/index.html">CoroutineSocketChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineSocketChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-coroutine-network-channel/index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based stream-oriented network channel.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

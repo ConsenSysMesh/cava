@@ -1,0 +1,68 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>EthereumIESEncryptionEngine - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="./index.html">EthereumIESEncryptionEngine</a><br/>
+<br/>
+<h1>EthereumIESEncryptionEngine</h1>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">EthereumIESEncryptionEngine</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/EthereumIESEncryptionEngine.java#L31">(source)</a>
+<p>Support class for constructing integrated encryption ciphers for doing basic message exchanges on top of key agreement ciphers. Follows the description given in IEEE Std 1363a.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">EthereumIESEncryptionEngine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/agree">agree</span><span class="symbol">:</span>&nbsp;<span class="identifier">BasicAgreement</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/kdf">kdf</span><span class="symbol">:</span>&nbsp;<span class="identifier">DerivationFunction</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/mac">mac</span><span class="symbol">:</span>&nbsp;<span class="identifier">Mac</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/commonMac">commonMac</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span></code>
+<p>Set up for use with stream mode, where the key derivation function is used to provide a stream of bytes to xor with the message.</p>
+<code><span class="identifier">EthereumIESEncryptionEngine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/agree">agree</span><span class="symbol">:</span>&nbsp;<span class="identifier">BasicAgreement</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/kdf">kdf</span><span class="symbol">:</span>&nbsp;<span class="identifier">DerivationFunction</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/mac">mac</span><span class="symbol">:</span>&nbsp;<span class="identifier">Mac</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/commonMac">commonMac</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/cipher">cipher</span><span class="symbol">:</span>&nbsp;<span class="identifier">BufferedBlockCipher</span><span class="symbol">)</span></code>
+<p>Set up for use in conjunction with a block cipher to handle the message. It is <strong>strongly</strong> recommended that the cipher is not in ECB mode.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get-cipher.html">getCipher</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getCipher</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">BufferedBlockCipher</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="get-mac.html">getMac</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getMac</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">Mac</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="init.html">init</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/forEncryption">forEncryption</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/privParam">privParam</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/pubParam">pubParam</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/params">params</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code><br/>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)/privateKey">privateKey</span><span class="symbol">:</span>&nbsp;<span class="identifier">AsymmetricKeyParameter</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)/params">params</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)/publicKeyParser">publicKeyParser</span><span class="symbol">:</span>&nbsp;<span class="identifier">KeyParser</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Initialise the encryptor.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)/publicKey">publicKey</span><span class="symbol">:</span>&nbsp;<span class="identifier">AsymmetricKeyParameter</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)/params">params</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)/ephemeralKeyPairGenerator">ephemeralKeyPairGenerator</span><span class="symbol">:</span>&nbsp;<span class="identifier">EphemeralKeyPairGenerator</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Initialise the decryptor.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="process-block.html">processBlock</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">processBlock</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$processBlock(kotlin.ByteArray, kotlin.Int, kotlin.Int)/in">in</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$processBlock(kotlin.ByteArray, kotlin.Int, kotlin.Int)/inOff">inOff</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$processBlock(kotlin.ByteArray, kotlin.Int, kotlin.Int)/inLen">inLen</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

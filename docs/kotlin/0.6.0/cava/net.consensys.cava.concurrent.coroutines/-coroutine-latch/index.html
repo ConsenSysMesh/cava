@@ -1,0 +1,93 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineLatch - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">CoroutineLatch</a><br/>
+<br/>
+<h1>CoroutineLatch</h1>
+<code><span class="keyword">class </span><span class="identifier">CoroutineLatch</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/CoroutineLatch.kt#L36">(source)</a>
+<p>A co-routine synchronization aid that allows co-routines to wait until a set of operations being performed
+has completed.</p>
+<p>The latch is initialized with a given count. If the latch count is greater than zero, the <code>await()</code> method will
+suspend until the count reaches zero due to invocations of the <code>countDown()</code> method, at which point all suspended
+co-routines will be resumed.</p>
+<p>Unlike the Java <code>CountDownLatch</code>, this latch allows the count to be increased via invocation of the <code>countUp()</code>
+method. Increasing the count from zero will result in calls to <code>await()</code> suspending again. Note that the count may
+be negative, requiring multiple calls to <code>countUp()</code> before calls to <code>await()</code> suspend.</p>
+<h3>Parameters</h3>
+<p><a name="initial"></a>
+<code>initial</code> - The initial count of the latch, which may be positive, zero, or negative.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">CoroutineLatch</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines.CoroutineLatch$<init>(kotlin.Int)/initial">initial</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span></code>
+<p>A latch.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="count.html">count</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">count</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The current latch count.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-open.html">isOpen</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">isOpen</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Indicates if the latch is open (<code>count &lt;= 0</code>).</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="await.html">await</a></p>
+</td>
+<td>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">await</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Await the latch opening. If already open, return without suspending.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="count-down.html">countDown</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">countDown</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Decrease the latch count, potentially opening the latch and awakening suspending co-routines.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="count-up.html">countUp</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">countUp</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Increase the latch count, potentially closing the latch.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

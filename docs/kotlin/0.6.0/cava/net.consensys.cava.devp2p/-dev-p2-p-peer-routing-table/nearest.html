@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>DevP2PPeerRoutingTable.nearest - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.devp2p</a>&nbsp;/&nbsp;<a href="index.html">DevP2PPeerRoutingTable</a>&nbsp;/&nbsp;<a href="./nearest.html">nearest</a><br/>
+<br/>
+<h1>nearest</h1>
+<a name="net.consensys.cava.devp2p.DevP2PPeerRoutingTable$nearest(net.consensys.cava.crypto.SECP256K1.PublicKey, kotlin.Int)"></a>
+<code><span class="keyword">fun </span><span class="identifier">nearest</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.DevP2PPeerRoutingTable$nearest(net.consensys.cava.crypto.SECP256K1.PublicKey, kotlin.Int)/targetId">targetId</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.DevP2PPeerRoutingTable$nearest(net.consensys.cava.crypto.SECP256K1.PublicKey, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/PeerRoutingTable.kt#L87">(source)</a>
+<p>Overrides <a href="../-peer-routing-table/nearest.html">PeerRoutingTable.nearest</a></p>
+<p>Return the nearest nodes to a target id, in order from closest to furthest.</p>
+<p>The sort order is the log distance from the target to the node-id's of the Peers.</p>
+<h3>Parameters</h3>
+<p><a name="targetId"></a>
+<code>targetId</code> - the id to find nodes nearest to</p>
+<p><a name="limit"></a>
+<code>limit</code> - the maximum number of nodes to return</p>
+<p><strong>Return</strong><br/>
+a list of nodes from the routing table</p>
+</BODY>
+</HTML>

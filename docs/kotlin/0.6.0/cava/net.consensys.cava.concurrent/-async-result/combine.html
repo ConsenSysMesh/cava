@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncResult.combine - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncResult</a>&nbsp;/&nbsp;<a href="./combine.html">combine</a><br/>
+<br/>
+<h1>combine</h1>
+<a name="net.consensys.cava.concurrent.AsyncResult$combine(kotlin.collections.MutableCollection((net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.combine.T)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">combine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$combine(kotlin.collections.MutableCollection((net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.combine.T)))))/rs">rs</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-collection/index.html"><span class="identifier">MutableCollection</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="combine.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="combine.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L127">(source)</a><br/>
+<a name="net.consensys.cava.concurrent.AsyncResult$combine(java.util.stream.Stream((net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.combine.T)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">combine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncResult$combine(java.util.stream.Stream((net.consensys.cava.concurrent.AsyncResult((net.consensys.cava.concurrent.AsyncResult.combine.T)))))/rs">rs</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/stream/Stream.html"><span class="identifier">Stream</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><span class="keyword">out</span>&nbsp;<a href="combine.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="combine.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncResult.java#L139">(source)</a>
+<p>Returns a result that completes when all of the given results complete. If any results complete exceptionally, then the resulting completion also completes exceptionally.</p>
+<h3>Parameters</h3>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the values that this result will complete with.</p>
+<p><a name="rs"></a>
+<code>rs</code> - The results to combine.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,24 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLPxConnectionFactory.createHandshake - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="index.html">RLPxConnectionFactory</a>&nbsp;/&nbsp;<a href="./create-handshake.html">createHandshake</a><br/>
+<br/>
+<h1>createHandshake</h1>
+<a name="net.consensys.cava.rlpx.RLPxConnectionFactory$createHandshake(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, java.util.function.Function((net.consensys.cava.bytes.Bytes, net.consensys.cava.concurrent.AsyncResult(()))))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">createHandshake</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$createHandshake(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, java.util.function.Function((net.consensys.cava.bytes.Bytes, net.consensys.cava.concurrent.AsyncResult(()))))/keyPair">keyPair</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$createHandshake(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, java.util.function.Function((net.consensys.cava.bytes.Bytes, net.consensys.cava.concurrent.AsyncResult(()))))/remotePublicKey">remotePublicKey</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.RLPxConnectionFactory$createHandshake(net.consensys.cava.crypto.SECP256K1.KeyPair, net.consensys.cava.crypto.SECP256K1.PublicKey, java.util.function.Function((net.consensys.cava.bytes.Bytes, net.consensys.cava.concurrent.AsyncResult(()))))/initAndResponse">initAndResponse</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">,</span>&nbsp;<a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-r-l-px-connection/index.html"><span class="identifier">RLPxConnection</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/RLPxConnectionFactory.java#L64">(source)</a>
+<p>Creates a complete interaction to run a handshake with a remote peer.</p>
+<h3>Parameters</h3>
+<p><a name="keyPair"></a>
+<code>keyPair</code> - our key pair</p>
+<p><a name="remotePublicKey"></a>
+<code>remotePublicKey</code> - the peer public key</p>
+<p><a name="initAndResponse"></a>
+<code>initAndResponse</code> - a function giving us the peer response, and allowing us to respond to them to finalize the handshake</p>
+<p><strong>Return</strong><br/>
+a future RLPxConnection created as the result of the handshake</p>
+</BODY>
+</HTML>

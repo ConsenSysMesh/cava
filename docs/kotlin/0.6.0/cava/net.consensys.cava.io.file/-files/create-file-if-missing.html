@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Files.createFileIfMissing - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.io.file</a>&nbsp;/&nbsp;<a href="index.html">Files</a>&nbsp;/&nbsp;<a href="./create-file-if-missing.html">createFileIfMissing</a><br/>
+<br/>
+<h1>createFileIfMissing</h1>
+<a name="net.consensys.cava.io.file.Files$createFileIfMissing(java.nio.file.Path, kotlin.Array((java.nio.file.attribute.FileAttribute((kotlin.Any)))))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">createFileIfMissing</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.io.file.Files$createFileIfMissing(java.nio.file.Path, kotlin.Array((java.nio.file.attribute.FileAttribute((kotlin.Any)))))/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.io.file.Files$createFileIfMissing(java.nio.file.Path, kotlin.Array((java.nio.file.attribute.FileAttribute((kotlin.Any)))))/attrs">attrs</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/attribute/FileAttribute.html"><span class="identifier">FileAttribute</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//io/src/main/java/net/consensys/cava/io/file/Files.java#L53">(source)</a>
+<p>Create a file, if it does not already exist.</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The path to the file to create.</p>
+<p><a name="attrs"></a>
+<code>attrs</code> - An optional list of file attributes to set atomically when creating the file.</p>
+<h3>Exceptions</h3>
+<p><a name="IOException"></a>
+<code>IOException</code> - If an I/O error occurs or the parent directory does not exist.</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if the file was created.</p>
+</BODY>
+</HTML>

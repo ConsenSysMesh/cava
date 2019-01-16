@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Peer.verifyEndpoint - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.devp2p</a>&nbsp;/&nbsp;<a href="index.html">Peer</a>&nbsp;/&nbsp;<a href="./verify-endpoint.html">verifyEndpoint</a><br/>
+<br/>
+<h1>verifyEndpoint</h1>
+<a name="net.consensys.cava.devp2p.Peer$verifyEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">verifyEndpoint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.Peer$verifyEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long)/endpoint">endpoint</span><span class="symbol">:</span>&nbsp;<a href="../-endpoint/index.html"><span class="identifier">Endpoint</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Peer$verifyEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/Peer.kt#L77">(source)</a>
+<p>Set the <a href="last-verified.html">lastVerified</a> and <a href="last-seen.html">lastSeen</a> time to the provided time, if the endpoint matches.</p>
+<p>Will only update <a href="last-verified.html">lastVerified</a> and/or <a href="last-seen.html">lastSeen</a> if the new time is more recent than their current values.</p>
+<h3>Parameters</h3>
+<p><a name="endpoint"></a>
+<code>endpoint</code> - the endpoint that was verified, which must match this peer's endpoint</p>
+<p><a name="time"></a>
+<code>time</code> - the time when the endpoint was verified, in milliseconds since the epoch</p>
+<p><strong>Return</strong><br/>
+<code>true</code> if the endpoint matched the endpoint of this peer</p>
+</BODY>
+</HTML>

@@ -1,0 +1,41 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Bytes.wrapByteBuffer - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="index.html">Bytes</a>&nbsp;/&nbsp;<a href="./wrap-byte-buffer.html">wrapByteBuffer</a><br/>
+<br/>
+<h1>wrapByteBuffer</h1>
+<a name="net.consensys.cava.bytes.Bytes$wrapByteBuffer(java.nio.ByteBuffer)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapByteBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapByteBuffer(java.nio.ByteBuffer)/byteBuffer">byteBuffer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L218">(source)</a>
+<p>Wrap a full Java NIO ByteBuffer as a Bytes value. 
+<p> Note that any change to the content of the byteBuf may be reflected in the returned value.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="byteBuffer"></a>
+<code>byteBuffer</code> - The ByteBuffer to wrap.</p>
+<p><strong>Return</strong><br/>
+A Bytes value.</p>
+<a name="net.consensys.cava.bytes.Bytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)"></a>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapByteBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)/byteBuffer">byteBuffer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)/size">size</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/Bytes.java#L241">(source)</a>
+<p>Wrap a slice of a Java NIO ByteBuf as a Bytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="byteBuffer"></a>
+<code>byteBuffer</code> - The ByteBuffer to wrap.</p>
+<p><a name="offset"></a>
+<code>offset</code> - The offset in <code>byteBuffer</code> from which to expose the bytes in the returned value. That is, <code>wrapByteBuffer(byteBuffer, i, 1).get(0) == byteBuffer.getByte(i)</code>.</p>
+<p><a name="size"></a>
+<code>size</code> - The size of the returned value.</p>
+<h3>Exceptions</h3>
+<p><a name="IndexOutOfBoundsException"></a>
+<code>IndexOutOfBoundsException</code> - if <code>offset &amp;lt; 0 || (byteBuffer.limit() &gt; 0 &amp;&amp; offset &gt;= byteBuf.limit())</code>.</p>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if <code>length &amp;lt; 0 || offset + length &gt; byteBuffer.limit()</code>.</p>
+<p><strong>Return</strong><br/>
+A Bytes value.</p>
+</BODY>
+</HTML>

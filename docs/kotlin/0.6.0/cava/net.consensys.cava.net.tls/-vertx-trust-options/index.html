@@ -1,0 +1,127 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>VertxTrustOptions - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.tls</a>&nbsp;/&nbsp;<a href="./index.html">VertxTrustOptions</a><br/>
+<br/>
+<h1>VertxTrustOptions</h1>
+<code><span class="keyword">class </span><span class="identifier">VertxTrustOptions</span></code> <a href="https://github.com/consensys/cava/blob/master//net/src/main/java/net/consensys/cava/net/tls/VertxTrustOptions.java#L27">(source)</a>
+<p>Vert.x TrustOptions for fingerprinting clients and servers. 
+<p> This class depends upon the Vert.X library being available on the classpath, along with its dependencies. See https://vertx.io/download/. Vert.X can be included using the gradle dependency 'io.vertx:vertx-core'.</p>
+</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="record-client-fingerprints.html">recordClientFingerprints</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordClientFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordClientFingerprints(java.nio.file.Path)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordClientFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordClientFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordClientFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept all client certificates, recording certificate fingerprints for those that are not CA-signed. 
+<p> Excepting when a client presents a CA-signed certificate, the certificate common name and fingerprint will be written to <code>knownClientsFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordClientFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordClientFingerprints(java.nio.file.Path, kotlin.Boolean)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordClientFingerprints(java.nio.file.Path, kotlin.Boolean)/skipCASigned">skipCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept all client certificates, recording certificate fingerprints. 
+<p> For all connections, the common name and fingerprint of the presented certificate will be written to <code>knownClientsFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="record-server-fingerprints.html">recordServerFingerprints</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordServerFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordServerFingerprints(java.nio.file.Path)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordServerFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordServerFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordServerFingerprints(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept all server certificates, recording certificate fingerprints for those that are not CA-signed. 
+<p> Excepting when a server presents a CA-signed certificate, the server host+port and the certificate fingerprint will be written to <code>knownServersFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">recordServerFingerprints</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordServerFingerprints(java.nio.file.Path, kotlin.Boolean)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$recordServerFingerprints(java.nio.file.Path, kotlin.Boolean)/skipCASigned">skipCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept all server certificates, recording certificate fingerprints. 
+<p> For all connections, the server host+port and the fingerprint of the presented certificate will be written to <code>knownServersFile</code>. </p>
+<p> Important: this provides no security as it is vulnerable to man-in-the-middle attacks.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="trust-client-on-first-access.html">trustClientOnFirstAccess</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">trustClientOnFirstAccess</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustClientOnFirstAccess(java.nio.file.Path)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept CA-signed client certificates, and otherwise trust client certificates on first access. 
+<p> Except when a client presents a CA-signed certificate, on first connection to this server the common name and fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected if the fingerprint has changed. </p>
+<p> <em>Note: unlike the seemingly equivalent <code><a href="trust-server-on-first-use.html">#trustServerOnFirstUse(Path)</a></code> method for authenticating servers, this method for authenticating clients is <strong>insecure</strong> and <strong>provides zero confidence in client identity</strong>. Unlike the server version, which bases the identity on the hostname and port the connection is being established to, the client version only uses the common name of the certificate that the connecting client presents. Therefore, clients can circumvent access control by using a different common name from any previously recorded client.</em></p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">trustClientOnFirstAccess</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustClientOnFirstAccess(java.nio.file.Path, kotlin.Boolean)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustClientOnFirstAccess(java.nio.file.Path, kotlin.Boolean)/acceptCASigned">acceptCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Trust client certificates on first access. 
+<p> On first connection to this server the common name and fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected if the fingerprint has changed. </p>
+<p> <em>Note: unlike the seemingly equivalent <code><a href="trust-server-on-first-use.html">#trustServerOnFirstUse(Path)</a></code> method for authenticating servers, this method for authenticating clients is <strong>insecure</strong> and <strong>provides zero confidence in client identity</strong>. Unlike the server version, which bases the identity on the hostname and port the connection is being established to, the client version only uses the common name of the certificate that the connecting client presents. Therefore, clients can circumvent access control by using a different common name from any previously recorded client.</em></p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">trustClientOnFirstAccess</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustClientOnFirstAccess(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustClientOnFirstAccess(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept CA-signed certificates, and otherwise trust client certificates on first access. 
+<p> Except when a client presents a CA-signed certificate, on first connection to this server the common name and fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected if the fingerprint has changed. </p>
+<p> <em>Note: unlike the seemingly equivalent <code><a href="trust-server-on-first-use.html">#trustServerOnFirstUse(Path)</a></code> method for authenticating servers, this method for authenticating clients is <strong>insecure</strong> and <strong>provides zero confidence in client identity</strong>. Unlike the server version, which bases the identity on the hostname and port the connection is being established to, the client version only uses the common name of the certificate that the connecting client presents. Therefore, clients can circumvent access control by using a different common name from any previously recorded client.</em></p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="trust-server-on-first-use.html">trustServerOnFirstUse</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">trustServerOnFirstUse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustServerOnFirstUse(java.nio.file.Path)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">trustServerOnFirstUse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustServerOnFirstUse(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustServerOnFirstUse(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Accept CA-signed certificates, and otherwise trust server certificates on first use. 
+<p> Except when a server presents a CA-signed certificate, on first connection to a server (identified by host+port) the fingerprint of the presented certificate will be recorded. On subsequent connections, the presented certificate will be matched to the stored fingerprint to ensure it has not changed.</p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">trustServerOnFirstUse</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustServerOnFirstUse(java.nio.file.Path, kotlin.Boolean)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$trustServerOnFirstUse(java.nio.file.Path, kotlin.Boolean)/acceptCASigned">acceptCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Trust server certificates on first use. 
+<p> On first connection to a server (identified by host+port) the fingerprint of the presented certificate will be recorded. On subsequent connections, the presented certificate will be matched to the stored fingerprint to ensure it has not changed.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="whitelist-clients.html">whitelistClients</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistClients</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistClients</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Require clients to present known certificates, or CA-signed certificates. 
+<p> If a certificate is not CA-signed, then its common name and fingerprint must be present in the <code>knownClientsFile</code>.</p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistClients</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, kotlin.Boolean)/knownClientsFile">knownClientsFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistClients(java.nio.file.Path, kotlin.Boolean)/acceptCASigned">acceptCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Require clients to present known certificates. 
+<p> The common name and fingerprint for a client certificate must be present in <code>knownClientsFile</code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="whitelist-servers.html">whitelistServers</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistServers</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistServers(java.nio.file.Path)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistServers</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistServers(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistServers(java.nio.file.Path, javax.net.ssl.TrustManagerFactory)/tmf">tmf</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/javax/net/ssl/TrustManagerFactory.html"><span class="identifier">TrustManagerFactory</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Require servers to present known certificates, or CA-signed certificates. 
+<p> If a certificate is not CA-signed, then its fingerprint must be present in the known servers file, associated with the server (identified by host+port).</p>
+</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">whitelistServers</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistServers(java.nio.file.Path, kotlin.Boolean)/knownServersFile">knownServersFile</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.tls.VertxTrustOptions$whitelistServers(java.nio.file.Path, kotlin.Boolean)/acceptCASigned">acceptCASigned</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">TrustOptions</span></code>
+<p>Require servers to present known certificates. 
+<p> The fingerprint for a server certificate must be present in the known servers file, associated with the server (identified by host+port).</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

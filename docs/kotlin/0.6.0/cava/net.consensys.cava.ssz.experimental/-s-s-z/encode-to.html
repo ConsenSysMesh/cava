@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.encodeTo - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./encode-to.html">encodeTo</a><br/>
+<br/>
+<h1>encodeTo</h1>
+<a name="net.consensys.cava.ssz.experimental.SSZ$encodeTo(net.consensys.cava.ssz.experimental.SSZ.encodeTo.T, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZWriter, kotlin.Unit)))"></a>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeTo(net.consensys.cava.ssz.experimental.SSZ.encodeTo.T, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZWriter, kotlin.Unit)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeTo(net.consensys.cava.ssz.experimental.SSZ.encodeTo.T, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZWriter, kotlin.Unit)))/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-s-s-z-writer/index.html"><span class="identifier">SSZWriter</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="encode-to.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZ.kt#L48">(source)</a>
+<p>Encode values to a {@link ByteBuffer}.</p>
+<h3>Parameters</h3>
+<p><a name="buffer"></a>
+<code>buffer</code> - The buffer to write into, starting from its current position.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A consumer that will be provided with a {@link SSZWriter} that can consume values.</p>
+<h3>Exceptions</h3>
+<p><a name="BufferOverflowException"></a>
+<code>BufferOverflowException</code> - If the writer attempts to write more than the provided buffer can hold.</p>
+<p><a name="ReadOnlyBufferException"></a>
+<code>ReadOnlyBufferException</code> - If the provided buffer is read-only.</p>
+<p><strong>Parameters</strong><br/>
+</p>
+<p><strong>Return</strong><br/>
+The buffer.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLP.encode - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="index.html">RLP</a>&nbsp;/&nbsp;<a href="./encode.html">encode</a><br/>
+<br/>
+<h1>encode</h1>
+<a name="net.consensys.cava.rlp.RLP$encode(java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encode(java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLP.java#L47">(source)</a>
+<p>Encode values to a Bytes value. 
+<p> Important: this method does not write any list prefix to the result. If you are writing a RLP encoded list of values, you usually want to use <code><a href="#">#encodeList(Consumer)</a></code>.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - A consumer that will be provided with a RLPWriter that can consume values.</p>
+<p><strong>Return</strong><br/>
+The RLP encoding in a Bytes value.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,783 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="./index.html">SSZ</a><br/>
+<br/>
+<h1>SSZ</h1>
+<code><span class="keyword">class </span><span class="identifier">SSZ</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L34">(source)</a>
+<p>Simple Serialize (SSZ) encoding and decoding.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="decode.html">decode</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">decode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.ssz.SSZReader, net.consensys.cava.ssz.SSZ.decode.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decode(net.consensys.cava.bytes.Bytes, java.util.function.Function((net.consensys.cava.ssz.SSZReader, net.consensys.cava.ssz.SSZ.decode.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="../-s-s-z-reader/index.html"><span class="identifier">SSZReader</span></a><span class="symbol">,</span>&nbsp;<a href="decode.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="decode.html#T"><span class="identifier">T</span></a></code>
+<p>Read and decode SSZ from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-address.html">decodeAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeAddress</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeAddress(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read a 20-byte address from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-address-list.html">decodeAddressList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeAddressList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeAddressList(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 20-byte addresses from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-big-integer.html">decodeBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBigInteger(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBigInteger(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>Read a SSZ encoded two's-compliment big integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-big-integer-list.html">decodeBigIntegerList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBigIntegerList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBigIntegerList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBigIntegerList(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of two's-compliment big integer values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-boolean.html">decodeBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBoolean(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Read a boolean value from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-boolean-list.html">decodeBooleanList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBooleanList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBooleanList(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of booleans from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-byte-array-list.html">decodeByteArrayList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeByteArrayList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeByteArrayList(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of byte arrays from the SSZ source. Note: prefer to use <code><a href="#">#decodeByteArrayList(Bytes, int)</a></code> instead, especially when reading untrusted data.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeByteArrayList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeByteArrayList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeByteArrayList(net.consensys.cava.bytes.Bytes, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of byte arrays from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-bytes.html">decodeBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBytes(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read a SSZ encoded bytes from a Bytes value. Note: prefer to use <code><a href="#">#decodeBytes(Bytes, int)</a></code> instead, especially when reading untrusted data.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBytes(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBytes(net.consensys.cava.bytes.Bytes, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read a SSZ encoded bytes from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-bytes-list.html">decodeBytesList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBytesList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBytesList(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of Bytes from the SSZ source. Note: prefer to use <code><a href="#">#decodeBytesList(Bytes, int)</a></code> instead, especially when reading untrusted data.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeBytesList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBytesList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeBytesList(net.consensys.cava.bytes.Bytes, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of Bytes from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-hash.html">decodeHash</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeHash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeHash(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeHash(net.consensys.cava.bytes.Bytes, kotlin.Int)/hashLength">hashLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Read a 32-byte hash from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-hash-list.html">decodeHashList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeHashList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeHashList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeHashList(net.consensys.cava.bytes.Bytes, kotlin.Int)/hashLength">hashLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 32-byte hashes from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int.html">decodeInt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a SSZ encoded two's-compliment integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int16.html">decodeInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt16(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a 16-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int16-list.html">decodeInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt16List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt16List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 16-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int32.html">decodeInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt32(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a 32-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int32-list.html">decodeInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt32List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt32List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 32-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int64.html">decodeInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt64(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read a 64-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int64-list.html">decodeInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt64List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt64List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 64-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int8.html">decodeInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt8(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read an 8-bit two's-compliment integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int8-list.html">decodeInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeInt8List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeInt8List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 8-bit two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-int-list.html">decodeIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of two's-compliment int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-long.html">decodeLong</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeLong(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeLong(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read a SSZ encoded two's-compliment long integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-long-int-list.html">decodeLongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeLongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeLongIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeLongIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of two's-compliment long int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-string.html">decodeString</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeString(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Read a SSZ encoded string from a Bytes value. Note: prefer to use <code><a href="#">#decodeString(Bytes, int)</a></code> instead, especially when reading untrusted data.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeString(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeString(net.consensys.cava.bytes.Bytes, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code>
+<p>Read a SSZ encoded string from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-string-list.html">decodeStringList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeStringList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeStringList(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of strings from the SSZ source. Note: prefer to use <code><a href="#">#decodeStringList(Bytes, int)</a></code> instead, especially when reading untrusted data.</p>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeStringList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeStringList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeStringList(net.consensys.cava.bytes.Bytes, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of strings from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int.html">decodeUInt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a SSZ encoded unsigned integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int16.html">decodeUInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt16(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read a 16-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int16-list.html">decodeUInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt16List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt16List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 16-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int256.html">decodeUInt256</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt256(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code>
+<p>Read a 256-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int256-list.html">decodeUInt256List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt256List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt256List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 256-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int32.html">decodeUInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt32(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read a 32-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int32-list.html">decodeUInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt32List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt32List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 32-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int64.html">decodeUInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt64(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read a 64-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int64-list.html">decodeUInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt64List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt64List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 64-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int8.html">decodeUInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt8(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Read an 8-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int8-list.html">decodeUInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUInt8List</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUInt8List(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of 8-bit unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int-list.html">decodeUIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of unsigned int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-long.html">decodeULong</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeULong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeULong(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeULong(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Read a SSZ encoded unsigned long integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-long-int-list.html">decodeULongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeULongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeULongIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeULongIntList(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of unsigned long int values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-unsigned-big-integer.html">decodeUnsignedBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUnsignedBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUnsignedBigInteger(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUnsignedBigInteger(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>Read a SSZ encoded unsigned big integer from a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-unsigned-big-integer-list.html">decodeUnsignedBigIntegerList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">decodeUnsignedBigIntegerList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUnsignedBigIntegerList(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$decodeUnsignedBigIntegerList(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">&gt;</span></code>
+<p>Read a list of unsigned big integer values from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode.html">encode</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encode(java.util.function.Consumer((net.consensys.cava.ssz.SSZWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-s-s-z-writer/index.html"><span class="identifier">SSZWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode values to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-address.html">encodeAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeAddress</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeAddress(net.consensys.cava.bytes.Bytes)/address">address</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 20-byte address to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-address-list.html">encodeAddressList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeAddressList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeAddressList(kotlin.Array((net.consensys.cava.bytes.Bytes)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of addresses.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-big-integer.html">encodeBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBigInteger</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBigInteger(java.math.BigInteger, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBigInteger(java.math.BigInteger, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a big integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-big-integer-list.html">encodeBigIntegerList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBigIntegerList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBigIntegerList(kotlin.Int, kotlin.Array((java.math.BigInteger)))/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBigIntegerList(kotlin.Int, kotlin.Array((java.math.BigInteger)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of big integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-big-integer-to-byte-array.html">encodeBigIntegerToByteArray</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBigIntegerToByteArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBigIntegerToByteArray(java.math.BigInteger, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBigIntegerToByteArray(java.math.BigInteger, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-boolean.html">encodeBoolean</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBoolean</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBoolean(kotlin.Boolean)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a boolean to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-boolean-list.html">encodeBooleanList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBooleanList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBooleanList(kotlin.BooleanArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of booleans.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-byte-array.html">encodeByteArray</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeByteArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeByteArray(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a value to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-bytes.html">encodeBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBytes(net.consensys.cava.bytes.Bytes)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode Bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-bytes-list.html">encodeBytesList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeBytesList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeBytesList(kotlin.Array((net.consensys.cava.bytes.Bytes)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-hash.html">encodeHash</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeHash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeHash(net.consensys.cava.bytes.Bytes)/hash">hash</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a hash to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-hash-list.html">encodeHashList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeHashList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeHashList(kotlin.Array((net.consensys.cava.bytes.Bytes)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of hashes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int.html">encodeInt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt(kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt(kotlin.Int, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a two's-compliment integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int16.html">encodeInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt16(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 16-bit two's-compliment integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int16-list.html">encodeInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt16List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt16List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 16-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int32.html">encodeInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt32(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 32-bit two's-compliment integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int32-list.html">encodeInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt32List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt32List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 32-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int64.html">encodeInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt64(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 64-bit two's-compliment integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int64-list.html">encodeInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt64List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt64List(kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 64-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int8.html">encodeInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt8(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an 8-bit two's-compliment integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int8-list.html">encodeInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeInt8List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeInt8List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 8-bit two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-int-list.html">encodeIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeIntList(kotlin.Int, kotlin.IntArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeIntList(kotlin.Int, kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of two's compliment integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-long.html">encodeLong</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeLong(kotlin.Long, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeLong(kotlin.Long, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a two's-compliment long integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-long-int-list.html">encodeLongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeLongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeLongIntList(kotlin.Int, kotlin.LongArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeLongIntList(kotlin.Int, kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of two's compliment long integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-string.html">encodeString</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeString</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeString(kotlin.String)/str">str</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a string to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-string-list.html">encodeStringList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeStringList</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeStringList(kotlin.Array((kotlin.String)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of strings.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-to.html">encodeTo</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeTo(net.consensys.cava.ssz.SSZ.encodeTo.T, java.util.function.Consumer((net.consensys.cava.ssz.SSZWriter)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeTo(net.consensys.cava.ssz.SSZ.encodeTo.T, java.util.function.Consumer((net.consensys.cava.ssz.SSZWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-s-s-z-writer/index.html"><span class="identifier">SSZWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="encode-to.html#T"><span class="identifier">T</span></a></code>
+<p>Encode values to a ByteBuffer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int.html">encodeUInt</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt(kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt(kotlin.Int, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an unsigned integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int16.html">encodeUInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt16(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 16-bit unsigned integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int16-list.html">encodeUInt16List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt16List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt16List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 16-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int256.html">encodeUInt256</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt256</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt256(net.consensys.cava.units.bigints.UInt256)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 256-bit unsigned integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int256-list.html">encodeUInt256List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt256List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt256List(kotlin.Array((net.consensys.cava.units.bigints.UInt256)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of UInt256.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int32.html">encodeUInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt32(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 32-bit unsigned integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int32-list.html">encodeUInt32List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt32List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt32List(kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 32-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int64.html">encodeUInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt64(kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 64-bit unsigned integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int64-list.html">encodeUInt64List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt64List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt64List(kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 64-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int8.html">encodeUInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt8(kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an 8-bit unsigned integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int8-list.html">encodeUInt8List</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUInt8List</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUInt8List(kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of 8-bit unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int-list.html">encodeUIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUIntList(kotlin.Int, kotlin.IntArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUIntList(kotlin.Int, kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of unsigned integers.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-long.html">encodeULong</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeULong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeULong(kotlin.Long, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeULong(kotlin.Long, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an unsigned long integer to a Bytes value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-long-int-list.html">encodeULongIntList</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeULongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeULongIntList(kotlin.Int, kotlin.LongArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeULongIntList(kotlin.Int, kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a list of unsigned long integers.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

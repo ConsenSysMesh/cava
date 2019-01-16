@@ -1,0 +1,32 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineDatagramChannel.trySend - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineDatagramChannel</a>&nbsp;/&nbsp;<a href="./try-send.html">trySend</a><br/>
+<br/>
+<h1>trySend</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineDatagramChannel$trySend(java.nio.ByteBuffer, java.net.SocketAddress)"></a>
+<code><span class="keyword">fun </span><span class="identifier">trySend</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineDatagramChannel$trySend(java.nio.ByteBuffer, java.net.SocketAddress)/src">src</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineDatagramChannel$trySend(java.nio.ByteBuffer, java.net.SocketAddress)/target">target</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineDatagramChannel.kt#L179">(source)</a>
+<p>Sends a datagram via this channel, if it can be sent immediately.</p>
+<h3>Parameters</h3>
+<p><a name="src"></a>
+<code>src</code> - The buffer containing the datagram to be sent.</p>
+<p><a name="target"></a>
+<code>target</code> - The address to which the datagram is to be sent.</p>
+<h3>Exceptions</h3>
+<p><a name="ClosedChannelException"></a>
+<code>ClosedChannelException</code> - If the channel is closed.</p>
+<p><a name="AsynchronousCloseException"></a>
+<code>AsynchronousCloseException</code> - If another thread closes this channel while the send operation is in progress.</p>
+<p><a name="ClosedByInterruptException"></a>
+<code>ClosedByInterruptException</code> - If another thread interrupts the current thread while the send operation is
+in progress, thereby closing the channel and setting the current thread's interrupt status.</p>
+<p><a name="IOException"></a>
+<code>IOException</code> - If some other I/O error occurs.</p>
+<p><strong>Return</strong><br/>
+The number of bytes sent, which will be zero if the channel was not ready to send.</p>
+</BODY>
+</HTML>

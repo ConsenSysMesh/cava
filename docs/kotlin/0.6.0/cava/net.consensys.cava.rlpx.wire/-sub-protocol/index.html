@@ -1,0 +1,51 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SubProtocol - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx.wire</a>&nbsp;/&nbsp;<a href="./index.html">SubProtocol</a><br/>
+<br/>
+<h1>SubProtocol</h1>
+<code><span class="keyword">interface </span><span class="identifier">SubProtocol</span></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/wire/SubProtocol.java#L21">(source)</a>
+<p>Defines a subprotocol to be used for wire connections</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="create-handler.html">createHandler</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">createHandler</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.SubProtocol$createHandler(net.consensys.cava.rlpx.RLPxService)/service">service</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlpx/-r-l-px-service/index.html"><span class="identifier">RLPxService</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-sub-protocol-handler/index.html"><span class="identifier">SubProtocolHandler</span></a></code>
+<p>Creates a new handler for the subprotocol.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="id.html">id</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">id</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-sub-protocol-identifier/index.html"><span class="identifier">SubProtocolIdentifier</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="supports.html">supports</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">supports</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.SubProtocol$supports(net.consensys.cava.rlpx.wire.SubProtocolIdentifier)/subProtocolIdentifier">subProtocolIdentifier</span><span class="symbol">:</span>&nbsp;<a href="../-sub-protocol-identifier/index.html"><span class="identifier">SubProtocolIdentifier</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="version-range.html">versionRange</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">versionRange</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.wire.SubProtocol$versionRange(kotlin.Int)/version">version</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Provides the length of the range of message types supported by the subprotocol for a given version</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

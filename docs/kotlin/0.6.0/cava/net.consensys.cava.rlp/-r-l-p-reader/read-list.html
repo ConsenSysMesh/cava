@@ -1,0 +1,80 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLPReader.readList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="index.html">RLPReader</a>&nbsp;/&nbsp;<a href="./read-list.html">readList</a><br/>
+<br/>
+<h1>readList</h1>
+<a name="net.consensys.cava.rlp.RLPReader$readList(java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLPReader.readList.T)))"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">readList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readList(java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLPReader.readList.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="read-list.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="read-list.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPReader.java#L284">(source)</a>
+<p>Read a list of values from the RLP source.</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided a RLPReader.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The result type of the reading function.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the next RLP value is not a list.</p>
+<p><a name="EndOfRLPException"></a>
+<code>EndOfRLPException</code> - If there are no more RLP values to read.</p>
+<p><strong>Return</strong><br/>
+The result from the reading function.</p>
+<a name="net.consensys.cava.rlp.RLPReader$readList(kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLPReader.readList.T)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">readList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readList(kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLPReader.readList.T)))/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readList(kotlin.Boolean, java.util.function.Function((net.consensys.cava.rlp.RLPReader, net.consensys.cava.rlp.RLPReader.readList.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="read-list.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="read-list.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPReader.java#L299">(source)</a>
+<p>Read a list of values from the RLP source.</p>
+<h3>Parameters</h3>
+<p><a name="lenient"></a>
+<code>lenient</code> - If <code>false</code>, an exception will be thrown if the integer is not minimally encoded.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided a RLPReader.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The result type of the reading function.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the next RLP value is not a list.</p>
+<p><a name="EndOfRLPException"></a>
+<code>EndOfRLPException</code> - If there are no more RLP values to read.</p>
+<p><strong>Return</strong><br/>
+The result from the reading function.</p>
+<a name="net.consensys.cava.rlp.RLPReader$readList(java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readList(java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><a href="index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPReader.java#L310">(source)</a>
+<p>Read a list of values from the RLP source, populating a mutable output list.</p>
+<h3>Parameters</h3>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided with a RLPReader and a mutable output list.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the next RLP value is not a list.</p>
+<p><a name="EndOfRLPException"></a>
+<code>EndOfRLPException</code> - If there are no more RLP values to read.</p>
+<p><strong>Return</strong><br/>
+The list supplied to <code>fn</code>.</p>
+<a name="net.consensys.cava.rlp.RLPReader$readList(kotlin.Boolean, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">readList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readList(kotlin.Boolean, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLPReader$readList(kotlin.Boolean, java.util.function.BiConsumer((net.consensys.cava.rlp.RLPReader, kotlin.collections.MutableList((kotlin.Any)))))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/BiConsumer.html"><span class="identifier">BiConsumer</span></a><span class="symbol">&lt;</span><a href="index.html"><span class="identifier">RLPReader</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLPReader.java#L324">(source)</a>
+<p>Read a list of values from the RLP source, populating a mutable output list.</p>
+<h3>Parameters</h3>
+<p><a name="lenient"></a>
+<code>lenient</code> - If <code>false</code>, an exception will be thrown if the integer is not minimally encoded.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A function that will be provided with a RLPReader and a mutable output list.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidRLPEncodingException"></a>
+<code>InvalidRLPEncodingException</code> - If there is an error decoding the RLP source.</p>
+<p><a name="InvalidRLPTypeException"></a>
+<code>InvalidRLPTypeException</code> - If the next RLP value is not a list.</p>
+<p><a name="EndOfRLPException"></a>
+<code>EndOfRLPException</code> - If there are no more RLP values to read.</p>
+<p><strong>Return</strong><br/>
+The list supplied to <code>fn</code>.</p>
+</BODY>
+</HTML>

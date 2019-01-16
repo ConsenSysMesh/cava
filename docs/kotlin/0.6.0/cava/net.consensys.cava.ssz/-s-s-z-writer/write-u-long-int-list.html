@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZWriter.writeULongIntList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZWriter</a>&nbsp;/&nbsp;<a href="./write-u-long-int-list.html">writeULongIntList</a><br/>
+<br/>
+<h1>writeULongIntList</h1>
+<a name="net.consensys.cava.ssz.SSZWriter$writeULongIntList(kotlin.Int, kotlin.LongArray)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">writeULongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZWriter$writeULongIntList(kotlin.Int, kotlin.LongArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZWriter$writeULongIntList(kotlin.Int, kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZWriter.java#L351">(source)</a>
+<p>Write a list of unsigned long integers.</p>
+<h3>Parameters</h3>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the encoded integers (must be a multiple of 8).</p>
+<p><a name="elements"></a>
+<code>elements</code> - The long integers to write as a list.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If any values are too large for the specified bit length.</p>
+</BODY>
+</HTML>

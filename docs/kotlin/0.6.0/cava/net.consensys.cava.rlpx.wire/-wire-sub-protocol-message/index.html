@@ -1,0 +1,52 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>WireSubProtocolMessage - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx.wire</a>&nbsp;/&nbsp;<a href="./index.html">WireSubProtocolMessage</a><br/>
+<br/>
+<h1>WireSubProtocolMessage</h1>
+<code><span class="keyword">interface </span><span class="identifier">WireSubProtocolMessage</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-wire-protocol-message/index.html"><span class="identifier">WireProtocolMessage</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/wire/WireSubProtocolMessage.java#L18">(source)</a>
+<p>A message specific to a subprotocol of the wire protocol.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="connection-id.html">connectionId</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">connectionId</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="sub-protocol-identifier.html">subProtocolIdentifier</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">subProtocolIdentifier</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-sub-protocol-identifier/index.html"><span class="identifier">SubProtocolIdentifier</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-wire-protocol-message/message-type.html">messageType</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">messageType</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-wire-protocol-message/to-bytes.html">toBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">toBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,109 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.rlpx - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.rlpx</a><br/>
+<br/>
+<h2>Package net.consensys.cava.rlpx</h2>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-ethereum-i-e-s-encryption-engine/index.html">EthereumIESEncryptionEngine</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">EthereumIESEncryptionEngine</span></code>
+<p>Support class for constructing integrated encryption ciphers for doing basic message exchanges on top of key agreement ciphers. Follows the description given in IEEE Std 1363a.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-handshake-message/index.html">HandshakeMessage</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">HandshakeMessage</span></code>
+<p>Contents of a message sent as part of a RLPx handshake.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-memory-wire-connections-repository/index.html">MemoryWireConnectionsRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">MemoryWireConnectionsRepository</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-wire-connection-repository/index.html"><span class="identifier">WireConnectionRepository</span></a></code>
+<p>In-memory implementation of the wire connections repository.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-px-connection/index.html">RLPxConnection</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RLPxConnection</span></code>
+<p>Connection between 2 peers over the RLPx protocol. 
+<p> The RLPx protocol creates a exchange of unique secrets during an initial handshake. The peers proceed to communicate using the shared secrets. </p>
+<p> This connection allows encrypting and decrypting messages with a remote peer.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-px-connection-factory/index.html">RLPxConnectionFactory</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RLPxConnectionFactory</span></code>
+<p>Factory creating RLPxConnection, either from initiating a handshake or responding to a handshake request.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-px-message/index.html">RLPxMessage</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">RLPxMessage</span></code>
+<p>Message exchanged over a RLPx connection. 
+<p> The message is identified by a negotiated code, offset according to the subprotocol mapping. </p>
+<p> The message includes the raw content of the message as bytes.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-r-l-px-service/index.html">RLPxService</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">RLPxService</span></code>
+<p>Service allowing connections to remote peers over RLPx connections.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-wire-connection-repository/index.html">WireConnectionRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">WireConnectionRepository</span></code>
+<p>A repository managing wire connections.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Exceptions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-invalid-m-a-c-exception.html">InvalidMACException</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">InvalidMACException</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/RuntimeException.html"><span class="identifier">RuntimeException</span></a></code>
+<p>Exception thrown when the message contents do not match the Message Authentication Code.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

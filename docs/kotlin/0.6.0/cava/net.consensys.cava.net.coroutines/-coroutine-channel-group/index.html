@@ -1,0 +1,87 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineChannelGroup - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">CoroutineChannelGroup</a><br/>
+<br/>
+<h1>CoroutineChannelGroup</h1>
+<code><span class="keyword">sealed</span> <span class="keyword">class </span><span class="identifier">CoroutineChannelGroup</span></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineChannelGroup.kt#L43">(source)</a>
+<p>A grouping of co-routine channels for the purpose of resource sharing.</p>
+<p>A co-routine channel group encapsulates the mechanics required to handle completion of suspended I/O operations
+initiated on channels bound to the group.</p>
+<p><strong>Author</strong><br/>
+Chris Leishman - https://cleishm.github.io/</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="is-shutdown.html">isShutdown</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">isShutdown</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if the group has been shutdown.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-terminated.html">isTerminated</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">isTerminated</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Check if the group has terminated.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="await-termination.html">awaitTermination</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">awaitTermination</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Suspend until the group has terminated.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="shutdown.html">shutdown</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">shutdown</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Shuts down the group.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="shutdown-now.html">shutdownNow</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">shutdownNow</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Shuts down the group and closes all open channels in the group.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="open.html">open</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">open</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/nSelectors">nSelectors</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Runtime.getRuntime().availableProcessors()<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/executor">executor</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html"><span class="identifier">Executor</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Executors.newFixedThreadPool(nSelectors, CoroutineSelector.DEFAULT_THREAD_FACTORY)<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/loggerProvider">loggerProvider</span><span class="symbol">:</span>&nbsp;<span class="identifier">LoggerProvider</span>&nbsp;<span class="symbol">=</span>&nbsp;LoggerProvider.nullProvider()<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/selectTimeout">selectTimeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;1000<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/idleTimeout">idleTimeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;10000<span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineChannelGroup</span></a></code>
+<p>Create a co-routine channel group.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

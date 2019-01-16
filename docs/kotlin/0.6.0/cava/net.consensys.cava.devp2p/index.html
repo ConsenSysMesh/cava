@@ -1,0 +1,117 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>net.consensys.cava.devp2p - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="./index.html">net.consensys.cava.devp2p</a><br/>
+<br/>
+<h2>Package net.consensys.cava.devp2p</h2>
+<p>Kotlin coroutine based implementation of the Ethereum ÐΞVp2p protocol.</p>
+<p>These classes are included in the complete Cava distribution, or separately when using the gradle dependency <code>net.consensys.cava:cava-devp2p</code> (<code>cava-devp2p.jar</code>).</p>
+<h3>Types</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-dev-p2-p-peer-routing-table/index.html">DevP2PPeerRoutingTable</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">DevP2PPeerRoutingTable</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-peer-routing-table/index.html"><span class="identifier">PeerRoutingTable</span></a></code>
+<p>A Peer routing table for the Ethereum ÐΞVp2p network.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-discovery-service/index.html">DiscoveryService</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">DiscoveryService</span></code>
+<p>An Ethereum ÐΞVp2p discovery service.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-endpoint/index.html">Endpoint</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Endpoint</span></code>
+<p>An Ethereum node endpoint.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-enode-uri-components/index.html">EnodeUriComponents</a></p>
+</td>
+<td>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">EnodeUriComponents</span></code>
+<p>The components of an enode URI.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-ephemeral-peer-repository/index.html">EphemeralPeerRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EphemeralPeerRepository</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="-peer-repository/index.html"><span class="identifier">PeerRepository</span></a></code>
+<p>An in-memory peer repository.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-peer/index.html">Peer</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">Peer</span></code>
+<p>An Ethereum P2P network peer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-peer-repository/index.html">PeerRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">PeerRepository</span></code>
+<p>A repository of peers in an Ethereum network.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="-peer-routing-table/index.html">PeerRoutingTable</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">PeerRoutingTable</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html"><span class="identifier">Set</span></a><span class="symbol">&lt;</span><a href="-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code>
+<p>A routing table for ÐΞVp2p peers.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-d-e-v-p2-p_-b-u-c-k-e-t_-s-i-z-e.html">DEVP2P_BUCKET_SIZE</a></p>
+</td>
+<td>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">DEVP2P_BUCKET_SIZE</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="parse-enode-uri.html">parseEnodeUri</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">parseEnodeUri</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p$parseEnodeUri(java.net.URI)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/URI.html"><span class="identifier">URI</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="-enode-uri-components/index.html"><span class="identifier">EnodeUriComponents</span></a></code>
+<p>Parse an enode URI.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

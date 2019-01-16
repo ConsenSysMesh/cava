@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.encodeUIntList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./encode-u-int-list.html">encodeUIntList</a><br/>
+<br/>
+<h1>encodeUIntList</h1>
+<a name="net.consensys.cava.ssz.SSZ$encodeUIntList(kotlin.Int, kotlin.IntArray)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeUIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUIntList(kotlin.Int, kotlin.IntArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeUIntList(kotlin.Int, kotlin.IntArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L543">(source)</a>
+<p>Encode a list of unsigned integers.</p>
+<h3>Parameters</h3>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the encoded integers (must be a multiple of 8).</p>
+<p><a name="elements"></a>
+<code>elements</code> - the integers to write.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If any values are too large for the specified <code>bitLength</code>.</p>
+<p><strong>Return</strong><br/>
+SSZ encoding in a Bytes value.</p>
+</BODY>
+</HTML>

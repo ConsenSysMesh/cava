@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZReader.readAddressList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZReader</a>&nbsp;/&nbsp;<a href="./read-address-list.html">readAddressList</a><br/>
+<br/>
+<h1>readAddressList</h1>
+<a name="net.consensys.cava.ssz.SSZReader$readAddressList()"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readAddressList</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-mutable-list/index.html"><span class="identifier">MutableList</span></a><span class="symbol">&lt;</span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZReader.java#L572">(source)</a>
+<p>Read a list of 20-byte addresses from the SSZ source.</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If the next SSZ value is not a list, there are insufficient encoded bytes for any address in the list.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+A list of 20-byte addresses.</p>
+</BODY>
+</HTML>

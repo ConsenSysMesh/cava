@@ -1,0 +1,49 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>EphemeralPeerRepository.getAsync - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.devp2p</a>&nbsp;/&nbsp;<a href="index.html">EphemeralPeerRepository</a>&nbsp;/&nbsp;<a href="./get-async.html">getAsync</a><br/>
+<br/>
+<h1>getAsync</h1>
+<a name="net.consensys.cava.devp2p.EphemeralPeerRepository$getAsync(net.consensys.cava.crypto.SECP256K1.PublicKey)"></a>
+<code><span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.EphemeralPeerRepository$getAsync(net.consensys.cava.crypto.SECP256K1.PublicKey)/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/PeerRepository.kt#L108">(source)</a>
+<p>Overrides <a href="../-peer-repository/get-async.html">PeerRepository.getAsync</a></p>
+<p>Get a peer.</p>
+<h3>Parameters</h3>
+<p><a name="nodeId"></a>
+<code>nodeId</code> - the node id</p>
+<p><strong>Return</strong><br/>
+the peer</p>
+<a name="net.consensys.cava.devp2p.EphemeralPeerRepository$getAsync(java.net.URI)"></a>
+<code><span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.EphemeralPeerRepository$getAsync(java.net.URI)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/URI.html"><span class="identifier">URI</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/PeerRepository.kt#L123">(source)</a>
+<p>Overrides <a href="../-peer-repository/get-async.html">PeerRepository.getAsync</a></p>
+<p>Get a Peer based on a URI.</p>
+<p>The returned peer will use the endpoint from the URI, unless the peer is already active, in
+which case its endpoint will be unchanged.</p>
+<h3>Parameters</h3>
+<p><a name="uri"></a>
+<code>uri</code> - the enode URI</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if the URI is not a valid enode URI</p>
+<p><strong>Return</strong><br/>
+the peer</p>
+<a name="net.consensys.cava.devp2p.EphemeralPeerRepository$getAsync(kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.EphemeralPeerRepository$getAsync(kotlin.String)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/PeerRepository.kt#L125">(source)</a>
+<p>Overrides <a href="../-peer-repository/get-async.html">PeerRepository.getAsync</a></p>
+<p>Get a Peer based on a URI string.</p>
+<p>The returned peer will use the endpoint from the URI, unless the peer is already active, in
+which case its endpoint will be unchanged.</p>
+<h3>Parameters</h3>
+<p><a name="uri"></a>
+<code>uri</code> - the enode URI</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - if the URI is not a valid enode URI</p>
+<p><strong>Return</strong><br/>
+the peer</p>
+</BODY>
+</HTML>

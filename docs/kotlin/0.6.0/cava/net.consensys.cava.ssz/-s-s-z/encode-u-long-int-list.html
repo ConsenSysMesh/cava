@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ.encodeULongIntList - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZ</a>&nbsp;/&nbsp;<a href="./encode-u-long-int-list.html">encodeULongIntList</a><br/>
+<br/>
+<h1>encodeULongIntList</h1>
+<a name="net.consensys.cava.ssz.SSZ$encodeULongIntList(kotlin.Int, kotlin.LongArray)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">encodeULongIntList</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeULongIntList(kotlin.Int, kotlin.LongArray)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.ssz.SSZ$encodeULongIntList(kotlin.Int, kotlin.LongArray)/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZ.java#L565">(source)</a>
+<p>Encode a list of unsigned long integers.</p>
+<h3>Parameters</h3>
+<p><a name="bitLength"></a>
+<code>bitLength</code> - The bit length of the encoded integers (must be a multiple of 8).</p>
+<p><a name="elements"></a>
+<code>elements</code> - the integers to write.</p>
+<h3>Exceptions</h3>
+<p><a name="IllegalArgumentException"></a>
+<code>IllegalArgumentException</code> - If any values are too large for the specified <code>bitLength</code>.</p>
+<p><strong>Return</strong><br/>
+SSZ encoding in a Bytes value.</p>
+</BODY>
+</HTML>

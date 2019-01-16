@@ -1,0 +1,44 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>EthereumIESEncryptionEngine.init - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="index.html">EthereumIESEncryptionEngine</a>&nbsp;/&nbsp;<a href="./init.html">init</a><br/>
+<br/>
+<h1>init</h1>
+<a name="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/forEncryption">forEncryption</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/privParam">privParam</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/pubParam">pubParam</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(kotlin.Boolean, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.CipherParameters)/params">params</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/EthereumIESEncryptionEngine.java#L100">(source)</a>
+<p>Initialise the encryptor.</p>
+<h3>Parameters</h3>
+<p><a name="forEncryption"></a>
+<code>forEncryption</code> - whether or not this is encryption/decryption.</p>
+<p><a name="privParam"></a>
+<code>privParam</code> - our private key parameters</p>
+<p><a name="pubParam"></a>
+<code>pubParam</code> - the recipient's/sender's public key parameters</p>
+<p><a name="params"></a>
+<code>params</code> - encoding and derivation parameters, may be wrapped to include an IV for an underlying block cipher.</p>
+<a name="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)/publicKey">publicKey</span><span class="symbol">:</span>&nbsp;<span class="identifier">AsymmetricKeyParameter</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)/params">params</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.generators.EphemeralKeyPairGenerator)/ephemeralKeyPairGenerator">ephemeralKeyPairGenerator</span><span class="symbol">:</span>&nbsp;<span class="identifier">EphemeralKeyPairGenerator</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/EthereumIESEncryptionEngine.java#L120">(source)</a>
+<p>Initialise the decryptor.</p>
+<h3>Parameters</h3>
+<p><a name="publicKey"></a>
+<code>publicKey</code> - the recipient's/sender's public key parameters</p>
+<p><a name="params"></a>
+<code>params</code> - encoding and derivation parameters, may be wrapped to include an IV for an underlying block cipher.</p>
+<p><a name="ephemeralKeyPairGenerator"></a>
+<code>ephemeralKeyPairGenerator</code> - the ephemeral key pair generator to use.</p>
+<a name="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)"></a>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">init</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)/privateKey">privateKey</span><span class="symbol">:</span>&nbsp;<span class="identifier">AsymmetricKeyParameter</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)/params">params</span><span class="symbol">:</span>&nbsp;<span class="identifier">CipherParameters</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$init(org.bouncycastle.crypto.params.AsymmetricKeyParameter, org.bouncycastle.crypto.CipherParameters, org.bouncycastle.crypto.KeyParser)/publicKeyParser">publicKeyParser</span><span class="symbol">:</span>&nbsp;<span class="identifier">KeyParser</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlpx/src/main/java/net/consensys/cava/rlpx/EthereumIESEncryptionEngine.java#L138">(source)</a>
+<p>Initialise the encryptor.</p>
+<h3>Parameters</h3>
+<p><a name="privateKey"></a>
+<code>privateKey</code> - the recipient's private key.</p>
+<p><a name="params"></a>
+<code>params</code> - encoding and derivation parameters, may be wrapped to include an IV for an underlying block cipher.</p>
+<p><a name="publicKeyParser"></a>
+<code>publicKeyParser</code> - the parser for reading the ephemeral public key.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,38 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>EthereumIESEncryptionEngine.<init> - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlpx</a>&nbsp;/&nbsp;<a href="index.html">EthereumIESEncryptionEngine</a>&nbsp;/&nbsp;<a href="./-init-.html">&lt;init&gt;</a><br/>
+<br/>
+<h1>&lt;init&gt;</h1>
+<a name="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$&lt;init&gt;(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)"></a>
+<code><span class="identifier">EthereumIESEncryptionEngine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/agree">agree</span><span class="symbol">:</span>&nbsp;<span class="identifier">BasicAgreement</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/kdf">kdf</span><span class="symbol">:</span>&nbsp;<span class="identifier">DerivationFunction</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/mac">mac</span><span class="symbol">:</span>&nbsp;<span class="identifier">Mac</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray)/commonMac">commonMac</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span></code>
+<p>Set up for use with stream mode, where the key derivation function is used to provide a stream of bytes to xor with the message.</p>
+<h3>Parameters</h3>
+<p><a name="agree"></a>
+<code>agree</code> - the key agreement used as the basis for the encryption</p>
+<p><a name="kdf"></a>
+<code>kdf</code> - the key derivation function used for byte generation</p>
+<p><a name="mac"></a>
+<code>mac</code> - the message authentication code generator for the message</p>
+<p><a name="commonMac"></a>
+<code>commonMac</code> - the common MAC bytes to append to the mac</p>
+<a name="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$&lt;init&gt;(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)"></a>
+<code><span class="identifier">EthereumIESEncryptionEngine</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/agree">agree</span><span class="symbol">:</span>&nbsp;<span class="identifier">BasicAgreement</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/kdf">kdf</span><span class="symbol">:</span>&nbsp;<span class="identifier">DerivationFunction</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/mac">mac</span><span class="symbol">:</span>&nbsp;<span class="identifier">Mac</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/commonMac">commonMac</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlpx.EthereumIESEncryptionEngine$<init>(org.bouncycastle.crypto.BasicAgreement, org.bouncycastle.crypto.DerivationFunction, org.bouncycastle.crypto.Mac, kotlin.ByteArray, org.bouncycastle.crypto.BufferedBlockCipher)/cipher">cipher</span><span class="symbol">:</span>&nbsp;<span class="identifier">BufferedBlockCipher</span><span class="symbol">)</span></code>
+<p>Set up for use in conjunction with a block cipher to handle the message. It is <strong>strongly</strong> recommended that the cipher is not in ECB mode.</p>
+<h3>Parameters</h3>
+<p><a name="agree"></a>
+<code>agree</code> - the key agreement used as the basis for the encryption</p>
+<p><a name="kdf"></a>
+<code>kdf</code> - the key derivation function used for byte generation</p>
+<p><a name="mac"></a>
+<code>mac</code> - the message authentication code generator for the message</p>
+<p><a name="commonMac"></a>
+<code>commonMac</code> - the common MAC bytes to append to the mac</p>
+<p><a name="cipher"></a>
+<code>cipher</code> - the cipher to used for encrypting the message</p>
+</BODY>
+</HTML>

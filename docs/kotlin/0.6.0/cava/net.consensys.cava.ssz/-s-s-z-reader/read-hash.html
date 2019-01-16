@@ -1,0 +1,25 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZReader.readHash - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz</a>&nbsp;/&nbsp;<a href="index.html">SSZReader</a>&nbsp;/&nbsp;<a href="./read-hash.html">readHash</a><br/>
+<br/>
+<h1>readHash</h1>
+<a name="net.consensys.cava.ssz.SSZReader$readHash(kotlin.Int)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">readHash</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.SSZReader$readHash(kotlin.Int)/hashLength">hashLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/java/net/consensys/cava/ssz/SSZReader.java#L307">(source)</a>
+<p>Read a hash from the SSZ source.</p>
+<h3>Parameters</h3>
+<p><a name="hashLength"></a>
+<code>hashLength</code> - The length of the hash (in bytes).</p>
+<h3>Exceptions</h3>
+<p><a name="InvalidSSZTypeException"></a>
+<code>InvalidSSZTypeException</code> - If there are insufficient encoded bytes for a 32-byte hash.</p>
+<p><a name="EndOfSSZException"></a>
+<code>EndOfSSZException</code> - If there are no more SSZ values to read.</p>
+<p><strong>Return</strong><br/>
+The bytes of the hash.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,526 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>MutableBytes - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.bytes</a>&nbsp;/&nbsp;<a href="./index.html">MutableBytes</a><br/>
+<br/>
+<h1>MutableBytes</h1>
+<code><span class="keyword">interface </span><span class="identifier">MutableBytes</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code> <a href="https://github.com/consensys/cava/blob/master//bytes/src/main/java/net/consensys/cava/bytes/MutableBytes.java#L27">(source)</a>
+<p>A mutable Bytes value.</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-e-m-p-t-y.html">EMPTY</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">val </span><span class="identifier">EMPTY</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>The empty value (with 0 bytes).</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="clear.html">clear</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">clear</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set all bytes in this value to 0.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="create.html">create</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">create</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$create(kotlin.Int)/size">size</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Create a new mutable byte value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="fill.html">fill</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">fill</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$fill(kotlin.Byte)/b">b</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Fill all the bytes of this value with the specified byte.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="mutable-slice.html">mutableSlice</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">mutableSlice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$mutableSlice(kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Create a mutable slice of the bytes of this value. 
+<p> Note: the resulting slice is only a view over the original value. Holding a reference to the returned slice may hold more memory than the slide represents. Use <code><a href="../-bytes/copy.html">#copy</a></code> on the returned slice to avoid this.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set.html">set</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">set</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$set(kotlin.Int, kotlin.Byte)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$set(kotlin.Int, kotlin.Byte)/b">b</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set a byte in this value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-int.html">setInt</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setInt(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setInt(kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set the 4 bytes starting at the specified index to the specified integer value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-long.html">setLong</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">setLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setLong(kotlin.Int, kotlin.Long)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$setLong(kotlin.Int, kotlin.Long)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Set the 8 bytes starting at the specified index to the specified long value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="wrap.html">wrap</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a byte array in a MutableBytes value.</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrap</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrap(kotlin.ByteArray, kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a slice of a byte array as a MutableBytes value. 
+<p> Note that value is not copied and thus any future update to <code>value</code> within the slice will be reflected in the returned value.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="wrap-buffer.html">wrapBuffer</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapBuffer(io.vertx.core.buffer.Buffer)/buffer">buffer</span><span class="symbol">:</span>&nbsp;<span class="identifier">Buffer</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a full Vert.x Buffer as a MutableBytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapBuffer(io.vertx.core.buffer.Buffer, kotlin.Int, kotlin.Int)/buffer">buffer</span><span class="symbol">:</span>&nbsp;<span class="identifier">Buffer</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapBuffer(io.vertx.core.buffer.Buffer, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapBuffer(io.vertx.core.buffer.Buffer, kotlin.Int, kotlin.Int)/size">size</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a slice of a Vert.x Buffer as a MutableBytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value, and any change to the returned value will be reflected in the buffer.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="wrap-byte-buf.html">wrapByteBuf</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapByteBuf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuf(io.netty.buffer.ByteBuf)/byteBuf">byteBuf</span><span class="symbol">:</span>&nbsp;<span class="identifier">ByteBuf</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a full Netty ByteBuf as a MutableBytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapByteBuf</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuf(io.netty.buffer.ByteBuf, kotlin.Int, kotlin.Int)/byteBuf">byteBuf</span><span class="symbol">:</span>&nbsp;<span class="identifier">ByteBuf</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuf(io.netty.buffer.ByteBuf, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuf(io.netty.buffer.ByteBuf, kotlin.Int, kotlin.Int)/size">size</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a slice of a Netty ByteBuf as a MutableBytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value, and any change to the returned value will be reflected in the buffer.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="wrap-byte-buffer.html">wrapByteBuffer</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapByteBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuffer(java.nio.ByteBuffer)/byteBuffer">byteBuffer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a full Java NIO ByteBuffer as a MutableBytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">wrapByteBuffer</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)/byteBuffer">byteBuffer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)/offset">offset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.MutableBytes$wrapByteBuffer(java.nio.ByteBuffer, kotlin.Int, kotlin.Int)/size">size</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Wrap a slice of a Java NIO ByteBuffer as a MutableBytes value. 
+<p> Note that any change to the content of the buffer may be reflected in the returned value, and any change to the returned value will be reflected in the buffer.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inherited Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-bytes/and.html">and</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">and</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$and(net.consensys.cava.bytes.Bytes)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a bit-wise AND of these bytes and the supplied bytes. If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">and</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$and(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.and.T)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$and(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.and.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/and.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/and.html#T"><span class="identifier">T</span></a></code>
+<p>Calculate a bit-wise AND of these bytes and the supplied bytes. 
+<p> If this value or the supplied value are shorter in length than the output vector, then they will be zero-padded to the left. Likewise, if either this value or the supplied valid is longer in length than the output vector, then they will be truncated to the left.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/append-hex-to.html">appendHexTo</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/lang/Appendable.html"><span class="identifier">Appendable</span></a><span class="symbol">&gt;</span> <span class="identifier">appendHexTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$appendHexTo(net.consensys.cava.bytes.Bytes.appendHexTo.T)/appendable">appendable</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/append-hex-to.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/append-hex-to.html#T"><span class="identifier">T</span></a></code>
+<p>Append this value as a sequence of hexadecimal characters.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/append-to.html">appendTo</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">appendTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$appendTo(java.nio.ByteBuffer)/byteBuffer">byteBuffer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Append the bytes of this value to the ByteBuffer.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">appendTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$appendTo(io.vertx.core.buffer.Buffer)/buffer">buffer</span><span class="symbol">:</span>&nbsp;<span class="identifier">Buffer</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Append the bytes of this value to the provided Vert.x Buffer. 
+<p> Note that since a Vert.x Buffer will grow as necessary, this method never fails.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/bit-length.html">bitLength</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">bitLength</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/common-prefix.html">commonPrefix</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">commonPrefix</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$commonPrefix(net.consensys.cava.bytes.Bytes)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a slice over the common prefix between this set of bytes and another.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/common-prefix-length.html">commonPrefixLength</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">commonPrefixLength</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$commonPrefixLength(net.consensys.cava.bytes.Bytes)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Return the number of bytes in common between this set of bytes and another.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/copy.html">copy</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">copy</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a value equivalent to this one but guaranteed to 1) be deeply immutable (i.e. the underlying value will be immutable) and 2) to not retain more bytes than exposed by the value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/copy-to.html">copyTo</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">copyTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes)/destination">destination</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Copy the bytes of this value to the provided mutable one, which must have the same size.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">copyTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes, kotlin.Int)/destination">destination</span><span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$copyTo(net.consensys.cava.bytes.MutableBytes, kotlin.Int)/destinationOffset">destinationOffset</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Copy the bytes of this value to the provided mutable one from a particular offset. 
+<p> This is a (potentially slightly more efficient) shortcut for <code>copyTo(destination.mutableSlice(destinationOffset, this.size()))</code>.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$get(kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte/index.html"><span class="identifier">Byte</span></a></code>
+<p>Retrieve a byte in this value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/get-int.html">getInt</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$getInt(kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>Retrieve the 4 bytes starting at the provided index in this value as an integer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/get-long.html">getLong</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getLong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$getLong(kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>Retrieves the 8 bytes starting at the provided index in this value as a long.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/has-leading-zero.html">hasLeadingZero</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">hasLeadingZero</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Whether the bytes start with a zero bit value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/has-leading-zero-byte.html">hasLeadingZeroByte</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">hasLeadingZeroByte</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Whether the bytes start with a zero byte value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/is-empty.html">isEmpty</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isEmpty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Whether this value contains no bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/is-zero.html">isZero</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">isZero</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Whether this value has only zero bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/mutable-copy.html">mutableCopy</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">mutableCopy</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code>
+<p>Return a new mutable value initialized with the content of this value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/not.html">not</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">not</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a bit-wise NOT of these bytes.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">not</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$not(net.consensys.cava.bytes.Bytes.not.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/not.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/not.html#T"><span class="identifier">T</span></a></code>
+<p>Calculate a bit-wise NOT of these bytes. 
+<p> If this value is shorter in length than the output vector, then it will be zero-padded to the left. Likewise, if this value is longer in length than the output vector, then it will be truncated to the left.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/number-of-leading-zero-bytes.html">numberOfLeadingZeroBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">numberOfLeadingZeroBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/number-of-leading-zeros.html">numberOfLeadingZeros</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">numberOfLeadingZeros</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/or.html">or</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">or</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$or(net.consensys.cava.bytes.Bytes)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a bit-wise OR of these bytes and the supplied bytes. 
+<p> If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">or</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$or(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.or.T)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$or(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.or.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/or.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/or.html#T"><span class="identifier">T</span></a></code>
+<p>Calculate a bit-wise OR of these bytes and the supplied bytes. 
+<p> If this value or the supplied value are shorter in length than the output vector, then they will be zero-padded to the left. Likewise, if either this value or the supplied valid is longer in length than the output vector, then they will be truncated to the left.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/shift-left.html">shiftLeft</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">shiftLeft</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Shift all bits in this value to the left.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">shiftLeft</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftLeft.T)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftLeft(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftLeft.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/shift-left.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/shift-left.html#T"><span class="identifier">T</span></a></code>
+<p>Shift all bits in this value to the left. 
+<p> If this value is shorter in length than the output vector, then it will be zero-padded to the left. Likewise, if this value is longer in length than the output vector, then it will be truncated to the left.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/shift-right.html">shiftRight</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">shiftRight</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftRight(kotlin.Int)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Shift all bits in this value to the right.</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">shiftRight</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftRight(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftRight.T)/distance">distance</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$shiftRight(kotlin.Int, net.consensys.cava.bytes.Bytes.shiftRight.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/shift-right.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/shift-right.html#T"><span class="identifier">T</span></a></code>
+<p>Shift all bits in this value to the right. 
+<p> If this value is shorter in length than the output vector, then it will be zero-padded to the left. Likewise, if this value is longer in length than the output vector, then it will be truncated to the left (after shifting).</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/size.html">size</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">size</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/slice.html">slice</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">slice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$slice(kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code><br/>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">slice</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$slice(kotlin.Int, kotlin.Int)/i">i</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$slice(kotlin.Int, kotlin.Int)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Create a new value representing (a view of) a slice of the bytes of this value. 
+<p> Please note that the resulting slice is only a view and as such maintains a link to the underlying full value. So holding a reference to the returned slice may hold more memory than the slide represents. Use <code><a href="../-bytes/copy.html">#copy</a></code> on the returned slice if that is not what you want.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-array.html">toArray</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toArray</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Extract the bytes of this value into a byte array.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-array-unsafe.html">toArrayUnsafe</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toArrayUnsafe</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code>
+<p>Get the bytes represented by this value as byte array. 
+<p> Contrarily to <code><a href="../-bytes/to-array.html">#toArray()</a></code>, this may avoid allocating a new array and directly return the backing array of this value if said value is array backed and doing so is possible. As such, modifications to the returned array may or may not impact this value. As such, this method should be used with care and hence the "unsafe" moniker.</p>
+</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-big-integer.html">toBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toBigInteger</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>The BigInteger corresponding to interpreting these bytes as a two's-complement signed integer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-hex-string.html">toHexString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toHexString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-int.html">toInt</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toInt</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The value corresponding to interpreting these bytes as an integer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-long.html">toLong</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toLong</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a></code>
+<p>The value corresponding to interpreting these bytes as a long.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-short-hex-string.html">toShortHexString</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toShortHexString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/to-unsigned-big-integer.html">toUnsignedBigInteger</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">toUnsignedBigInteger</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/math/BigInteger.html"><span class="identifier">BigInteger</span></a></code>
+<p>The BigInteger corresponding to interpreting these bytes as an unsigned integer.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/trim-leading-zeros.html">trimLeadingZeros</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">trimLeadingZeros</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a slice of representing the same value but without any leading zero bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/update.html">update</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">update</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$update(java.security.MessageDigest)/digest">digest</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/security/MessageDigest.html"><span class="identifier">MessageDigest</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Update the provided message digest with the bytes of this value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-bytes/xor.html">xor</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Return a bit-wise XOR of these bytes and the supplied bytes. 
+<p> If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.</p>
+</p>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">&gt;</span> <span class="identifier">xor</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.xor.T)/other">other</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.bytes.Bytes$xor(net.consensys.cava.bytes.Bytes, net.consensys.cava.bytes.Bytes.xor.T)/result">result</span><span class="symbol">:</span>&nbsp;<a href="../-bytes/xor.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-bytes/xor.html#T"><span class="identifier">T</span></a></code>
+<p>Calculate a bit-wise XOR of these bytes and the supplied bytes. 
+<p> If this value or the supplied value are shorter in length than the output vector, then they will be zero-padded to the left. Likewise, if either this value or the supplied valid is longer in length than the output vector, then they will be truncated to the left.</p>
+</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-mutable-byte-buffer-wrapping-bytes/index.html">MutableByteBufferWrappingBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">class </span><span class="identifier">MutableByteBufferWrappingBytes</span>&nbsp;<span class="symbol">:</span>&nbsp;<span class="identifier">ByteBufferWrappingBytes</span><span class="symbol">, </span><a href="./index.html"><span class="identifier">MutableBytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="../-mutable-bytes32/index.html">MutableBytes32</a></p>
+</td>
+<td>
+<code><span class="keyword">interface </span><span class="identifier">MutableBytes32</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">MutableBytes</span></a><span class="symbol">, </span><a href="../-bytes32/index.html"><span class="identifier">Bytes32</span></a></code>
+<p>A mutable Bytes32, that is a mutable Bytes value of exactly 32 bytes.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

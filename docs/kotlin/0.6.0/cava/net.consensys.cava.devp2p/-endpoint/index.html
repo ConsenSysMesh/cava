@@ -1,0 +1,104 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Endpoint - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.devp2p</a>&nbsp;/&nbsp;<a href="./index.html">Endpoint</a><br/>
+<br/>
+<h1>Endpoint</h1>
+<code><span class="keyword">data</span> <span class="keyword">class </span><span class="identifier">Endpoint</span></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/Endpoint.kt#L38">(source)</a>
+<p>An Ethereum node endpoint.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Endpoint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(kotlin.String, kotlin.Int, kotlin.Int)/address">address</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(kotlin.String, kotlin.Int, kotlin.Int)/udpPort">udpPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;DEFAULT_PORT<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(kotlin.String, kotlin.Int, kotlin.Int)/tcpPort">tcpPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code><br/>
+<code><span class="identifier">Endpoint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(java.net.InetSocketAddress, kotlin.Int)/address">address</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetSocketAddress.html"><span class="identifier">InetSocketAddress</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(java.net.InetSocketAddress, kotlin.Int)/tcpPort">tcpPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code><br/>
+<code><span class="identifier">Endpoint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(java.net.InetAddress, kotlin.Int, kotlin.Int)/address">address</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetAddress.html"><span class="identifier">InetAddress</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(java.net.InetAddress, kotlin.Int, kotlin.Int)/udpPort">udpPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;DEFAULT_PORT<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint$<init>(java.net.InetAddress, kotlin.Int, kotlin.Int)/tcpPort">tcpPort</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span></code>
+<p>Create a new endpoint.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="address.html">address</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">address</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetAddress.html"><span class="identifier">InetAddress</span></a></code>
+<p>the InetAddress</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="tcp-port.html">tcpPort</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">tcpPort</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">?</span></code>
+<p>the TCP port for the endpoint or <code>null</code> if no TCP port is known</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="tcp-socket-address.html">tcpSocketAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">tcpSocketAddress</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetSocketAddress.html"><span class="identifier">InetSocketAddress</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="udp-port.html">udpPort</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">udpPort</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>the UDP port for the endpoint</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="udp-socket-address.html">udpSocketAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">udpSocketAddress</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetSocketAddress.html"><span class="identifier">InetSocketAddress</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-d-e-f-a-u-l-t_-p-o-r-t.html">DEFAULT_PORT</a></p>
+</td>
+<td>
+<code><span class="keyword">const</span> <span class="keyword">val </span><span class="identifier">DEFAULT_PORT</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The default port used by Ethereum DevP2P.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="read-from.html">readFrom</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">readFrom</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.Endpoint.Companion$readFrom(net.consensys.cava.rlp.RLPReader)/reader">reader</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlp/-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Endpoint</span></a></code>
+<p>Create an Endpoint by reading fields from the RLP input stream.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,162 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Transaction - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.eth</a>&nbsp;/&nbsp;<a href="./index.html">Transaction</a><br/>
+<br/>
+<h1>Transaction</h1>
+<code><span class="keyword">class </span><span class="identifier">Transaction</span></code> <a href="https://github.com/consensys/cava/blob/master//eth/src/main/java/net/consensys/cava/eth/Transaction.java#L37">(source)</a>
+<p>An Ethereum transaction.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">Transaction</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/gasPrice">gasPrice</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-wei/index.html"><span class="identifier">Wei</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/gasLimit">gasLimit</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/to">to</span><span class="symbol">:</span>&nbsp;<a href="../-address/index.html"><span class="identifier">Address</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-wei/index.html"><span class="identifier">Wei</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/payload">payload</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.KeyPair)/keyPair">keyPair</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-key-pair/index.html"><span class="identifier">KeyPair</span></a><span class="symbol">)</span></code><br/>
+<code><span class="identifier">Transaction</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/gasPrice">gasPrice</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-wei/index.html"><span class="identifier">Wei</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/gasLimit">gasLimit</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/to">to</span><span class="symbol">:</span>&nbsp;<a href="../-address/index.html"><span class="identifier">Address</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/value">value</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-wei/index.html"><span class="identifier">Wei</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/payload">payload</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$<init>(net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.eth.Address, net.consensys.cava.units.ethereum.Wei, net.consensys.cava.bytes.Bytes, net.consensys.cava.crypto.SECP256K1.Signature)/signature">signature</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-signature/index.html"><span class="identifier">Signature</span></a><span class="symbol">)</span></code>
+<p>Create a transaction.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="from-bytes.html">fromBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$fromBytes(net.consensys.cava.bytes.Bytes)/encoded">encoded</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Transaction</span></a></code><br/>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$fromBytes(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/encoded">encoded</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.Transaction$fromBytes(net.consensys.cava.bytes.Bytes, kotlin.Boolean)/lenient">lenient</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Transaction</span></a></code>
+<p>Deserialize a transaction from RLP encoded bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="gas-limit.html">gasLimit</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">gasLimit</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="gas-price.html">gasPrice</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">gasPrice</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.ethereum/-wei/index.html"><span class="identifier">Wei</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hash.html">hash</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hash</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code>
+<p>Calculate and return the hash for this transaction.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="is-contract-creation.html">isContractCreation</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isContractCreation</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="nonce.html">nonce</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">nonce</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="payload.html">payload</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">payload</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="read-from.html">readFrom</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">readFrom</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$readFrom(net.consensys.cava.rlp.RLPReader)/reader">reader</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlp/-r-l-p-reader/index.html"><span class="identifier">RLPReader</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">Transaction</span></a></code>
+<p>Deserialize a transaction from an RLP input.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="sender.html">sender</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">sender</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-address/index.html"><span class="identifier">Address</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="signature.html">signature</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">signature</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-signature/index.html"><span class="identifier">Signature</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to.html">to</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">to</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-address/index.html"><span class="identifier">Address</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-bytes.html">toBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="value.html">value</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">value</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.ethereum/-wei/index.html"><span class="identifier">Wei</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="write-to.html">writeTo</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">writeTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.Transaction$writeTo(net.consensys.cava.rlp.RLPWriter)/writer">writer</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.rlp/-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Write this transaction to an RLP output.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

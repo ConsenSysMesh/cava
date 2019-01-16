@@ -1,0 +1,30 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineChannelGroup.open - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="index.html">CoroutineChannelGroup</a>&nbsp;/&nbsp;<a href="./open.html">open</a><br/>
+<br/>
+<h1>open</h1>
+<a name="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)"></a>
+<code><span class="keyword">fun </span><span class="identifier">open</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/nSelectors">nSelectors</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Runtime.getRuntime().availableProcessors()<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/executor">executor</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/Executor.html"><span class="identifier">Executor</span></a>&nbsp;<span class="symbol">=</span>&nbsp;Executors.newFixedThreadPool(nSelectors, CoroutineSelector.DEFAULT_THREAD_FACTORY)<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/loggerProvider">loggerProvider</span><span class="symbol">:</span>&nbsp;<span class="identifier">LoggerProvider</span>&nbsp;<span class="symbol">=</span>&nbsp;LoggerProvider.nullProvider()<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/selectTimeout">selectTimeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;1000<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineChannelGroup.Companion$open(kotlin.Int, java.util.concurrent.Executor, org.logl.LoggerProvider, kotlin.Long, kotlin.Long)/idleTimeout">idleTimeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a>&nbsp;<span class="symbol">=</span>&nbsp;10000<span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">CoroutineChannelGroup</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineChannelGroup.kt#L58">(source)</a>
+<p>Create a co-routine channel group.</p>
+<h3>Parameters</h3>
+<p><a name="nSelectors"></a>
+<code>nSelectors</code> - The number of selectors that should be active in the group. Defaults to one per available
+    system processor.</p>
+<p><a name="executor"></a>
+<code>executor</code> - The thread pool for running selectors. Defaults to a fixed size thread pool, with one thread
+    per selector.</p>
+<p><a name="loggerProvider"></a>
+<code>loggerProvider</code> - A provider for logger instances.</p>
+<p><a name="selectTimeout"></a>
+<code>selectTimeout</code> - The maximum time the selection operation will wait before checking for closed channels.</p>
+<p><a name="idleTimeout"></a>
+<code>idleTimeout</code> - The minimum idle time before the selection loop of a selector exits.</p>
+<p><strong>Return</strong><br/>
+A co-routine channel group.</p>
+</BODY>
+</HTML>

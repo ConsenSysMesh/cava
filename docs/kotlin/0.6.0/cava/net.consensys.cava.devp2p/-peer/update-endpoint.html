@@ -1,0 +1,28 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Peer.updateEndpoint - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.devp2p</a>&nbsp;/&nbsp;<a href="index.html">Peer</a>&nbsp;/&nbsp;<a href="./update-endpoint.html">updateEndpoint</a><br/>
+<br/>
+<h1>updateEndpoint</h1>
+<a name="net.consensys.cava.devp2p.Peer$updateEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long, kotlin.Long)"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">updateEndpoint</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.Peer$updateEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long, kotlin.Long)/endpoint">endpoint</span><span class="symbol">:</span>&nbsp;<a href="../-endpoint/index.html"><span class="identifier">Endpoint</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Peer$updateEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long, kotlin.Long)/time">time</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.devp2p.Peer$updateEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long, kotlin.Long)/ifVerifiedBefore">ifVerifiedBefore</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span>&nbsp;<span class="symbol">=</span>&nbsp;null<span class="symbol">)</span><span class="symbol">: </span><a href="../-endpoint/index.html"><span class="identifier">Endpoint</span></a></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/Peer.kt#L66">(source)</a>
+<p>Update the peer with a new endpoint.</p>
+<p>If successful, the <a href="update-endpoint.html#net.consensys.cava.devp2p.Peer$updateEndpoint(net.consensys.cava.devp2p.Endpoint, kotlin.Long, kotlin.Long)/endpoint">endpoint</a> property will be set, the <a href="last-seen.html">lastSeen</a> timestamp will be updated. If the IP address
+or UDP port of the endpoint was changed, then the <a href="last-verified.html">lastVerified</a> timestamp will be cleared.</p>
+<h3>Parameters</h3>
+<p><a name="endpoint"></a>
+<code>endpoint</code> - the endpoint for the peer</p>
+<p><a name="time"></a>
+<code>time</code> - the time this endpoint information was determined, in milliseconds since the epoch</p>
+<p><a name="ifVerifiedBefore"></a>
+<code>ifVerifiedBefore</code> - the latest allowable time, in milliseconds since the epoch, when this peer was last
+    verified at its current endpoint. If this peers endpoint was verified after this time, the endpoint
+    will not be updated. If <code>null</code>, then no check will be made and the endpoint will always be updated.</p>
+<p><strong>Return</strong><br/>
+the resulting endpoint of the peer</p>
+</BODY>
+</HTML>

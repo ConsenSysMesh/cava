@@ -1,0 +1,29 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>RLP.encodeListTo - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.rlp</a>&nbsp;/&nbsp;<a href="index.html">RLP</a>&nbsp;/&nbsp;<a href="./encode-list-to.html">encodeListTo</a><br/>
+<br/>
+<h1>encodeListTo</h1>
+<a name="net.consensys.cava.rlp.RLP$encodeListTo(net.consensys.cava.rlp.RLP.encodeListTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeListTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeListTo(net.consensys.cava.rlp.RLP.encodeListTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-list-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.rlp.RLP$encodeListTo(net.consensys.cava.rlp.RLP.encodeListTo.T, java.util.function.Consumer((net.consensys.cava.rlp.RLPWriter)))/fn">fn</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><a href="../-r-l-p-writer/index.html"><span class="identifier">RLPWriter</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="encode-list-to.html#T"><span class="identifier">T</span></a></code> <a href="https://github.com/consensys/cava/blob/master//rlp/src/main/java/net/consensys/cava/rlp/RLP.java#L97">(source)</a>
+<p>Encode a list of values to a ByteBuffer.</p>
+<h3>Parameters</h3>
+<p><a name="buffer"></a>
+<code>buffer</code> - The buffer to write into, starting from its current position.</p>
+<p><a name="fn"></a>
+<code>fn</code> - A consumer that will be provided with a RLPWriter that can consume values.</p>
+<p><a name="&lt;T&gt;"></a>
+<code><T></code> - The type of the buffer.</p>
+<h3>Exceptions</h3>
+<p><a name="BufferOverflowException"></a>
+<code>BufferOverflowException</code> - If the writer attempts to write more than the provided buffer can hold.</p>
+<p><a name="ReadOnlyBufferException"></a>
+<code>ReadOnlyBufferException</code> - If the provided buffer is read-only.</p>
+<p><strong>Return</strong><br/>
+The buffer.</p>
+</BODY>
+</HTML>

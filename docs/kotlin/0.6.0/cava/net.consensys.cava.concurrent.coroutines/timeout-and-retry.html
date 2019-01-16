@@ -1,0 +1,45 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>timeoutAndRetry - cava</title>
+<link rel="stylesheet" href="../../style.css">
+</HEAD>
+<BODY>
+<a href="../index.html">cava</a>&nbsp;/&nbsp;<a href="index.html">net.consensys.cava.concurrent.coroutines</a>&nbsp;/&nbsp;<a href="./timeout-and-retry.html">timeoutAndRetry</a><br/>
+<br/>
+<h1>timeoutAndRetry</h1>
+<a name="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span class="symbol">&gt;</span> <span class="identifier">timeoutAndRetry</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/timeout">timeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="timeout-and-retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="timeout-and-retry.html#R"><span class="identifier">R</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/Retryable.kt#L113">(source)</a>
+<p>Cancel and retry a suspending block until a non-null result is obtained.</p>
+<h3>Parameters</h3>
+<p><a name="timeout"></a>
+<code>timeout</code> - the delay before re-attempting</p>
+<p><a name="block"></a>
+<code>block</code> - the suspending block to be executed</p>
+<p><strong>Return</strong><br/>
+the first non-null result</p>
+<a name="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span class="symbol">&gt;</span> <span class="identifier">timeoutAndRetry</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/timeout">timeout</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/maxRetries">maxRetries</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Long, kotlin.Int, kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="timeout-and-retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="timeout-and-retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/Retryable.kt#L126">(source)</a>
+<p>Cancel and retry a suspending block until a non-null result is obtained.</p>
+<h3>Parameters</h3>
+<p><a name="timeout"></a>
+<code>timeout</code> - the delay before re-attempting</p>
+<p><a name="maxRetries"></a>
+<code>maxRetries</code> - the maximum number of attempts</p>
+<p><a name="block"></a>
+<code>block</code> - the suspending block to be executed</p>
+<p><strong>Return</strong><br/>
+the first non-null result, or <code>null</code> if all attempts fail</p>
+<a name="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Function1((kotlin.Int, kotlin.Long)), kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))"></a>
+<code><span class="keyword">suspend</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">R</span><span class="symbol">&gt;</span> <span class="identifier">timeoutAndRetry</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Function1((kotlin.Int, kotlin.Long)), kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/timeout">timeout</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.concurrent.coroutines$timeoutAndRetry(kotlin.Function1((kotlin.Int, kotlin.Long)), kotlin.SuspendFunction1((kotlin.Int, net.consensys.cava.concurrent.coroutines.timeoutAndRetry.R)))/block">block</span><span class="symbol">:</span>&nbsp;<span class="keyword">suspend </span><span class="symbol">(</span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="timeout-and-retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="timeout-and-retry.html#R"><span class="identifier">R</span></a><span class="symbol">?</span></code> <a href="https://github.com/consensys/cava/blob/master//concurrent-coroutines/src/main/kotlin/net/consensys/cava/concurrent/coroutines/Retryable.kt#L140">(source)</a>
+<p>Cancel and retry a suspending block until a non-null result is obtained.</p>
+<h3>Parameters</h3>
+<p><a name="timeout"></a>
+<code>timeout</code> - a function returning the delay that should follow each attempt, or <code>null</code> if no further attempts
+    should be made</p>
+<p><a name="block"></a>
+<code>block</code> - the suspending block to be executed</p>
+<p><strong>Return</strong><br/>
+the first non-null result, or <code>null</code> if all attempts fail</p>
+</BODY>
+</HTML>

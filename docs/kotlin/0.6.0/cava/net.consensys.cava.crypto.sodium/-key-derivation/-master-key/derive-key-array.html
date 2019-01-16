@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KeyDerivation.MasterKey.deriveKeyArray - cava</title>
+<link rel="stylesheet" href="../../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../../index.html">cava</a>&nbsp;/&nbsp;<a href="../../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="../index.html">KeyDerivation</a>&nbsp;/&nbsp;<a href="index.html">MasterKey</a>&nbsp;/&nbsp;<a href="./derive-key-array.html">deriveKeyArray</a><br/>
+<br/>
+<h1>deriveKeyArray</h1>
+<a name="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)"></a>
+<code><span class="keyword">fun </span><span class="identifier">deriveKeyArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)/subkeyId">subkeyId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.ByteArray)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/KeyDerivation.java#L183">(source)</a>
+<p>Derive a sub key.</p>
+<h3>Parameters</h3>
+<p><a name="length"></a>
+<code>length</code> - The length of the sub key, which must be between <code><a href="../min-sub-key-length.html">#minSubKeyLength()</a></code> and <code><a href="../max-sub-key-length.html">#maxSubKeyLength()</a></code>.</p>
+<p><a name="subkeyId"></a>
+<code>subkeyId</code> - The id for the sub key.</p>
+<p><a name="context"></a>
+<code>context</code> - The context for the sub key, which must be of length <code><a href="../context-length.html">#contextLength()</a></code>.</p>
+<p><strong>Return</strong><br/>
+The derived sub key.</p>
+<a name="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)"></a>
+<code><span class="keyword">fun </span><span class="identifier">deriveKeyArray</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)/length">length</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)/subkeyId">subkeyId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-long/index.html"><span class="identifier">Long</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.crypto.sodium.KeyDerivation.MasterKey$deriveKeyArray(kotlin.Int, kotlin.Long, kotlin.String)/context">context</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/KeyDerivation.java#L216">(source)</a>
+<p>Derive a sub key.</p>
+<h3>Parameters</h3>
+<p><a name="length"></a>
+<code>length</code> - The length of the subkey.</p>
+<p><a name="subkeyId"></a>
+<code>subkeyId</code> - The id for the subkey.</p>
+<p><a name="context"></a>
+<code>context</code> - The context for the sub key, which must be of length ≤ <code><a href="../context-length.html">#contextLength()</a></code>.</p>
+<p><strong>Return</strong><br/>
+The derived sub key.</p>
+</BODY>
+</HTML>

@@ -1,0 +1,23 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Sodium.loadLibrary - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">Sodium</a>&nbsp;/&nbsp;<a href="./load-library.html">loadLibrary</a><br/>
+<br/>
+<h1>loadLibrary</h1>
+<a name="net.consensys.cava.crypto.sodium.Sodium$loadLibrary(java.nio.file.Path)"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">loadLibrary</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Sodium$loadLibrary(java.nio.file.Path)/path">path</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Sodium.java#L112">(source)</a>
+<p>Load and initialize the native libsodium shared library. 
+<p> If this method returns successfully (without throwing a LinkageError), then all future calls to methods provided by this class will use the loaded library.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="path"></a>
+<code>path</code> - The path to the shared library.</p>
+<h3>Exceptions</h3>
+<p><a name="LinkageError"></a>
+<code>LinkageError</code> - If the library cannot be found, dependent libraries are missing, or cannot be initialized.</p>
+</BODY>
+</HTML>

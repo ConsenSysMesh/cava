@@ -1,0 +1,36 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>Sodium.searchLibrary - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.crypto.sodium</a>&nbsp;/&nbsp;<a href="index.html">Sodium</a>&nbsp;/&nbsp;<a href="./search-library.html">searchLibrary</a><br/>
+<br/>
+<h1>searchLibrary</h1>
+<a name="net.consensys.cava.crypto.sodium.Sodium$searchLibrary(kotlin.Array((java.nio.file.Path)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">searchLibrary</span><span class="symbol">(</span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.crypto.sodium.Sodium$searchLibrary(kotlin.Array((java.nio.file.Path)))/paths">paths</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Sodium.java#L141">(source)</a>
+<p>Search for, then load and initialize the native libsodium shared library. 
+<p> The library will be searched for in all the provided locations, using the library name <code>"sodium"</code>. If this method returns successfully (without throwing a LinkageError), then all future calls to methods provided by this class will use the loaded library.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="paths"></a>
+<code>paths</code> - A set of directories to search for the library in.</p>
+<h3>Exceptions</h3>
+<p><a name="LinkageError"></a>
+<code>LinkageError</code> - If the library cannot be found, dependent libraries are missing, or cannot be initialized.</p>
+<a name="net.consensys.cava.crypto.sodium.Sodium$searchLibrary(kotlin.String, kotlin.Array((java.nio.file.Path)))"></a>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">searchLibrary</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.crypto.sodium.Sodium$searchLibrary(kotlin.String, kotlin.Array((java.nio.file.Path)))/libraryName">libraryName</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">, </span><span class="keyword">vararg</span> <span class="identifier" id="net.consensys.cava.crypto.sodium.Sodium$searchLibrary(kotlin.String, kotlin.Array((java.nio.file.Path)))/paths">paths</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/file/Path.html"><span class="identifier">Path</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code> <a href="https://github.com/consensys/cava/blob/master//crypto/src/main/java/net/consensys/cava/crypto/sodium/Sodium.java#L157">(source)</a>
+<p>Search for, then load and initialize the native libsodium shared library. 
+<p> The library will be searched for in all the provided locations, using the provided library name. If this method returns successfully (without throwing a LinkageError), then all future calls to methods provided by this class will use the loaded library.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="libraryName"></a>
+<code>libraryName</code> - The name of the library (e.g. <code>"sodium"</code>).</p>
+<p><a name="paths"></a>
+<code>paths</code> - A set of directories to search for the library in.</p>
+<h3>Exceptions</h3>
+<p><a name="LinkageError"></a>
+<code>LinkageError</code> - If the library cannot be found, dependent libraries are missing, or cannot be initialized.</p>
+</BODY>
+</HTML>

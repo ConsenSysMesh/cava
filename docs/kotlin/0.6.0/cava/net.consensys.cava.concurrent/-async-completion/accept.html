@@ -1,0 +1,22 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>AsyncCompletion.accept - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.concurrent</a>&nbsp;/&nbsp;<a href="index.html">AsyncCompletion</a>&nbsp;/&nbsp;<a href="./accept.html">accept</a><br/>
+<br/>
+<h1>accept</h1>
+<a name="net.consensys.cava.concurrent.AsyncCompletion$accept(java.util.function.Consumer((kotlin.Throwable)))"></a>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">accept</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.concurrent.AsyncCompletion$accept(java.util.function.Consumer((kotlin.Throwable)))/consumer">consumer</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Consumer.html"><span class="identifier">Consumer</span></a><span class="symbol">&lt;</span><span class="keyword">in</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-throwable/index.html"><span class="identifier">Throwable</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="index.html"><span class="identifier">AsyncCompletion</span></a></code> <a href="https://github.com/consensys/cava/blob/master//concurrent/src/main/java/net/consensys/cava/concurrent/AsyncCompletion.java#L477">(source)</a>
+<p>Returns a new completion that completes successfully, after executing the given function with this completion's exception (if any). 
+<p> The exception supplied to the function will be <code>null</code> if this completion completes successfully.</p>
+</p>
+<h3>Parameters</h3>
+<p><a name="consumer"></a>
+<code>consumer</code> - The action to execute.</p>
+<p><strong>Return</strong><br/>
+A new result.</p>
+</BODY>
+</HTML>

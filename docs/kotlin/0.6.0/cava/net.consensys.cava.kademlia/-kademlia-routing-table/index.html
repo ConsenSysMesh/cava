@@ -1,0 +1,124 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>KademliaRoutingTable - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.kademlia</a>&nbsp;/&nbsp;<a href="./index.html">KademliaRoutingTable</a><br/>
+<br/>
+<h1>KademliaRoutingTable</h1>
+<code><span class="keyword">class </span><span class="identifier">KademliaRoutingTable</span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html"><span class="identifier">Set</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code> <a href="https://github.com/consensys/cava/blob/master//kademlia/src/main/kotlin/net/consensys/cava/kademlia/KademliaRoutingTable.kt#L89">(source)</a>
+<p>A Kademlia Routing Table</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">KademliaRoutingTable</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$<init>(kotlin.ByteArray, kotlin.Int, kotlin.Int, kotlin.Function1((net.consensys.cava.kademlia.KademliaRoutingTable.T, kotlin.ByteArray)))/selfId">selfId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$<init>(kotlin.ByteArray, kotlin.Int, kotlin.Int, kotlin.Function1((net.consensys.cava.kademlia.KademliaRoutingTable.T, kotlin.ByteArray)))/k">k</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$<init>(kotlin.ByteArray, kotlin.Int, kotlin.Int, kotlin.Function1((net.consensys.cava.kademlia.KademliaRoutingTable.T, kotlin.ByteArray)))/maxReplacements">maxReplacements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a>&nbsp;<span class="symbol">=</span>&nbsp;k<span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$<init>(kotlin.ByteArray, kotlin.Int, kotlin.Int, kotlin.Function1((net.consensys.cava.kademlia.KademliaRoutingTable.T, kotlin.ByteArray)))/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">)</span></code>
+<p>Create a new routing table.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="size.html">size</a></p>
+</td>
+<td>
+<code><span class="keyword">val </span><span class="identifier">size</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="add.html">add</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">add</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$add(net.consensys.cava.kademlia.KademliaRoutingTable.T)/node">node</span><span class="symbol">:</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code>
+<p>Add a node to the table.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="clear.html">clear</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">clear</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Clear all nodes (and replacements) from the table.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="contains.html">contains</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">contains</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$contains(net.consensys.cava.kademlia.KademliaRoutingTable.T)/element">element</span><span class="symbol">:</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="contains-all.html">containsAll</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">containsAll</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$containsAll(kotlin.collections.Collection((net.consensys.cava.kademlia.KademliaRoutingTable.T)))/elements">elements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-collection/index.html"><span class="identifier">Collection</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="evict.html">evict</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">evict</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$evict(net.consensys.cava.kademlia.KademliaRoutingTable.T)/node">node</span><span class="symbol">:</span>&nbsp;<a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Remove a node from the table, potentially adding an alternative from the replacement cache.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-empty.html">isEmpty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">isEmpty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="iterator.html">iterator</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">iterator</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-iterator/index.html"><span class="identifier">Iterator</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="nearest.html">nearest</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">nearest</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$nearest(kotlin.ByteArray, kotlin.Int)/targetId">targetId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable$nearest(kotlin.ByteArray, kotlin.Int)/limit">limit</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-list/index.html"><span class="identifier">List</span></a><span class="symbol">&lt;</span><a href="index.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>Return the nearest nodes to a target id, in order from closest to furthest.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Companion Object Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="create.html">create</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">create</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/selfId">selfId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/k">k</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">KademliaRoutingTable</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code><br/>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">create</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/selfId">selfId</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/k">k</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/maxReplacements">maxReplacements</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.kademlia.KademliaRoutingTable.Companion$create(kotlin.ByteArray, kotlin.Int, kotlin.Int, java.util.function.Function((net.consensys.cava.kademlia.KademliaRoutingTable.Companion.create.T, kotlin.ByteArray)))/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/util/function/Function.html"><span class="identifier">Function</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">,</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-byte-array/index.html"><span class="identifier">ByteArray</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">KademliaRoutingTable</span></a><span class="symbol">&lt;</span><a href="create.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span></code>
+<p>Create a new routing table.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

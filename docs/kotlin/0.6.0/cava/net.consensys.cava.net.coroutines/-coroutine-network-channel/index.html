@@ -1,0 +1,139 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>CoroutineNetworkChannel - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.net.coroutines</a>&nbsp;/&nbsp;<a href="./index.html">CoroutineNetworkChannel</a><br/>
+<br/>
+<h1>CoroutineNetworkChannel</h1>
+<code><span class="keyword">interface </span><span class="identifier">CoroutineNetworkChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/NetworkChannel.html"><span class="identifier">NetworkChannel</span></a></code> <a href="https://github.com/consensys/cava/blob/master//net-coroutines/src/main/kotlin/net/consensys/cava/net/coroutines/CoroutineNetworkChannel.kt#L30">(source)</a>
+<p>A co-routine based network channel.</p>
+<p><strong>Author</strong><br/>
+Chris Leishman - https://cleishm.github.io/</p>
+<h3>Properties</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="local-port.html">localPort</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">val </span><span class="identifier">localPort</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code>
+<p>The port number on the local host to which this socket is bound.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="bind.html">bind</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">bind</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$bind(java.net.SocketAddress)/local">local</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>Binds the channel's socket to a local address.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="close.html">close</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">close</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a></code>
+<p>Closes this channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-advertisable-address.html">getAdvertisableAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">open</span> <span class="keyword">fun </span><span class="identifier">getAdvertisableAddress</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/InetAddress.html"><span class="identifier">InetAddress</span></a><span class="symbol">?</span></code>
+<p>Returns the InetAddress corresponding to the interface this channel's socket is bound to.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-local-address.html">getLocalAddress</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getLocalAddress</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketAddress.html"><span class="identifier">SocketAddress</span></a><span class="symbol">?</span></code>
+<p>Returns the socket address that this channel's socket is bound to.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-option.html">getOption</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">getOption</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$getOption(java.net.SocketOption((net.consensys.cava.net.coroutines.CoroutineNetworkChannel.getOption.T)))/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketOption.html"><span class="identifier">SocketOption</span></a><span class="symbol">&lt;</span><a href="get-option.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="get-option.html#T"><span class="identifier">T</span></a><span class="symbol">?</span></code>
+<p>Returns the value of a socket option.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="is-open.html">isOpen</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">isOpen</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code>
+<p>Indicates if this channel is open.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="set-option.html">setOption</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">&gt;</span> <span class="identifier">setOption</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$setOption(java.net.SocketOption((net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)), net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)/name">name</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketOption.html"><span class="identifier">SocketOption</span></a><span class="symbol">&lt;</span><a href="set-option.html#T"><span class="identifier">T</span></a><span class="symbol">&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.net.coroutines.CoroutineNetworkChannel$setOption(java.net.SocketOption((net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)), net.consensys.cava.net.coroutines.CoroutineNetworkChannel.setOption.T)/value">value</span><span class="symbol">:</span>&nbsp;<a href="set-option.html#T"><span class="identifier">T</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/nio/channels/NetworkChannel.html"><span class="identifier">NetworkChannel</span></a></code>
+<p>Sets the value of a socket option.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="supported-options.html">supportedOptions</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">supportedOptions</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin.collections/-set/index.html"><span class="identifier">Set</span></a><span class="symbol">&lt;</span><a href="https://docs.oracle.com/javase/8/docs/api/java/net/SocketOption.html"><span class="identifier">SocketOption</span></a><span class="symbol">&lt;</span><span class="identifier">*</span><span class="symbol">&gt;</span><span class="symbol">&gt;</span></code>
+<p>Returns a set of the socket options supported by this channel.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-coroutine-datagram-channel/index.html">CoroutineDatagramChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineDatagramChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-gathering-coroutine-byte-channel/index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based datagram-oriented network channel.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-coroutine-server-socket-channel/index.html">CoroutineServerSocketChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineServerSocketChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based network channel for stream-oriented connection listening.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="../-coroutine-socket-channel/index.html">CoroutineSocketChannel</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">CoroutineSocketChannel</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="../-coroutine-byte-channel.html"><span class="identifier">CoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-scattering-coroutine-byte-channel/index.html"><span class="identifier">ScatteringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="../-gathering-coroutine-byte-channel/index.html"><span class="identifier">GatheringCoroutineByteChannel</span></a><span class="symbol">, </span><a href="./index.html"><span class="identifier">CoroutineNetworkChannel</span></a></code>
+<p>A co-routine based stream-oriented network channel.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

@@ -1,0 +1,62 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>PeerRepository - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.devp2p</a>&nbsp;/&nbsp;<a href="./index.html">PeerRepository</a><br/>
+<br/>
+<h1>PeerRepository</h1>
+<code><span class="keyword">interface </span><span class="identifier">PeerRepository</span></code> <a href="https://github.com/consensys/cava/blob/master//devp2p/src/main/kotlin/net/consensys/cava/devp2p/PeerRepository.kt#L29">(source)</a>
+<p>A repository of peers in an Ethereum network.</p>
+<p>Conceptually, this repository stores information about all peers in an Ethereum network, hence the
+retrieval methods always return a valid <a href="../-peer/index.html">Peer</a>. However, the <a href="../-peer/index.html">Peer</a> objects are only generated on demand and
+may be purged from underlying storage if they can be recreated easily.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="get.html">get</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.PeerRepository$get(net.consensys.cava.crypto.SECP256K1.PublicKey)/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-peer/index.html"><span class="identifier">Peer</span></a></code>
+<p>Get a peer.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.PeerRepository$get(java.net.URI)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/URI.html"><span class="identifier">URI</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-peer/index.html"><span class="identifier">Peer</span></a></code>
+<p>Get a Peer based on a URI.</p>
+<code><span class="keyword">open</span> <span class="keyword">suspend</span> <span class="keyword">fun </span><span class="identifier">get</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.PeerRepository$get(kotlin.String)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../-peer/index.html"><span class="identifier">Peer</span></a></code>
+<p>Get a Peer based on a URI string.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="get-async.html">getAsync</a></p>
+</td>
+<td>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.PeerRepository$getAsync(net.consensys.cava.crypto.SECP256K1.PublicKey)/nodeId">nodeId</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.crypto/-s-e-c-p256-k1/-public-key/index.html"><span class="identifier">PublicKey</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code>
+<p>Get a peer.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.PeerRepository$getAsync(java.net.URI)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/net/URI.html"><span class="identifier">URI</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code>
+<p>Get a Peer based on a URI.</p>
+<code><span class="keyword">abstract</span> <span class="keyword">fun </span><span class="identifier">getAsync</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.devp2p.PeerRepository$getAsync(kotlin.String)/uri">uri</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.concurrent/-async-result/index.html"><span class="identifier">AsyncResult</span></a><span class="symbol">&lt;</span><a href="../-peer/index.html"><span class="identifier">Peer</span></a><span class="symbol">&gt;</span></code>
+<p>Get a Peer based on a URI string.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Inheritors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="../-ephemeral-peer-repository/index.html">EphemeralPeerRepository</a></p>
+</td>
+<td>
+<code><span class="keyword">class </span><span class="identifier">EphemeralPeerRepository</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="./index.html"><span class="identifier">PeerRepository</span></a></code>
+<p>An in-memory peer repository.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

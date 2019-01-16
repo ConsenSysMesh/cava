@@ -1,0 +1,154 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>SSZ - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.ssz.experimental</a>&nbsp;/&nbsp;<a href="./index.html">SSZ</a><br/>
+<br/>
+<h1>SSZ</h1>
+<code><span class="keyword">object </span><span class="identifier">SSZ</span></code> <a href="https://github.com/consensys/cava/blob/master//ssz/src/main/kotlin/net/consensys/cava/ssz/experimental/SSZ.kt#L26">(source)</a>
+<p>Simple Serialize (SSZ) encoding and decoding.</p>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="decode.html">decode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span><span class="symbol">&gt;</span> <span class="identifier">decode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decode(net.consensys.cava.bytes.Bytes, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZReader, net.consensys.cava.ssz.experimental.SSZ.decode.T)))/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decode(net.consensys.cava.bytes.Bytes, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZReader, net.consensys.cava.ssz.experimental.SSZ.decode.T)))/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-s-s-z-reader/index.html"><span class="identifier">SSZReader</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="decode.html#T"><span class="identifier">T</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="decode.html#T"><span class="identifier">T</span></a></code>
+<p>Read and decode SSZ from a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int.html">decodeUInt</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">decodeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeUInt(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a SSZ encoded unsigned integer from a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int16.html">decodeUInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">decodeUInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeUInt16(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a 16-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int32.html">decodeUInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">decodeUInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeUInt32(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a 32-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int64.html">decodeUInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">decodeUInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeUInt64(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a 64-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-int8.html">decodeUInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">decodeUInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeUInt8(net.consensys.cava.bytes.Bytes)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read an 8-bit unsigned integer from the SSZ source.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="decode-u-long.html">decodeULong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">decodeULong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeULong(net.consensys.cava.bytes.Bytes, kotlin.Int)/source">source</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$decodeULong(net.consensys.cava.bytes.Bytes, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><span class="identifier">&lt;ERROR CLASS&gt;</span></code>
+<p>Read a SSZ encoded unsigned long integer from a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode.html">encode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encode</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encode(kotlin.Function1((net.consensys.cava.ssz.experimental.SSZWriter, kotlin.Unit)))/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-s-s-z-writer/index.html"><span class="identifier">SSZWriter</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode values to a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-to.html">encodeTo</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="symbol">&lt;</span><span class="identifier">T</span>&nbsp;<span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/nio/ByteBuffer.html"><span class="identifier">ByteBuffer</span></a><span class="symbol">&gt;</span> <span class="identifier">encodeTo</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeTo(net.consensys.cava.ssz.experimental.SSZ.encodeTo.T, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZWriter, kotlin.Unit)))/buffer">buffer</span><span class="symbol">:</span>&nbsp;<a href="encode-to.html#T"><span class="identifier">T</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeTo(net.consensys.cava.ssz.experimental.SSZ.encodeTo.T, kotlin.Function1((net.consensys.cava.ssz.experimental.SSZWriter, kotlin.Unit)))/fn">fn</span><span class="symbol">:</span>&nbsp;<span class="symbol">(</span><a href="../-s-s-z-writer/index.html"><span class="identifier">SSZWriter</span></a><span class="symbol">)</span>&nbsp;<span class="symbol">-&gt;</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-unit/index.html"><span class="identifier">Unit</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="encode-to.html#T"><span class="identifier">T</span></a></code>
+<p>Encode values to a {@link ByteBuffer}.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int.html">encodeUInt</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encodeUInt</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeUInt(, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeUInt(, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an unsigned integer to a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int16.html">encodeUInt16</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encodeUInt16</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeUInt16()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 16-bit unsigned integer to a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int32.html">encodeUInt32</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encodeUInt32</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeUInt32()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 32-bit unsigned integer to a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int64.html">encodeUInt64</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encodeUInt64</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeUInt64()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode a 64-bit unsigned integer to a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-int8.html">encodeUInt8</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encodeUInt8</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeUInt8()/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an 8-bit unsigned integer to a {@link Bytes} value.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="encode-u-long.html">encodeULong</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">encodeULong</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeULong(, kotlin.Int)/value">value</span><span class="symbol">:</span>&nbsp;<span class="identifier">&lt;ERROR CLASS&gt;</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.ssz.experimental.SSZ$encodeULong(, kotlin.Int)/bitLength">bitLength</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code>
+<p>Encode an unsigned long integer to a {@link Bytes} value.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>

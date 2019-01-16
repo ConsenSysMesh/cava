@@ -1,0 +1,182 @@
+<HTML>
+<HEAD>
+<meta charset="UTF-8">
+<title>BlockHeader - cava</title>
+<link rel="stylesheet" href="../../../style.css">
+</HEAD>
+<BODY>
+<a href="../../index.html">cava</a>&nbsp;/&nbsp;<a href="../index.html">net.consensys.cava.eth</a>&nbsp;/&nbsp;<a href="./index.html">BlockHeader</a><br/>
+<br/>
+<h1>BlockHeader</h1>
+<code><span class="keyword">class </span><span class="identifier">BlockHeader</span></code> <a href="https://github.com/consensys/cava/blob/master//eth/src/main/java/net/consensys/cava/eth/BlockHeader.java#L32">(source)</a>
+<p>An Ethereum block header.</p>
+<h3>Constructors</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="-init-.html">&lt;init&gt;</a></p>
+</td>
+<td>
+<code><span class="identifier">BlockHeader</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/parentHash">parentHash</span><span class="symbol">:</span>&nbsp;<a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">?</span><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/ommersHash">ommersHash</span><span class="symbol">:</span>&nbsp;<a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/coinbase">coinbase</span><span class="symbol">:</span>&nbsp;<a href="../-address/index.html"><span class="identifier">Address</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/stateRoot">stateRoot</span><span class="symbol">:</span>&nbsp;<a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/transactionsRoot">transactionsRoot</span><span class="symbol">:</span>&nbsp;<a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/receiptsRoot">receiptsRoot</span><span class="symbol">:</span>&nbsp;<a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/logsBloom">logsBloom</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/difficulty">difficulty</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/number">number</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/gasLimit">gasLimit</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/gasUsed">gasUsed</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/timestamp">timestamp</span><span class="symbol">:</span>&nbsp;<a href="https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html"><span class="identifier">Instant</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/extraData">extraData</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/mixHash">mixHash</span><span class="symbol">:</span>&nbsp;<a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">, </span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$<init>(net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Address, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.bigints.UInt256, net.consensys.cava.units.ethereum.Gas, net.consensys.cava.units.ethereum.Gas, java.time.Instant, net.consensys.cava.bytes.Bytes, net.consensys.cava.eth.Hash, net.consensys.cava.bytes.Bytes)/nonce">nonce</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span></code>
+<p>Creates a new block header.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<h3>Functions</h3>
+<table>
+<tbody>
+<tr>
+<td>
+<p><a href="coinbase.html">coinbase</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">coinbase</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-address/index.html"><span class="identifier">Address</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="difficulty.html">difficulty</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">difficulty</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="equals.html">equals</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">equals</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$equals(kotlin.Any)/other">other</span><span class="symbol">:</span>&nbsp;<a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-any/index.html"><span class="identifier">Any</span></a><span class="symbol">?</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-boolean/index.html"><span class="identifier">Boolean</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="extra-data.html">extraData</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">extraData</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="from-bytes.html">fromBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">static</span> <span class="keyword">fun </span><span class="identifier">fromBytes</span><span class="symbol">(</span><span class="identifier" id="net.consensys.cava.eth.BlockHeader$fromBytes(net.consensys.cava.bytes.Bytes)/encoded">encoded</span><span class="symbol">:</span>&nbsp;<a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a><span class="symbol">)</span><span class="symbol">: </span><a href="./index.html"><span class="identifier">BlockHeader</span></a></code>
+<p>Deserialize a block header from RLP encoded bytes.</p>
+</td>
+</tr>
+<tr>
+<td>
+<p><a href="gas-limit.html">gasLimit</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">gasLimit</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="gas-used.html">gasUsed</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">gasUsed</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.ethereum/-gas/index.html"><span class="identifier">Gas</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hash.html">hash</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hash</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="hash-code.html">hashCode</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">hashCode</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-int/index.html"><span class="identifier">Int</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="logs-bloom.html">logsBloom</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">logsBloom</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="mix-hash.html">mixHash</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">mixHash</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="nonce.html">nonce</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">nonce</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="number.html">number</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">number</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.units.bigints/-u-int256/index.html"><span class="identifier">UInt256</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="ommers-hash.html">ommersHash</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">ommersHash</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="parent-hash.html">parentHash</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">parentHash</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a><span class="symbol">?</span></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="receipts-root.html">receiptsRoot</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">receiptsRoot</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="state-root.html">stateRoot</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">stateRoot</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="timestamp.html">timestamp</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">timestamp</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://docs.oracle.com/javase/8/docs/api/java/time/Instant.html"><span class="identifier">Instant</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-bytes.html">toBytes</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toBytes</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../../net.consensys.cava.bytes/-bytes/index.html"><span class="identifier">Bytes</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="to-string.html">toString</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">toString</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="https://kotlinlang.org/api/latest/jvm/stdlib/kotlin/-string/index.html"><span class="identifier">String</span></a></code></td>
+</tr>
+<tr>
+<td>
+<p><a href="transactions-root.html">transactionsRoot</a></p>
+</td>
+<td>
+<code><span class="keyword">fun </span><span class="identifier">transactionsRoot</span><span class="symbol">(</span><span class="symbol">)</span><span class="symbol">: </span><a href="../-hash/index.html"><span class="identifier">Hash</span></a></code></td>
+</tr>
+</tbody>
+</table>
+</BODY>
+</HTML>
