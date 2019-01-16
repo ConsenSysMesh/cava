@@ -12,7 +12,10 @@
  */
 package net.consensys.cava.rlpx.wire;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
@@ -42,6 +45,9 @@ class PingPongTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedPing::set,
+
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -66,6 +72,8 @@ class PingPongTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedPong::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),

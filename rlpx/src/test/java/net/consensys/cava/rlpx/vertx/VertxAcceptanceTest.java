@@ -48,6 +48,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.logl.Level;
+import org.logl.Logger;
 import org.logl.LoggerProvider;
 import org.logl.logl.SimpleLogger;
 
@@ -91,12 +92,10 @@ class VertxAcceptanceTest {
 
     private final RLPxService rlpxService;
     private final SubProtocolIdentifier identifier;
-    private final int i;
 
-    public MyCustomSubProtocolHandler(RLPxService rlpxService, SubProtocolIdentifier identifier, int i) {
+    public MyCustomSubProtocolHandler(RLPxService rlpxService, SubProtocolIdentifier identifier) {
       this.rlpxService = rlpxService;
       this.identifier = identifier;
-      this.i = i;
     }
 
     @Override
@@ -127,22 +126,22 @@ class VertxAcceptanceTest {
 
     @Override
     public SubProtocolIdentifier id() {
-      return SubProtocolIdentifier.of("cus", "1");
+      return SubProtocolIdentifier.of("cus", 1);
     }
 
     @Override
     public boolean supports(SubProtocolIdentifier subProtocolIdentifier) {
-      return "cus".equals(subProtocolIdentifier.name()) && "1".equals(subProtocolIdentifier.version());
+      return "cus".equals(subProtocolIdentifier.name()) && 1 == subProtocolIdentifier.version();
     }
 
     @Override
-    public int versionRange(String version) {
+    public int versionRange(int version) {
       return 1;
     }
 
     @Override
     public SubProtocolHandler createHandler(RLPxService service) {
-      handler = new MyCustomSubProtocolHandler(service, id(), i);
+      handler = new MyCustomSubProtocolHandler(service, id());
       return handler;
     }
   }
@@ -153,8 +152,8 @@ class VertxAcceptanceTest {
     SECP256K1.KeyPair secondKp = SECP256K1.KeyPair.random();
     MyCustomSubProtocol sp = new MyCustomSubProtocol(1);
     MyCustomSubProtocol secondSp = new MyCustomSubProtocol(2);
-    LoggerProvider logProvider =
-        SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
     MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
     VertxRLPxService service = new VertxRLPxService(
         vertx,
@@ -274,14 +273,17 @@ class VertxAcceptanceTest {
   @Test
   @Disabled
   void connectToPeer(@VertxInstance Vertx vertx) throws Exception {
+    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    Logger logger = logProvider.getLogger("test");
+
     SECP256K1.KeyPair kp = SECP256K1.KeyPair.fromSecretKey(
         SECP256K1.SecretKey
             .fromBytes(Bytes32.fromHexString("0x2CADB9DDEA3E675CC5349A1AF053CF2E144AF657016A6155DF4AD767F561F18E")));
-    System.out.println(kp.secretKey().bytes().toHexString());
+    logger.debug(kp.secretKey().bytes().toHexString());
 
-    System.out.println("enode://" + kp.publicKey().toHexString() + "@127.0.0.1:36000");
-    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
-        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    logger.debug("enode://" + kp.publicKey().toHexString() + "@127.0.0.1:36000");
+
     MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
 
     VertxRLPxService service = new VertxRLPxService(
@@ -297,12 +299,12 @@ class VertxAcceptanceTest {
             return new SubProtocolIdentifier() {
               @Override
               public String name() {
-                return "exp";
+                return "eth";
               }
 
               @Override
-              public String version() {
-                return "1.0";
+              public int version() {
+                return 63;
               }
             };
           }
@@ -313,7 +315,7 @@ class VertxAcceptanceTest {
           }
 
           @Override
-          public int versionRange(String version) {
+          public int versionRange(int version) {
             return 0;
           }
 
@@ -331,6 +333,7 @@ class VertxAcceptanceTest {
             "7a8fbb31bff7c48179f8504b047313ebb7446a0233175ffda6eb4c27aaa5d2aedcef4dd9501b4f17b4f16588f0fd037f9b9416b8caca655bee3b14b4ef67441a"),
         new InetSocketAddress("localhost", 30303));
     completion.join();
+    Thread.sleep(10000);
 
     service.stop().join();
   }

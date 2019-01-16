@@ -19,7 +19,6 @@ import net.consensys.cava.concurrent.CompletableAsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1.KeyPair;
 import net.consensys.cava.crypto.SECP256K1.PublicKey;
 import net.consensys.cava.rlpx.HandshakeMessage;
-import net.consensys.cava.rlpx.InvalidMACException;
 import net.consensys.cava.rlpx.MemoryWireConnectionsRepository;
 import net.consensys.cava.rlpx.RLPxConnection;
 import net.consensys.cava.rlpx.RLPxConnectionFactory;
@@ -299,8 +298,14 @@ public final class VertxRLPxService implements RLPxService {
             @Override
             public void handle(Buffer buffer) {
               try {
+                Bytes messageBytes = Bytes.wrapBuffer(buffer);
                 if (conn == null) {
-                  Bytes responseBytes = Bytes.wrapBuffer(buffer);
+                  int messageSize = RLPxConnectionFactory.messageSize(messageBytes);
+                  Bytes responseBytes = messageBytes;
+                  if (messageBytes.size() > messageSize) {
+                    responseBytes = responseBytes.slice(0, messageSize);
+                  }
+                  messageBytes = messageBytes.slice(messageSize);
                   HandshakeMessage responseMessage =
                       RLPxConnectionFactory.readResponse(responseBytes, keyPair.secretKey());
                   conn = RLPxConnectionFactory.createConnection(
@@ -315,12 +320,15 @@ public final class VertxRLPxService implements RLPxService {
                       peerPublicKey);
 
                   this.wireConnection = createConnection(conn, netSocket);
-                  wireConnection.handleConnectionStart();
                   connected.complete();
-                } else {
-                  conn.stream(Bytes.wrapBuffer(buffer), wireConnection::messageReceived);
+                  if (messageBytes.isEmpty()) {
+                    return;
+                  }
                 }
-              } catch (InvalidMACException e) {
+                if (conn != null) {
+                  conn.stream(messageBytes, wireConnection::messageReceived);
+                }
+              } catch (Exception e) {
                 logger.error(e.getMessage(), e);
                 connected.completeExceptionally(e);
                 netSocket.close();
@@ -345,6 +353,7 @@ public final class VertxRLPxService implements RLPxService {
             vertx.eventBus().send(netSocket.writeHandlerID(), Buffer.buffer(bytes.toArrayUnsafe()));
           }
         },
+        conn::configureAfterHandshake,
         netSocket::end,
         handlers,
         DEVP2P_VERSION,

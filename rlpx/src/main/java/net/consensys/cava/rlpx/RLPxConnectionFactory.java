@@ -38,7 +38,11 @@ import org.bouncycastle.crypto.digests.SHA256Digest;
 import org.bouncycastle.crypto.engines.AESEngine;
 import org.bouncycastle.crypto.macs.HMac;
 import org.bouncycastle.crypto.modes.SICBlockCipher;
-import org.bouncycastle.crypto.params.*;
+import org.bouncycastle.crypto.params.ECPrivateKeyParameters;
+import org.bouncycastle.crypto.params.ECPublicKeyParameters;
+import org.bouncycastle.crypto.params.IESWithCipherParameters;
+import org.bouncycastle.crypto.params.KDFParameters;
+import org.bouncycastle.crypto.params.ParametersWithIV;
 import org.bouncycastle.util.BigIntegers;
 
 /**
@@ -260,6 +264,18 @@ public final class RLPxConnectionFactory {
     engine.init(true, privParam, pubParam, cipherParameters);
 
     return engine;
+  }
+
+  /**
+   * Identify the size of a handshake message based on elements of the common MAC.
+   *
+   * @param msgBytes the bytes of the message
+   * @return the size of the message, including MAC, key and IV
+   */
+  public static int messageSize(Bytes msgBytes) {
+    Bytes commonMac = msgBytes.slice(0, 2);
+    int size = (commonMac.get(1) & 0xFF) + ((commonMac.get(0) & 0xFF) << 8);
+    return size + 2;
   }
 
   static Bytes decryptMessage(Bytes msgBytes, SecretKey ourKey) {

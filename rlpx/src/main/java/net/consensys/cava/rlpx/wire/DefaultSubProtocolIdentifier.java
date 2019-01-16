@@ -18,9 +18,9 @@ package net.consensys.cava.rlpx.wire;
 final class DefaultSubProtocolIdentifier implements SubProtocolIdentifier {
 
   private final String name;
-  private final String version;
+  private final int version;
 
-  public DefaultSubProtocolIdentifier(String name, String version) {
+  public DefaultSubProtocolIdentifier(String name, int version) {
     this.name = name;
     this.version = version;
   }
@@ -31,7 +31,7 @@ final class DefaultSubProtocolIdentifier implements SubProtocolIdentifier {
   }
 
   @Override
-  public String version() {
+  public int version() {
     return version;
   }
 }

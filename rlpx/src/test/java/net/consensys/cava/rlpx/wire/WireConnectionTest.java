@@ -42,6 +42,8 @@ class WireConnectionTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -65,6 +67,8 @@ class WireConnectionTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -88,6 +92,8 @@ class WireConnectionTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -115,6 +121,8 @@ class WireConnectionTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -140,6 +148,8 @@ class WireConnectionTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -167,6 +177,8 @@ class WireConnectionTest {
         nodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
@@ -192,6 +204,8 @@ class WireConnectionTest {
         peerNodeId,
         LoggerProvider.nullProvider().getLogger("rlpx"),
         capturedDisconnect::set,
+        helloMessage -> {
+        },
         () -> {
         },
         new LinkedHashMap<>(),
