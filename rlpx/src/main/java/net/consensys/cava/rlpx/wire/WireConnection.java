@@ -129,13 +129,14 @@ public final class WireConnection {
     this.p2pVersion = p2pVersion;
     this.clientId = clientId;
     this.advertisedPort = advertisedPort;
+    logger.debug("New wire connection created");
   }
 
   public void messageReceived(RLPxMessage message) {
     if (message.messageId() == 0) {
       peerHelloMessage = HelloMessage.read(message.content());
       logger.debug("Received peer Hello message {}", peerHelloMessage);
-      afterHandshakeListener.accept(peerHelloMessage);
+      initSupportedRange(peerHelloMessage.capabilities());
 
       if (peerHelloMessage.nodeId() == null || peerHelloMessage.nodeId().isEmpty()) {
         disconnect(DisconnectReason.NULL_NODE_IDENTITY_RECEIVED);
@@ -157,10 +158,12 @@ public final class WireConnection {
         return;
       }
 
-      initSupportedRange(peerHelloMessage.capabilities());
       if (myHelloMessage == null) {
         sendHello();
       }
+
+      afterHandshakeListener.accept(peerHelloMessage);
+
       for (SubProtocol subProtocol : subprotocolRangeMap.asMapOfRanges().values()) {
         subprotocols.get(subProtocol).newPeerConnection(this);
       }
@@ -172,6 +175,7 @@ public final class WireConnection {
     }
 
     if (peerHelloMessage == null || myHelloMessage == null) {
+      logger.debug("Message sent before hello exchanged {}", message.messageId());
       disconnect(DisconnectReason.PROTOCOL_BREACH);
     }
 
@@ -248,7 +252,7 @@ public final class WireConnection {
         clientId,
         subprotocols.keySet().stream().map(sp -> new Capability(sp.id().name(), sp.id().version())).collect(
             Collectors.toList()));
-    logger.debug("Sending a hello message {}", myHelloMessage);
+    logger.debug("Sending hello message {}", myHelloMessage);
     writer.accept(new RLPxMessage(0, myHelloMessage.toBytes()));
   }
 
@@ -257,6 +261,7 @@ public final class WireConnection {
   }
 
   public void sendMessage(WireSubProtocolMessage message) {
+    logger.debug("Sending sub-protocol message {}", message);
     Integer offset = null;
     for (Map.Entry<Range<Integer>, SubProtocol> entry : subprotocolRangeMap.asMapOfRanges().entrySet()) {
       if (entry.getValue().supports(message.subProtocolIdentifier())) {

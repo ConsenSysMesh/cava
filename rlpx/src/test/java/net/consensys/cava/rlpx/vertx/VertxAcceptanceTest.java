@@ -48,6 +48,7 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.logl.Level;
+import org.logl.Logger;
 import org.logl.LoggerProvider;
 import org.logl.logl.SimpleLogger;
 
@@ -151,8 +152,8 @@ class VertxAcceptanceTest {
     SECP256K1.KeyPair secondKp = SECP256K1.KeyPair.random();
     MyCustomSubProtocol sp = new MyCustomSubProtocol(1);
     MyCustomSubProtocol secondSp = new MyCustomSubProtocol(2);
-    LoggerProvider logProvider =
-        SimpleLogger.toPrintWriter(new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
     MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
     VertxRLPxService service = new VertxRLPxService(
         vertx,
@@ -272,14 +273,17 @@ class VertxAcceptanceTest {
   @Test
   @Disabled
   void connectToPeer(@VertxInstance Vertx vertx) throws Exception {
+    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    Logger logger = logProvider.getLogger("test");
+
     SECP256K1.KeyPair kp = SECP256K1.KeyPair.fromSecretKey(
         SECP256K1.SecretKey
             .fromBytes(Bytes32.fromHexString("0x2CADB9DDEA3E675CC5349A1AF053CF2E144AF657016A6155DF4AD767F561F18E")));
-    System.out.println(kp.secretKey().bytes().toHexString());
+    logger.debug(kp.secretKey().bytes().toHexString());
 
-    System.out.println("enode://" + kp.publicKey().toHexString() + "@127.0.0.1:36000");
-    LoggerProvider logProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
-        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.err, UTF_8))));
+    logger.debug("enode://" + kp.publicKey().toHexString() + "@127.0.0.1:36000");
+
     MemoryWireConnectionsRepository repository = new MemoryWireConnectionsRepository();
 
     VertxRLPxService service = new VertxRLPxService(
@@ -295,12 +299,12 @@ class VertxAcceptanceTest {
             return new SubProtocolIdentifier() {
               @Override
               public String name() {
-                return "shh";
+                return "eth";
               }
 
               @Override
               public int version() {
-                return 6;
+                return 63;
               }
             };
           }
