@@ -120,9 +120,9 @@ jobs:
           destination: dokka
 
       - deploy:
-          name: Deploying snapshot to Bintray (master branch only)
+          name: Deploying snapshot to Bintray (release branches only)
           command: |
-            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+            if [ -z "${CIRCLE_PULL_REQUEST}" ] && echo "${CIRCLE_BRANCH}" | grep -q -E '^master$|^\d+\.\d+$'; then
               echo "Start deployment"
               BINTRAY_DEPLOY=true ./gradlew deploy
             else
