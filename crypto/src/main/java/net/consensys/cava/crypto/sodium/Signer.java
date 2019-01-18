@@ -109,18 +109,7 @@ public final class Signer {
      * @return true if the signature matches the message according to this public key
      */
     public boolean verify(Bytes message, Bytes signature) {
-      int result = Sodium.crypto_sign_verify_detached(
-          signature.toArrayUnsafe(),
-          message.toArrayUnsafe(),
-          message.size(),
-          bytes.toArrayUnsafe());
-      if (result == 0) {
-        return true;
-      } else if (result == -1) {
-        return false;
-      } else {
-        throw new IllegalArgumentException("Unsupported return code " + result);
-      }
+      return Signer.verifyDetached(message, signature, this);
     }
 
     @Override
@@ -217,15 +206,7 @@ public final class Signer {
      * @return the hash of the content signed with the secret key
      */
     public Bytes sign(Bytes content) {
-      LongLongByReference signatureLength = new LongLongByReference(Sodium.crypto_sign_bytes());
-      Bytes signature = Bytes.wrap(new byte[signatureLength.intValue()]);
-      Sodium.crypto_sign_detached(
-          signature.toArrayUnsafe(),
-          signatureLength,
-          content.toArrayUnsafe(),
-          content.size(),
-          bytes.toArrayUnsafe());
-      return signature;
+      return Signer.signDetached(content, this);
     }
 
     @Override
