@@ -49,15 +49,14 @@ class IdentityTest {
   }
 
   @Test
-  void testToString() throws Exception {
+  void testToString() {
     Signer.KeyPair kp = Signer.KeyPair.random();
     Identity id = Identity.fromKeyPair(kp);
-    System.out.println(id.toString());
     StringBuilder builder = new StringBuilder();
     builder.append("@");
-    kp.publicKey().bytes().appendHexTo(builder);
+    builder.append(kp.publicKey().bytes().toBase64String());
     builder.append(".ed25519");
-    assertEquals(builder.toString().toLowerCase(), id.toString());
+    assertEquals(builder.toString(), id.toString());
   }
 
   @Test

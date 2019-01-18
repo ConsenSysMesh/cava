@@ -15,8 +15,6 @@ package net.consensys.cava.scuttlebutt;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.sodium.Signer;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -67,14 +65,6 @@ public final class Identity {
 
   @Override
   public String toString() {
-    try {
-      StringBuilder builder = new StringBuilder();
-      builder.append("@");
-      keyPair.publicKey().bytes().appendHexTo(builder);
-      builder.append(".ed25519");
-      return builder.toString().toLowerCase();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
+    return "@" + keyPair.publicKey().bytes().toBase64String() + ".ed25519";
   }
 }
