@@ -15,77 +15,77 @@ package net.consensys.cava.units.bigints;
 import static com.google.common.base.Preconditions.checkArgument;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.bytes.Bytes32;
+import net.consensys.cava.bytes.Bytes48;
 import net.consensys.cava.bytes.MutableBytes;
-import net.consensys.cava.bytes.MutableBytes32;
+import net.consensys.cava.bytes.MutableBytes48;
 
 import java.math.BigInteger;
 import java.util.Arrays;
 
 /**
- * An unsigned 256-bit precision number.
+ * An unsigned 384-bit precision number.
  *
- * This is a raw {@link UInt256Value} - a 256-bit precision unsigned number of no particular unit.
+ * This is a raw {@link UInt384Value} - a 384-bit precision unsigned number of no particular unit.
  */
-public final class UInt256 implements UInt256Value<UInt256> {
+public final class UInt384 implements UInt384Value<UInt384> {
   private final static int MAX_CONSTANT = 64;
   private final static BigInteger BI_MAX_CONSTANT = BigInteger.valueOf(MAX_CONSTANT);
-  private static UInt256 CONSTANTS[] = new UInt256[MAX_CONSTANT + 1];
+  private static UInt384 CONSTANTS[] = new UInt384[MAX_CONSTANT + 1];
   static {
-    CONSTANTS[0] = new UInt256(Bytes32.ZERO);
+    CONSTANTS[0] = new UInt384(Bytes48.ZERO);
     for (int i = 1; i <= MAX_CONSTANT; ++i) {
-      CONSTANTS[i] = new UInt256(i);
+      CONSTANTS[i] = new UInt384(i);
     }
   }
 
-  /** The minimum value of a UInt256 */
-  public final static UInt256 MIN_VALUE = valueOf(0);
-  /** The maximum value of a UInt256 */
-  public final static UInt256 MAX_VALUE = new UInt256(Bytes32.ZERO.not());
+  /** The minimum value of a UInt384 */
+  public final static UInt384 MIN_VALUE = valueOf(0);
+  /** The maximum value of a UInt384 */
+  public final static UInt384 MAX_VALUE = new UInt384(Bytes48.ZERO.not());
   /** The value 0 */
-  public final static UInt256 ZERO = valueOf(0);
+  public final static UInt384 ZERO = valueOf(0);
   /** The value 1 */
-  public final static UInt256 ONE = valueOf(1);
+  public final static UInt384 ONE = valueOf(1);
   /** The value 10 */
-  public final static UInt256 TEN = valueOf(10);
+  public final static UInt384 TEN = valueOf(10);
 
-  private static final int INTS_SIZE = 32 / 4;
+  private static final int INTS_SIZE = 48 / 4;
   // The mask is used to obtain the value of an int as if it were unsigned.
   private static final long LONG_MASK = 0xFFFFFFFFL;
-  private static final BigInteger P_2_256 = BigInteger.valueOf(2).pow(256);
+  private static final BigInteger P_2_384 = BigInteger.valueOf(2).pow(384);
 
   // The unsigned int components of the value
   private final int ints[];
 
   /**
-   * Return a {@code UInt256} containing the specified value.
+   * Return a {@code UInt384} containing the specified value.
    *
-   * @param value The value to create a {@code UInt256} for.
-   * @return A {@code UInt256} containing the specified value.
+   * @param value The value to create a {@code UInt384} for.
+   * @return A {@code UInt384} containing the specified value.
    * @throws IllegalArgumentException If the value is negative.
    */
-  public static UInt256 valueOf(long value) {
+  public static UInt384 valueOf(long value) {
     checkArgument(value >= 0, "Argument must be positive");
     if (value <= MAX_CONSTANT) {
       return CONSTANTS[(int) value];
     }
-    return new UInt256(value);
+    return new UInt384(value);
   }
 
-  private UInt256(long value) {
+  private UInt384(long value) {
     this.ints = new int[INTS_SIZE];
     this.ints[INTS_SIZE - 2] = (int) ((value >>> 32) & LONG_MASK);
     this.ints[INTS_SIZE - 1] = (int) (value & LONG_MASK);
   }
 
   /**
-   * Return a {@link UInt256} containing the specified value.
+   * Return a {@link UInt384} containing the specified value.
    *
-   * @param value The value to create a {@link UInt256} for.
-   * @return A {@link UInt256} containing the specified value.
+   * @param value The value to create a {@link UInt384} for.
+   * @return A {@link UInt384} containing the specified value.
    * @throws IllegalArgumentException If the value is negative.
    */
-  public static UInt256 valueOf(BigInteger value) {
+  public static UInt384 valueOf(BigInteger value) {
     checkArgument(value.signum() >= 0, "Argument must be positive");
     if (value.compareTo(BI_MAX_CONSTANT) <= 0) {
       return CONSTANTS[value.intValue()];
@@ -95,41 +95,41 @@ public final class UInt256 implements UInt256Value<UInt256> {
       ints[i] = value.intValue();
       value = value.shiftRight(32);
     }
-    return new UInt256(ints);
+    return new UInt384(ints);
   }
 
   /**
-   * Return a {@link UInt256} containing the value described by the specified bytes.
+   * Return a {@link UInt384} containing the value described by the specified bytes.
    *
-   * @param bytes The bytes containing a {@link UInt256}.
-   * @return A {@link UInt256} containing the specified value.
-   * @throws IllegalArgumentException if {@code bytes.size() &gt; 32}.
+   * @param bytes The bytes containing a {@link UInt384}.
+   * @return A {@link UInt384} containing the specified value.
+   * @throws IllegalArgumentException if {@code bytes.size() &gt; 48}.
    */
-  public static UInt256 fromBytes(Bytes bytes) {
-    return new UInt256(Bytes32.leftPad(bytes));
+  public static UInt384 fromBytes(Bytes bytes) {
+    return new UInt384(Bytes48.leftPad(bytes));
   }
 
   /**
-   * Parse a hexadecimal string into a {@link UInt256}.
+   * Parse a hexadecimal string into a {@link UInt384}.
    *
    * @param str The hexadecimal string to parse, which may or may not start with "0x". That representation may contain
-   *        less than 32 bytes, in which case the result is left padded with zeros.
+   *        less than 48 bytes, in which case the result is left padded with zeros.
    * @return The value corresponding to {@code str}.
    * @throws IllegalArgumentException if {@code str} does not correspond to a valid hexadecimal representation or
-   *         contains more than 32 bytes.
+   *         contains more than 48 bytes.
    */
-  public static UInt256 fromHexString(String str) {
-    return new UInt256(Bytes32.fromHexStringLenient(str));
+  public static UInt384 fromHexString(String str) {
+    return new UInt384(Bytes48.fromHexStringLenient(str));
   }
 
-  private UInt256(Bytes32 bytes) {
+  private UInt384(Bytes48 bytes) {
     this.ints = new int[INTS_SIZE];
     for (int i = 0, j = 0; i < INTS_SIZE; ++i, j += 4) {
       ints[i] = bytes.getInt(j);
     }
   }
 
-  private UInt256(int ints[]) {
+  private UInt384(int ints[]) {
     this.ints = ints;
   }
 
@@ -148,7 +148,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   @Override
-  public UInt256 add(UInt256 value) {
+  public UInt384 add(UInt384 value) {
     if (value.isZero()) {
       return this;
     }
@@ -170,16 +170,16 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (constant) {
       return CONSTANTS[result[INTS_SIZE - 1]];
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   @Override
-  public UInt256 add(long value) {
+  public UInt384 add(long value) {
     if (value == 0) {
       return this;
     }
     if (value > 0 && isZero()) {
-      return UInt256.valueOf(value);
+      return UInt384.valueOf(value);
     }
     int result[] = new int[INTS_SIZE];
     boolean constant = true;
@@ -200,38 +200,38 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (constant) {
       return CONSTANTS[result[INTS_SIZE - 1]];
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   @Override
-  public UInt256 addMod(UInt256 value, UInt256 modulus) {
+  public UInt384 addMod(UInt384 value, UInt384 modulus) {
     if (modulus.isZero()) {
       throw new ArithmeticException("addMod with zero modulus");
     }
-    return UInt256.valueOf(toBigInteger().add(value.toBigInteger()).mod(modulus.toBigInteger()));
+    return UInt384.valueOf(toBigInteger().add(value.toBigInteger()).mod(modulus.toBigInteger()));
   }
 
   @Override
-  public UInt256 addMod(long value, UInt256 modulus) {
+  public UInt384 addMod(long value, UInt384 modulus) {
     if (modulus.isZero()) {
       throw new ArithmeticException("addMod with zero modulus");
     }
-    return UInt256.valueOf(toBigInteger().add(BigInteger.valueOf(value)).mod(modulus.toBigInteger()));
+    return UInt384.valueOf(toBigInteger().add(BigInteger.valueOf(value)).mod(modulus.toBigInteger()));
   }
 
   @Override
-  public UInt256 addMod(long value, long modulus) {
+  public UInt384 addMod(long value, long modulus) {
     if (modulus == 0) {
       throw new ArithmeticException("addMod with zero modulus");
     }
     if (modulus < 0) {
       throw new ArithmeticException("addMod unsigned with negative modulus");
     }
-    return UInt256.valueOf(toBigInteger().add(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
+    return UInt384.valueOf(toBigInteger().add(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
   }
 
   @Override
-  public UInt256 subtract(UInt256 value) {
+  public UInt384 subtract(UInt384 value) {
     if (value.isZero()) {
       return this;
     }
@@ -251,26 +251,26 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (constant) {
       return CONSTANTS[result[INTS_SIZE - 1]];
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   @Override
-  public UInt256 subtract(long value) {
+  public UInt384 subtract(long value) {
     return add(-value);
   }
 
   @Override
-  public UInt256 multiply(UInt256 value) {
+  public UInt384 multiply(UInt384 value) {
     if (isZero() || value.isZero()) {
       return ZERO;
     }
-    if (value.equals(UInt256.ONE)) {
+    if (value.equals(UInt384.ONE)) {
       return this;
     }
     return multiply(this.ints, value.ints);
   }
 
-  private static UInt256 multiply(int[] x, int[] y) {
+  private static UInt384 multiply(int[] x, int[] y) {
     int result[] = new int[INTS_SIZE + INTS_SIZE];
 
     long carry = 0;
@@ -299,11 +299,11 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (constant && result[INTS_SIZE + INTS_SIZE - 1] >= 0 && result[INTS_SIZE + INTS_SIZE - 1] <= MAX_CONSTANT) {
       return CONSTANTS[result[INTS_SIZE + INTS_SIZE - 1]];
     }
-    return new UInt256(Arrays.copyOfRange(result, INTS_SIZE, INTS_SIZE + INTS_SIZE));
+    return new UInt384(Arrays.copyOfRange(result, INTS_SIZE, INTS_SIZE + INTS_SIZE));
   }
 
   @Override
-  public UInt256 multiply(long value) {
+  public UInt384 multiply(long value) {
     if (value == 0 || isZero()) {
       return ZERO;
     }
@@ -313,26 +313,26 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value < 0) {
       throw new ArithmeticException("multiply unsigned by negative");
     }
-    UInt256 other = new UInt256(value);
+    UInt384 other = new UInt384(value);
     return multiply(this.ints, other.ints);
   }
 
   @Override
-  public UInt256 multiplyMod(UInt256 value, UInt256 modulus) {
+  public UInt384 multiplyMod(UInt384 value, UInt384 modulus) {
     if (modulus.isZero()) {
       throw new ArithmeticException("multiplyMod with zero modulus");
     }
     if (isZero() || value.isZero()) {
       return ZERO;
     }
-    if (value.equals(UInt256.ONE)) {
+    if (value.equals(UInt384.ONE)) {
       return mod(modulus);
     }
-    return UInt256.valueOf(toBigInteger().multiply(value.toBigInteger()).mod(modulus.toBigInteger()));
+    return UInt384.valueOf(toBigInteger().multiply(value.toBigInteger()).mod(modulus.toBigInteger()));
   }
 
   @Override
-  public UInt256 multiplyMod(long value, UInt256 modulus) {
+  public UInt384 multiplyMod(long value, UInt384 modulus) {
     if (modulus.isZero()) {
       throw new ArithmeticException("multiplyMod with zero modulus");
     }
@@ -345,11 +345,11 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value < 0) {
       throw new ArithmeticException("multiplyMod unsigned by negative");
     }
-    return UInt256.valueOf(toBigInteger().multiply(BigInteger.valueOf(value)).mod(modulus.toBigInteger()));
+    return UInt384.valueOf(toBigInteger().multiply(BigInteger.valueOf(value)).mod(modulus.toBigInteger()));
   }
 
   @Override
-  public UInt256 multiplyMod(long value, long modulus) {
+  public UInt384 multiplyMod(long value, long modulus) {
     if (modulus == 0) {
       throw new ArithmeticException("multiplyMod with zero modulus");
     }
@@ -365,22 +365,22 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value < 0) {
       throw new ArithmeticException("multiplyMod unsigned by negative");
     }
-    return UInt256.valueOf(toBigInteger().multiply(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
+    return UInt384.valueOf(toBigInteger().multiply(BigInteger.valueOf(value)).mod(BigInteger.valueOf(modulus)));
   }
 
   @Override
-  public UInt256 divide(UInt256 value) {
+  public UInt384 divide(UInt384 value) {
     if (value.isZero()) {
       throw new ArithmeticException("divide by zero");
     }
-    if (value.equals(UInt256.ONE)) {
+    if (value.equals(UInt384.ONE)) {
       return this;
     }
-    return UInt256.valueOf(toBigInteger().divide(value.toBigInteger()));
+    return UInt384.valueOf(toBigInteger().divide(value.toBigInteger()));
   }
 
   @Override
-  public UInt256 divide(long value) {
+  public UInt384 divide(long value) {
     if (value == 0) {
       throw new ArithmeticException("divide by zero");
     }
@@ -393,29 +393,29 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (isPowerOf2(value)) {
       return shiftRight(log2(value));
     }
-    return UInt256.valueOf(toBigInteger().divide(BigInteger.valueOf(value)));
+    return UInt384.valueOf(toBigInteger().divide(BigInteger.valueOf(value)));
   }
 
   @Override
-  public UInt256 pow(UInt256 exponent) {
-    return UInt256.valueOf(toBigInteger().modPow(exponent.toBigInteger(), P_2_256));
+  public UInt384 pow(UInt384 exponent) {
+    return UInt384.valueOf(toBigInteger().modPow(exponent.toBigInteger(), P_2_384));
   }
 
   @Override
-  public UInt256 pow(long exponent) {
-    return UInt256.valueOf(toBigInteger().modPow(BigInteger.valueOf(exponent), P_2_256));
+  public UInt384 pow(long exponent) {
+    return UInt384.valueOf(toBigInteger().modPow(BigInteger.valueOf(exponent), P_2_384));
   }
 
   @Override
-  public UInt256 mod(UInt256 modulus) {
+  public UInt384 mod(UInt384 modulus) {
     if (modulus.isZero()) {
       throw new ArithmeticException("mod by zero");
     }
-    return UInt256.valueOf(toBigInteger().mod(modulus.toBigInteger()));
+    return UInt384.valueOf(toBigInteger().mod(modulus.toBigInteger()));
   }
 
   @Override
-  public UInt256 mod(long modulus) {
+  public UInt384 mod(long modulus) {
     if (modulus == 0) {
       throw new ArithmeticException("mod by zero");
     }
@@ -434,9 +434,9 @@ public final class UInt256 implements UInt256Value<UInt256> {
       if (d != 0) {
         result[INTS_SIZE - 1] = this.ints[INTS_SIZE - 1];
       }
-      return new UInt256(result);
+      return new UInt384(result);
     }
-    return UInt256.valueOf(toBigInteger().mod(BigInteger.valueOf(modulus)));
+    return UInt384.valueOf(toBigInteger().mod(BigInteger.valueOf(modulus)));
   }
 
   /**
@@ -447,12 +447,12 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param value The value to perform the operation with.
    * @return The result of a bit-wise AND.
    */
-  public UInt256 and(UInt256 value) {
+  public UInt384 and(UInt384 value) {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = this.ints[i] & value.ints[i];
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -463,7 +463,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param bytes The bytes to perform the operation with.
    * @return The result of a bit-wise AND.
    */
-  public UInt256 and(Bytes32 bytes) {
+  public UInt384 and(Bytes48 bytes) {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1, j = 28; i >= 0; --i, j -= 4) {
       int other = ((int) bytes.get(j) & 0xFF) << 24;
@@ -472,7 +472,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
       other |= ((int) bytes.get(i + 3) & 0xFF);
       result[i] = this.ints[i] & other;
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -483,12 +483,12 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param value The value to perform the operation with.
    * @return The result of a bit-wise OR.
    */
-  public UInt256 or(UInt256 value) {
+  public UInt384 or(UInt384 value) {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = this.ints[i] | value.ints[i];
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -499,7 +499,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param bytes The bytes to perform the operation with.
    * @return The result of a bit-wise OR.
    */
-  public UInt256 or(Bytes32 bytes) {
+  public UInt384 or(Bytes48 bytes) {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1, j = 28; i >= 0; --i, j -= 4) {
       result[i] = this.ints[i] | (((int) bytes.get(j) & 0xFF) << 24);
@@ -507,7 +507,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
       result[i] |= ((int) bytes.get(j + 2) & 0xFF) << 8;
       result[i] |= ((int) bytes.get(j + 3) & 0xFF);
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -518,12 +518,12 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param value The value to perform the operation with.
    * @return The result of a bit-wise XOR.
    */
-  public UInt256 xor(UInt256 value) {
+  public UInt384 xor(UInt384 value) {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = this.ints[i] ^ value.ints[i];
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -534,7 +534,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param bytes The bytes to perform the operation with.
    * @return The result of a bit-wise XOR.
    */
-  public UInt256 xor(Bytes32 bytes) {
+  public UInt384 xor(Bytes48 bytes) {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1, j = 28; i >= 0; --i, j -= 4) {
       result[i] = this.ints[i] ^ (((int) bytes.get(j) & 0xFF) << 24);
@@ -542,7 +542,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
       result[i] ^= ((int) bytes.get(j + 2) & 0xFF) << 8;
       result[i] ^= ((int) bytes.get(j + 3) & 0xFF);
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -550,12 +550,12 @@ public final class UInt256 implements UInt256Value<UInt256> {
    *
    * @return The result of a bit-wise NOT.
    */
-  public UInt256 not() {
+  public UInt384 not() {
     int result[] = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = ~(this.ints[i]);
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -564,11 +564,11 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param distance The number of bits to shift by.
    * @return A value containing the shifted bits.
    */
-  public UInt256 shiftRight(int distance) {
+  public UInt384 shiftRight(int distance) {
     if (distance == 0) {
       return this;
     }
-    if (distance >= 256) {
+    if (distance >= 384) {
       return ZERO;
     }
     int result[] = new int[INTS_SIZE];
@@ -587,7 +587,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
         result[--resIdx] = (leftSide | rightSide);
       }
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   /**
@@ -596,11 +596,11 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @param distance The number of bits to shift by.
    * @return A value containing the shifted bits.
    */
-  public UInt256 shiftLeft(int distance) {
+  public UInt384 shiftLeft(int distance) {
     if (distance == 0) {
       return this;
     }
-    if (distance >= 256) {
+    if (distance >= 384) {
       return ZERO;
     }
     int result[] = new int[INTS_SIZE];
@@ -619,7 +619,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
         result[resIdx++] = (leftSide | rightSide);
       }
     }
-    return new UInt256(result);
+    return new UInt384(result);
   }
 
   @Override
@@ -627,10 +627,10 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (object == this) {
       return true;
     }
-    if (!(object instanceof UInt256)) {
+    if (!(object instanceof UInt384)) {
       return false;
     }
-    UInt256 other = (UInt256) object;
+    UInt384 other = (UInt384) object;
     for (int i = 0; i < INTS_SIZE; ++i) {
       if (this.ints[i] != other.ints[i]) {
         return false;
@@ -649,7 +649,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   @Override
-  public int compareTo(UInt256 other) {
+  public int compareTo(UInt384 other) {
     for (int i = 0; i < INTS_SIZE; ++i) {
       int cmp = Long.compare(((long) this.ints[i]) & LONG_MASK, ((long) other.ints[i]) & LONG_MASK);
       if (cmp != 0) {
@@ -704,7 +704,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
 
   @Override
   public BigInteger toBigInteger() {
-    byte mag[] = new byte[32];
+    byte mag[] = new byte[48];
     for (int i = 0, j = 0; i < INTS_SIZE; ++i) {
       mag[j++] = (byte) (this.ints[i] >>> 24);
       mag[j++] = (byte) ((this.ints[i] >>> 16) & 0xFF);
@@ -715,13 +715,13 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   @Override
-  public UInt256 toUInt256() {
+  public UInt384 toUInt384() {
     return this;
   }
 
   @Override
-  public Bytes32 toBytes() {
-    MutableBytes32 bytes = MutableBytes32.create();
+  public Bytes48 toBytes() {
+    MutableBytes48 bytes = MutableBytes48.create();
     for (int i = 0, j = 0; i < INTS_SIZE; ++i, j += 4) {
       bytes.setInt(j, this.ints[i]);
     }
@@ -769,7 +769,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
       }
       return (i * 32) + Integer.numberOfLeadingZeros(this.ints[i]);
     }
-    return 256;
+    return 384;
   }
 
   @Override
