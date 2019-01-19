@@ -17,6 +17,8 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.bytes.Bytes32;
+import net.consensys.cava.crypto.Hash;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
@@ -24,6 +26,8 @@ import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.nio.ReadOnlyBufferException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -37,6 +41,68 @@ public final class SSZ {
   private static final Bytes FALSE = Bytes.of((byte) 0);
 
   private SSZ() {}
+
+  /**
+   * Create the hash tree root of a set of values
+   *
+   * @param bytes 1 value or a list of homogeneous values
+   * @return the SSZ tree root hash of the values
+   */
+  public static Bytes32 hashTreeRoot(Bytes... bytes) {
+    if (bytes.length == 1) {
+      if (bytes[0].size() > 32) {
+        return Hash.keccak256(bytes[0]);
+      } else {
+        return Bytes32.rightPad(bytes[0]);
+      }
+    } else {
+      Bytes hash = merkleHash(new ArrayList<>(Arrays.asList(bytes)));
+      return Bytes32.rightPad(hash);
+    }
+  }
+
+  /**
+   * Hashes a list of homogeneous values.
+   *
+   * @param values a list of homogeneous values
+   *
+   * @return the merkle hash of the list of values
+   */
+  static Bytes merkleHash(List<Bytes> values) {
+    Bytes bigEndianLength = Bytes.ofUnsignedInt(values.size());
+    Bytes32 valuesLength = Bytes32.rightPad(
+        Bytes.of(bigEndianLength.get(3), bigEndianLength.get(2), bigEndianLength.get(1), bigEndianLength.get(0)));
+
+    List<Bytes> chunks;
+    if (values.isEmpty()) {
+      chunks = new ArrayList<>();
+      chunks.add(Bytes.wrap(new byte[128]));
+    } else if (values.get(0).size() < 128) {
+      int itemsPerChunk = (int) Math.floor(128 / (double) values.get(0).size());
+      chunks = new ArrayList<>();
+
+      for (int i = 0; i * itemsPerChunk < values.size(); i++) {
+        Bytes[] chunkItems =
+            values.subList(i * itemsPerChunk, Math.min((i + 1) * itemsPerChunk, values.size())).toArray(new Bytes[0]);
+        chunks.add(Bytes.concatenate(chunkItems));
+      }
+    } else {
+      chunks = values;
+    }
+    while (chunks.size() > 1) {
+      if (chunks.size() % 2 == 1) {
+        chunks.add(Bytes.wrap(new byte[128]));
+      }
+      Iterator<Bytes> iterator = chunks.iterator();
+      List<Bytes> hashRound = new ArrayList<>();
+      while (iterator.hasNext()) {
+        hashRound.add(Hash.keccak256(Bytes.concatenate(iterator.next(), iterator.next())));
+      }
+      chunks = hashRound;
+    }
+
+    return Hash.keccak256(Bytes.concatenate(chunks.get(0), valuesLength));
+  }
 
   // Encoding
 
