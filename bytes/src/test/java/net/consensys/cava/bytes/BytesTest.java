@@ -367,4 +367,10 @@ class BytesTest extends CommonBytesTests {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes.fromHexStringLenient("0x001F34", 2));
     assertEquals("Hex value is too large: expected at most 2 bytes but got 3", exception.getMessage());
   }
+
+  @Test
+  void fromBase64Roundtrip() {
+    Bytes value = Bytes.fromBase64String("deadbeefISDAbest");
+    assertEquals("deadbeefISDAbest", value.toBase64String());
+  }
 }

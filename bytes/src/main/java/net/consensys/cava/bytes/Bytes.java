@@ -25,6 +25,7 @@ import java.nio.ReadOnlyBufferException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Random;
 
 import io.netty.buffer.ByteBuf;
@@ -410,6 +411,16 @@ public interface Bytes {
     checkNotNull(str);
     checkArgument(destinationSize >= 0, "Invalid negative destination size %s", destinationSize);
     return BytesValues.fromHexString(str, destinationSize, false);
+  }
+
+  /**
+   * Parse a base 64 string into a {@link Bytes} value.
+   *
+   * @param str The base 64 string to parse.
+   * @return The value corresponding to {@code str}.
+   */
+  static Bytes fromBase64String(CharSequence str) {
+    return Bytes.wrap(Base64.getDecoder().decode(str.toString()));
   }
 
   /**
@@ -1198,5 +1209,12 @@ public interface Bytes {
       i++;
     }
     return "0x" + hex.substring(i);
+  }
+
+  /**
+   * @return This value represented as base 64.
+   */
+  default String toBase64String() {
+    return Base64.getEncoder().encodeToString(toArrayUnsafe());
   }
 }

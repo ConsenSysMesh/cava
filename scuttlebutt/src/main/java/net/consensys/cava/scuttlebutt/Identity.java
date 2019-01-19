@@ -13,68 +13,142 @@
 package net.consensys.cava.scuttlebutt;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.crypto.sodium.Signer;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
-import java.util.Objects;
-
 /**
- * Scuttlebutt identity, based on a Ed25519 key pair.
+ * A Scuttlebutt identity, backed by a public key.
+ *
+ * Currently supported: Ed25519 and SECP256K1.
  */
-public final class Identity {
+public interface Identity {
 
-  public static Identity fromKeyPair(Signer.KeyPair keyPair) {
-    return new Identity(keyPair);
+  /**
+   * Creates a new Ed25519 identity backed by this key pair.
+   *
+   * @param keyPair the key pair of the identity
+   * @return a new Scuttlebutt identity
+   */
+  static Identity fromKeyPair(Signer.KeyPair keyPair) {
+    return new Ed25519KeyPairIdentity(keyPair);
   }
 
-  public static Identity fromSecretKey(Signer.SecretKey secretKey) {
+  /**
+   * Creates a new SECP256K1 identity backed by this key pair.
+   *
+   * @param keyPair the key pair of the identity
+   * @return a new Scuttlebutt identity
+   */
+  static Identity fromKeyPair(SECP256K1.KeyPair keyPair) {
+    return new SECP256K1KeyPairIdentity(keyPair);
+  }
+
+  /**
+   * Creates a new Ed25519 identity backed by this secret key.
+   *
+   * @param secretKey the secret key of the identity
+   * @return a new Scuttlebutt identity
+   */
+  static Identity fromSecretKey(Signer.SecretKey secretKey) {
     return fromKeyPair(Signer.KeyPair.forSecretKey(secretKey));
   }
 
-  public static Identity random() {
-    return new Identity(Signer.KeyPair.random());
+  /**
+   * Creates a new SECP256K1 identity backed by this secret key.
+   *
+   * @param secretKey the secret key of the identity
+   * @return a new Scuttlebutt identity
+   */
+  static Identity fromSecretKey(SECP256K1.SecretKey secretKey) {
+    return fromKeyPair(SECP256K1.KeyPair.fromSecretKey(secretKey));
   }
 
-  private final Signer.KeyPair keyPair;
-
-  private Identity(Signer.KeyPair keyPair) {
-    this.keyPair = keyPair;
+  /**
+   * Creates a new random Ed25519 identity.
+   *
+   * @return a new Scuttlebutt identity
+   */
+  static Identity random() {
+    return randomEd25519();
   }
 
-  public Bytes sign(Bytes message) {
-    return Signer.signDetached(message, keyPair.secretKey());
+  /**
+   * Creates a new random Ed25519 identity.
+   *
+   * @return a new Scuttlebutt identity
+   */
+  static Identity randomEd25519() {
+    return new Ed25519KeyPairIdentity(Signer.KeyPair.random());
   }
 
-  public boolean verify(Bytes signature, Bytes message) {
-    return Signer.verifyDetached(message, signature, keyPair.publicKey());
+
+  /**
+   * Creates a new random secp251k1 identity.
+   *
+   * @return a new Scuttlebutt identity
+   */
+  static Identity randomSECP256K1() {
+    return new SECP256K1KeyPairIdentity(SECP256K1.KeyPair.random());
   }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o)
-      return true;
-    if (o == null || getClass() != o.getClass())
-      return false;
-    Identity identity = (Identity) o;
-    return keyPair.equals(identity.keyPair);
+  /**
+   * Creates a new SECP256K1 identity backed by this secret key.
+   *
+   * @param publicKey the secret key of the identity
+   * @return a new Scuttlebutt identity
+   */
+  static Identity fromPublicKey(SECP256K1.PublicKey publicKey) {
+    return new SECP256K1PublicKeyIdentity(publicKey);
   }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(keyPair);
+  /**
+   * Creates a new Ed25519 identity backed by this secret key.
+   *
+   * @param publicKey the secret key of the identity
+   * @return a new Scuttlebutt identity
+   */
+  static Identity fromPublicKey(Signer.PublicKey publicKey) {
+    return new Ed25519PublicKeyIdentity(publicKey);
   }
 
-  @Override
-  public String toString() {
-    try {
-      StringBuilder builder = new StringBuilder();
-      builder.append("@");
-      keyPair.publicKey().bytes().appendHexTo(builder);
-      builder.append(".ed25519");
-      return builder.toString().toLowerCase();
-    } catch (IOException e) {
-      throw new UncheckedIOException(e);
-    }
+  /**
+   * Hashes data using the secret key of the identity.
+   *
+   * @param message the message to sign
+   * @return the signature
+   * @throws UnsupportedOperationException if the identity doesn't contain a secret key
+   */
+  Bytes sign(Bytes message);
+
+  /**
+   * Verifies a signature matches a message according to the public key of the identity.
+   * 
+   * @param signature the signature to test
+   * @param message the data that was signed by the signature
+   * @return true if the signature matches the message according to the public key of the identity
+   */
+  boolean verify(Bytes signature, Bytes message);
+
+  /**
+   * Provides the base64 encoded representation of the public key of the identity
+   *
+   * @return the base64 encoded representation of the public key of the identity
+   */
+  String publicKeyAsBase64String();
+
+  /**
+   * Provides the name of the curve associated with this identity
+   * 
+   * @return the name of the curve associated with this identity
+   */
+  String curveName();
+
+  /**
+   * Encodes the identity into a canonical Scuttlebutt identity string
+   *
+   * @return the identity, as a Scuttlebutt identity string representation
+   */
+  default String toCanonicalForm() {
+    return "@" + publicKeyAsBase64String() + "." + curveName();
   }
 }
