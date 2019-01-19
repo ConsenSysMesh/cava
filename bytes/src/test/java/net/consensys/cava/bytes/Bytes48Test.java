@@ -32,6 +32,18 @@ class Bytes48Test {
   }
 
   @Test
+  void rightPadAValueToBytes48() {
+    Bytes48 b48 = Bytes48.rightPad(Bytes.of(1, 2, 3));
+    assertEquals(48, b48.size());
+    for (int i = 3; i < 48; ++i) {
+      assertEquals((byte) 0, b48.get(i));
+    }
+    assertEquals((byte) 1, b48.get(0));
+    assertEquals((byte) 2, b48.get(1));
+    assertEquals((byte) 3, b48.get(2));
+  }
+
+  @Test
   void leftPadAValueToBytes48() {
     Bytes48 b48 = Bytes48.leftPad(Bytes.of(1, 2, 3));
     assertEquals(48, b48.size());
@@ -46,6 +58,12 @@ class Bytes48Test {
   @Test
   void failsWhenLeftPaddingValueLargerThan48() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes48.leftPad(MutableBytes.create(49)));
+    assertEquals("Expected at most 48 bytes but got 49", exception.getMessage());
+  }
+
+  @Test
+  void failsWhenRightPaddingValueLargerThan48() {
+    Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes48.rightPad(MutableBytes.create(49)));
     assertEquals("Expected at most 48 bytes but got 49", exception.getMessage());
   }
 }

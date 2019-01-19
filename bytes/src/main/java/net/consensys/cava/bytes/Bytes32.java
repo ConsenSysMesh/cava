@@ -132,6 +132,24 @@ public interface Bytes32 extends Bytes {
   }
 
   /**
+   * Right pad a {@link Bytes} value with zero bytes to create a {@link Bytes32}.
+   *
+   * @param value The bytes value pad.
+   * @return A {@link Bytes32} that exposes the rightw-padded bytes of {@code value}.
+   * @throws IllegalArgumentException if {@code value.size() &gt; 32}.
+   */
+  static Bytes32 rightPad(Bytes value) {
+    checkNotNull(value);
+    if (value instanceof Bytes32) {
+      return (Bytes32) value;
+    }
+    checkArgument(value.size() <= SIZE, "Expected at most %s bytes but got %s", SIZE, value.size());
+    MutableBytes32 result = MutableBytes32.create();
+    value.copyTo(result, 0);
+    return result;
+  }
+
+  /**
    * Parse a hexadecimal string into a {@link Bytes32}.
    *
    * <p>
