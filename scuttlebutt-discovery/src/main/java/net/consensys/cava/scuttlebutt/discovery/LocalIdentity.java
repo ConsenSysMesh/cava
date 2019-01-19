@@ -13,7 +13,7 @@
 package net.consensys.cava.scuttlebutt.discovery;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.crypto.sodium.Signer;
+import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.scuttlebutt.Identity;
 
 import java.net.InetSocketAddress;
@@ -46,7 +46,7 @@ public final class LocalIdentity {
     return new LocalIdentity(
         result.group(1),
         result.group(2),
-        Identity.fromPublicKey(Signer.PublicKey.fromBytes(Bytes.fromBase64String(result.group(3)))));
+        Identity.fromPublicKey(Signature.PublicKey.fromBytes(Bytes.fromBase64String(result.group(3)))));
 
   }
 

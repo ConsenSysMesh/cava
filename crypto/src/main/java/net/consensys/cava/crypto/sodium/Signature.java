@@ -47,7 +47,7 @@ import jnr.ffi.byref.LongLongByReference;
  * This class depends upon the JNR-FFI library being available on the classpath, along with its dependencies. See
  * https://github.com/jnr/jnr-ffi. JNR-FFI can be included using the gradle dependency 'com.github.jnr:jnr-ffi'.
  */
-public final class Signer {
+public final class Signature {
 
   /**
    * A signing public key.
@@ -56,14 +56,15 @@ public final class Signer {
     private final Bytes bytes;
 
     private PublicKey(Bytes bytes) {
-      if (bytes.size() != Signer.PublicKey.length()) {
-        throw new IllegalArgumentException("key must be " + Signer.PublicKey.length() + " bytes, got " + bytes.size());
+      if (bytes.size() != Signature.PublicKey.length()) {
+        throw new IllegalArgumentException(
+            "key must be " + Signature.PublicKey.length() + " bytes, got " + bytes.size());
       }
       this.bytes = bytes;
     }
 
     /**
-     * Create a {@link Signer.PublicKey} from an array of bytes.
+     * Create a {@link Signature.PublicKey} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -71,12 +72,12 @@ public final class Signer {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static Signer.PublicKey fromBytes(Bytes bytes) {
-      return new Signer.PublicKey(bytes);
+    public static Signature.PublicKey fromBytes(Bytes bytes) {
+      return new Signature.PublicKey(bytes);
     }
 
     /**
-     * Create a {@link Signer.PublicKey} from an array of bytes.
+     * Create a {@link Signature.PublicKey} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -84,8 +85,8 @@ public final class Signer {
      * @param bytes The bytes for the public key.
      * @return A public key.
      */
-    public static Signer.PublicKey fromBytes(byte[] bytes) {
-      return new Signer.PublicKey(Bytes.wrap(bytes));
+    public static Signature.PublicKey fromBytes(byte[] bytes) {
+      return new Signature.PublicKey(Bytes.wrap(bytes));
     }
 
     /**
@@ -109,7 +110,7 @@ public final class Signer {
      * @return true if the signature matches the message according to this public key
      */
     public boolean verify(Bytes message, Bytes signature) {
-      return Signer.verifyDetached(message, signature, this);
+      return Signature.verifyDetached(message, signature, this);
     }
 
     @Override
@@ -117,10 +118,10 @@ public final class Signer {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof Signer.PublicKey)) {
+      if (!(obj instanceof Signature.PublicKey)) {
         return false;
       }
-      Signer.PublicKey other = (Signer.PublicKey) obj;
+      Signature.PublicKey other = (Signature.PublicKey) obj;
       return other.bytes.equals(this.bytes);
     }
 
@@ -145,7 +146,7 @@ public final class Signer {
   }
 
   /**
-   * A Signer secret key.
+   * A Signature secret key.
    */
   public static final class SecretKey {
 
@@ -156,7 +157,7 @@ public final class Signer {
     }
 
     /**
-     * Create a {@link Signer.SecretKey} from an array of bytes.
+     * Create a {@link Signature.SecretKey} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -164,12 +165,12 @@ public final class Signer {
      * @param bytes The bytes for the secret key.
      * @return A secret key.
      */
-    public static Signer.SecretKey fromBytes(Bytes bytes) {
+    public static Signature.SecretKey fromBytes(Bytes bytes) {
       return fromBytes(bytes.toArrayUnsafe());
     }
 
     /**
-     * Create a {@link Signer.SecretKey} from an array of bytes.
+     * Create a {@link Signature.SecretKey} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -177,11 +178,12 @@ public final class Signer {
      * @param bytes The bytes for the secret key.
      * @return A secret key.
      */
-    public static Signer.SecretKey fromBytes(byte[] bytes) {
-      if (bytes.length != Signer.SecretKey.length()) {
-        throw new IllegalArgumentException("key must be " + Signer.SecretKey.length() + " bytes, got " + bytes.length);
+    public static Signature.SecretKey fromBytes(byte[] bytes) {
+      if (bytes.length != Signature.SecretKey.length()) {
+        throw new IllegalArgumentException(
+            "key must be " + Signature.SecretKey.length() + " bytes, got " + bytes.length);
       }
-      return new Signer.SecretKey(Bytes.wrap(bytes));
+      return new Signature.SecretKey(Bytes.wrap(bytes));
     }
 
     /**
@@ -200,13 +202,13 @@ public final class Signer {
     /**
      * Hashes content using the secret key. Hashes can be verified using the public key.
      * 
-     * @see Signer.PublicKey#verify
+     * @see Signature.PublicKey#verify
      *
      * @param content the content to sign
      * @return the hash of the content signed with the secret key
      */
     public Bytes sign(Bytes content) {
-      return Signer.signDetached(content, this);
+      return Signature.signDetached(content, this);
     }
 
     @Override
@@ -214,10 +216,10 @@ public final class Signer {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof Signer.SecretKey)) {
+      if (!(obj instanceof Signature.SecretKey)) {
         return false;
       }
-      Signer.SecretKey other = (Signer.SecretKey) obj;
+      Signature.SecretKey other = (Signature.SecretKey) obj;
       return other.bytes.equals(this.bytes);
     }
 
@@ -242,20 +244,20 @@ public final class Signer {
   }
 
   /**
-   * A Signer key pair seed.
+   * A Signature key pair seed.
    */
   public static final class Seed {
     private final Bytes bytes;
 
     private Seed(Bytes bytes) {
-      if (bytes.size() != Signer.Seed.length()) {
-        throw new IllegalArgumentException("key must be " + Signer.Seed.length() + " bytes, got " + bytes.size());
+      if (bytes.size() != Signature.Seed.length()) {
+        throw new IllegalArgumentException("key must be " + Signature.Seed.length() + " bytes, got " + bytes.size());
       }
       this.bytes = bytes;
     }
 
     /**
-     * Create a {@link Signer.Seed} from an array of bytes.
+     * Create a {@link Signature.Seed} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -263,12 +265,12 @@ public final class Signer {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Signer.Seed fromBytes(Bytes bytes) {
-      return new Signer.Seed(bytes);
+    public static Signature.Seed fromBytes(Bytes bytes) {
+      return new Signature.Seed(bytes);
     }
 
     /**
-     * Create a {@link Signer.Seed} from an array of bytes.
+     * Create a {@link Signature.Seed} from an array of bytes.
      *
      * <p>
      * The byte array must be of length {@link #length()}.
@@ -276,7 +278,7 @@ public final class Signer {
      * @param bytes The bytes for the seed.
      * @return A seed.
      */
-    public static Signer.Seed fromBytes(byte[] bytes) {
+    public static Signature.Seed fromBytes(byte[] bytes) {
       return fromBytes(Bytes.wrap(bytes));
     }
 
@@ -294,14 +296,14 @@ public final class Signer {
     }
 
     /**
-     * Generate a new {@link Signer.Seed} using a random generator.
+     * Generate a new {@link Signature.Seed} using a random generator.
      *
      * @return A randomly generated seed.
      */
-    public static Signer.Seed random() {
+    public static Signature.Seed random() {
       Bytes bytes = Bytes.wrap(new byte[length()]);
       Sodium.randombytes(bytes.toArrayUnsafe(), bytes.size());
-      return Signer.Seed.fromBytes(bytes);
+      return Signature.Seed.fromBytes(bytes);
     }
 
     @Override
@@ -309,10 +311,10 @@ public final class Signer {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof Signer.Seed)) {
+      if (!(obj instanceof Signature.Seed)) {
         return false;
       }
-      Signer.Seed other = (Signer.Seed) obj;
+      Signature.Seed other = (Signature.Seed) obj;
       return other.bytes.equals(this.bytes);
     }
 
@@ -337,35 +339,35 @@ public final class Signer {
   }
 
   /**
-   * A Signer key pair.
+   * A Signature key pair.
    */
   public static final class KeyPair {
 
-    private final Signer.PublicKey publicKey;
-    private final Signer.SecretKey secretKey;
+    private final Signature.PublicKey publicKey;
+    private final Signature.SecretKey secretKey;
 
     /**
-     * Create a {@link Signer.KeyPair} from pair of keys.
+     * Create a {@link Signature.KeyPair} from pair of keys.
      *
      * @param publicKey The bytes for the public key.
      * @param secretKey The bytes for the secret key.
      */
-    public KeyPair(Signer.PublicKey publicKey, Signer.SecretKey secretKey) {
+    public KeyPair(Signature.PublicKey publicKey, Signature.SecretKey secretKey) {
       this.publicKey = publicKey;
       this.secretKey = secretKey;
     }
 
     /**
-     * Create a {@link Signer.KeyPair} from an array of secret key bytes.
+     * Create a {@link Signature.KeyPair} from an array of secret key bytes.
      *
      * @param secretKey The secret key.
-     * @return A {@link Signer.KeyPair}.
+     * @return A {@link Signature.KeyPair}.
      */
-    public static Signer.KeyPair forSecretKey(Signer.SecretKey secretKey) {
-      byte[] pubKey = new byte[Signer.PublicKey.length()];
+    public static Signature.KeyPair forSecretKey(Signature.SecretKey secretKey) {
+      byte[] pubKey = new byte[Signature.PublicKey.length()];
       Sodium.crypto_sign_ed25519_sk_to_pk(pubKey, secretKey.bytesArray());
 
-      return new Signer.KeyPair(PublicKey.fromBytes(pubKey), secretKey);
+      return new Signature.KeyPair(PublicKey.fromBytes(pubKey), secretKey);
     }
 
     /**
@@ -373,17 +375,17 @@ public final class Signer {
      *
      * @return A randomly generated key pair.
      */
-    public static Signer.KeyPair random() {
-      Bytes secretKeyBytes = Bytes.wrap(new byte[Signer.SecretKey.length()]);
-      Bytes publicKeyBytes = Bytes.wrap(new byte[Signer.PublicKey.length()]);
+    public static Signature.KeyPair random() {
+      Bytes secretKeyBytes = Bytes.wrap(new byte[Signature.SecretKey.length()]);
+      Bytes publicKeyBytes = Bytes.wrap(new byte[Signature.PublicKey.length()]);
 
       int rc = Sodium.crypto_sign_keypair(publicKeyBytes.toArrayUnsafe(), secretKeyBytes.toArrayUnsafe());
       if (rc != 0) {
         throw new SodiumException("crypto_sign_keypair: failed with result " + rc);
       }
-      Signer.PublicKey pk = new Signer.PublicKey(publicKeyBytes);
-      Signer.SecretKey sk = new Signer.SecretKey(secretKeyBytes);
-      return new Signer.KeyPair(pk, sk);
+      Signature.PublicKey pk = new Signature.PublicKey(publicKeyBytes);
+      Signature.SecretKey sk = new Signature.SecretKey(secretKeyBytes);
+      return new Signature.KeyPair(pk, sk);
     }
 
     /**
@@ -392,30 +394,30 @@ public final class Signer {
      * @param seed A seed.
      * @return The generated key pair.
      */
-    public static Signer.KeyPair fromSeed(Signer.Seed seed) {
-      Bytes publicKey = Bytes.wrap(new byte[Signer.PublicKey.length()]);
-      Bytes secretKey = Bytes.wrap(new byte[Signer.SecretKey.length()]);
+    public static Signature.KeyPair fromSeed(Signature.Seed seed) {
+      Bytes publicKey = Bytes.wrap(new byte[Signature.PublicKey.length()]);
+      Bytes secretKey = Bytes.wrap(new byte[Signature.SecretKey.length()]);
 
       int rc = Sodium.crypto_sign_seed_keypair(publicKey.toArrayUnsafe(), secretKey.toArrayUnsafe(), seed.bytesArray());
       if (rc != 0) {
         throw new SodiumException("crypto_sign_keypair: failed with result " + rc);
       }
-      Signer.PublicKey pk = new Signer.PublicKey(publicKey);
-      Signer.SecretKey sk = new Signer.SecretKey(secretKey);
-      return new Signer.KeyPair(pk, sk);
+      Signature.PublicKey pk = new Signature.PublicKey(publicKey);
+      Signature.SecretKey sk = new Signature.SecretKey(secretKey);
+      return new Signature.KeyPair(pk, sk);
     }
 
     /**
      * @return The public key of the key pair.
      */
-    public Signer.PublicKey publicKey() {
+    public Signature.PublicKey publicKey() {
       return publicKey;
     }
 
     /**
      * @return The secret key of the key pair.
      */
-    public Signer.SecretKey secretKey() {
+    public Signature.SecretKey secretKey() {
       return secretKey;
     }
 
@@ -424,10 +426,10 @@ public final class Signer {
       if (obj == this) {
         return true;
       }
-      if (!(obj instanceof Signer.KeyPair)) {
+      if (!(obj instanceof Signature.KeyPair)) {
         return false;
       }
-      Signer.KeyPair other = (Signer.KeyPair) obj;
+      Signature.KeyPair other = (Signature.KeyPair) obj;
       return this.publicKey.equals(other.publicKey) && this.secretKey.equals(other.secretKey);
     }
 
@@ -437,7 +439,7 @@ public final class Signer {
     }
   }
 
-  private Signer() {}
+  private Signature() {}
 
   /**
    * Signs a message for a given key.
@@ -446,7 +448,7 @@ public final class Signer {
    * @param secretKey The secret key to sign the message with.
    * @return The signature of the message.
    */
-  public static Bytes signDetached(Bytes message, Signer.SecretKey secretKey) {
+  public static Bytes signDetached(Bytes message, Signature.SecretKey secretKey) {
     return Bytes.wrap(signDetached(message.toArrayUnsafe(), secretKey));
   }
 
@@ -457,7 +459,7 @@ public final class Signer {
    * @param secretKey The secret key to sign the message with.
    * @return The signature of the message.
    */
-  public static byte[] signDetached(byte[] message, Signer.SecretKey secretKey) {
+  public static byte[] signDetached(byte[] message, Signature.SecretKey secretKey) {
     byte[] signature = new byte[(int) Sodium.crypto_sign_bytes()];
     LongLongByReference signatureLengthReference = new LongLongByReference();
     int rc = Sodium
@@ -477,7 +479,7 @@ public final class Signer {
    * @param publicKey The secret key of the receiver.
    * @return whether the signature matches the message according to the public key.
    */
-  public static boolean verifyDetached(Bytes message, Bytes signature, Signer.PublicKey publicKey) {
+  public static boolean verifyDetached(Bytes message, Bytes signature, Signature.PublicKey publicKey) {
     return verifyDetached(message.toArrayUnsafe(), signature.toArrayUnsafe(), publicKey);
   }
 
@@ -489,7 +491,7 @@ public final class Signer {
    * @param publicKey The secret key of the receiver.
    * @return whether the signature matches the message according to the public key.
    */
-  public static boolean verifyDetached(byte[] message, byte[] signature, Signer.PublicKey publicKey) {
+  public static boolean verifyDetached(byte[] message, byte[] signature, Signature.PublicKey publicKey) {
     int rc = Sodium.crypto_sign_verify_detached(signature, message, message.length, publicKey.bytesArray());
     if (rc == -1) {
       return false;

@@ -13,7 +13,7 @@
 package net.consensys.cava.scuttlebutt;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.crypto.sodium.Signer;
+import net.consensys.cava.crypto.sodium.Signature;
 
 import java.util.Objects;
 
@@ -23,20 +23,20 @@ import java.util.Objects;
  */
 final class Ed25519KeyPairIdentity implements Identity {
 
-  private final Signer.KeyPair keyPair;
+  private final Signature.KeyPair keyPair;
 
-  Ed25519KeyPairIdentity(Signer.KeyPair keyPair) {
+  Ed25519KeyPairIdentity(Signature.KeyPair keyPair) {
     this.keyPair = keyPair;
   }
 
   @Override
   public Bytes sign(Bytes message) {
-    return Signer.signDetached(message, keyPair.secretKey());
+    return Signature.signDetached(message, keyPair.secretKey());
   }
 
   @Override
   public boolean verify(Bytes signature, Bytes message) {
-    return Signer.verifyDetached(message, signature, keyPair.publicKey());
+    return Signature.verifyDetached(message, signature, keyPair.publicKey());
   }
 
   @Override

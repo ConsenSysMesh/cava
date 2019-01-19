@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1;
-import net.consensys.cava.crypto.sodium.Signer;
+import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.junit.BouncyCastleExtension;
 
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ class IdentityTest {
 
   @Test
   void testEquality() {
-    Signer.KeyPair kp = Signer.KeyPair.random();
+    Signature.KeyPair kp = Signature.KeyPair.random();
     Identity id1 = Identity.fromKeyPair(kp);
     Identity id2 = Identity.fromKeyPair(kp);
     assertEquals(id1, id2);
@@ -62,7 +62,7 @@ class IdentityTest {
 
   @Test
   void testHashCode() {
-    Signer.KeyPair kp = Signer.KeyPair.random();
+    Signature.KeyPair kp = Signature.KeyPair.random();
     Identity id1 = Identity.fromKeyPair(kp);
     Identity id2 = Identity.fromKeyPair(kp);
     assertEquals(id1.hashCode(), id2.hashCode());
@@ -78,7 +78,7 @@ class IdentityTest {
 
   @Test
   void testToString() {
-    Signer.KeyPair kp = Signer.KeyPair.random();
+    Signature.KeyPair kp = Signature.KeyPair.random();
     Identity id = Identity.fromKeyPair(kp);
     StringBuilder builder = new StringBuilder();
     builder.append("@");
@@ -100,8 +100,9 @@ class IdentityTest {
 
   @Test
   void signAndVerify() {
-    Signer.KeyPair kp = Signer.KeyPair.fromSeed(
-        Signer.Seed.fromBytes(Bytes.fromHexString("deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")));
+    Signature.KeyPair kp = Signature.KeyPair.fromSeed(
+        Signature.Seed
+            .fromBytes(Bytes.fromHexString("deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef")));
     Bytes message = Bytes.fromHexString("deadbeef");
     Identity id = Identity.fromKeyPair(kp);
     Bytes signature = id.sign(message);
@@ -125,7 +126,7 @@ class IdentityTest {
 
   @Test
   void testKeyPairAndPublicKey() {
-    Signer.KeyPair kp = Signer.KeyPair.random();
+    Signature.KeyPair kp = Signature.KeyPair.random();
     Identity id = Identity.fromKeyPair(kp);
     Identity idWithPk = Identity.fromPublicKey(kp.publicKey());
     assertEquals(id.toCanonicalForm(), idWithPk.toCanonicalForm());
