@@ -44,8 +44,26 @@ class Bytes32Test {
   }
 
   @Test
+  void rightPadAValueToBytes32() {
+    Bytes32 b32 = Bytes32.rightPad(Bytes.of(1, 2, 3));
+    assertEquals(32, b32.size());
+    for (int i = 3; i < 32; ++i) {
+      assertEquals((byte) 0, b32.get(i));
+    }
+    assertEquals((byte) 1, b32.get(0));
+    assertEquals((byte) 2, b32.get(1));
+    assertEquals((byte) 3, b32.get(2));
+  }
+
+  @Test
   void failsWhenLeftPaddingValueLargerThan32() {
     Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes32.leftPad(MutableBytes.create(33)));
+    assertEquals("Expected at most 32 bytes but got 33", exception.getMessage());
+  }
+
+  @Test
+  void failsWhenRightPaddingValueLargerThan32() {
+    Throwable exception = assertThrows(IllegalArgumentException.class, () -> Bytes32.rightPad(MutableBytes.create(33)));
     assertEquals("Expected at most 32 bytes but got 33", exception.getMessage());
   }
 }

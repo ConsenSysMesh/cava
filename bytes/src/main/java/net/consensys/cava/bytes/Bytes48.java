@@ -131,6 +131,25 @@ public interface Bytes48 extends Bytes {
     return result;
   }
 
+
+  /**
+   * Right pad a {@link Bytes} value with zero bytes to create a {@link Bytes48}.
+   *
+   * @param value The bytes value pad.
+   * @return A {@link Bytes48} that exposes the rightw-padded bytes of {@code value}.
+   * @throws IllegalArgumentException if {@code value.size() &gt; 48}.
+   */
+  static Bytes48 rightPad(Bytes value) {
+    checkNotNull(value);
+    if (value instanceof Bytes48) {
+      return (Bytes48) value;
+    }
+    checkArgument(value.size() <= SIZE, "Expected at most %s bytes but got %s", SIZE, value.size());
+    MutableBytes48 result = MutableBytes48.create();
+    value.copyTo(result, 0);
+    return result;
+  }
+
   /**
    * Parse a hexadecimal string into a {@link Bytes48}.
    *
