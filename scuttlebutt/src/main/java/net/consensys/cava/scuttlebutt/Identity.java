@@ -14,7 +14,7 @@ package net.consensys.cava.scuttlebutt;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1;
-import net.consensys.cava.crypto.sodium.Signer;
+import net.consensys.cava.crypto.sodium.Signature;
 
 /**
  * A Scuttlebutt identity, backed by a public key.
@@ -29,7 +29,7 @@ public interface Identity {
    * @param keyPair the key pair of the identity
    * @return a new Scuttlebutt identity
    */
-  static Identity fromKeyPair(Signer.KeyPair keyPair) {
+  static Identity fromKeyPair(Signature.KeyPair keyPair) {
     return new Ed25519KeyPairIdentity(keyPair);
   }
 
@@ -49,8 +49,8 @@ public interface Identity {
    * @param secretKey the secret key of the identity
    * @return a new Scuttlebutt identity
    */
-  static Identity fromSecretKey(Signer.SecretKey secretKey) {
-    return fromKeyPair(Signer.KeyPair.forSecretKey(secretKey));
+  static Identity fromSecretKey(Signature.SecretKey secretKey) {
+    return fromKeyPair(Signature.KeyPair.forSecretKey(secretKey));
   }
 
   /**
@@ -78,7 +78,7 @@ public interface Identity {
    * @return a new Scuttlebutt identity
    */
   static Identity randomEd25519() {
-    return new Ed25519KeyPairIdentity(Signer.KeyPair.random());
+    return new Ed25519KeyPairIdentity(Signature.KeyPair.random());
   }
 
 
@@ -107,7 +107,7 @@ public interface Identity {
    * @param publicKey the secret key of the identity
    * @return a new Scuttlebutt identity
    */
-  static Identity fromPublicKey(Signer.PublicKey publicKey) {
+  static Identity fromPublicKey(Signature.PublicKey publicKey) {
     return new Ed25519PublicKeyIdentity(publicKey);
   }
 

@@ -19,21 +19,21 @@ import net.consensys.cava.bytes.Bytes;
 
 import org.junit.jupiter.api.Test;
 
-class SignerTest {
+class SignatureTest {
 
   @Test
   void testEqualityAndRecovery() {
-    Signer.KeyPair kp = Signer.KeyPair.random();
-    Signer.KeyPair otherKp = Signer.KeyPair.forSecretKey(kp.secretKey());
+    Signature.KeyPair kp = Signature.KeyPair.random();
+    Signature.KeyPair otherKp = Signature.KeyPair.forSecretKey(kp.secretKey());
     assertEquals(kp, otherKp);
   }
 
 
   @Test
   void checkDetachedSignVerify() {
-    Signer.KeyPair kp = Signer.KeyPair.random();
-    Bytes signature = Signer.signDetached(Bytes.fromHexString("deadbeef"), kp.secretKey());
-    boolean result = Signer.verifyDetached(Bytes.fromHexString("deadbeef"), signature, kp.publicKey());
+    Signature.KeyPair kp = Signature.KeyPair.random();
+    Bytes signature = Signature.signDetached(Bytes.fromHexString("deadbeef"), kp.secretKey());
+    boolean result = Signature.verifyDetached(Bytes.fromHexString("deadbeef"), signature, kp.publicKey());
     assertTrue(result);
   }
 
