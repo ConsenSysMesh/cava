@@ -53,7 +53,7 @@ object KeyValueStoreSpec : Spek({
       }
     }
 
-    it("should return an empty optional when no value is present") {
+    it("should return null when no value is present") {
       runBlocking {
         kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
       }
@@ -74,7 +74,7 @@ object MapDBKeyValueStoreSpec : Spek({
       }
     }
 
-    it("should return an empty optional when no value is present") {
+    it("should return null when no value is present") {
       runBlocking {
         kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
       }
@@ -117,7 +117,7 @@ object LevelDBKeyValueStoreSpec : Spek({
       }
     }
 
-    it("should return an empty optional when no value is present") {
+    it("should return null when no value is present") {
       runBlocking {
         kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
       }
@@ -131,6 +131,44 @@ object LevelDBKeyValueStoreSpec : Spek({
         try {
           kv2.put(foobar, foo)
         } catch (e: DBException) {
+          caught = true
+        }
+        caught.should.be.`true`
+      }
+    }
+  }
+})
+
+object RocksDBKeyValueStoreSpec : Spek({
+  val path = Files.createTempDirectory("rocksdb")
+  val kv = RocksDBKeyValueStore(path)
+  afterGroup {
+    kv.close()
+    MoreFiles.deleteRecursively(path, RecursiveDeleteOption.ALLOW_INSECURE)
+  }
+  describe("a RocksDB-backed key value store") {
+
+    it("should allow to retrieve values") {
+      runBlocking {
+        kv.put(foobar, foo)
+        kv.get(foobar).should.equal(foo)
+      }
+    }
+
+    it("should return null when no value is present") {
+      runBlocking {
+        kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
+      }
+    }
+
+    it("should not allow usage after the DB is closed") {
+      val kv2 = RocksDBKeyValueStore(path.resolve("subdb"))
+      kv2.close()
+      runBlocking {
+        var caught = false
+        try {
+          kv2.put(foobar, foo)
+        } catch (e: IllegalStateException) {
           caught = true
         }
         caught.should.be.`true`
@@ -170,7 +208,7 @@ object SQLKeyValueStoreSpec : Spek({
       }
     }
 
-    it("should return an empty optional when no value is present") {
+    it("should return null when no value is present") {
       runBlocking {
         kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
       }
