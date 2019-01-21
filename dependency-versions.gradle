@@ -47,6 +47,7 @@ dependencyManagement {
       entry 'logl-logl'
     }
     dependency('org.mapdb:mapdb:3.0.7')
+    dependency('org.miracl.milagro.amcl:milagro-crypto-java:0.3.0')
     dependency('org.rocksdb:rocksdbjni:5.17.2')
     dependency('org.xerial.snappy:snappy-java:1.1.7.2')
   }

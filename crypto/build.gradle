@@ -9,7 +9,7 @@ dependencies {
   compile 'com.google.guava:guava'
   compile 'com.github.jnr:jnr-ffi'
   compileOnly 'org.bouncycastle:bcprov-jdk15on'
-
+  compile 'org.miracl.milagro.amcl:milagro-crypto-java'
   testCompile project(':junit')
   testCompile 'org.bouncycastle:bcprov-jdk15on'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
