@@ -122,7 +122,7 @@ jobs:
       - deploy:
           name: Deploying snapshot to Bintray (release branches only)
           command: |
-            if [ -z "${CIRCLE_PULL_REQUEST}" ] && echo "${CIRCLE_BRANCH}" | grep -q -E '^master$|^\d+\.\d+$'; then
+            if [ -z "${CIRCLE_PULL_REQUEST}" ] && echo "${CIRCLE_BRANCH}" | grep -q -E '^master$|^[0-9]+\.[0-9]+$'; then
               echo "Start deployment"
               BINTRAY_DEPLOY=true ./gradlew deploy
             else
