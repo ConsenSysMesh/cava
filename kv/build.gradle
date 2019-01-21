@@ -10,6 +10,7 @@ dependencies {
   compileOnly 'com.jolbox:bonecp'
   compileOnly 'io.lettuce:lettuce-core'
   compileOnly 'org.fusesource.leveldbjni:leveldbjni-all'
+  compileOnly 'org.rocksdb:rocksdbjni'
   compileOnly 'org.mapdb:mapdb'
 
   testCompile project(':concurrent')
@@ -24,6 +25,7 @@ dependencies {
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testCompile 'org.junit.jupiter:junit-jupiter-params'
   testCompile 'org.mapdb:mapdb'
+  testCompile 'org.rocksdb:rocksdbjni'
 
   testRuntime 'org.jetbrains.spek:spek-junit-platform-engine'
   testRuntime 'org.junit.jupiter:junit-jupiter-engine'

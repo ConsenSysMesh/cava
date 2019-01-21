@@ -118,7 +118,7 @@ downloadLicenses {
 
   licenses = [
     (group('cava')): apache2,
-
+    (group('org.rocksdb')): apache2,
     // https://checkerframework.org/manual/#license
     // The more permissive MIT License applies to code that you might want
     // to include in your own program, such as the annotations and run-time utility classes.

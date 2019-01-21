@@ -60,4 +60,15 @@ class KeyValueStoreTest {
       assertEquals(Bytes.of(10, 12, 13), value);
     }
   }
+
+  @Test
+  void testRocksDBWithoutOptions(@TempDirectory Path tempDirectory) throws Exception {
+    try (RocksDBKeyValueStore rocksdb = RocksDBKeyValueStore.open(tempDirectory.resolve("foo").resolve("bar"))) {
+      AsyncCompletion completion = rocksdb.putAsync(Bytes.of(123), Bytes.of(10, 12, 13));
+      completion.join();
+      Bytes value = rocksdb.getAsync(Bytes.of(123)).get();
+      assertNotNull(value);
+      assertEquals(Bytes.of(10, 12, 13), value);
+    }
+  }
 }
