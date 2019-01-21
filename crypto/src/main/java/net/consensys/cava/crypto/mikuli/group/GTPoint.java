@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli.group;
 
+import static java.util.Objects.requireNonNull;
+
 import org.apache.milagro.amcl.BLS381.FP12;
 
 public final class GTPoint {
@@ -32,17 +34,13 @@ public final class GTPoint {
 
   @Override
   public boolean equals(Object obj) {
+    requireNonNull(obj);
     if (this == obj)
       return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
+    if (!(obj instanceof GTPoint))
       return false;
     GTPoint other = (GTPoint) obj;
-    if (point == null) {
-      if (other.point != null)
-        return false;
-    } else if (!point.equals(other.point))
+    if (!point.equals(other.point))
       return false;
     return true;
   }

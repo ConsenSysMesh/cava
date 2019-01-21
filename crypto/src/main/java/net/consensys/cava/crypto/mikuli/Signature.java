@@ -12,15 +12,16 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import static java.util.Objects.requireNonNull;
+
 import net.consensys.cava.crypto.mikuli.group.G2Point;
+
+import com.google.common.base.Objects;
 
 public final class Signature {
   private final G2Point point;
 
   Signature(G2Point point) {
-    if (point == null) {
-      throw new NullPointerException("Signature was not properly initialized");
-    }
     this.point = point;
   }
 
@@ -57,19 +58,13 @@ public final class Signature {
 
   @Override
   public boolean equals(Object obj) {
+    requireNonNull(obj);
     if (this == obj)
       return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
+    if (!(obj instanceof Signature))
       return false;
     Signature other = (Signature) obj;
-    if (point == null) {
-      if (other.point != null)
-        return false;
-    } else if (!point.equals(other.point))
-      return false;
-    return true;
+    return Objects.equal(point, other.point);
   }
 
   G2Point g2Point() {

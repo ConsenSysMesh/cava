@@ -20,9 +20,6 @@ public final class PrivateKey {
   private final Scalar scalarValue;
 
   PrivateKey(Scalar value) {
-    if (value == null) {
-      throw new NullPointerException("PrivateKey was not properly initialized");
-    }
     this.scalarValue = value;
   }
 

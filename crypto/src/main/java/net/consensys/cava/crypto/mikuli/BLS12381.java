@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.mikuli.group.AtePairing;
 import net.consensys.cava.crypto.mikuli.group.G1Point;
 import net.consensys.cava.crypto.mikuli.group.G2Point;
@@ -24,6 +25,22 @@ import org.apache.milagro.amcl.BLS381.ECP;
 import org.apache.milagro.amcl.BLS381.ECP2;
 import org.apache.milagro.amcl.BLS381.MPIN;
 
+/*
+ * Adapted from the ConsenSys/mikuli (Apache 2 License) implementation:
+ * https://github.com/ConsenSys/mikuli/blob/master/src/main/java/net/consensys/mikuli/crypto/*.java
+ */
+
+/**
+ * This Boneh-Lynn-Shacham (BLS) signature implementation is constructed from a pairing friendly elliptic curve, the
+ * BLS12-381 curve. It uses parameters as defined in https://z.cash/blog/new-snark-curve and the points in groups G1 and
+ * G2 are defined https://github.com/zkcrypto/pairing/blob/master/src/bls12_381/README.md
+ * 
+ * <p>
+ * This class depends upon the Apache Milagro library being available. See https://milagro.apache.org.
+ *
+ * <p>
+ * Apache Milagro can be included using the gradle dependency 'org.miracl.milagro.amcl:milagro-crypto-java'.
+ */
 public final class BLS12381 {
 
   /**
@@ -43,6 +60,17 @@ public final class BLS12381 {
   }
 
   /**
+   * Generates a SignatureAndPublicKey.
+   *
+   * @param keyPair The public and private key pair, not null
+   * @param message The message to sign, not null
+   * @return The SignatureAndPublicKey, not null
+   */
+  public static SignatureAndPublicKey sign(KeyPair keyPair, Bytes message) {
+    return sign(keyPair, message.toArray());
+  }
+
+  /**
    * Verifies the given BLS signature against the message bytes using the public key.
    * 
    * @param publicKey The public key, not null
@@ -52,13 +80,26 @@ public final class BLS12381 {
    * @return True if the verification is successful.
    */
   public static boolean verify(PublicKey publicKey, Signature signature, byte[] message) {
-    G1Point g1Generator = SystemParameters.g1Generator;
+    G1Point g1Generator = KeyPair.g1Generator;
 
     G2Point hashInGroup2 = hashFunction(message);
     GTPoint e1 = AtePairing.pair(publicKey.g1Point(), hashInGroup2);
     GTPoint e2 = AtePairing.pair(g1Generator, signature.g2Point());
 
     return e1.equals(e2);
+  }
+
+  /**
+   * Verifies the given BLS signature against the message bytes using the public key.
+   * 
+   * @param publicKey The public key, not null
+   * @param signature The signature, not null
+   * @param message The message data to verify, not null
+   * 
+   * @return True if the verification is successful.
+   */
+  public static boolean verify(PublicKey publicKey, Signature signature, Bytes message) {
+    return verify(publicKey, signature, message.toArray());
   }
 
   /**

@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli.group;
 
+import static java.util.Objects.requireNonNull;
+
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP2;
 
@@ -20,9 +22,7 @@ public final class G2Point implements Group<G2Point> {
   private static final int fpPointSize = BIG.MODBYTES;
 
   public G2Point(ECP2 point) {
-    if (point == null) {
-      throw new NullPointerException("ECP2 point is null");
-    }
+    requireNonNull(point);
     this.point = point;
   }
 
@@ -62,17 +62,13 @@ public final class G2Point implements Group<G2Point> {
 
   @Override
   public boolean equals(Object obj) {
+    requireNonNull(obj);
     if (this == obj)
       return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
+    if (!(obj instanceof G2Point))
       return false;
     G2Point other = (G2Point) obj;
-    if (point == null) {
-      if (other.point != null)
-        return false;
-    } else if (!point.equals(other.point))
+    if (!point.equals(other.point))
       return false;
     return true;
   }

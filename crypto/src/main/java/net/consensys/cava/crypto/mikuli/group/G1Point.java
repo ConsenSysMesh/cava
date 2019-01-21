@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli.group;
 
+import static java.util.Objects.requireNonNull;
+
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP;
 
@@ -20,9 +22,7 @@ public final class G1Point implements Group<G1Point> {
   private static final int fpPointSize = BIG.MODBYTES;
 
   public G1Point(ECP point) {
-    if (point == null) {
-      throw new NullPointerException("ECP point is null");
-    }
+    requireNonNull(point);
     this.point = point;
   }
 
@@ -44,7 +44,7 @@ public final class G1Point implements Group<G1Point> {
   /**
    * @return byte[] the byte array representation of compressed point in G1
    */
-  public byte[] toBytes() {
+  public byte[] toByteArray() {
     // Size of the byte array representing compressed ECP point for BLS12-381 is
     // 49 bytes in milagro
     // size of the point = 48 bytes
@@ -80,17 +80,13 @@ public final class G1Point implements Group<G1Point> {
 
   @Override
   public boolean equals(Object obj) {
+    requireNonNull(obj);
     if (this == obj)
       return true;
-    if (obj == null)
-      return false;
-    if (getClass() != obj.getClass())
+    if (!(obj instanceof G1Point))
       return false;
     G1Point other = (G1Point) obj;
-    if (point == null) {
-      if (other.point != null)
-        return false;
-    } else if (!point.equals(other.point))
+    if (!point.equals(other.point))
       return false;
     return true;
   }

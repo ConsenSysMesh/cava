@@ -17,9 +17,6 @@ public final class SignatureAndPublicKey {
   private final PublicKey publicKey;
 
   SignatureAndPublicKey(Signature signature, PublicKey pubKey) {
-    if (signature == null || pubKey == null) {
-      throw new NullPointerException("SignatureAndPublicKey was not properly initialized");
-    }
     this.signature = signature;
     this.publicKey = pubKey;
   }

@@ -23,11 +23,11 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 
-public class SignatureTest {
+class SignatureTest {
 
   @Test
-  public void testSimpleSignature() {
-    KeyPair keyPair = KeyPairFactory.createKeyPair();
+  void testSimpleSignature() {
+    KeyPair keyPair = KeyPair.random();
     byte[] message = "Hello".getBytes(UTF_8);
     SignatureAndPublicKey sigAndPubKey = BLS12381.sign(keyPair, message);
 
@@ -36,7 +36,7 @@ public class SignatureTest {
   }
 
   @Test
-  public void testAggregatedSignature() {
+  void testAggregatedSignature() {
     byte[] message = "Hello".getBytes(UTF_8);
     List<SignatureAndPublicKey> sigs = getSignaturesAndPublicKeys(message);
     SignatureAndPublicKey sigAndPubKey = BLS12381.aggregate(sigs);
@@ -46,7 +46,7 @@ public class SignatureTest {
   }
 
   @Test
-  public void testCorruptedMessage() {
+  void testCorruptedMessage() {
     byte[] message = "Hello".getBytes(UTF_8);
     List<SignatureAndPublicKey> sigs = getSignaturesAndPublicKeys(message);
     SignatureAndPublicKey sigAndPubKey = BLS12381.aggregate(sigs);
@@ -57,10 +57,10 @@ public class SignatureTest {
   }
 
   @Test
-  public void testCorruptedSignature() {
+  void testCorruptedSignature() {
     byte[] message = "Hello".getBytes(UTF_8);
     List<SignatureAndPublicKey> sigs = getSignaturesAndPublicKeys(message);
-    KeyPair keyPair = KeyPairFactory.createKeyPair();
+    KeyPair keyPair = KeyPair.random();
     byte[] notHello = "Not Hello".getBytes(UTF_8);
 
     SignatureAndPublicKey additionalSignature = BLS12381.sign(keyPair, notHello);
@@ -73,8 +73,8 @@ public class SignatureTest {
   }
 
   @Test
-  public void testSerialization() {
-    KeyPair keyPair = KeyPairFactory.createKeyPair();
+  void testSerialization() {
+    KeyPair keyPair = KeyPair.random();
     byte[] message = "Hello".getBytes(UTF_8);
     Signature signature = BLS12381.sign(keyPair, message).signature();
 
@@ -85,17 +85,17 @@ public class SignatureTest {
     assertEquals(signature.hashCode(), sigFromBytes.hashCode());
 
     PublicKey pubKey = keyPair.publicKey();
-    byte[] pubKeyTobytes = pubKey.encode();
-    PublicKey pubKeyFromBytes = PublicKey.decode(pubKeyTobytes);
+    byte[] pubKeyTobytes = pubKey.toByteArray();
+    PublicKey pubKeyFromBytes = PublicKey.fromBytes(pubKeyTobytes);
 
     assertEquals(pubKey, pubKeyFromBytes);
     assertEquals(pubKey.hashCode(), pubKeyFromBytes.hashCode());
   }
 
-  private List<SignatureAndPublicKey> getSignaturesAndPublicKeys(byte[] message) {
-    KeyPair keyPair1 = KeyPairFactory.createKeyPair();
-    KeyPair keyPair2 = KeyPairFactory.createKeyPair();
-    KeyPair keyPair3 = KeyPairFactory.createKeyPair();
+  List<SignatureAndPublicKey> getSignaturesAndPublicKeys(byte[] message) {
+    KeyPair keyPair1 = KeyPair.random();
+    KeyPair keyPair2 = KeyPair.random();
+    KeyPair keyPair3 = KeyPair.random();
 
     SignatureAndPublicKey sigAndPubKey1 = BLS12381.sign(keyPair1, message);
     SignatureAndPublicKey sigAndPubKey2 = BLS12381.sign(keyPair2, message);

@@ -12,17 +12,34 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import net.consensys.cava.crypto.mikuli.group.G1Point;
+import net.consensys.cava.crypto.mikuli.group.Scalar;
+
+import org.apache.milagro.amcl.BLS381.BIG;
+import org.apache.milagro.amcl.BLS381.ECP;
+import org.apache.milagro.amcl.BLS381.ROM;
+import org.apache.milagro.amcl.RAND;
+
 public final class KeyPair {
 
   private final PrivateKey privateKey;
   private final PublicKey publicKey;
+  static public final G1Point g1Generator = new G1Point(ECP.generator());
+  static public final BIG curveOrder = new BIG(ROM.CURVE_Order);
 
-  KeyPair(PrivateKey privateKey, PublicKey publicKey) {
-    if (privateKey == null || publicKey == null) {
-      throw new NullPointerException("KeyPair was not properly initialized");
-    }
+  private KeyPair(PrivateKey privateKey, PublicKey publicKey) {
     this.privateKey = privateKey;
     this.publicKey = publicKey;
+  }
+
+  static public KeyPair random() {
+    RAND rng = new RAND();
+    Scalar secret = new Scalar(BIG.randomnum(curveOrder, rng));
+
+    PrivateKey privateKey = new PrivateKey(secret);
+    G1Point g1Point = g1Generator.mul(secret);
+    PublicKey publicKey = new PublicKey(g1Point);
+    return new KeyPair(privateKey, publicKey);
   }
 
   public PublicKey publicKey() {

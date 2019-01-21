@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli.group;
 
+import static java.util.Objects.requireNonNull;
+
 import org.apache.milagro.amcl.BLS381.BIG;
 
 public class Scalar {
@@ -19,9 +21,7 @@ public class Scalar {
   private final BIG value;
 
   public Scalar(BIG value) {
-    if (value == null) {
-      throw new NullPointerException("value is null");
-    }
+    requireNonNull(value);
     this.value = value;
   }
 
