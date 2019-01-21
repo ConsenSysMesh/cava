@@ -13,9 +13,12 @@
 package net.consensys.cava.ssz;
 
 import static net.consensys.cava.bytes.Bytes.fromHexString;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.bytes.Bytes48;
 
 import java.math.BigInteger;
 import java.util.Arrays;
@@ -28,7 +31,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class BytesSSZReaderTest {
 
   private static final Bytes SHORT_LIST = fromHexString(
-      "0000002c00000004617364660000000471776572000000047A78637600000004617364660000000471776572000000047A78637600000004617364660000000471776572000000047A78637600000004617364660000000471776572");
+      "0000005800000004617364660000000471776572000000047A78637600000004617364660000000471776572000000047A78637600000004617364660000000471776572000000047A78637600000004617364660000000471776572");
 
   private static class SomeObject {
     private final String name;
@@ -146,5 +149,13 @@ class BytesSSZReaderTest {
 
     List<String> result = SSZ.decodeStringList(SHORT_LIST);
     assertEquals(expected, result);
+  }
+
+  @Test
+  void shouldRoundtripBytes() {
+    List<Bytes> toWrite = Arrays.asList(Bytes48.random(), Bytes48.random(), Bytes48.random());
+    Bytes encoded = SSZ.encode(writer -> writer.writeBytesList(toWrite.toArray(new Bytes[0])));
+    assertEquals(toWrite, SSZ.decodeBytesList(encoded));
+
   }
 }
