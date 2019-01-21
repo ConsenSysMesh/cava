@@ -202,6 +202,7 @@ final class BytesSSZReader implements SSZReader {
         byte[] bytes = bytesSupplier.apply(listSize);
         elements.add(converter.apply(bytes));
         listSize -= bytes.length;
+        listSize -= 4;
         if (listSize < 0) {
           throw new InvalidSSZTypeException("SSZ encoded list length does not align with lengths of its elements");
         }
