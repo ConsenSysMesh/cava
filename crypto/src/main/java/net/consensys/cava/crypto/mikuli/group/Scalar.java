@@ -16,6 +16,9 @@ import static java.util.Objects.requireNonNull;
 
 import org.apache.milagro.amcl.BLS381.BIG;
 
+/**
+ * This class represents an ordinary scalar value.
+ */
 public class Scalar {
 
   private final BIG value;

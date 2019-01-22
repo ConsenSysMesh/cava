@@ -18,6 +18,9 @@ import net.consensys.cava.crypto.mikuli.group.G2Point;
 
 import com.google.common.base.Objects;
 
+/**
+ * This class represents a Signature on G2
+ */
 public final class Signature {
   private final G2Point point;
 

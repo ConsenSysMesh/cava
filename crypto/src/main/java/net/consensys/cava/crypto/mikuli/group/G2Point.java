@@ -17,6 +17,10 @@ import static java.util.Objects.requireNonNull;
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP2;
 
+/**
+ * G2 is the subgroup of elliptic curve similar to G1 and the points are identical except for where they are elements of
+ * the extension field Fq12.
+ */
 public final class G2Point implements Group<G2Point> {
   private final ECP2 point;
   private static final int fpPointSize = BIG.MODBYTES;

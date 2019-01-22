@@ -20,6 +20,9 @@ import org.apache.milagro.amcl.BLS381.ECP;
 import org.apache.milagro.amcl.BLS381.ROM;
 import org.apache.milagro.amcl.RAND;
 
+/**
+ * KeyPair represents a public and private key.
+ */
 public final class KeyPair {
 
   private final PrivateKey privateKey;

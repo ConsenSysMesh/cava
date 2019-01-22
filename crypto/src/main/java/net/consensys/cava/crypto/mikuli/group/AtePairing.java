@@ -15,6 +15,9 @@ package net.consensys.cava.crypto.mikuli.group;
 import org.apache.milagro.amcl.BLS381.FP12;
 import org.apache.milagro.amcl.BLS381.PAIR;
 
+/**
+ * Function that maps 2 points on an elliptic curve to a number.
+ */
 public class AtePairing {
 
   /**

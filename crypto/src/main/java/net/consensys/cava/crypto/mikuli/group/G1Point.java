@@ -17,6 +17,10 @@ import static java.util.Objects.requireNonNull;
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP;
 
+/**
+ * G1 is a subgroup of an elliptic curve whose points are elements of the finite field Fp - simple numbers mod some
+ * prime p. The curve is defined by: y^2 = x^3 + 4
+ */
 public final class G1Point implements Group<G1Point> {
   final ECP point;
   private static final int fpPointSize = BIG.MODBYTES;

@@ -15,6 +15,9 @@ package net.consensys.cava.crypto.mikuli;
 import net.consensys.cava.crypto.mikuli.group.G2Point;
 import net.consensys.cava.crypto.mikuli.group.Scalar;
 
+/**
+ * This class represents a private key on G2
+ */
 public final class PrivateKey {
 
   private final Scalar scalarValue;

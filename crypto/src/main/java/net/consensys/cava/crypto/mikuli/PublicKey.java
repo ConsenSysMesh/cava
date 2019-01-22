@@ -18,7 +18,9 @@ import net.consensys.cava.crypto.mikuli.group.G1Point;
 
 import com.google.common.base.Objects;
 
-
+/**
+ * This class represents a public key on G1.
+ */
 public final class PublicKey {
 
   private final G1Point point;

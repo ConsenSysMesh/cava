@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.crypto.mikuli.group;
 
+/**
+ * Group is an interface that define the allowed mathematical operators
+ */
 public interface Group<G> {
 
   G add(G g);

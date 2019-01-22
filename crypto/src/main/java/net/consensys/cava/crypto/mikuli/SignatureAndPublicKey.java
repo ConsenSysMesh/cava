@@ -12,6 +12,9 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+/**
+ * This class represents a signature and a public key
+ */
 public final class SignatureAndPublicKey {
   private final Signature signature;
   private final PublicKey publicKey;

@@ -16,6 +16,9 @@ import static java.util.Objects.requireNonNull;
 
 import org.apache.milagro.amcl.BLS381.FP12;
 
+/**
+ * GT is the object that holds the result of the pairing operation. Points in GT are elements of Fq12.
+ */
 public final class GTPoint {
 
   private final FP12 point;
