@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import net.consensys.cava.bytes.Bytes;
+
 import java.util.Objects;
 
 import org.apache.milagro.amcl.BLS381.BIG;
@@ -22,8 +24,14 @@ import org.apache.milagro.amcl.BLS381.ECP;
  * prime p. The curve is defined by: y^2 = x^3 + 4
  */
 final class G1Point implements Group<G1Point> {
-  final ECP point;
+
   private static final int fpPointSize = BIG.MODBYTES;
+
+  static G1Point fromBytes(Bytes bytes) {
+    return new G1Point(ECP.fromBytes(bytes.toArrayUnsafe()));
+  }
+
+  private final ECP point;
 
   G1Point(ECP point) {
     this.point = point;
@@ -44,21 +52,14 @@ final class G1Point implements Group<G1Point> {
     return new G1Point(newPoint);
   }
 
-  /**
-   * @return byte[] the byte array representation of compressed point in G1
-   */
-  byte[] toByteArray() {
+  Bytes toBytes() {
     // Size of the byte array representing compressed ECP point for BLS12-381 is
     // 49 bytes in milagro
     // size of the point = 48 bytes
     // meta information (parity bit, curve type etc) = 1 byte
     byte[] bytes = new byte[fpPointSize + 1];
     point.toBytes(bytes, true);
-    return bytes;
-  }
-
-  static G1Point fromBytes(byte[] bytes) {
-    return new G1Point(ECP.fromBytes(bytes));
+    return Bytes.wrap(bytes);
   }
 
   ECP ecpPoint() {

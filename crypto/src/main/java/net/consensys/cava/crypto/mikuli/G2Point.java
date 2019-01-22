@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import net.consensys.cava.bytes.Bytes;
+
 import java.util.Objects;
 
 import org.apache.milagro.amcl.BLS381.BIG;
@@ -44,14 +46,14 @@ final class G2Point implements Group<G2Point> {
     return new G2Point(newPoint);
   }
 
-  byte[] toBytes() {
+  Bytes toBytes() {
     byte[] bytes = new byte[4 * fpPointSize];
     point.toBytes(bytes);
-    return bytes;
+    return Bytes.wrap(bytes);
   }
 
-  static G2Point fromBytes(byte[] bytes) {
-    return new G2Point(ECP2.fromBytes(bytes));
+  static G2Point fromBytes(Bytes bytes) {
+    return new G2Point(ECP2.fromBytes(bytes.toArrayUnsafe()));
   }
 
   ECP2 ecp2Point() {

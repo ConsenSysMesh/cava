@@ -17,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import net.consensys.cava.bytes.Bytes;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,7 +80,7 @@ class SignatureTest {
     byte[] message = "Hello".getBytes(UTF_8);
     Signature signature = BLS12381.sign(keyPair, message).signature();
 
-    byte[] sigTobytes = signature.encode();
+    Bytes sigTobytes = signature.encode();
     Signature sigFromBytes = Signature.decode(sigTobytes);
 
     assertEquals(signature, sigFromBytes);
@@ -107,5 +109,13 @@ class SignatureTest {
     sigs.add(sigAndPubKey3);
 
     return sigs;
+  }
+
+  @Test
+  void secretKeyRoundtrip() {
+    KeyPair kp = KeyPair.random();
+    SecretKey key = kp.secretKey();
+    Bytes bytes = key.toBytes();
+    assertEquals(key, SecretKey.fromBytes(bytes));
   }
 }
