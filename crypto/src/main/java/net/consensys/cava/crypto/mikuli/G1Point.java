@@ -12,7 +12,7 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
 
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP;
@@ -83,14 +83,16 @@ final class G1Point implements Group<G1Point> {
 
   @Override
   public boolean equals(Object obj) {
-    requireNonNull(obj);
-    if (this == obj)
+    if (Objects.isNull(obj)) {
+      return false;
+    }
+    if (this == obj) {
       return true;
-    if (!(obj instanceof G1Point))
+    }
+    if (!(obj instanceof G1Point)) {
       return false;
+    }
     G1Point other = (G1Point) obj;
-    if (!point.equals(other.point))
-      return false;
-    return true;
+    return point.equals(other.point);
   }
 }

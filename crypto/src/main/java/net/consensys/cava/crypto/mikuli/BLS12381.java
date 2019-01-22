@@ -39,6 +39,8 @@ import org.apache.milagro.amcl.BLS381.MPIN;
  */
 public final class BLS12381 {
 
+  private BLS12381() {}
+
   /**
    * Generates a SignatureAndPublicKey.
    *
@@ -107,6 +109,18 @@ public final class BLS12381 {
    * @return True if the verification is successful, not null
    */
   public static boolean verify(SignatureAndPublicKey sigAndPubKey, byte[] message) {
+    return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message);
+  }
+
+  /**
+   * Verifies the given BLS signature against the message bytes using the public key.
+   * 
+   * @param sigAndPubKey The public key, not null
+   * @param message The message data to verify, not null
+   * 
+   * @return True if the verification is successful.
+   */
+  public static boolean verify(SignatureAndPublicKey sigAndPubKey, Bytes message) {
     return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message);
   }
 

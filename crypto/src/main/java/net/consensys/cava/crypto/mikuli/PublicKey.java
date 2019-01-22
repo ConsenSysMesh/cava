@@ -12,9 +12,9 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
-import static java.util.Objects.requireNonNull;
+import net.consensys.cava.bytes.Bytes;
 
-import com.google.common.base.Objects;
+import java.util.Objects;
 
 /**
  * This class represents a public key on G1.
@@ -27,7 +27,7 @@ public final class PublicKey {
     this.point = point;
   }
 
-  public PublicKey combine(PublicKey pk) {
+  PublicKey combine(PublicKey pk) {
     return new PublicKey(point.add(pk.point));
   }
 
@@ -40,9 +40,22 @@ public final class PublicKey {
     return point.toByteArray();
   }
 
+  /**
+   * Public key serialization
+   * 
+   * @return byte array representation of the public key
+   */
+  public Bytes toBytes() {
+    return Bytes.wrap(point.toByteArray());
+  }
+
   public static PublicKey fromBytes(byte[] bytes) {
     G1Point point = G1Point.fromBytes(bytes);
     return new PublicKey(point);
+  }
+
+  public static PublicKey fromBytes(Bytes bytes) {
+    return fromBytes(bytes.toArray());
   }
 
 
@@ -56,13 +69,17 @@ public final class PublicKey {
 
   @Override
   public boolean equals(Object obj) {
-    requireNonNull(obj);
-    if (this == obj)
-      return true;
-    if (!(obj instanceof PublicKey))
+    if (Objects.isNull(obj)) {
       return false;
+    }
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof PublicKey)) {
+      return false;
+    }
     PublicKey other = (PublicKey) obj;
-    return Objects.equal(point, other.point);
+    return point.equals(other.point);
   }
 
   public G1Point g1Point() {

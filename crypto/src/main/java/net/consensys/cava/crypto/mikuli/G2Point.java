@@ -12,7 +12,7 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
-import static java.util.Objects.requireNonNull;
+import java.util.Objects;
 
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP2;
@@ -65,15 +65,17 @@ final class G2Point implements Group<G2Point> {
 
   @Override
   public boolean equals(Object obj) {
-    requireNonNull(obj);
-    if (this == obj)
+    if (Objects.isNull(obj)) {
+      return false;
+    }
+    if (this == obj) {
       return true;
-    if (!(obj instanceof G2Point))
+    }
+    if (!(obj instanceof G2Point)) {
       return false;
+    }
     G2Point other = (G2Point) obj;
-    if (!point.equals(other.point))
-      return false;
-    return true;
+    return point.equals(other.point);
   }
 
   @Override

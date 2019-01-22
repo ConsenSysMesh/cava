@@ -12,9 +12,7 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
-import static java.util.Objects.requireNonNull;
-
-import com.google.common.base.Objects;
+import java.util.Objects;
 
 /**
  * This class represents a Signature on G2
@@ -59,13 +57,17 @@ public final class Signature {
 
   @Override
   public boolean equals(Object obj) {
-    requireNonNull(obj);
-    if (this == obj)
-      return true;
-    if (!(obj instanceof Signature))
+    if (Objects.isNull(obj)) {
       return false;
+    }
+    if (this == obj) {
+      return true;
+    }
+    if (!(obj instanceof Signature)) {
+      return false;
+    }
     Signature other = (Signature) obj;
-    return Objects.equal(point, other.point);
+    return point.equals(other.point);
   }
 
   G2Point g2Point() {

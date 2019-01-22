@@ -23,7 +23,7 @@ public final class PrivateKey {
     this.scalarValue = value;
   }
 
-  protected G2Point sign(G2Point message) {
+  G2Point sign(G2Point message) {
     return message.mul(scalarValue);
   }
 }
