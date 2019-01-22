@@ -18,6 +18,8 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
+import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 
@@ -120,4 +122,18 @@ public interface RLPWriter {
    * @param fn A consumer that will be provided with a {@link RLPWriter} that can consume values.
    */
   void writeList(Consumer<RLPWriter> fn);
+
+  /**
+   * Write a list of values, sending each value to a function to be interpreted.
+   *
+   * @param elements the list of elements to write
+   * @param elementWriter the function called for each element in the list
+   */
+  default <T> void writeList(List<T> elements, BiConsumer<RLPWriter, T> elementWriter) {
+    writeList(writer -> {
+      for (T element : elements) {
+        elementWriter.accept(writer, element);
+      }
+    });
+  }
 }

@@ -124,6 +124,18 @@ class BytesRLPWriterTest {
   }
 
   @Test
+  void shouldWriteShortListWithAFunction() {
+    List<String> strings =
+        Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer");
+
+    assertEquals(
+        fromHexString(
+            "f784617364668471776572847a78637684617364668471776572847a"
+                + "78637684617364668471776572847a78637684617364668471776572"),
+        RLP.encodeList(strings, RLPWriter::writeString));
+  }
+
+  @Test
   void shouldWriteNestedLists() {
     Bytes bytes = RLP.encodeList(listWriter -> {
       listWriter.writeString("asdf");

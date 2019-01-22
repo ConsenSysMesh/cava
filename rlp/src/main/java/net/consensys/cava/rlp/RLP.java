@@ -85,6 +85,19 @@ public final class RLP {
   }
 
   /**
+   * Encode a list of values to a {@link Bytes} value.
+   *
+   * @param fn A consumer that will be provided with a {@link RLPWriter} and an element of the list.
+   * @return The RLP encoding in a {@link Bytes} value.
+   */
+  public static <T> Bytes encodeList(List<T> elements, BiConsumer<RLPWriter, T> fn) {
+    requireNonNull(fn);
+    BytesRLPWriter writer = new BytesRLPWriter();
+    writer.writeList(elements, fn);
+    return writer.toBytes();
+  }
+
+  /**
    * Encode a list of values to a {@link ByteBuffer}.
    *
    * @param buffer The buffer to write into, starting from its current position.
@@ -315,6 +328,36 @@ public final class RLP {
     requireNonNull(fn);
     checkArgument(source.size() > 0, "source is empty");
     return decode(source, lenient, reader -> reader.readList(fn));
+  }
+
+  /**
+   * Read a list of values from the RLP source, populating a list using a function interpreting each value.
+   *
+   * @param source The RLP encoded bytes.
+   * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @return The list supplied to {@code fn}.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws InvalidRLPTypeException If the first RLP value is not a list.
+   */
+  public static <T> List<T> decodeToList(Bytes source, Function<RLPReader, T> fn) {
+    return decodeToList(source, false, fn);
+  }
+
+  /**
+   * Read an RLP encoded list of values from a {@link Bytes} value, populating a mutable output list.
+   *
+   * @param source The RLP encoded bytes.
+   * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
+   * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @return The list supplied to {@code fn}.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws InvalidRLPTypeException If the first RLP value is not a list.
+   */
+  public static <T> List<T> decodeToList(Bytes source, boolean lenient, Function<RLPReader, T> fn) {
+    requireNonNull(source);
+    requireNonNull(fn);
+    checkArgument(source.size() > 0, "source is empty");
+    return decode(source, lenient, reader -> reader.readListContents(fn));
   }
 
   /**
