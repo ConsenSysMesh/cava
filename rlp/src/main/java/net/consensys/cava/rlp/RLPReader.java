@@ -312,6 +312,19 @@ public interface RLPReader {
   }
 
   /**
+   * Read a list of values from the RLP source, populating a list using a function interpreting each value.
+   *
+   * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @return The list supplied to {@code fn}.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws InvalidRLPTypeException If the next RLP value is not a list.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default <T> List<T> readListContents(Function<RLPReader, T> fn) {
+    return readListContents(isLenient(), fn);
+  }
+
+  /**
    * Read a list of values from the RLP source, populating a mutable output list.
    *
    * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
@@ -326,6 +339,28 @@ public interface RLPReader {
     return readList(lenient, reader -> {
       List<Object> list = new ArrayList<>();
       fn.accept(reader, list);
+      return list;
+    });
+  }
+
+  /**
+   * Read a list of values from the RLP source, populating a list using a function interpreting each value.
+   *
+   * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
+   * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @return The list supplied to {@code fn}.
+   * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
+   * @throws InvalidRLPTypeException If the next RLP value is not a list.
+   * @throws EndOfRLPException If there are no more RLP values to read.
+   */
+  default <T> List<T> readListContents(boolean lenient, Function<RLPReader, T> fn) {
+    requireNonNull(fn);
+
+    return readList(lenient, reader -> {
+      List<T> list = new ArrayList<T>();
+      while (!reader.isComplete()) {
+        list.add(fn.apply(reader));
+      }
       return list;
     });
   }

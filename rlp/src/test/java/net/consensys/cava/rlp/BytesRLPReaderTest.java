@@ -195,6 +195,15 @@ class BytesRLPReaderTest {
   }
 
   @Test
+  void shouldReadShortListContents() {
+    List<String> expected =
+        Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer");
+
+    List<String> result = RLP.decodeToList(SHORT_LIST, reader -> reader.readString());
+    assertEquals(expected, result);
+  }
+
+  @Test
   void shouldReadLongList() {
     List<List<String>> expected =
         Stream.generate(() -> Arrays.asList("asdf", "qwer", "zxcv")).limit(31).collect(Collectors.toList());
