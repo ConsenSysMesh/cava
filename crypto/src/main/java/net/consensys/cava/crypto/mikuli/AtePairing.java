@@ -18,7 +18,7 @@ import org.apache.milagro.amcl.BLS381.PAIR;
 /**
  * Function that maps 2 points on an elliptic curve to a number.
  */
-class AtePairing {
+final class AtePairing {
 
   /**
    * 

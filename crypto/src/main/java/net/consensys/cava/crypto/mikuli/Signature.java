@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import net.consensys.cava.bytes.Bytes;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -19,33 +21,61 @@ import java.util.Objects;
  * This class represents a Signature on G2
  */
 public final class Signature {
+
+  /**
+   * Aggregates list of Signature pairs
+   *
+   * @param signatures The list of signatures to aggregate, not null
+   * @throws IllegalArgumentException if parameter list is empty
+   * @return Signature, not null
+   */
+  public static Signature aggregate(List<Signature> signatures) {
+    if (signatures.isEmpty()) {
+      throw new IllegalArgumentException("Parameter list is empty");
+    }
+    return signatures.stream().reduce(Signature::combine).get();
+  }
+
+
+  /**
+   * Decode a signature from its serialized representation.
+   *
+   * @param bytes the bytes of the signature
+   * @return the signature
+   */
+  public static Signature decode(Bytes bytes) {
+    G2Point point = G2Point.fromBytes(bytes);
+    return new Signature(point);
+  }
+
   private final G2Point point;
 
   Signature(G2Point point) {
     this.point = point;
   }
 
-  @Override
-  public String toString() {
-    return "Signature [ecpPoint=" + point.toString() + "]";
-  }
-
-  public Signature combine(Signature sig) {
-    return new Signature(point.add(sig.point));
+  /**
+   * Combines this signature with another signature, creating a new signature.
+   *
+   * @param signature the signature to combine with
+   * @return a new signature as combination of both signatures.
+   */
+  public Signature combine(Signature signature) {
+    return new Signature(point.add(signature.point));
   }
 
   /**
    * Signature serialization
-   * 
+   *
    * @return byte array representation of the signature, not null
    */
-  public byte[] encode() {
+  public Bytes encode() {
     return point.toBytes();
   }
 
-  public static Signature decode(byte[] bytes) {
-    G2Point point = G2Point.fromBytes(bytes);
-    return new Signature(point);
+  @Override
+  public String toString() {
+    return "Signature [ecpPoint=" + point.toString() + "]";
   }
 
   @Override
@@ -54,6 +84,10 @@ public final class Signature {
     int result = 1;
     result = prime * result + ((point == null) ? 0 : point.hashCode());
     return result;
+  }
+
+  G2Point g2Point() {
+    return point;
   }
 
   @Override
@@ -69,23 +103,5 @@ public final class Signature {
     }
     Signature other = (Signature) obj;
     return point.equals(other.point);
-  }
-
-  G2Point g2Point() {
-    return point;
-  }
-
-  /**
-   * Aggregates list of Signature pairs
-   * 
-   * @param signatures The list of signatures to aggregate, not null
-   * @throws IllegalArgumentException if parameter list is empty
-   * @return Signature, not null
-   */
-  public static Signature aggregate(List<Signature> signatures) {
-    if (signatures.isEmpty()) {
-      throw new IllegalArgumentException("Parameter list is empty");
-    }
-    return signatures.stream().reduce((a, b) -> a.combine(b)).get();
   }
 }

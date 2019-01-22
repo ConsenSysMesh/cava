@@ -14,8 +14,6 @@ package net.consensys.cava.crypto.mikuli;
 
 import net.consensys.cava.bytes.Bytes;
 
-import java.util.List;
-
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP;
 import org.apache.milagro.amcl.BLS381.ECP2;
@@ -53,7 +51,7 @@ public final class BLS12381 {
     /*
      * The signature is hash point in G2 multiplied by the private key.
      */
-    G2Point sig = keyPair.privateKey().sign(hashInGroup2);
+    G2Point sig = keyPair.secretKey().sign(hashInGroup2);
     return new SignatureAndPublicKey(new Signature(sig), keyPair.publicKey());
   }
 
@@ -122,12 +120,6 @@ public final class BLS12381 {
    */
   public static boolean verify(SignatureAndPublicKey sigAndPubKey, Bytes message) {
     return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message);
-  }
-
-  private static void listNotEmpty(List<?> list) {
-    if (list.isEmpty()) {
-      throw new IllegalArgumentException("Parameter list is empty");
-    }
   }
 
   private static G2Point hashFunction(byte[] message) {

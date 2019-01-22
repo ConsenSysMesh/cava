@@ -22,31 +22,37 @@ import org.apache.milagro.amcl.RAND;
  */
 public final class KeyPair {
 
-  private final PrivateKey privateKey;
-  private final PublicKey publicKey;
+  private static final BIG curveOrder = new BIG(ROM.CURVE_Order);
   static final G1Point g1Generator = new G1Point(ECP.generator());
-  static final BIG curveOrder = new BIG(ROM.CURVE_Order);
 
-  private KeyPair(PrivateKey privateKey, PublicKey publicKey) {
-    this.privateKey = privateKey;
-    this.publicKey = publicKey;
-  }
-
+  /**
+   * Generate a new random key pair
+   *
+   * @return a new random key pair
+   */
   static public KeyPair random() {
     RAND rng = new RAND();
     Scalar secret = new Scalar(BIG.randomnum(curveOrder, rng));
 
-    PrivateKey privateKey = new PrivateKey(secret);
+    SecretKey secretKey = new SecretKey(secret);
     G1Point g1Point = g1Generator.mul(secret);
     PublicKey publicKey = new PublicKey(g1Point);
-    return new KeyPair(privateKey, publicKey);
+    return new KeyPair(secretKey, publicKey);
+  }
+
+  private final SecretKey secretKey;
+  private final PublicKey publicKey;
+
+  private KeyPair(SecretKey secretKey, PublicKey publicKey) {
+    this.secretKey = secretKey;
+    this.publicKey = publicKey;
   }
 
   public PublicKey publicKey() {
     return publicKey;
   }
 
-  public PrivateKey privateKey() {
-    return privateKey;
+  public SecretKey secretKey() {
+    return secretKey;
   }
 }
