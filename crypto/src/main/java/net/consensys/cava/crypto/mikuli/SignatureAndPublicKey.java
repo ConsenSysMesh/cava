@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import java.util.List;
+
 /**
  * This class represents a signature and a public key
  */
@@ -36,5 +38,19 @@ public final class SignatureAndPublicKey {
     Signature newSignature = signature.combine(sigAndPubKey.signature);
     PublicKey newPubKey = publicKey.combine(sigAndPubKey.publicKey);
     return new SignatureAndPublicKey(newSignature, newPubKey);
+  }
+
+  /**
+   * Aggregates list of Signature and PublicKey pairs
+   * 
+   * @param sigAndPubKeys The list of Signatures and corresponding Public keys to aggregate, not null
+   * @return SignatureAndPublicKey, not null
+   * @throws IllegalArgumentException if parameter list is empty
+   */
+  public static SignatureAndPublicKey aggregate(List<SignatureAndPublicKey> sigAndPubKeys) {
+    if (sigAndPubKeys.isEmpty()) {
+      throw new IllegalArgumentException("Parameter list is empty");
+    }
+    return sigAndPubKeys.stream().reduce((a, b) -> a.combine(b)).get();
   }
 }

@@ -14,10 +14,11 @@ package net.consensys.cava.crypto.mikuli;
 
 import net.consensys.cava.bytes.Bytes;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
- * This class represents a public key on G1.
+ * This class represents a BLS12-381 public key.
  */
 public final class PublicKey {
 
@@ -58,7 +59,6 @@ public final class PublicKey {
     return fromBytes(bytes.toArray());
   }
 
-
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -84,5 +84,19 @@ public final class PublicKey {
 
   public G1Point g1Point() {
     return point;
+  }
+
+  /**
+   * Aggregates list of PublicKey pairs
+   * 
+   * @param keys The list of public keys to aggregate, not null
+   * @return PublicKey The public key, not null
+   * @throws IllegalArgumentException if parameter list is empty
+   */
+  public static PublicKey aggregate(List<PublicKey> keys) {
+    if (keys.isEmpty()) {
+      throw new IllegalArgumentException("Parameter list is empty");
+    }
+    return keys.stream().reduce((a, b) -> a.combine(b)).get();
   }
 }

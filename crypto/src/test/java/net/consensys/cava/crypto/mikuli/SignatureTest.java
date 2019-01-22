@@ -39,7 +39,7 @@ class SignatureTest {
   void testAggregatedSignature() {
     byte[] message = "Hello".getBytes(UTF_8);
     List<SignatureAndPublicKey> sigs = getSignaturesAndPublicKeys(message);
-    SignatureAndPublicKey sigAndPubKey = BLS12381.aggregate(sigs);
+    SignatureAndPublicKey sigAndPubKey = SignatureAndPublicKey.aggregate(sigs);
 
     Boolean isValid = BLS12381.verify(sigAndPubKey, message);
     assertTrue(isValid);
@@ -49,7 +49,7 @@ class SignatureTest {
   void testCorruptedMessage() {
     byte[] message = "Hello".getBytes(UTF_8);
     List<SignatureAndPublicKey> sigs = getSignaturesAndPublicKeys(message);
-    SignatureAndPublicKey sigAndPubKey = BLS12381.aggregate(sigs);
+    SignatureAndPublicKey sigAndPubKey = SignatureAndPublicKey.aggregate(sigs);
     byte[] corruptedMessage = "Not Hello".getBytes(UTF_8);
 
     Boolean isValid = BLS12381.verify(sigAndPubKey, corruptedMessage);
@@ -66,7 +66,7 @@ class SignatureTest {
     SignatureAndPublicKey additionalSignature = BLS12381.sign(keyPair, notHello);
     sigs.add(additionalSignature);
 
-    SignatureAndPublicKey sigAndPubKey = BLS12381.aggregate(sigs);
+    SignatureAndPublicKey sigAndPubKey = SignatureAndPublicKey.aggregate(sigs);
 
     Boolean isValid = BLS12381.verify(sigAndPubKey, message);
     assertFalse(isValid);

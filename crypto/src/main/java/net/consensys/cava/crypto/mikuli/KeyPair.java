@@ -24,8 +24,8 @@ public final class KeyPair {
 
   private final PrivateKey privateKey;
   private final PublicKey publicKey;
-  static public final G1Point g1Generator = new G1Point(ECP.generator());
-  static public final BIG curveOrder = new BIG(ROM.CURVE_Order);
+  static final G1Point g1Generator = new G1Point(ECP.generator());
+  static final BIG curveOrder = new BIG(ROM.CURVE_Order);
 
   private KeyPair(PrivateKey privateKey, PublicKey publicKey) {
     this.privateKey = privateKey;

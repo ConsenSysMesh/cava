@@ -13,7 +13,7 @@
 package net.consensys.cava.crypto.mikuli;
 
 /**
- * This class represents a private key on G2
+ * This class represents a BLS12-381 private key.
  */
 public final class PrivateKey {
 

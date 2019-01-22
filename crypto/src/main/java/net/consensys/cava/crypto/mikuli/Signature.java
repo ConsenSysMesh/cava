@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -72,5 +73,19 @@ public final class Signature {
 
   G2Point g2Point() {
     return point;
+  }
+
+  /**
+   * Aggregates list of Signature pairs
+   * 
+   * @param signatures The list of signatures to aggregate, not null
+   * @throws IllegalArgumentException if parameter list is empty
+   * @return Signature, not null
+   */
+  public static Signature aggregate(List<Signature> signatures) {
+    if (signatures.isEmpty()) {
+      throw new IllegalArgumentException("Parameter list is empty");
+    }
+    return signatures.stream().reduce((a, b) -> a.combine(b)).get();
   }
 }
