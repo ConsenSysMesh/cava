@@ -13,10 +13,6 @@
 package net.consensys.cava.crypto.mikuli;
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.crypto.mikuli.group.AtePairing;
-import net.consensys.cava.crypto.mikuli.group.G1Point;
-import net.consensys.cava.crypto.mikuli.group.G2Point;
-import net.consensys.cava.crypto.mikuli.group.GTPoint;
 
 import java.util.List;
 

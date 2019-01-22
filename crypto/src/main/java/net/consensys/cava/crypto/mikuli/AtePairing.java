@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.crypto.mikuli.group;
+package net.consensys.cava.crypto.mikuli;
 
 import org.apache.milagro.amcl.BLS381.FP12;
 import org.apache.milagro.amcl.BLS381.PAIR;
@@ -18,7 +18,7 @@ import org.apache.milagro.amcl.BLS381.PAIR;
 /**
  * Function that maps 2 points on an elliptic curve to a number.
  */
-public class AtePairing {
+class AtePairing {
 
   /**
    * 
@@ -26,7 +26,7 @@ public class AtePairing {
    * @param p2 the point in Group2, not null
    * @return GTPoint
    */
-  public static GTPoint pair(G1Point p1, G2Point p2) {
+  static GTPoint pair(G1Point p1, G2Point p2) {
     FP12 e = PAIR.ate(p2.ecp2Point(), p1.ecpPoint());
     return new GTPoint(PAIR.fexp(e));
   }

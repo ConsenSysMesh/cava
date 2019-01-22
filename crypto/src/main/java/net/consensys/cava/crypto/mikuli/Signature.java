@@ -14,8 +14,6 @@ package net.consensys.cava.crypto.mikuli;
 
 import static java.util.Objects.requireNonNull;
 
-import net.consensys.cava.crypto.mikuli.group.G2Point;
-
 import com.google.common.base.Objects;
 
 /**

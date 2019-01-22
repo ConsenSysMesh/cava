@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.crypto.mikuli.group;
+package net.consensys.cava.crypto.mikuli;
 
 import static java.util.Objects.requireNonNull;
 
@@ -21,12 +21,11 @@ import org.apache.milagro.amcl.BLS381.ECP;
  * G1 is a subgroup of an elliptic curve whose points are elements of the finite field Fp - simple numbers mod some
  * prime p. The curve is defined by: y^2 = x^3 + 4
  */
-public final class G1Point implements Group<G1Point> {
+final class G1Point implements Group<G1Point> {
   final ECP point;
   private static final int fpPointSize = BIG.MODBYTES;
 
-  public G1Point(ECP point) {
-    requireNonNull(point);
+  G1Point(ECP point) {
     this.point = point;
   }
 
@@ -48,7 +47,7 @@ public final class G1Point implements Group<G1Point> {
   /**
    * @return byte[] the byte array representation of compressed point in G1
    */
-  public byte[] toByteArray() {
+  byte[] toByteArray() {
     // Size of the byte array representing compressed ECP point for BLS12-381 is
     // 49 bytes in milagro
     // size of the point = 48 bytes
@@ -58,7 +57,7 @@ public final class G1Point implements Group<G1Point> {
     return bytes;
   }
 
-  public static G1Point fromBytes(byte[] bytes) {
+  static G1Point fromBytes(byte[] bytes) {
     return new G1Point(ECP.fromBytes(bytes));
   }
 

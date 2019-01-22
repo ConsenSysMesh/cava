@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.crypto.mikuli.group;
+package net.consensys.cava.crypto.mikuli;
 
 import static java.util.Objects.requireNonNull;
 
@@ -21,12 +21,11 @@ import org.apache.milagro.amcl.BLS381.ECP2;
  * G2 is the subgroup of elliptic curve similar to G1 and the points are identical except for where they are elements of
  * the extension field Fq12.
  */
-public final class G2Point implements Group<G2Point> {
+final class G2Point implements Group<G2Point> {
   private final ECP2 point;
   private static final int fpPointSize = BIG.MODBYTES;
 
-  public G2Point(ECP2 point) {
-    requireNonNull(point);
+  G2Point(ECP2 point) {
     this.point = point;
   }
 
@@ -45,13 +44,13 @@ public final class G2Point implements Group<G2Point> {
     return new G2Point(newPoint);
   }
 
-  public byte[] toBytes() {
+  byte[] toBytes() {
     byte[] bytes = new byte[4 * fpPointSize];
     point.toBytes(bytes);
     return bytes;
   }
 
-  public static G2Point fromBytes(byte[] bytes) {
+  static G2Point fromBytes(byte[] bytes) {
     return new G2Point(ECP2.fromBytes(bytes));
   }
 

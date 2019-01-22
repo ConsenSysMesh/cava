@@ -10,21 +10,18 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.crypto.mikuli.group;
-
-import static java.util.Objects.requireNonNull;
+package net.consensys.cava.crypto.mikuli;
 
 import org.apache.milagro.amcl.BLS381.BIG;
 
 /**
  * This class represents an ordinary scalar value.
  */
-public class Scalar {
+class Scalar {
 
   private final BIG value;
 
-  public Scalar(BIG value) {
-    requireNonNull(value);
+  Scalar(BIG value) {
     this.value = value;
   }
 

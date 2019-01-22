@@ -12,9 +12,6 @@
  */
 package net.consensys.cava.crypto.mikuli;
 
-import net.consensys.cava.crypto.mikuli.group.G1Point;
-import net.consensys.cava.crypto.mikuli.group.Scalar;
-
 import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP;
 import org.apache.milagro.amcl.BLS381.ROM;

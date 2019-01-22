@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.crypto.mikuli.group;
+package net.consensys.cava.crypto.mikuli;
 
 import static java.util.Objects.requireNonNull;
 
@@ -19,7 +19,7 @@ import org.apache.milagro.amcl.BLS381.FP12;
 /**
  * GT is the object that holds the result of the pairing operation. Points in GT are elements of Fq12.
  */
-public final class GTPoint {
+final class GTPoint {
 
   private final FP12 point;
 
