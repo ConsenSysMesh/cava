@@ -9,6 +9,8 @@
 .classpath
 .externalToolBuilders/
 .gradle/
+.vscode/
+*.code-workspace
 .idea/*
 !.idea/codeStyles/
 .loadpath
