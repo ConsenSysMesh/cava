@@ -43,6 +43,8 @@ public final class BLS12381 {
    *
    * @param keyPair The public and private key pair, not null
    * @param message The message to sign, not null
+   * @param domain The domain value added to the message
+   * 
    * @return The SignatureAndPublicKey, not null
    */
   public static SignatureAndPublicKey sign(KeyPair keyPair, byte[] message, int domain) {
@@ -59,6 +61,8 @@ public final class BLS12381 {
    *
    * @param keyPair The public and private key pair, not null
    * @param message The message to sign, not null
+   * @param domain The domain value added to the message
+   * 
    * @return The SignatureAndPublicKey, not null
    */
   public static SignatureAndPublicKey sign(KeyPair keyPair, Bytes message, int domain) {
@@ -71,6 +75,7 @@ public final class BLS12381 {
    * @param publicKey The public key, not null
    * @param signature The signature, not null
    * @param message The message data to verify, not null
+   * @param domain The domain value added to the message
    * 
    * @return True if the verification is successful.
    */
@@ -90,6 +95,7 @@ public final class BLS12381 {
    * @param publicKey The public key, not null
    * @param signature The signature, not null
    * @param message The message data to verify, not null
+   * @param domain The domain value added to the message
    * 
    * @return True if the verification is successful.
    */
@@ -102,6 +108,7 @@ public final class BLS12381 {
    * 
    * @param sigAndPubKey The signature and public key, not null
    * @param message The message data to verify, not null
+   * @param domain The domain value added to the message
    * 
    * @return True if the verification is successful, not null
    */
@@ -114,6 +121,7 @@ public final class BLS12381 {
    * 
    * @param sigAndPubKey The public key, not null
    * @param message The message data to verify, not null
+   * @param domain The domain value added to the message
    * 
    * @return True if the verification is successful.
    */
