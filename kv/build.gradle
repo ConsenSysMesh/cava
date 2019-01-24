@@ -10,8 +10,9 @@ dependencies {
   compileOnly 'com.jolbox:bonecp'
   compileOnly 'io.lettuce:lettuce-core'
   compileOnly 'org.fusesource.leveldbjni:leveldbjni-all'
-  compileOnly 'org.rocksdb:rocksdbjni'
+  compileOnly 'org.infinispan:infinispan-core'
   compileOnly 'org.mapdb:mapdb'
+  compileOnly 'org.rocksdb:rocksdbjni'
 
   testCompile project(':concurrent')
   testCompile project(':junit')
@@ -21,6 +22,7 @@ dependencies {
   testCompile 'com.winterbe:expekt'
   testCompile 'io.lettuce:lettuce-core'
   testCompile 'org.fusesource.leveldbjni:leveldbjni-all'
+  testCompile  'org.infinispan:infinispan-core'
   testCompile 'org.jetbrains.spek:spek-api'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testCompile 'org.junit.jupiter:junit-jupiter-params'

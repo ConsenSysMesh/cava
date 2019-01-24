@@ -27,6 +27,7 @@ dependencyManagement {
       entry 'junit-jupiter-engine'
       entry 'junit-jupiter-params'
     }
+    dependency('org.infinispan:infinispan-core:9.4.5.Final')
     dependency('org.jetbrains:annotations:16.0.3')
     dependencySet(group: 'org.jetbrains.kotlin', version: '1.3.11') {
       entry 'kotlin-reflect'
