@@ -31,9 +31,9 @@ class SignatureTest {
   void testSimpleSignature() {
     KeyPair keyPair = KeyPair.random();
     byte[] message = "Hello".getBytes(UTF_8);
-    SignatureAndPublicKey sigAndPubKey = BLS12381.sign(keyPair, message);
+    SignatureAndPublicKey sigAndPubKey = BLS12381.sign(keyPair, message, 48);
 
-    Boolean isValid = BLS12381.verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message);
+    Boolean isValid = BLS12381.verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message, 48);
     assertTrue(isValid);
   }
 
@@ -43,7 +43,7 @@ class SignatureTest {
     List<SignatureAndPublicKey> sigs = getSignaturesAndPublicKeys(message);
     SignatureAndPublicKey sigAndPubKey = SignatureAndPublicKey.aggregate(sigs);
 
-    Boolean isValid = BLS12381.verify(sigAndPubKey, message);
+    Boolean isValid = BLS12381.verify(sigAndPubKey, message, 48);
     assertTrue(isValid);
   }
 
@@ -54,7 +54,7 @@ class SignatureTest {
     SignatureAndPublicKey sigAndPubKey = SignatureAndPublicKey.aggregate(sigs);
     byte[] corruptedMessage = "Not Hello".getBytes(UTF_8);
 
-    Boolean isValid = BLS12381.verify(sigAndPubKey, corruptedMessage);
+    Boolean isValid = BLS12381.verify(sigAndPubKey, corruptedMessage, 48);
     assertFalse(isValid);
   }
 
@@ -65,12 +65,12 @@ class SignatureTest {
     KeyPair keyPair = KeyPair.random();
     byte[] notHello = "Not Hello".getBytes(UTF_8);
 
-    SignatureAndPublicKey additionalSignature = BLS12381.sign(keyPair, notHello);
+    SignatureAndPublicKey additionalSignature = BLS12381.sign(keyPair, notHello, 48);
     sigs.add(additionalSignature);
 
     SignatureAndPublicKey sigAndPubKey = SignatureAndPublicKey.aggregate(sigs);
 
-    Boolean isValid = BLS12381.verify(sigAndPubKey, message);
+    Boolean isValid = BLS12381.verify(sigAndPubKey, message, 48);
     assertFalse(isValid);
   }
 
@@ -78,7 +78,7 @@ class SignatureTest {
   void testSerialization() {
     KeyPair keyPair = KeyPair.random();
     byte[] message = "Hello".getBytes(UTF_8);
-    Signature signature = BLS12381.sign(keyPair, message).signature();
+    Signature signature = BLS12381.sign(keyPair, message, 48).signature();
 
     Bytes sigTobytes = signature.encode();
     Signature sigFromBytes = Signature.decode(sigTobytes);
@@ -99,9 +99,9 @@ class SignatureTest {
     KeyPair keyPair2 = KeyPair.random();
     KeyPair keyPair3 = KeyPair.random();
 
-    SignatureAndPublicKey sigAndPubKey1 = BLS12381.sign(keyPair1, message);
-    SignatureAndPublicKey sigAndPubKey2 = BLS12381.sign(keyPair2, message);
-    SignatureAndPublicKey sigAndPubKey3 = BLS12381.sign(keyPair3, message);
+    SignatureAndPublicKey sigAndPubKey1 = BLS12381.sign(keyPair1, message, 48);
+    SignatureAndPublicKey sigAndPubKey2 = BLS12381.sign(keyPair2, message, 48);
+    SignatureAndPublicKey sigAndPubKey3 = BLS12381.sign(keyPair3, message, 48);
 
     List<SignatureAndPublicKey> sigs = new ArrayList<SignatureAndPublicKey>();
     sigs.add(sigAndPubKey1);

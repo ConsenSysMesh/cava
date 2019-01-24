@@ -14,7 +14,6 @@ package net.consensys.cava.crypto.mikuli;
 
 import net.consensys.cava.bytes.Bytes;
 
-import org.apache.milagro.amcl.BLS381.BIG;
 import org.apache.milagro.amcl.BLS381.ECP;
 import org.apache.milagro.amcl.BLS381.ECP2;
 import org.apache.milagro.amcl.BLS381.MPIN;
@@ -46,8 +45,8 @@ public final class BLS12381 {
    * @param message The message to sign, not null
    * @return The SignatureAndPublicKey, not null
    */
-  public static SignatureAndPublicKey sign(KeyPair keyPair, byte[] message) {
-    G2Point hashInGroup2 = hashFunction(message);
+  public static SignatureAndPublicKey sign(KeyPair keyPair, byte[] message, int domain) {
+    G2Point hashInGroup2 = hashFunction(message, domain);
     /*
      * The signature is hash point in G2 multiplied by the private key.
      */
@@ -62,8 +61,8 @@ public final class BLS12381 {
    * @param message The message to sign, not null
    * @return The SignatureAndPublicKey, not null
    */
-  public static SignatureAndPublicKey sign(KeyPair keyPair, Bytes message) {
-    return sign(keyPair, message.toArray());
+  public static SignatureAndPublicKey sign(KeyPair keyPair, Bytes message, int domain) {
+    return sign(keyPair, message.toArray(), domain);
   }
 
   /**
@@ -75,10 +74,10 @@ public final class BLS12381 {
    * 
    * @return True if the verification is successful.
    */
-  public static boolean verify(PublicKey publicKey, Signature signature, byte[] message) {
+  public static boolean verify(PublicKey publicKey, Signature signature, byte[] message, int domain) {
     G1Point g1Generator = KeyPair.g1Generator;
 
-    G2Point hashInGroup2 = hashFunction(message);
+    G2Point hashInGroup2 = hashFunction(message, domain);
     GTPoint e1 = AtePairing.pair(publicKey.g1Point(), hashInGroup2);
     GTPoint e2 = AtePairing.pair(g1Generator, signature.g2Point());
 
@@ -94,8 +93,8 @@ public final class BLS12381 {
    * 
    * @return True if the verification is successful.
    */
-  public static boolean verify(PublicKey publicKey, Signature signature, Bytes message) {
-    return verify(publicKey, signature, message.toArray());
+  public static boolean verify(PublicKey publicKey, Signature signature, Bytes message, int domain) {
+    return verify(publicKey, signature, message.toArray(), domain);
   }
 
   /**
@@ -106,8 +105,8 @@ public final class BLS12381 {
    * 
    * @return True if the verification is successful, not null
    */
-  public static boolean verify(SignatureAndPublicKey sigAndPubKey, byte[] message) {
-    return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message);
+  public static boolean verify(SignatureAndPublicKey sigAndPubKey, byte[] message, int domain) {
+    return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message, domain);
   }
 
   /**
@@ -118,12 +117,12 @@ public final class BLS12381 {
    * 
    * @return True if the verification is successful.
    */
-  public static boolean verify(SignatureAndPublicKey sigAndPubKey, Bytes message) {
-    return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message);
+  public static boolean verify(SignatureAndPublicKey sigAndPubKey, Bytes message, int domain) {
+    return verify(sigAndPubKey.publicKey(), sigAndPubKey.signature(), message, domain);
   }
 
-  private static G2Point hashFunction(byte[] message) {
-    byte[] hashByte = MPIN.HASH_ID(ECP.SHA256, message, BIG.MODBYTES);
+  private static G2Point hashFunction(byte[] message, int domain) {
+    byte[] hashByte = MPIN.HASH_ID(ECP.SHA256, message, domain);
     return new G2Point(ECP2.mapit(hashByte));
   }
 }
