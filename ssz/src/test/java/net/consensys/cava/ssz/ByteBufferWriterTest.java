@@ -29,7 +29,7 @@ import org.junit.jupiter.params.provider.CsvSource;
 class ByteBufferWriterTest {
 
   @ParameterizedTest
-  @CsvSource({"000003e8, 1000", "000186a0, 100000"})
+  @CsvSource({"E8030000, 1000", "A0860100, 100000"})
   void shouldWriteSmallIntegers(String expectedHex, int value) {
     ByteBuffer buffer = ByteBuffer.allocate(64);
     SSZ.encodeTo(buffer, writer -> writer.writeInt(value, 32));
@@ -42,7 +42,7 @@ class ByteBufferWriterTest {
     ByteBuffer buffer = ByteBuffer.allocate(64);
     SSZ.encodeTo(buffer, writer -> writer.writeLong(100000L, 24));
     buffer.flip();
-    assertEquals(fromHexString("0186a0"), Bytes.wrapByteBuffer(buffer));
+    assertEquals(fromHexString("A08601"), Bytes.wrapByteBuffer(buffer));
   }
 
   @Test
@@ -51,7 +51,7 @@ class ByteBufferWriterTest {
     SSZ.encodeTo(buffer, writer -> writer.writeUInt256(UInt256.valueOf(100000L)));
     buffer.flip();
     assertEquals(
-        fromHexString("00000000000000000000000000000000000000000000000000000000000186A0"),
+        fromHexString("A086010000000000000000000000000000000000000000000000000000000000"),
         Bytes.wrapByteBuffer(buffer));
 
     buffer.clear();
@@ -61,7 +61,7 @@ class ByteBufferWriterTest {
             .writeUInt256(UInt256.fromHexString("0x0400000000000000000000000000000000000000000000000000f100000000ab")));
     buffer.flip();
     assertEquals(
-        fromHexString("0400000000000000000000000000000000000000000000000000f100000000ab"),
+        fromHexString("AB00000000F10000000000000000000000000000000000000000000000000004"),
         Bytes.wrapByteBuffer(buffer));
   }
 
@@ -75,7 +75,7 @@ class ByteBufferWriterTest {
     buffer.clear();
     SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(127).pow(16), 112));
     buffer.flip();
-    assertEquals(fromHexString("e1ceefa5bbd9ed1c97f17a1df801"), Bytes.wrapByteBuffer(buffer));
+    assertEquals(fromHexString("01F81D7AF1971CEDD9BBA5EFCEE1"), Bytes.wrapByteBuffer(buffer));
   }
 
   @Test
@@ -91,7 +91,7 @@ class ByteBufferWriterTest {
     ByteBuffer buffer = ByteBuffer.allocate(64);
     SSZ.encodeTo(buffer, writer -> writer.writeString("d"));
     buffer.flip();
-    assertEquals(fromHexString("0000000164"), Bytes.wrapByteBuffer(buffer));
+    assertEquals(fromHexString("0100000064"), Bytes.wrapByteBuffer(buffer));
   }
 
   @Test
@@ -99,7 +99,7 @@ class ByteBufferWriterTest {
     ByteBuffer buffer = ByteBuffer.allocate(64);
     SSZ.encodeTo(buffer, writer -> writer.writeString("dog"));
     buffer.flip();
-    assertEquals(fromHexString("00000003646f67"), Bytes.wrapByteBuffer(buffer));
+    assertEquals(fromHexString("03000000646F67"), Bytes.wrapByteBuffer(buffer));
   }
 
   @Test
@@ -113,7 +113,7 @@ class ByteBufferWriterTest {
 
     assertEquals(
         fromHexString(
-            "0000005800000004617364660000000471776572000000047A78637600000004617364660000000471776572000000047A78637600000004617364660000000471776572000000047A78637600000004617364660000000471776572"),
+            "5800000004000000617364660400000071776572040000007A78637604000000617364660400000071776572040000007A78637604000000617364660400000071776572040000007A78637604000000617364660400000071776572"),
         Bytes.wrapByteBuffer(buffer));
   }
 

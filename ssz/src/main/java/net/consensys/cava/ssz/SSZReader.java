@@ -16,6 +16,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.units.bigints.UInt256;
+import net.consensys.cava.units.bigints.UInt384;
 
 import java.math.BigInteger;
 import java.util.List;
@@ -268,6 +269,15 @@ public interface SSZReader {
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
   UInt256 readUInt256();
+
+  /**
+   * Read a {@link UInt384} from the SSZ source.
+   *
+   * @return A {@link UInt384}.
+   * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 384-bit int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  UInt384 readUInt384();
 
   /**
    * Read a boolean from the SSZ source.

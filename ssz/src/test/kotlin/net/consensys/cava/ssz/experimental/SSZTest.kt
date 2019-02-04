@@ -27,12 +27,12 @@ class SSZTest {
         assertEquals(fromHexString("0000000000000000"), SSZ.encodeUInt64(0L.toULong()))
 
         assertEquals(fromHexString("FFFF"), SSZ.encodeUInt16(65535.toUInt()))
-        assertEquals(fromHexString("0000FFFF"), SSZ.encodeUInt32(65535.toUInt()))
+        assertEquals(fromHexString("FFFF0000"), SSZ.encodeUInt32(65535.toUInt()))
     }
 
     @Test
     fun shouldWriteUnsigned() {
         assertEquals(fromHexString("FFFF"), SSZ.encode { w -> w.writeUInt16(65535.toUInt()) })
-        assertEquals(fromHexString("0000FFFF"), SSZ.encode { w -> w.writeUInt32(65535.toUInt()) })
+        assertEquals(fromHexString("FFFF0000"), SSZ.encode { w -> w.writeUInt32(65535.toUInt()) })
     }
 }
