@@ -373,4 +373,50 @@ class BytesTest extends CommonBytesTests {
     Bytes value = Bytes.fromBase64String("deadbeefISDAbest");
     assertEquals("deadbeefISDAbest", value.toBase64String());
   }
+
+  @Test
+  void littleEndianRoundtrip() {
+    int val = Integer.MAX_VALUE - 5;
+    Bytes littleEndianEncoded = Bytes.ofUnsignedIntAsLittleEndian(val);
+    assertEquals(4, littleEndianEncoded.size());
+    Bytes bigEndianEncoded = Bytes.ofUnsignedInt(val);
+    assertEquals(bigEndianEncoded.get(0), littleEndianEncoded.get(3));
+    assertEquals(bigEndianEncoded.get(1), littleEndianEncoded.get(2));
+    assertEquals(bigEndianEncoded.get(2), littleEndianEncoded.get(1));
+    assertEquals(bigEndianEncoded.get(3), littleEndianEncoded.get(0));
+
+    int read = littleEndianEncoded.toLittleEndianEncodedInt();
+    assertEquals(val, read);
+  }
+
+  @Test
+  void littleEndianLongRoundtrip() {
+    long val = 1L << 46;
+    Bytes littleEndianEncoded = Bytes.ofUnsignedLongAsLittleEndian(val);
+    assertEquals(8, littleEndianEncoded.size());
+    Bytes bigEndianEncoded = Bytes.ofUnsignedLong(val);
+    assertEquals(bigEndianEncoded.get(0), littleEndianEncoded.get(7));
+    assertEquals(bigEndianEncoded.get(1), littleEndianEncoded.get(6));
+    assertEquals(bigEndianEncoded.get(2), littleEndianEncoded.get(5));
+    assertEquals(bigEndianEncoded.get(3), littleEndianEncoded.get(4));
+    assertEquals(bigEndianEncoded.get(4), littleEndianEncoded.get(3));
+    assertEquals(bigEndianEncoded.get(5), littleEndianEncoded.get(2));
+    assertEquals(bigEndianEncoded.get(6), littleEndianEncoded.get(1));
+    assertEquals(bigEndianEncoded.get(7), littleEndianEncoded.get(0));
+
+    long read = littleEndianEncoded.toLittleEndianEncodedLong();
+    assertEquals(val, read);
+  }
+
+  @Test
+  void reverseBytes() {
+    Bytes bytes = Bytes.fromHexString("0x000102030405");
+    assertEquals(Bytes.fromHexString("0x050403020100"), bytes.reverse());
+  }
+
+  @Test
+  void reverseBytesEmptyArray() {
+    Bytes bytes = Bytes.fromHexString("0x");
+    assertEquals(Bytes.fromHexString("0x"), bytes.reverse());
+  }
 }
