@@ -19,6 +19,9 @@ import kotlinx.coroutines.runBlocking
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.kv.Vars.foo
 import net.consensys.cava.kv.Vars.foobar
+import org.infinispan.Cache
+import org.infinispan.configuration.cache.ConfigurationBuilder
+import org.infinispan.manager.DefaultCacheManager
 import org.iq80.leveldb.DBException
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -35,6 +38,36 @@ object Vars {
 
 object KeyValueStoreSpec : Spek({
   val backingMap = mutableMapOf<Bytes, Bytes>()
+  val kv = MapKeyValueStore(backingMap)
+
+  describe("a map-backed key value store") {
+
+    it("should allow to store values") {
+      runBlocking {
+        kv.put(foo, foo)
+        backingMap.get(foo).should.equal(foo)
+      }
+    }
+
+    it("should allow to retrieve values") {
+      runBlocking {
+        kv.put(foobar, foo)
+        kv.get(foobar).should.equal(foo)
+      }
+    }
+
+    it("should return null when no value is present") {
+      runBlocking {
+        kv.get(Bytes.wrap("foofoobar".toByteArray())).should.be.`null`
+      }
+    }
+  }
+})
+
+object InfinispanKeyValueStoreSpec : Spek({
+  val cacheManager = DefaultCacheManager()
+  cacheManager.defineConfiguration("local", ConfigurationBuilder().build())
+  val backingMap: Cache<Bytes, Bytes> = cacheManager.getCache("local")
   val kv = MapKeyValueStore(backingMap)
 
   describe("a map-backed key value store") {
