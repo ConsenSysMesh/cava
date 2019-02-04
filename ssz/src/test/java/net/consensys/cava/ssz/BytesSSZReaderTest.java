@@ -152,6 +152,15 @@ class BytesSSZReaderTest {
   }
 
   @Test
+  void shouldAcceptStringListOfVariableLengths() {
+    List<String> expected = Arrays.asList("one", "three", "four");
+
+    List<String> result =
+        SSZ.decodeStringList(Bytes.fromHexString("0x00000018000000036F6E6500000005746872656500000004666F7572"));
+    assertEquals(expected, result);
+  }
+
+  @Test
   void shouldRoundtripBytes() {
     List<Bytes> toWrite = Arrays.asList(Bytes48.random(), Bytes48.random(), Bytes48.random());
     Bytes encoded = SSZ.encode(writer -> writer.writeBytesList(toWrite.toArray(new Bytes[0])));
