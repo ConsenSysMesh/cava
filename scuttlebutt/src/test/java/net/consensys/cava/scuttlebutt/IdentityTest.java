@@ -16,17 +16,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.crypto.sodium.Signature;
+import net.consensys.cava.crypto.sodium.Sodium;
 import net.consensys.cava.junit.BouncyCastleExtension;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(BouncyCastleExtension.class)
 class IdentityTest {
+
+  @BeforeAll
+  static void checkAvailable() {
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+  }
 
   @Test
   void testRandom() {

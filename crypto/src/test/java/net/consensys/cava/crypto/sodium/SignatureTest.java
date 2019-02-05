@@ -14,12 +14,19 @@ package net.consensys.cava.crypto.sodium;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import net.consensys.cava.bytes.Bytes;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class SignatureTest {
+
+  @BeforeAll
+  static void checkAvailable() {
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+  }
 
   @Test
   void testEqualityAndRecovery() {
@@ -28,7 +35,6 @@ class SignatureTest {
     assertEquals(kp, otherKp);
   }
 
-
   @Test
   void checkDetachedSignVerify() {
     Signature.KeyPair kp = Signature.KeyPair.random();
@@ -36,6 +42,5 @@ class SignatureTest {
     boolean result = Signature.verifyDetached(Bytes.fromHexString("deadbeef"), signature, kp.publicKey());
     assertTrue(result);
   }
-
 
 }

@@ -16,8 +16,10 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.crypto.sodium.Sodium;
 import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
 import net.consensys.cava.scuttlebutt.Identity;
@@ -28,6 +30,7 @@ import java.io.PrintWriter;
 import java.util.concurrent.atomic.AtomicReference;
 
 import io.vertx.core.Vertx;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.logl.Level;
@@ -36,6 +39,11 @@ import org.logl.logl.SimpleLogger;
 
 @ExtendWith(VertxExtension.class)
 class ScuttlebuttLocalDiscoveryServiceTest {
+
+  @BeforeAll
+  static void checkAvailable() {
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+  }
 
   @Test
   void startStop(@VertxInstance Vertx vertx) throws Exception {
