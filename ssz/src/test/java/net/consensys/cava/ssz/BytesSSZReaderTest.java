@@ -160,7 +160,7 @@ class BytesSSZReaderTest {
     List<String> expected = Arrays.asList("one", "three", "four");
 
     List<String> result =
-        SSZ.decodeStringList(Bytes.fromHexString("0x00000018000000036F6E6500000005746872656500000004666F7572"));
+        SSZ.decodeStringList(Bytes.fromHexString("0x18000000030000006F6E6505000000746872656504000000666F7572"));
     assertEquals(expected, result);
   }
 
