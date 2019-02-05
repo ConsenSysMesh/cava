@@ -315,6 +315,7 @@ public interface RLPReader {
    * Read a list of values from the RLP source, populating a list using a function interpreting each value.
    *
    * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @param <T> The type of the list elements.
    * @return The list supplied to {@code fn}.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the next RLP value is not a list.
@@ -348,6 +349,7 @@ public interface RLPReader {
    *
    * @param lenient If {@code false}, an exception will be thrown if the integer is not minimally encoded.
    * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @param <T> The type of the list elements.
    * @return The list supplied to {@code fn}.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the next RLP value is not a list.

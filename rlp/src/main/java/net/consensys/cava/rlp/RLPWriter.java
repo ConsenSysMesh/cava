@@ -128,6 +128,7 @@ public interface RLPWriter {
    *
    * @param elements the list of elements to write
    * @param elementWriter the function called for each element in the list
+   * @param <T> The type of the list elements.
    */
   default <T> void writeList(List<T> elements, BiConsumer<RLPWriter, T> elementWriter) {
     writeList(writer -> {
