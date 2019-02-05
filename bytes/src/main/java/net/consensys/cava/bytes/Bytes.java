@@ -16,11 +16,13 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
+import static java.nio.ByteOrder.BIG_ENDIAN;
 
 import java.io.IOException;
 import java.math.BigInteger;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.nio.ReadOnlyBufferException;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
@@ -275,115 +277,125 @@ public interface Bytes {
   }
 
   /**
-   * Return a 2 bytes value corresponding to the provided value interpreted as an unsigned short value.
+   * Return a 2-byte value corresponding to the provided value interpreted as an unsigned short.
    *
-   * @param value The value, which must fit an unsigned short.
-   * @return A 2 bytes value corresponding to {@code v}.
-   * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 2-bytes short (that
-   *         is, if {@code v >= (1 << 16)}).
+   * @param value The value, which must be no larger than an unsigned short.
+   * @return A 2 bytes value corresponding to {@code value}.
+   * @throws IllegalArgumentException if {@code value < 0} or {@code value} is too big to fit an unsigned 2-byte short
+   *         (that is, if {@code value >= (1 << 16)}).
    */
   static Bytes ofUnsignedShort(int value) {
+    return ofUnsignedShort(value, BIG_ENDIAN);
+  }
+
+  /**
+   * Return a 2-byte value corresponding to the provided value interpreted as an unsigned short.
+   *
+   * @param value The value, which must be no larger than an unsigned short.
+   * @param order The byte-order for the integer encoding.
+   * @return A 2 bytes value corresponding to {@code value}.
+   * @throws IllegalArgumentException if {@code value < 0} or {@code value} is too big to fit an unsigned 2-byte short
+   *         (that is, if {@code value >= (1 << 16)}).
+   */
+  static Bytes ofUnsignedShort(int value, ByteOrder order) {
     checkArgument(
         value >= 0 && value <= BytesValues.MAX_UNSIGNED_SHORT,
         "Value %s cannot be represented as an unsigned short (it is negative or too big)",
         value);
     byte[] res = new byte[2];
-    res[0] = (byte) ((value >> 8) & 0xFF);
-    res[1] = (byte) (value & 0xFF);
+    if (order == BIG_ENDIAN) {
+      res[0] = (byte) ((value >> 8) & 0xFF);
+      res[1] = (byte) (value & 0xFF);
+    } else {
+      res[0] = (byte) (value & 0xFF);
+      res[1] = (byte) ((value >> 8) & 0xFF);
+    }
     return Bytes.wrap(res);
   }
 
   /**
-   * Return a 4 bytes value corresponding to the provided value interpreted as an unsigned int value.
+   * Return a 4-byte value corresponding to the provided value interpreted as an unsigned int.
    *
-   * @param value The value, which must fit an unsigned int.
-   * @return A 4 bytes value corresponding to {@code v}.
-   * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 4-bytes int (that is,
-   *         if {@code v >= (1L << 32)}).
+   * @param value The value, which must be no larger than an unsigned int.
+   * @return A 4 bytes value corresponding to {@code value}.
+   * @throws IllegalArgumentException if {@code value < 0} or {@code value} is too big to fit an unsigned 4-byte int
+   *         (that is, if {@code value >= (1L << 32)}).
    */
   static Bytes ofUnsignedInt(long value) {
+    return ofUnsignedInt(value, BIG_ENDIAN);
+  }
+
+  /**
+   * Return a 4-byte value corresponding to the provided value interpreted as an unsigned int.
+   *
+   * @param value The value, which must be no larger than an unsigned int.
+   * @param order The byte-order for the integer encoding.
+   * @return A 4 bytes value corresponding to the encoded {@code value}.
+   * @throws IllegalArgumentException if {@code value < 0} or {@code value} is too big to fit an unsigned 4-byte int
+   *         (that is, if {@code value >= (1L << 32)}).
+   */
+  static Bytes ofUnsignedInt(long value, ByteOrder order) {
     checkArgument(
         value >= 0 && value <= BytesValues.MAX_UNSIGNED_INT,
         "Value %s cannot be represented as an unsigned int (it is negative or too big)",
         value);
     byte[] res = new byte[4];
-    res[0] = (byte) ((value >> 24) & 0xFF);
-    res[1] = (byte) ((value >> 16) & 0xFF);
-    res[2] = (byte) ((value >> 8) & 0xFF);
-    res[3] = (byte) ((value) & 0xFF);
+    if (order == BIG_ENDIAN) {
+      res[0] = (byte) ((value >> 24) & 0xFF);
+      res[1] = (byte) ((value >> 16) & 0xFF);
+      res[2] = (byte) ((value >> 8) & 0xFF);
+      res[3] = (byte) ((value) & 0xFF);
+    } else {
+      res[0] = (byte) ((value) & 0xFF);
+      res[1] = (byte) ((value >> 8) & 0xFF);
+      res[2] = (byte) ((value >> 16) & 0xFF);
+      res[3] = (byte) ((value >> 24) & 0xFF);
+    }
     return Bytes.wrap(res);
   }
 
   /**
-   * Return a 8 bytes value corresponding to the provided value interpreted as an unsigned long value.
+   * Return an 8-byte value corresponding to the provided value interpreted as an unsigned long.
    *
-   * @param value The value, which must fit an unsigned long.
-   * @return A 8 bytes value corresponding to {@code v}.
-   * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 8-bytes int (that is,
-   *         if {@code v >= (1L << 64)}).
+   * @param value The value, which will be interpreted as an unsigned long.
+   * @return A 8 bytes value corresponding to {@code value}.
+   * @throws IllegalArgumentException if {@code value < 0} or {@code value} is too big to fit an unsigned 8-byte int
+   *         (that is, if {@code value >= (1L << 64)}).
    */
   static Bytes ofUnsignedLong(long value) {
-    checkArgument(
-        value >= 0 && value <= BytesValues.MAX_UNSIGNED_LONG,
-        "Value %s cannot be represented as an unsigned int (it is negative or too big)",
-        value);
-    byte[] res = new byte[8];
-    res[0] = (byte) ((value >> 56) & 0xFF);
-    res[1] = (byte) ((value >> 48) & 0xFF);
-    res[2] = (byte) ((value >> 40) & 0xFF);
-    res[3] = (byte) ((value >> 32) & 0xFF);
-    res[4] = (byte) ((value >> 24) & 0xFF);
-    res[5] = (byte) ((value >> 16) & 0xFF);
-    res[6] = (byte) ((value >> 8) & 0xFF);
-    res[7] = (byte) (value & 0xFF);
-    return Bytes.wrap(res);
+    return ofUnsignedLong(value, BIG_ENDIAN);
   }
 
   /**
-   * Return a 4 bytes little-endian encoded value corresponding to the provided value interpreted as an unsigned int
-   * value.
+   * Return an 8-byte value corresponding to the provided value interpreted as an unsigned long.
    *
-   * @param value The value, which must fit an unsigned int.
-   * @return A 4 bytes value corresponding to {@code v}.
-   * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 4-bytes int (that is,
-   *         if {@code v >= (1L << 32)}).
+   * @param value The value, which will be interpreted as an unsigned long.
+   * @param order The byte-order for the integer encoding.
+   * @return A 8 bytes value corresponding to {@code value}.
+   * @throws IllegalArgumentException if {@code value < 0} or {@code value} is too big to fit an unsigned 8-byte int
+   *         (that is, if {@code value >= (1L << 64)}).
    */
-  static Bytes ofLittleEndianUnsignedInt(long value) {
-    checkArgument(
-        value >= 0 && value <= BytesValues.MAX_UNSIGNED_INT,
-        "Value %s cannot be represented as an unsigned int (it is negative or too big)",
-        value);
-    byte[] res = new byte[4];
-    res[0] = (byte) ((value) & 0xFF);
-    res[1] = (byte) ((value >> 8) & 0xFF);
-    res[2] = (byte) ((value) >> 16 & 0xFF);
-    res[3] = (byte) ((value >> 24) & 0xFF);
-    return Bytes.wrap(res);
-  }
-
-  /**
-   * Return a 8 bytes little-endian encoded value corresponding to the provided value interpreted as an unsigned int
-   * value.
-   *
-   * @param value The value, which must fit an unsigned long.
-   * @return A 8 bytes value corresponding to {@code v}.
-   * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 8-bytes int (that is,
-   *         if {@code v >= (1L << 64)}).
-   */
-  static Bytes ofLittleEndianUnsignedLong(long value) {
-    checkArgument(
-        value >= 0 && value <= BytesValues.MAX_UNSIGNED_LONG,
-        "Value %s cannot be represented as an unsigned long (it is negative or too big)",
-        value);
+  static Bytes ofUnsignedLong(long value, ByteOrder order) {
     byte[] res = new byte[8];
-    res[0] = (byte) ((value) & 0xFF);
-    res[1] = (byte) ((value >> 8) & 0xFF);
-    res[2] = (byte) ((value) >> 16 & 0xFF);
-    res[3] = (byte) ((value >> 24) & 0xFF);
-    res[4] = (byte) ((value >> 32) & 0xFF);
-    res[5] = (byte) ((value >> 40) & 0xFF);
-    res[6] = (byte) ((value >> 48) & 0xFF);
-    res[7] = (byte) ((value >> 56) & 0xFF);
+    if (order == BIG_ENDIAN) {
+      res[0] = (byte) ((value >> 56) & 0xFF);
+      res[1] = (byte) ((value >> 48) & 0xFF);
+      res[2] = (byte) ((value >> 40) & 0xFF);
+      res[3] = (byte) ((value >> 32) & 0xFF);
+      res[4] = (byte) ((value >> 24) & 0xFF);
+      res[5] = (byte) ((value >> 16) & 0xFF);
+      res[6] = (byte) ((value >> 8) & 0xFF);
+      res[7] = (byte) (value & 0xFF);
+    } else {
+      res[0] = (byte) ((value) & 0xFF);
+      res[1] = (byte) ((value >> 8) & 0xFF);
+      res[2] = (byte) ((value >> 16) & 0xFF);
+      res[3] = (byte) ((value >> 24) & 0xFF);
+      res[4] = (byte) ((value >> 32) & 0xFF);
+      res[5] = (byte) ((value >> 40) & 0xFF);
+      res[6] = (byte) ((value >> 48) & 0xFF);
+      res[7] = (byte) ((value >> 56) & 0xFF);
+    }
     return Bytes.wrap(res);
   }
 
@@ -539,29 +551,18 @@ public interface Bytes {
    * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 4}.
    */
   default int getInt(int i) {
-    int size = size();
-    checkElementIndex(i, size);
-    if (i > (size - 4)) {
-      throw new IndexOutOfBoundsException(
-          format("Value of size %s has not enough bytes to read a 4 bytes int from index %s", size, i));
-    }
-
-    int value = 0;
-    value |= ((int) get(i) & 0xFF) << 24;
-    value |= ((int) get(i + 1) & 0xFF) << 16;
-    value |= ((int) get(i + 2) & 0xFF) << 8;
-    value |= ((int) get(i + 3) & 0xFF);
-    return value;
+    return getInt(i, BIG_ENDIAN);
   }
 
   /**
-   * Retrieve the 4 bytes starting at the provided index in this value as an integer, using little endian.
+   * Retrieve the 4 bytes starting at the provided index in this value as an integer.
    *
    * @param i The index from which to get the int, which must less than or equal to {@code size() - 4}.
+   * @param order The byte-order for decoding the integer.
    * @return An integer whose value is the 4 bytes from this value starting at index {@code i}.
    * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 4}.
    */
-  default int getLittleEndianEncodedInt(int i) {
+  default int getInt(int i, ByteOrder order) {
     int size = size();
     checkElementIndex(i, size);
     if (i > (size - 4)) {
@@ -570,10 +571,17 @@ public interface Bytes {
     }
 
     int value = 0;
-    value |= ((int) get(i + 3) & 0xFF) << 24;
-    value |= ((int) get(i + 2) & 0xFF) << 16;
-    value |= ((int) get(i + 1) & 0xFF) << 8;
-    value |= ((int) get(i) & 0xFF);
+    if (order == BIG_ENDIAN) {
+      value |= ((int) get(i) & 0xFF) << 24;
+      value |= ((int) get(i + 1) & 0xFF) << 16;
+      value |= ((int) get(i + 2) & 0xFF) << 8;
+      value |= ((int) get(i + 3) & 0xFF);
+    } else {
+      value |= ((int) get(i + 3) & 0xFF) << 24;
+      value |= ((int) get(i + 2) & 0xFF) << 16;
+      value |= ((int) get(i + 1) & 0xFF) << 8;
+      value |= ((int) get(i) & 0xFF);
+    }
     return value;
   }
 
@@ -584,51 +592,53 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code size() &gt; 4}.
    */
   default int toInt() {
-    int i = size();
-    checkArgument(i <= 4, "Value of size %s has more than 4 bytes", size());
-    if (i == 0) {
-      return 0;
-    }
-    int value = ((int) get(--i) & 0xFF);
-    if (i == 0) {
-      return value;
-    }
-    value |= ((int) get(--i) & 0xFF) << 8;
-    if (i == 0) {
-      return value;
-    }
-    value |= ((int) get(--i) & 0xFF) << 16;
-    if (i == 0) {
-      return value;
-    }
-    return value | ((int) get(--i) & 0xFF) << 24;
+    return toInt(BIG_ENDIAN);
   }
 
   /**
-   * The value corresponding to interpreting these bytes as a little-endian encoded integer.
+   * The value corresponding to interpreting these bytes as an integer.
    *
+   * @param order The byte-order for decoding the integer.
    * @return An value corresponding to this value interpreted as an integer.
    * @throws IllegalArgumentException if {@code size() &gt; 4}.
    */
-  default int toLittleEndianEncodedInt() {
-    checkArgument(size() <= 4, "Value of size %s has more than 4 bytes", size());
-    if (size() == 0) {
+  default int toInt(ByteOrder order) {
+    int size = size();
+    checkArgument(size <= 4, "Value of size %s has more than 4 bytes", size());
+    if (size == 0) {
       return 0;
     }
-    int i = 0;
-    int value = ((int) get(i) & 0xFF);
-    if (++i == size()) {
-      return value;
+    if (order == BIG_ENDIAN) {
+      int i = size;
+      int value = ((int) get(--i) & 0xFF);
+      if (i == 0) {
+        return value;
+      }
+      value |= ((int) get(--i) & 0xFF) << 8;
+      if (i == 0) {
+        return value;
+      }
+      value |= ((int) get(--i) & 0xFF) << 16;
+      if (i == 0) {
+        return value;
+      }
+      return value | ((int) get(--i) & 0xFF) << 24;
+    } else {
+      int i = 0;
+      int value = ((int) get(i) & 0xFF);
+      if (++i == size) {
+        return value;
+      }
+      value |= ((int) get(i++) & 0xFF) << 8;
+      if (i == size) {
+        return value;
+      }
+      value |= ((int) get(i++) & 0xFF) << 16;
+      if (i == size) {
+        return value;
+      }
+      return value | ((int) get(i) & 0xFF) << 24;
     }
-    value |= ((int) get(i) & 0xFF) << 8;
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((int) get(i) & 0xFF) << 16;
-    if (++i == size()) {
-      return value;
-    }
-    return value | ((int) get(i) & 0xFF) << 24;
   }
 
   /**
@@ -643,12 +653,23 @@ public interface Bytes {
   /**
    * Retrieves the 8 bytes starting at the provided index in this value as a long.
    *
-   * @param i The index from which to get the long, which must less than or equal to {@code size() -
-   *     8}.
+   * @param i The index from which to get the long, which must less than or equal to {@code size() - 8}.
    * @return A long whose value is the 8 bytes from this value starting at index {@code i}.
    * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 8}.
    */
   default long getLong(int i) {
+    return getLong(i, BIG_ENDIAN);
+  }
+
+  /**
+   * Retrieves the 8 bytes starting at the provided index in this value as a long.
+   *
+   * @param i The index from which to get the long, which must less than or equal to {@code size() - 8}.
+   * @param order The byte-order for decoding the integer.
+   * @return A long whose value is the 8 bytes from this value starting at index {@code i}.
+   * @throws IndexOutOfBoundsException if {@code i &lt; 0} or {@code i &gt; size() - 8}.
+   */
+  default long getLong(int i, ByteOrder order) {
     int size = size();
     checkElementIndex(i, size);
     if (i > (size - 8)) {
@@ -657,59 +678,26 @@ public interface Bytes {
     }
 
     long value = 0;
-    value |= ((long) get(i) & 0xFF) << 56;
-    value |= ((long) get(i + 1) & 0xFF) << 48;
-    value |= ((long) get(i + 2) & 0xFF) << 40;
-    value |= ((long) get(i + 3) & 0xFF) << 32;
-    value |= ((long) get(i + 4) & 0xFF) << 24;
-    value |= ((long) get(i + 5) & 0xFF) << 16;
-    value |= ((long) get(i + 6) & 0xFF) << 8;
-    value |= ((long) get(i + 7) & 0xFF);
+    if (order == BIG_ENDIAN) {
+      value |= ((long) get(i) & 0xFF) << 56;
+      value |= ((long) get(i + 1) & 0xFF) << 48;
+      value |= ((long) get(i + 2) & 0xFF) << 40;
+      value |= ((long) get(i + 3) & 0xFF) << 32;
+      value |= ((long) get(i + 4) & 0xFF) << 24;
+      value |= ((long) get(i + 5) & 0xFF) << 16;
+      value |= ((long) get(i + 6) & 0xFF) << 8;
+      value |= ((long) get(i + 7) & 0xFF);
+    } else {
+      value |= ((long) get(i + 7) & 0xFF) << 56;
+      value |= ((long) get(i + 6) & 0xFF) << 48;
+      value |= ((long) get(i + 5) & 0xFF) << 40;
+      value |= ((long) get(i + 4) & 0xFF) << 32;
+      value |= ((long) get(i + 3) & 0xFF) << 24;
+      value |= ((long) get(i + 2) & 0xFF) << 16;
+      value |= ((long) get(i + 1) & 0xFF) << 8;
+      value |= ((long) get(i) & 0xFF);
+    }
     return value;
-  }
-
-  /**
-   * The value corresponding to interpreting these bytes as a little-endian encoded long.
-   *
-   * @return An value corresponding to this value interpreted as a long.
-   * @throws IllegalArgumentException if {@code size() &gt; 8}.
-   */
-  default long toLittleEndianEncodedLong() {
-
-    checkArgument(size() <= 8, "Value of size %s has more than 8 bytes", size());
-    if (size() == 0) {
-      return 0;
-    }
-    int i = 0;
-    long value = ((long) get(i) & 0xFF);
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((long) get(i) & 0xFF) << 8;
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((long) get(i) & 0xFF) << 16;
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((long) get(i) & 0xFF) << 24;
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((long) get(i) & 0xFF) << 32;
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((long) get(i) & 0xFF) << 40;
-    if (++i == size()) {
-      return value;
-    }
-    value |= ((long) get(i) & 0xFF) << 48;
-    if (++i == size()) {
-      return value;
-    }
-    return value | ((long) get(i) & 0xFF) << 56;
   }
 
   /**
@@ -719,40 +707,85 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code size() &gt; 8}.
    */
   default long toLong() {
-    int i = size();
-    checkArgument(i <= 8, "Value of size %s has more than 8 bytes", size());
-    if (i == 0) {
+    return toLong(BIG_ENDIAN);
+  }
+
+  /**
+   * The value corresponding to interpreting these bytes as a long.
+   *
+   * @param order The byte-order for decoding the integer.
+   * @return An value corresponding to this value interpreted as a long.
+   * @throws IllegalArgumentException if {@code size() &gt; 8}.
+   */
+  default long toLong(ByteOrder order) {
+    int size = size();
+    checkArgument(size <= 8, "Value of size %s has more than 8 bytes", size());
+    if (size == 0) {
       return 0;
     }
-    long value = ((long) get(--i) & 0xFF);
-    if (i == 0) {
-      return value;
+    if (order == BIG_ENDIAN) {
+      int i = size;
+      long value = ((long) get(--i) & 0xFF);
+      if (i == 0) {
+        return value;
+      }
+      value |= ((long) get(--i) & 0xFF) << 8;
+      if (i == 0) {
+        return value;
+      }
+      value |= ((long) get(--i) & 0xFF) << 16;
+      if (i == 0) {
+        return value;
+      }
+      value |= ((long) get(--i) & 0xFF) << 24;
+      if (i == 0) {
+        return value;
+      }
+      value |= ((long) get(--i) & 0xFF) << 32;
+      if (i == 0) {
+        return value;
+      }
+      value |= ((long) get(--i) & 0xFF) << 40;
+      if (i == 0) {
+        return value;
+      }
+      value |= ((long) get(--i) & 0xFF) << 48;
+      if (i == 0) {
+        return value;
+      }
+      return value | ((long) get(--i) & 0xFF) << 56;
+    } else {
+      int i = 0;
+      long value = ((long) get(i) & 0xFF);
+      if (++i == size) {
+        return value;
+      }
+      value |= ((long) get(i) & 0xFF) << 8;
+      if (++i == size) {
+        return value;
+      }
+      value |= ((long) get(i) & 0xFF) << 16;
+      if (++i == size) {
+        return value;
+      }
+      value |= ((long) get(i) & 0xFF) << 24;
+      if (++i == size) {
+        return value;
+      }
+      value |= ((long) get(i) & 0xFF) << 32;
+      if (++i == size) {
+        return value;
+      }
+      value |= ((long) get(i) & 0xFF) << 40;
+      if (++i == size) {
+        return value;
+      }
+      value |= ((long) get(i) & 0xFF) << 48;
+      if (++i == size) {
+        return value;
+      }
+      return value | ((long) get(i) & 0xFF) << 56;
     }
-    value |= ((long) get(--i) & 0xFF) << 8;
-    if (i == 0) {
-      return value;
-    }
-    value |= ((long) get(--i) & 0xFF) << 16;
-    if (i == 0) {
-      return value;
-    }
-    value |= ((long) get(--i) & 0xFF) << 24;
-    if (i == 0) {
-      return value;
-    }
-    value |= ((long) get(--i) & 0xFF) << 32;
-    if (i == 0) {
-      return value;
-    }
-    value |= ((long) get(--i) & 0xFF) << 40;
-    if (i == 0) {
-      return value;
-    }
-    value |= ((long) get(--i) & 0xFF) << 48;
-    if (i == 0) {
-      return value;
-    }
-    return value | ((long) get(--i) & 0xFF) << 56;
   }
 
   /**
@@ -761,36 +794,20 @@ public interface Bytes {
    * @return A {@link BigInteger} corresponding to interpreting these bytes as a two's-complement signed integer.
    */
   default BigInteger toBigInteger() {
-    if (size() == 0) {
-      return BigInteger.ZERO;
-    }
-    return new BigInteger(toArrayUnsafe());
+    return toBigInteger(BIG_ENDIAN);
   }
 
   /**
-   * The BigInteger corresponding to interpreting these bytes as a little endian encoded two's-complement signed
-   * integer.
+   * The BigInteger corresponding to interpreting these bytes as a two's-complement signed integer.
    *
+   * @param order The byte-order for decoding the integer.
    * @return A {@link BigInteger} corresponding to interpreting these bytes as a two's-complement signed integer.
    */
-  default BigInteger toLittleEndianEncodedBigInteger() {
+  default BigInteger toBigInteger(ByteOrder order) {
     if (size() == 0) {
       return BigInteger.ZERO;
     }
-    return new BigInteger(reverse().toArrayUnsafe());
-  }
-
-  /**
-   * Computes the reverse array of bytes of the current bytes
-   * 
-   * @return a new Bytes value, containing the bytes in reverse order
-   */
-  default Bytes reverse() {
-    byte[] reverse = new byte[size()];
-    for (int i = 0; i < size(); i++) {
-      reverse[size() - i - 1] = get(i);
-    }
-    return Bytes.wrap(reverse);
+    return new BigInteger((order == BIG_ENDIAN) ? toArrayUnsafe() : reverse().toArrayUnsafe());
   }
 
   /**
@@ -799,16 +816,17 @@ public interface Bytes {
    * @return A positive (or zero) {@link BigInteger} corresponding to interpreting these bytes as an unsigned integer.
    */
   default BigInteger toUnsignedBigInteger() {
-    return new BigInteger(1, toArrayUnsafe());
+    return toUnsignedBigInteger(BIG_ENDIAN);
   }
 
   /**
-   * The BigInteger corresponding to interpreting these bytes as a little endian encoded unsigned integer.
+   * The BigInteger corresponding to interpreting these bytes as an unsigned integer.
    *
+   * @param order The byte-order for decoding the integer.
    * @return A positive (or zero) {@link BigInteger} corresponding to interpreting these bytes as an unsigned integer.
    */
-  default BigInteger toLittleEndianEncodedUnsignedBigInteger() {
-    return new BigInteger(1, reverse().toArrayUnsafe());
+  default BigInteger toUnsignedBigInteger(ByteOrder order) {
+    return new BigInteger(1, (order == BIG_ENDIAN) ? toArrayUnsafe() : reverse().toArrayUnsafe());
   }
 
   /**
@@ -1358,6 +1376,19 @@ public interface Bytes {
   default void update(MessageDigest digest) {
     checkNotNull(digest);
     digest.update(toArrayUnsafe());
+  }
+
+  /**
+   * Computes the reverse array of bytes of the current bytes.
+   *
+   * @return a new Bytes value, containing the bytes in reverse order
+   */
+  default Bytes reverse() {
+    byte[] reverse = new byte[size()];
+    for (int i = 0; i < size(); i++) {
+      reverse[size() - i - 1] = get(i);
+    }
+    return Bytes.wrap(reverse);
   }
 
   /**

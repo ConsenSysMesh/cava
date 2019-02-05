@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.bytes;
 
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -377,7 +378,7 @@ class BytesTest extends CommonBytesTests {
   @Test
   void littleEndianRoundtrip() {
     int val = Integer.MAX_VALUE - 5;
-    Bytes littleEndianEncoded = Bytes.ofLittleEndianUnsignedInt(val);
+    Bytes littleEndianEncoded = Bytes.ofUnsignedInt(val, LITTLE_ENDIAN);
     assertEquals(4, littleEndianEncoded.size());
     Bytes bigEndianEncoded = Bytes.ofUnsignedInt(val);
     assertEquals(bigEndianEncoded.get(0), littleEndianEncoded.get(3));
@@ -385,14 +386,14 @@ class BytesTest extends CommonBytesTests {
     assertEquals(bigEndianEncoded.get(2), littleEndianEncoded.get(1));
     assertEquals(bigEndianEncoded.get(3), littleEndianEncoded.get(0));
 
-    int read = littleEndianEncoded.toLittleEndianEncodedInt();
+    int read = littleEndianEncoded.toInt(LITTLE_ENDIAN);
     assertEquals(val, read);
   }
 
   @Test
   void littleEndianLongRoundtrip() {
     long val = 1L << 46;
-    Bytes littleEndianEncoded = Bytes.ofLittleEndianUnsignedLong(val);
+    Bytes littleEndianEncoded = Bytes.ofUnsignedLong(val, LITTLE_ENDIAN);
     assertEquals(8, littleEndianEncoded.size());
     Bytes bigEndianEncoded = Bytes.ofUnsignedLong(val);
     assertEquals(bigEndianEncoded.get(0), littleEndianEncoded.get(7));
@@ -404,7 +405,7 @@ class BytesTest extends CommonBytesTests {
     assertEquals(bigEndianEncoded.get(6), littleEndianEncoded.get(1));
     assertEquals(bigEndianEncoded.get(7), littleEndianEncoded.get(0));
 
-    long read = littleEndianEncoded.toLittleEndianEncodedLong();
+    long read = littleEndianEncoded.toLong(LITTLE_ENDIAN);
     assertEquals(val, read);
   }
 

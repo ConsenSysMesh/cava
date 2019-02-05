@@ -13,6 +13,7 @@
 package net.consensys.cava.ssz;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
@@ -70,7 +71,7 @@ public final class SSZ {
    * @return the merkle hash of the list of values
    */
   static Bytes merkleHash(List<Bytes> values) {
-    Bytes littleEndianLength = Bytes.ofLittleEndianUnsignedInt(values.size());
+    Bytes littleEndianLength = Bytes.ofUnsignedInt(values.size(), LITTLE_ENDIAN);
     Bytes32 valuesLength = Bytes32.rightPad(littleEndianLength);
 
     List<Bytes> chunks;

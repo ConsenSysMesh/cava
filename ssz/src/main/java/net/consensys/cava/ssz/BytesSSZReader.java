@@ -13,6 +13,7 @@
 package net.consensys.cava.ssz;
 
 import static com.google.common.base.Preconditions.checkArgument;
+import static java.nio.ByteOrder.LITTLE_ENDIAN;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 import net.consensys.cava.bytes.Bytes;
@@ -41,7 +42,7 @@ final class BytesSSZReader implements SSZReader {
     ensureBytes(byteLength, () -> "SSZ encoded data is not a byte array");
     int size;
     try {
-      size = content.getLittleEndianEncodedInt(index);
+      size = content.getInt(index, LITTLE_ENDIAN);
     } catch (IndexOutOfBoundsException e) {
       throw new EndOfSSZException();
     }
@@ -66,7 +67,7 @@ final class BytesSSZReader implements SSZReader {
       throw new InvalidSSZTypeException("decoded integer is too large for an int");
     }
     index += byteLength;
-    return bytes.slice(0, bytes.size() - zeroBytes).toLittleEndianEncodedInt();
+    return bytes.slice(0, bytes.size() - zeroBytes).toInt(LITTLE_ENDIAN);
   }
 
   @Override
@@ -80,7 +81,7 @@ final class BytesSSZReader implements SSZReader {
       throw new InvalidSSZTypeException("decoded integer is too large for a long");
     }
     index += byteLength;
-    return bytes.slice(0, bytes.size() - zeroBytes).toLittleEndianEncodedLong();
+    return bytes.slice(0, bytes.size() - zeroBytes).toLong(LITTLE_ENDIAN);
   }
 
   @Override
@@ -88,7 +89,7 @@ final class BytesSSZReader implements SSZReader {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     int byteLength = bitLength / 8;
     ensureBytes(byteLength, () -> "SSZ encoded data has insufficient length to read a " + bitLength + "-bit integer");
-    return consumeBytes(byteLength).toLittleEndianEncodedBigInteger();
+    return consumeBytes(byteLength).toBigInteger(LITTLE_ENDIAN);
   }
 
   @Override
@@ -96,7 +97,7 @@ final class BytesSSZReader implements SSZReader {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     int byteLength = bitLength / 8;
     ensureBytes(byteLength, () -> "SSZ encoded data has insufficient length to read a " + bitLength + "-bit integer");
-    return consumeBytes(byteLength).toLittleEndianEncodedUnsignedBigInteger();
+    return consumeBytes(byteLength).toUnsignedBigInteger(LITTLE_ENDIAN);
   }
 
   @Override
@@ -203,7 +204,7 @@ final class BytesSSZReader implements SSZReader {
     List<T> elements;
     try {
       // use a long to simulate reading unsigned
-      long listSize = consumeBytes(4).toLittleEndianEncodedLong();
+      long listSize = consumeBytes(4).toLong(LITTLE_ENDIAN);
       elements = new ArrayList<>();
       while (listSize > 0) {
         byte[] bytes = bytesSupplier.apply(listSize);
@@ -226,7 +227,7 @@ final class BytesSSZReader implements SSZReader {
     int originalIndex = this.index;
     List<T> bytesList;
     try {
-      int listSize = consumeBytes(4).toLittleEndianEncodedInt();
+      int listSize = consumeBytes(4).toInt(LITTLE_ENDIAN);
       if ((listSize % elementSize) != 0) {
         throw new InvalidSSZTypeException("SSZ encoded list length does not align with lengths of its elements");
       }
