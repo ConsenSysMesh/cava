@@ -70,7 +70,7 @@ public final class SSZ {
    * @return the merkle hash of the list of values
    */
   static Bytes merkleHash(List<Bytes> values) {
-    Bytes littleEndianLength = Bytes.ofUnsignedIntAsLittleEndian(values.size());
+    Bytes littleEndianLength = Bytes.ofLittleEndianUnsignedInt(values.size());
     Bytes32 valuesLength = Bytes32.rightPad(littleEndianLength);
 
     List<Bytes> chunks;

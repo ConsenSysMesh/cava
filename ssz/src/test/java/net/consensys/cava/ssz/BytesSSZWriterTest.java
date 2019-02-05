@@ -186,7 +186,7 @@ class BytesSSZWriterTest {
     assertEquals(fromHexString("0004"), SSZ.encode(writer -> writer.writeULong(1024, 16)));
     assertEquals(fromHexString("A08601"), SSZ.encode(writer -> writer.writeULong(100000L, 24)));
     assertEquals(fromHexString("A0860100"), SSZ.encode(writer -> writer.writeULong(100000L, 32)));
-    System.out.println(Bytes.ofUnsignedIntAsLittleEndian(100000L));
+    System.out.println(Bytes.ofLittleEndianUnsignedInt(100000L));
     assertEquals(fromHexString("A086010000000000"), SSZ.encode(writer -> writer.writeULong(100000L, 64)));
     assertEquals(fromHexString("A086010000000000"), SSZ.encode(writer -> writer.writeUInt64(100000L)));
 

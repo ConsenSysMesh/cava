@@ -377,7 +377,7 @@ class BytesTest extends CommonBytesTests {
   @Test
   void littleEndianRoundtrip() {
     int val = Integer.MAX_VALUE - 5;
-    Bytes littleEndianEncoded = Bytes.ofUnsignedIntAsLittleEndian(val);
+    Bytes littleEndianEncoded = Bytes.ofLittleEndianUnsignedInt(val);
     assertEquals(4, littleEndianEncoded.size());
     Bytes bigEndianEncoded = Bytes.ofUnsignedInt(val);
     assertEquals(bigEndianEncoded.get(0), littleEndianEncoded.get(3));
@@ -392,7 +392,7 @@ class BytesTest extends CommonBytesTests {
   @Test
   void littleEndianLongRoundtrip() {
     long val = 1L << 46;
-    Bytes littleEndianEncoded = Bytes.ofUnsignedLongAsLittleEndian(val);
+    Bytes littleEndianEncoded = Bytes.ofLittleEndianUnsignedLong(val);
     assertEquals(8, littleEndianEncoded.size());
     Bytes bigEndianEncoded = Bytes.ofUnsignedLong(val);
     assertEquals(bigEndianEncoded.get(0), littleEndianEncoded.get(7));

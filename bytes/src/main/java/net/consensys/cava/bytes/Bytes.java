@@ -348,7 +348,7 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 4-bytes int (that is,
    *         if {@code v >= (1L << 32)}).
    */
-  static Bytes ofUnsignedIntAsLittleEndian(long value) {
+  static Bytes ofLittleEndianUnsignedInt(long value) {
     checkArgument(
         value >= 0 && value <= BytesValues.MAX_UNSIGNED_INT,
         "Value %s cannot be represented as an unsigned int (it is negative or too big)",
@@ -370,7 +370,7 @@ public interface Bytes {
    * @throws IllegalArgumentException if {@code v < 0} or {@code v} is too big to fit an unsigned 8-bytes int (that is,
    *         if {@code v >= (1L << 64)}).
    */
-  static Bytes ofUnsignedLongAsLittleEndian(long value) {
+  static Bytes ofLittleEndianUnsignedLong(long value) {
     checkArgument(
         value >= 0 && value <= BytesValues.MAX_UNSIGNED_LONG,
         "Value %s cannot be represented as an unsigned long (it is negative or too big)",
