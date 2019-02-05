@@ -87,7 +87,9 @@ public final class RLP {
   /**
    * Encode a list of values to a {@link Bytes} value.
    *
+   * @param elements A list of values to be encoded.
    * @param fn A consumer that will be provided with a {@link RLPWriter} and an element of the list.
+   * @param <T> The type of the list elements.
    * @return The RLP encoding in a {@link Bytes} value.
    */
   public static <T> Bytes encodeList(List<T> elements, BiConsumer<RLPWriter, T> fn) {
@@ -336,6 +338,7 @@ public final class RLP {
    * @param source The RLP encoded bytes.
    * @param fn A function creating a new element of the list for each value in the RLP list.
    * @return The list supplied to {@code fn}.
+   * @param <T> The type of the list elements.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the first RLP value is not a list.
    */
@@ -349,6 +352,7 @@ public final class RLP {
    * @param source The RLP encoded bytes.
    * @param lenient If {@code false}, an exception will be thrown if the value is not minimally encoded.
    * @param fn A function creating a new element of the list for each value in the RLP list.
+   * @param <T> The type of the list elements.
    * @return The list supplied to {@code fn}.
    * @throws InvalidRLPEncodingException If there is an error decoding the RLP source.
    * @throws InvalidRLPTypeException If the first RLP value is not a list.

@@ -121,6 +121,7 @@ public final class VertxRLPxService implements RLPxService {
    * @param identityKeyPair the identity of this client
    * @param subProtocols subprotocols supported
    * @param clientId the client identifier, such as "RLPX 1.2/build 389"
+   * @param repository a wire connection repository
    */
   public VertxRLPxService(
       Vertx vertx,
