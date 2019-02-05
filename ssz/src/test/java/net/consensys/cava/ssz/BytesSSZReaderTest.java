@@ -165,9 +165,18 @@ class BytesSSZReaderTest {
   }
 
   @Test
-  void shouldRoundtripBytes() {
+  void shouldRoundtripBytesVararg() {
     List<Bytes> toWrite = Arrays.asList(Bytes48.random(), Bytes48.random(), Bytes48.random());
     Bytes encoded = SSZ.encode(writer -> writer.writeBytesList(toWrite.toArray(new Bytes[0])));
+    System.out.println(encoded);
+    assertEquals(toWrite, SSZ.decodeBytesList(encoded));
+
+  }
+
+  @Test
+  void shouldRoundtripBytesList() {
+    List<Bytes> toWrite = Arrays.asList(Bytes48.random(), Bytes48.random(), Bytes48.random());
+    Bytes encoded = SSZ.encode(writer -> writer.writeBytesList(toWrite));
     System.out.println(encoded);
     assertEquals(toWrite, SSZ.decodeBytesList(encoded));
 

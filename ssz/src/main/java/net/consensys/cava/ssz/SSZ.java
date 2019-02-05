@@ -471,7 +471,36 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of bytes.
+   *
+   * @param elements The bytes to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeBytesList(List<Bytes> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() * 2 + 1);
+    encodeBytesListTo(elements, encoded::add);
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeBytesListTo(Bytes[] elements, Consumer<Bytes> appender) {
+    // pre-calculate the list size - relies on knowing how encodeBytesTo does its serialization, but is worth it
+    // to avoid having to pre-serialize all the elements
+    long listSize = 0;
+    for (Bytes bytes : elements) {
+      listSize += 4;
+      listSize += bytes.size();
+      if (listSize > Integer.MAX_VALUE) {
+        throw new IllegalArgumentException("Cannot serialize list: overall length is too large");
+      }
+    }
+    appender.accept(encodeUInt32(listSize));
+    for (Bytes bytes : elements) {
+      encodeBytesTo(bytes, appender);
+    }
+  }
+
+  static void encodeBytesListTo(List<Bytes> elements, Consumer<Bytes> appender) {
     // pre-calculate the list size - relies on knowing how encodeBytesTo does its serialization, but is worth it
     // to avoid having to pre-serialize all the elements
     long listSize = 0;

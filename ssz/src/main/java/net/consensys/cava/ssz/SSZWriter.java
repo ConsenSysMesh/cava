@@ -16,6 +16,7 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * A writer for encoding values to SSZ.
@@ -245,6 +246,15 @@ public interface SSZWriter {
    * @param elements The bytes to write as a list.
    */
   default void writeBytesList(Bytes... elements) {
+    SSZ.encodeBytesListTo(elements, this::writeSSZ);
+  }
+
+  /**
+   * Write a java.util.List of bytes.
+   *
+   * @param elements The bytes to write as a java.util.List.
+   */
+  default void writeBytesList(List<Bytes> elements) {
     SSZ.encodeBytesListTo(elements, this::writeSSZ);
   }
 

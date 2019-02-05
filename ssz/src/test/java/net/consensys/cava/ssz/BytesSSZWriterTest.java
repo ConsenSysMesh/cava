@@ -23,6 +23,7 @@ import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
@@ -254,13 +255,24 @@ class BytesSSZWriterTest {
   }
 
   @Test
-  void shouldWriteListsOfBytes() {
+  void shouldWriteVarargsListsOfBytes() {
     assertEquals(
         fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
         SSZ.encodeBytesList(
             Bytes.wrap("bob".getBytes(Charsets.UTF_8)),
             Bytes.wrap("jane".getBytes(Charsets.UTF_8)),
             Bytes.wrap("janet".getBytes(Charsets.UTF_8))));
+  }
+
+  @Test
+  void shouldWriteUtilListOfBytes() {
+    assertEquals(
+        fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
+        SSZ.encodeBytesList(
+            Arrays.asList(
+                Bytes.wrap("bob".getBytes(Charsets.UTF_8)),
+                Bytes.wrap("jane".getBytes(Charsets.UTF_8)),
+                Bytes.wrap("janet".getBytes(Charsets.UTF_8)))));
   }
 
   @Test
