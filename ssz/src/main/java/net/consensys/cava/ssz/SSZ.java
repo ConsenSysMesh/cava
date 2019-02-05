@@ -20,6 +20,7 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.crypto.Hash;
 import net.consensys.cava.units.bigints.UInt256;
+import net.consensys.cava.units.bigints.UInt384;
 
 import java.math.BigInteger;
 import java.nio.BufferOverflowException;
@@ -69,9 +70,8 @@ public final class SSZ {
    * @return the merkle hash of the list of values
    */
   static Bytes merkleHash(List<Bytes> values) {
-    Bytes bigEndianLength = Bytes.ofUnsignedInt(values.size());
-    Bytes32 valuesLength = Bytes32.rightPad(
-        Bytes.of(bigEndianLength.get(3), bigEndianLength.get(2), bigEndianLength.get(1), bigEndianLength.get(0)));
+    Bytes littleEndianLength = Bytes.ofLittleEndianUnsignedInt(values.size());
+    Bytes32 valuesLength = Bytes32.rightPad(littleEndianLength);
 
     List<Bytes> chunks;
     if (values.isEmpty()) {
@@ -218,14 +218,13 @@ public final class SSZ {
     byte[] encoded = new byte[byteLength];
 
     int shift = 0;
-    for (int i = 1; i <= valueBytes; i++) {
-      encoded[byteLength - i] = (byte) ((value >> shift) & 0xFF);
+    for (int i = 0; i < valueBytes; i++) {
+      encoded[i] = (byte) ((value >> shift) & 0xFF);
       shift += 8;
     }
     if (value < 0) {
-      // Extend the two's-compliment integer by setting all leading bits to 1.
-      int padLength = byteLength - valueBytes;
-      for (int i = 0; i < padLength; i++) {
+      // Extend the two's-compliment integer by setting all remaining bits to 1.
+      for (int i = valueBytes; i < byteLength; i++) {
         encoded[i] = (byte) 0xFF;
       }
     }
@@ -270,6 +269,12 @@ public final class SSZ {
       for (int i = 0; i < padLength; i++) {
         encoded[i] = (byte) 0xFF;
       }
+    }
+    // reverse the array to make it little endian
+    for (int i = 0; i < (encoded.length / 2); i++) {
+      byte swapped = encoded[i];
+      encoded[i] = encoded[encoded.length - i - 1];
+      encoded[encoded.length - i - 1] = swapped;
     }
     return encoded;
   }
@@ -352,8 +357,8 @@ public final class SSZ {
     byte[] encoded = new byte[byteLength];
 
     int shift = 0;
-    for (int i = 1; i <= valueBytes; i++) {
-      encoded[byteLength - i] = (byte) ((value >> shift) & 0xFF);
+    for (int i = 0; i < valueBytes; i++) {
+      encoded[i] = (byte) ((value >> shift) & 0xFF);
       shift += 8;
     }
     return encoded;
@@ -402,13 +407,23 @@ public final class SSZ {
   }
 
   /**
-   * Encode a 256-bit unsigned integer to a {@link Bytes} value.
+   * Encode a 256-bit unsigned integer to a little-endian {@link Bytes} value.
    *
    * @param value The integer to encode.
    * @return The SSZ encoding in a {@link Bytes} value.
    */
   public static Bytes encodeUInt256(UInt256 value) {
-    return value.toBytes();
+    return value.toBytes().reverse();
+  }
+
+  /**
+   * Encode a 384-bit unsigned integer to a little-endian {@link Bytes} value.
+   *
+   * @param value The integer to encode.
+   * @return The SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeUInt384(UInt384 value) {
+    return value.toBytes().reverse();
   }
 
   /**

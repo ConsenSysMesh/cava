@@ -19,6 +19,7 @@ final class BytesValues {
 
   static final int MAX_UNSIGNED_SHORT = (1 << 16) - 1;
   static final long MAX_UNSIGNED_INT = (1L << 32) - 1;
+  static final long MAX_UNSIGNED_LONG = Long.MAX_VALUE;
 
   static Bytes fromHexString(CharSequence str, int destSize, boolean lenient) {
     return Bytes.wrap(fromRawHexString(str, destSize, lenient));
