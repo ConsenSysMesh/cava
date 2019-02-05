@@ -15,12 +15,20 @@ package net.consensys.cava.scuttlebutt.discovery;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
+import net.consensys.cava.crypto.sodium.Sodium;
 import net.consensys.cava.scuttlebutt.Identity;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class LocalIdentityTest {
+
+  @BeforeAll
+  static void checkAvailable() {
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+  }
 
   @Test
   void localIdentityInvalidPort() {
