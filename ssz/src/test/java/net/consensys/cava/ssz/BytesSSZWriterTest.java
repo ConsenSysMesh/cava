@@ -281,6 +281,16 @@ class BytesSSZWriterTest {
   }
 
   @Test
+  void shouldWriteVarargsListsOfUnsignedInts() {
+    assertEquals(fromHexString("03000000FDFEFF"), SSZ.encodeUIntList(8, 253, 254, 255));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfUnsignedInts() {
+    assertEquals(fromHexString("03000000FDFEFF"), SSZ.encodeUIntList(8, Arrays.asList(253, 254, 255)));
+  }
+
+  @Test
   void shouldWriteVaragsListsOfStrings() {
     assertEquals(
         fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
