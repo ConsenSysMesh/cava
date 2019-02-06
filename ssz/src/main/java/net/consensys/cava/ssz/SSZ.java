@@ -474,7 +474,7 @@ public final class SSZ {
   /**
    * Encode a java.util.List of bytes.
    *
-   * @param elements The bytes to write.
+   * @param elements The bytes to write as a java.util.List.
    * @return SSZ encoding in a {@link Bytes} value.
    */
   public static Bytes encodeBytesList(List<Bytes> elements) {
@@ -529,10 +529,30 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of strings.
+   *
+   * @param elements The java.util.List of String elements to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeStringList(List<String> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() * 2 + 1);
+    encodeStringListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeStringListTo(String[] elements, Consumer<Bytes> appender) {
     Bytes[] elementBytes = new Bytes[elements.length];
     for (int i = 0; i < elements.length; ++i) {
       elementBytes[i] = Bytes.wrap(elements[i].getBytes(UTF_8));
+    }
+    encodeBytesListTo(elementBytes, appender);
+  }
+
+  static void encodeStringListTo(List<String> elements, Consumer<Bytes> appender) {
+    Bytes[] elementBytes = new Bytes[elements.size()];
+    for (int i = 0; i < elements.size(); ++i) {
+      elementBytes[i] = Bytes.wrap(elements.get(i).getBytes(UTF_8));
     }
     encodeBytesListTo(elementBytes, appender);
   }

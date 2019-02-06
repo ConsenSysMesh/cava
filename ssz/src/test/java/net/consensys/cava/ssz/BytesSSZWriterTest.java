@@ -248,10 +248,17 @@ class BytesSSZWriterTest {
   }
 
   @Test
-  void shouldWriteListsOfStrings() {
+  void shouldWriteVaragsListsOfStrings() {
     assertEquals(
         fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
         SSZ.encodeStringList("bob", "jane", "janet"));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfStrings() {
+    assertEquals(
+        fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
+        SSZ.encodeStringList(Arrays.asList("bob", "jane", "janet")));
   }
 
   @Test

@@ -268,6 +268,15 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of strings, which must be of the same length
+   *
+   * @param elements The java.util.List of String elements to write.
+   */
+  default void writeStringList(List<String> elements) {
+    SSZ.encodeStringListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of two's compliment integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
