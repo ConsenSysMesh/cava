@@ -110,7 +110,7 @@ public final class Hash {
   /**
    * @return The bytes for this hash.
    */
-  public Bytes toBytes() {
+  public Bytes32 toBytes() {
     return delegate;
   }
 }

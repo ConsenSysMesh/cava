@@ -48,7 +48,7 @@ public final class BlockHeader {
    * @param reader The RLP reader.
    * @return The deserialized block header.
    */
-  static BlockHeader readFrom(RLPReader reader) {
+  public static BlockHeader readFrom(RLPReader reader) {
     Bytes parentHashBytes = reader.readValue();
     return new BlockHeader(
         parentHashBytes.isEmpty() ? null : Hash.fromBytes(parentHashBytes),
