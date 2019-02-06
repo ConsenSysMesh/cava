@@ -354,6 +354,18 @@ class BytesSSZWriterTest {
   }
 
   @Test
+  void shouldWriteUtilListOfExtendedBytesType() {
+    assertEquals(
+        fromHexString(
+            "0x6C000000200000000000000000000000000000000000000000000000000000000000000000626F6220000000000000000000000000000000000000000000000000000000000000006A616E65200000000000000000000000000000000000000000000000000000000000006A616E6574"),
+        SSZ.encodeBytesList(
+            Arrays.asList(
+                Bytes32.leftPad(Bytes.wrap("bob".getBytes(Charsets.UTF_8))),
+                Bytes32.leftPad(Bytes.wrap("jane".getBytes(Charsets.UTF_8))),
+                Bytes32.leftPad(Bytes.wrap("janet".getBytes(Charsets.UTF_8))))));
+  }
+
+  @Test
   void shouldWriteVaragsListsOfHashes() {
     assertEquals(
         fromHexString(
