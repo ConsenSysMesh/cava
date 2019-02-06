@@ -265,6 +265,22 @@ class BytesSSZWriterTest {
   }
 
   @Test
+  void shouldWriteVarargsListsOfBigIntegers() {
+    assertEquals(
+        fromHexString("03000000030405"),
+        SSZ.encodeBigIntegerList(8, BigInteger.valueOf(3), BigInteger.valueOf(4), BigInteger.valueOf(5)));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfBigIntegers() {
+    assertEquals(
+        fromHexString("03000000030405"),
+        SSZ.encodeBigIntegerList(
+            8,
+            Arrays.asList(BigInteger.valueOf(3), BigInteger.valueOf(4), BigInteger.valueOf(5))));
+  }
+
+  @Test
   void shouldWriteVaragsListsOfStrings() {
     assertEquals(
         fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),

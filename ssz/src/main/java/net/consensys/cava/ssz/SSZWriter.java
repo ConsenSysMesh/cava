@@ -332,6 +332,17 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of big integers.
+   *
+   * @param bitLength The bit length of each integer.
+   * @param elements The java.util.List of BigInteger elements to write.
+   * @throws IllegalArgumentException if an integer cannot be stored in the number of bytes provided
+   */
+  default void writeBigIntegerList(int bitLength, List<BigInteger> elements) {
+    SSZ.encodeBigIntegerListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of 8-bit two's compliment integers.
    *
    * @param elements The integers to write as a list.

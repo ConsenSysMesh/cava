@@ -659,9 +659,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a list of big integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of BigIntegers to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeBigIntegerList(int bitLength, List<BigInteger> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeBigIntegerListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeBigIntegerListTo(int bitLength, BigInteger[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (BigInteger value : elements) {
+      appender.accept(encodeBigIntegerToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeBigIntegerListTo(int bitLength, List<BigInteger> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (BigInteger value : elements) {
       appender.accept(encodeBigIntegerToByteArray(value, bitLength));
     }
