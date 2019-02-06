@@ -243,8 +243,13 @@ class BytesSSZWriterTest {
   }
 
   @Test
-  void shouldWriteLists() {
+  void shouldWriteVarargsListsOfInts() {
     assertEquals(fromHexString("03000000030405"), SSZ.encodeIntList(8, 3, 4, 5));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfInts() {
+    assertEquals(fromHexString("03000000030405"), SSZ.encodeIntList(8, Arrays.asList(3, 4, 5)));
   }
 
   @Test
