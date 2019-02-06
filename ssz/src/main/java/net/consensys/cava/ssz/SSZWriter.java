@@ -310,6 +310,17 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of two's compliment long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of Long elements to write.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
+   */
+  default void writeLongIntList(int bitLength, List<Long> elements) {
+    SSZ.encodeLongIntListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of big integers.
    *
    * @param bitLength The bit length of each integer.

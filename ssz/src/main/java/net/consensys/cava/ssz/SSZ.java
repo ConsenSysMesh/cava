@@ -615,9 +615,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a list of two's compliment long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements the java.util.List of Longs to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeLongIntList(int bitLength, List<Long> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeLongIntListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeLongIntListTo(int bitLength, long[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (long value : elements) {
+      appender.accept(encodeLongToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeLongIntListTo(int bitLength, List<Long> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (long value : elements) {
       appender.accept(encodeLongToByteArray(value, bitLength));
     }
