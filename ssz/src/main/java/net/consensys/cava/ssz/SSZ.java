@@ -477,7 +477,7 @@ public final class SSZ {
    * @param elements The bytes to write as a java.util.List.
    * @return SSZ encoding in a {@link Bytes} value.
    */
-  public static Bytes encodeBytesList(List<Bytes> elements) {
+  public static Bytes encodeBytesList(List<? extends Bytes> elements) {
     ArrayList<Bytes> encoded = new ArrayList<>(elements.size() * 2 + 1);
     encodeBytesListTo(elements, encoded::add);
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
@@ -500,7 +500,7 @@ public final class SSZ {
     }
   }
 
-  static void encodeBytesListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+  static void encodeBytesListTo(List<? extends Bytes> elements, Consumer<Bytes> appender) {
     // pre-calculate the list size - relies on knowing how encodeBytesTo does its serialization, but is worth it
     // to avoid having to pre-serialize all the elements
     long listSize = 0;
@@ -913,7 +913,7 @@ public final class SSZ {
    * @param elements The java.util.List of hashes to write.
    * @return SSZ encoding in a {@link Bytes} value.
    */
-  public static Bytes encodeHashList(List<Bytes> elements) {
+  public static Bytes encodeHashList(List<? extends Bytes> elements) {
     ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
     encodeHashListTo(elements, b -> encoded.add(Bytes.wrap(b)));
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
@@ -934,7 +934,7 @@ public final class SSZ {
     }
   }
 
-  static void encodeHashListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+  static void encodeHashListTo(List<? extends Bytes> elements, Consumer<Bytes> appender) {
     int hashLength = 0;
     for (Bytes bytes : elements) {
       if (hashLength == 0) {
@@ -969,7 +969,7 @@ public final class SSZ {
    * @return SSZ encoding in a {@link Bytes} value.
    * @throws IllegalArgumentException If any {@code address.size != 20}.
    */
-  public static Bytes encodeAddressList(List<Bytes> elements) {
+  public static Bytes encodeAddressList(List<? extends Bytes> elements) {
     ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
     encodeAddressListTo(elements, b -> encoded.add(Bytes.wrap(b)));
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
@@ -982,7 +982,7 @@ public final class SSZ {
     }
   }
 
-  static void encodeAddressListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+  static void encodeAddressListTo(List<? extends Bytes> elements, Consumer<Bytes> appender) {
     appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 20)));
     for (Bytes bytes : elements) {
       appender.accept(encodeAddress(bytes));

@@ -254,7 +254,7 @@ public interface SSZWriter {
    *
    * @param elements The bytes to write as a java.util.List.
    */
-  default void writeBytesList(List<Bytes> elements) {
+  default void writeBytesList(List<? extends Bytes> elements) {
     SSZ.encodeBytesListTo(elements, this::writeSSZ);
   }
 
@@ -498,7 +498,7 @@ public interface SSZWriter {
    *
    * @param elements The java.util.List of Bytes (hash) elements to write.
    */
-  default void writeHashList(List<Bytes> elements) {
+  default void writeHashList(List<? extends Bytes> elements) {
     SSZ.encodeHashListTo(elements, this::writeSSZ);
   }
 
@@ -518,7 +518,7 @@ public interface SSZWriter {
    * @param elements The java.util.List of Bytes (address) elements to write.
    * @throws IllegalArgumentException If any {@code address.size != 20}.
    */
-  default void writeAddressList(List<Bytes> elements) {
+  default void writeAddressList(List<? extends Bytes> elements) {
     SSZ.encodeAddressListTo(elements, this::writeSSZ);
   }
 
