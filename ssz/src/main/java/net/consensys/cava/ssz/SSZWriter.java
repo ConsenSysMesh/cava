@@ -513,6 +513,16 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of addresses.
+   *
+   * @param elements The java.util.List of Bytes (address) elements to write.
+   * @throws IllegalArgumentException If any {@code address.size != 20}.
+   */
+  default void writeAddressList(List<Bytes> elements) {
+    SSZ.encodeAddressListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of booleans.
    *
    * @param elements The booleans to write as a list.

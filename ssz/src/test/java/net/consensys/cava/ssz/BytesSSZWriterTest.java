@@ -377,6 +377,29 @@ class BytesSSZWriterTest {
   }
 
   @Test
+  void shouldWriteVaragsListsOfAddresses() {
+    assertEquals(
+        fromHexString(
+            "0x3C0000008EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5"),
+        SSZ.encodeAddressList(
+            fromHexString("0x8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C97"),
+            fromHexString("0x8EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8"),
+            fromHexString("0xBBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5")));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfAddresses() {
+    assertEquals(
+        fromHexString(
+            "0x3C0000008EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5"),
+        SSZ.encodeAddressList(
+            Arrays.asList(
+                fromHexString("0x8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C97"),
+                fromHexString("0x8EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8"),
+                fromHexString("0xBBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5"))));
+  }
+
+  @Test
   void shouldWritePreviouslyEncodedValues() {
     Bytes output = SSZ.encode(writer -> writer.writeSSZ(SSZ.encodeByteArray("abc".getBytes(UTF_8))));
     assertEquals("abc", SSZ.decodeString(output));

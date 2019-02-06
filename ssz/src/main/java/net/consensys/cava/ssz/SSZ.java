@@ -962,8 +962,28 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of addresses.
+   *
+   * @param elements The java.util.List of addresses to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any {@code address.size != 20}.
+   */
+  public static Bytes encodeAddressList(List<Bytes> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeAddressListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeAddressListTo(Bytes[] elements, Consumer<Bytes> appender) {
     appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 20)));
+    for (Bytes bytes : elements) {
+      appender.accept(encodeAddress(bytes));
+    }
+  }
+
+  static void encodeAddressListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 20)));
     for (Bytes bytes : elements) {
       appender.accept(encodeAddress(bytes));
     }
