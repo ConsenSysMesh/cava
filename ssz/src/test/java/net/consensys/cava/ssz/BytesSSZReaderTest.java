@@ -144,12 +144,25 @@ class BytesSSZReaderTest {
   }
 
   @Test
-  void shouldReadShortList() {
+  void shouldReadShortVaragsList() {
     List<String> expected =
         Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer");
 
     System.out.println(
         SSZ.encodeStringList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer"));
+
+    List<String> result = SSZ.decodeStringList(SHORT_LIST);
+    assertEquals(expected, result);
+  }
+
+  @Test
+  void shouldReadShortUtilList() {
+    List<String> expected =
+        Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer");
+
+    System.out.println(
+        SSZ.encodeStringList(
+            Arrays.asList("asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer", "zxcv", "asdf", "qwer")));
 
     List<String> result = SSZ.decodeStringList(SHORT_LIST);
     assertEquals(expected, result);
@@ -165,9 +178,18 @@ class BytesSSZReaderTest {
   }
 
   @Test
-  void shouldRoundtripBytes() {
+  void shouldRoundtripBytesVararg() {
     List<Bytes> toWrite = Arrays.asList(Bytes48.random(), Bytes48.random(), Bytes48.random());
     Bytes encoded = SSZ.encode(writer -> writer.writeBytesList(toWrite.toArray(new Bytes[0])));
+    System.out.println(encoded);
+    assertEquals(toWrite, SSZ.decodeBytesList(encoded));
+
+  }
+
+  @Test
+  void shouldRoundtripBytesList() {
+    List<Bytes> toWrite = Arrays.asList(Bytes48.random(), Bytes48.random(), Bytes48.random());
+    Bytes encoded = SSZ.encode(writer -> writer.writeBytesList(toWrite));
     System.out.println(encoded);
     assertEquals(toWrite, SSZ.decodeBytesList(encoded));
 

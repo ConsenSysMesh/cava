@@ -23,6 +23,7 @@ import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import com.google.common.base.Charsets;
 import org.junit.jupiter.api.Test;
@@ -242,25 +243,170 @@ class BytesSSZWriterTest {
   }
 
   @Test
-  void shouldWriteLists() {
+  void shouldWriteVarargsListsOfInts() {
     assertEquals(fromHexString("03000000030405"), SSZ.encodeIntList(8, 3, 4, 5));
   }
 
   @Test
-  void shouldWriteListsOfStrings() {
+  void shouldWriteUtilListsOfInts() {
+    assertEquals(fromHexString("03000000030405"), SSZ.encodeIntList(8, Arrays.asList(3, 4, 5)));
+  }
+
+  @Test
+  void shouldWriteVarargsListsOfLongInts() {
+    assertEquals(fromHexString("03000000030405"), SSZ.encodeLongIntList(8, 3, 4, 5));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfLongInts() {
+    assertEquals(
+        fromHexString("03000000030405"),
+        SSZ.encodeLongIntList(8, Arrays.asList((long) 3, (long) 4, (long) 5)));
+  }
+
+  @Test
+  void shouldWriteVarargsListsOfBigIntegers() {
+    assertEquals(
+        fromHexString("03000000030405"),
+        SSZ.encodeBigIntegerList(8, BigInteger.valueOf(3), BigInteger.valueOf(4), BigInteger.valueOf(5)));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfBigIntegers() {
+    assertEquals(
+        fromHexString("03000000030405"),
+        SSZ.encodeBigIntegerList(
+            8,
+            Arrays.asList(BigInteger.valueOf(3), BigInteger.valueOf(4), BigInteger.valueOf(5))));
+  }
+
+  @Test
+  void shouldWriteVarargsListsOfUnsignedInts() {
+    assertEquals(fromHexString("03000000FDFEFF"), SSZ.encodeUIntList(8, 253, 254, 255));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfUnsignedInts() {
+    assertEquals(fromHexString("03000000FDFEFF"), SSZ.encodeUIntList(8, Arrays.asList(253, 254, 255)));
+  }
+
+  @Test
+  void shouldWriteVarargsListsOfUnsignedLongs() {
+    assertEquals(fromHexString("03000000FDFEFF"), SSZ.encodeULongIntList(8, 253, 254, 255));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfUnsignedLongs() {
+    assertEquals(
+        fromHexString("03000000FDFEFF"),
+        SSZ.encodeULongIntList(8, Arrays.asList((long) 253, (long) 254, (long) 255)));
+  }
+
+  @Test
+  void shouldWriteVarargsListsOfUInt256() {
+    assertEquals(
+        fromHexString(
+            "0x60000000030000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000"),
+        SSZ.encodeUInt256List(UInt256.valueOf(3L), UInt256.valueOf(4L), UInt256.valueOf(5L)));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfUInt256() {
+    assertEquals(
+        fromHexString(
+            "0x60000000030000000000000000000000000000000000000000000000000000000000000004000000000000000000000000000000000000000000000000000000000000000500000000000000000000000000000000000000000000000000000000000000"),
+        SSZ.encodeUInt256List(Arrays.asList(UInt256.valueOf(3L), UInt256.valueOf(4L), UInt256.valueOf(5L))));
+  }
+
+  @Test
+  void shouldWriteVaragsListsOfStrings() {
     assertEquals(
         fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
         SSZ.encodeStringList("bob", "jane", "janet"));
   }
 
   @Test
-  void shouldWriteListsOfBytes() {
+  void shouldWriteUtilListsOfStrings() {
+    assertEquals(
+        fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
+        SSZ.encodeStringList(Arrays.asList("bob", "jane", "janet")));
+  }
+
+  @Test
+  void shouldWriteVarargsListsOfBytes() {
     assertEquals(
         fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
         SSZ.encodeBytesList(
             Bytes.wrap("bob".getBytes(Charsets.UTF_8)),
             Bytes.wrap("jane".getBytes(Charsets.UTF_8)),
             Bytes.wrap("janet".getBytes(Charsets.UTF_8))));
+  }
+
+  @Test
+  void shouldWriteUtilListOfBytes() {
+    assertEquals(
+        fromHexString("1800000003000000626F62040000006A616E65050000006A616E6574"),
+        SSZ.encodeBytesList(
+            Arrays.asList(
+                Bytes.wrap("bob".getBytes(Charsets.UTF_8)),
+                Bytes.wrap("jane".getBytes(Charsets.UTF_8)),
+                Bytes.wrap("janet".getBytes(Charsets.UTF_8)))));
+  }
+
+  @Test
+  void shouldWriteVaragsListsOfHashes() {
+    assertEquals(
+        fromHexString(
+            "0x60000000ED1C978EE1CEEFA5BBD9ED1C8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C978B40CA3893681B062BC06760A4863AFAFA6C4D6226D4C6AFAFA3684A06760CB26B30567B2281FF3BD582B0A633B33A376B95BD3333DB59B673A33B336A0B285D"),
+        SSZ.encodeHashList(
+            fromHexString("0xED1C978EE1CEEFA5BBD9ED1C8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C97"),
+            fromHexString("0x8B40CA3893681B062BC06760A4863AFAFA6C4D6226D4C6AFAFA3684A06760CB2"),
+            fromHexString("0x6B30567B2281FF3BD582B0A633B33A376B95BD3333DB59B673A33B336A0B285D")));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfHashes() {
+    assertEquals(
+        fromHexString(
+            "0x60000000ED1C978EE1CEEFA5BBD9ED1C8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C978B40CA3893681B062BC06760A4863AFAFA6C4D6226D4C6AFAFA3684A06760CB26B30567B2281FF3BD582B0A633B33A376B95BD3333DB59B673A33B336A0B285D"),
+        SSZ.encodeHashList(
+            Arrays.asList(
+                fromHexString("0xED1C978EE1CEEFA5BBD9ED1C8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C97"),
+                fromHexString("0x8B40CA3893681B062BC06760A4863AFAFA6C4D6226D4C6AFAFA3684A06760CB2"),
+                fromHexString("0x6B30567B2281FF3BD582B0A633B33A376B95BD3333DB59B673A33B336A0B285D"))));
+  }
+
+  @Test
+  void shouldWriteVaragsListsOfAddresses() {
+    assertEquals(
+        fromHexString(
+            "0x3C0000008EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5"),
+        SSZ.encodeAddressList(
+            fromHexString("0x8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C97"),
+            fromHexString("0x8EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8"),
+            fromHexString("0xBBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5")));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfAddresses() {
+    assertEquals(
+        fromHexString(
+            "0x3C0000008EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8BBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5"),
+        SSZ.encodeAddressList(
+            Arrays.asList(
+                fromHexString("0x8EE1CEEFA5BBD9ED1C978EE1CEEFA5BBD9ED1C97"),
+                fromHexString("0x8EE1CEEFA5BBD9ED1C9779C1DE9DBB5AFEEC1EE8"),
+                fromHexString("0xBBD9ED1C978EE1CEEFA5BBD9ED1C978EE1CEEFA5"))));
+  }
+
+  @Test
+  void shouldWriteVaragsListsOfBooleans() {
+    assertEquals(fromHexString("0400000000010100"), SSZ.encodeBooleanList(false, true, true, false));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfBooleans() {
+    assertEquals(fromHexString("0400000000010100"), SSZ.encodeBooleanList(Arrays.asList(false, true, true, false)));
   }
 
   @Test

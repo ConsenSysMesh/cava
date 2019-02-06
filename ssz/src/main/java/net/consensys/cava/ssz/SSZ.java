@@ -471,7 +471,36 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of bytes.
+   *
+   * @param elements The bytes to write as a java.util.List.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeBytesList(List<Bytes> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() * 2 + 1);
+    encodeBytesListTo(elements, encoded::add);
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeBytesListTo(Bytes[] elements, Consumer<Bytes> appender) {
+    // pre-calculate the list size - relies on knowing how encodeBytesTo does its serialization, but is worth it
+    // to avoid having to pre-serialize all the elements
+    long listSize = 0;
+    for (Bytes bytes : elements) {
+      listSize += 4;
+      listSize += bytes.size();
+      if (listSize > Integer.MAX_VALUE) {
+        throw new IllegalArgumentException("Cannot serialize list: overall length is too large");
+      }
+    }
+    appender.accept(encodeUInt32(listSize));
+    for (Bytes bytes : elements) {
+      encodeBytesTo(bytes, appender);
+    }
+  }
+
+  static void encodeBytesListTo(List<Bytes> elements, Consumer<Bytes> appender) {
     // pre-calculate the list size - relies on knowing how encodeBytesTo does its serialization, but is worth it
     // to avoid having to pre-serialize all the elements
     long listSize = 0;
@@ -500,10 +529,30 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of strings.
+   *
+   * @param elements The java.util.List of String elements to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeStringList(List<String> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() * 2 + 1);
+    encodeStringListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeStringListTo(String[] elements, Consumer<Bytes> appender) {
     Bytes[] elementBytes = new Bytes[elements.length];
     for (int i = 0; i < elements.length; ++i) {
       elementBytes[i] = Bytes.wrap(elements[i].getBytes(UTF_8));
+    }
+    encodeBytesListTo(elementBytes, appender);
+  }
+
+  static void encodeStringListTo(List<String> elements, Consumer<Bytes> appender) {
+    Bytes[] elementBytes = new Bytes[elements.size()];
+    for (int i = 0; i < elements.size(); ++i) {
+      elementBytes[i] = Bytes.wrap(elements.get(i).getBytes(UTF_8));
     }
     encodeBytesListTo(elementBytes, appender);
   }
@@ -522,9 +571,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of two's compliment integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements the java.util.List of Integers to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeIntList(int bitLength, List<Integer> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeIntListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeIntListTo(int bitLength, int[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (int value : elements) {
+      appender.accept(encodeLongToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeIntListTo(int bitLength, List<Integer> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (int value : elements) {
       appender.accept(encodeLongToByteArray(value, bitLength));
     }
@@ -544,9 +615,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of two's compliment long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements the java.util.List of Longs to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeLongIntList(int bitLength, List<Long> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeLongIntListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeLongIntListTo(int bitLength, long[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (long value : elements) {
+      appender.accept(encodeLongToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeLongIntListTo(int bitLength, List<Long> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (long value : elements) {
       appender.accept(encodeLongToByteArray(value, bitLength));
     }
@@ -566,9 +659,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of big integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of BigIntegers to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeBigIntegerList(int bitLength, List<BigInteger> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeBigIntegerListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeBigIntegerListTo(int bitLength, BigInteger[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (BigInteger value : elements) {
+      appender.accept(encodeBigIntegerToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeBigIntegerListTo(int bitLength, List<BigInteger> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (BigInteger value : elements) {
       appender.accept(encodeBigIntegerToByteArray(value, bitLength));
     }
@@ -628,9 +743,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of unsigned integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements the java.util.List of unsigned Integers to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeUIntList(int bitLength, List<Integer> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeUIntListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeUIntListTo(int bitLength, int[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (int value : elements) {
+      appender.accept(encodeULongToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeUIntListTo(int bitLength, List<Integer> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (int value : elements) {
       appender.accept(encodeULongToByteArray(value, bitLength));
     }
@@ -650,9 +787,31 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of unsigned long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements the java.util.List of unsigned Longs to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any values are too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeULongIntList(int bitLength, List<Long> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeULongIntListTo(bitLength, elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeULongIntListTo(int bitLength, long[] elements, Consumer<byte[]> appender) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
     appender.accept(listLengthPrefix(elements.length, bitLength / 8));
+    for (long value : elements) {
+      appender.accept(encodeULongToByteArray(value, bitLength));
+    }
+  }
+
+  static void encodeULongIntListTo(int bitLength, List<Long> elements, Consumer<byte[]> appender) {
+    checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
+    appender.accept(listLengthPrefix(elements.size(), bitLength / 8));
     for (long value : elements) {
       appender.accept(encodeULongToByteArray(value, bitLength));
     }
@@ -710,8 +869,27 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of {@link UInt256}.
+   *
+   * @param elements The java.util.List of UInt256s to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeUInt256List(List<UInt256> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeUInt256ListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeUInt256ListTo(UInt256[] elements, Consumer<Bytes> appender) {
     appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 256 / 8)));
+    for (UInt256 value : elements) {
+      appender.accept(encodeUInt256(value));
+    }
+  }
+
+  static void encodeUInt256ListTo(List<UInt256> elements, Consumer<Bytes> appender) {
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 256 / 8)));
     for (UInt256 value : elements) {
       appender.accept(encodeUInt256(value));
     }
@@ -725,6 +903,18 @@ public final class SSZ {
    */
   public static Bytes encodeHashList(Bytes... elements) {
     ArrayList<Bytes> encoded = new ArrayList<>(elements.length + 1);
+    encodeHashListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
+  /**
+   * Encode a java.util.List of hashes.
+   *
+   * @param elements The java.util.List of hashes to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeHashList(List<Bytes> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
     encodeHashListTo(elements, b -> encoded.add(Bytes.wrap(b)));
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
@@ -744,6 +934,21 @@ public final class SSZ {
     }
   }
 
+  static void encodeHashListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+    int hashLength = 0;
+    for (Bytes bytes : elements) {
+      if (hashLength == 0) {
+        hashLength = bytes.size();
+      } else {
+        checkArgument(bytes.size() == hashLength, "Hashes must be all of the same size");
+      }
+    }
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 32)));
+    for (Bytes bytes : elements) {
+      appender.accept(bytes);
+    }
+  }
+
   /**
    * Encode a list of addresses.
    *
@@ -757,8 +962,28 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of addresses.
+   *
+   * @param elements The java.util.List of addresses to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If any {@code address.size != 20}.
+   */
+  public static Bytes encodeAddressList(List<Bytes> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeAddressListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeAddressListTo(Bytes[] elements, Consumer<Bytes> appender) {
     appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 20)));
+    for (Bytes bytes : elements) {
+      appender.accept(encodeAddress(bytes));
+    }
+  }
+
+  static void encodeAddressListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 20)));
     for (Bytes bytes : elements) {
       appender.accept(encodeAddress(bytes));
     }
@@ -776,8 +1001,27 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of booleans.
+   *
+   * @param elements The java.util.List of Booleans to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeBooleanList(List<Boolean> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeBooleanListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeBooleanListTo(boolean[] elements, Consumer<Bytes> appender) {
     appender.accept(encodeInt32(elements.length));
+    for (boolean value : elements) {
+      appender.accept(encodeBoolean(value));
+    }
+  }
+
+  static void encodeBooleanListTo(List<Boolean> elements, Consumer<Bytes> appender) {
+    appender.accept(encodeInt32(elements.size()));
     for (boolean value : elements) {
       appender.accept(encodeBoolean(value));
     }

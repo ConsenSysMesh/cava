@@ -16,6 +16,7 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.units.bigints.UInt256;
 
 import java.math.BigInteger;
+import java.util.List;
 
 /**
  * A writer for encoding values to SSZ.
@@ -249,11 +250,29 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of bytes.
+   *
+   * @param elements The bytes to write as a java.util.List.
+   */
+  default void writeBytesList(List<Bytes> elements) {
+    SSZ.encodeBytesListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of strings, which must be of the same length
    *
    * @param elements The strings to write as a list.
    */
   default void writeStringList(String... elements) {
+    SSZ.encodeStringListTo(elements, this::writeSSZ);
+  }
+
+  /**
+   * Write a java.util.List of strings, which must be of the same length
+   *
+   * @param elements The java.util.List of String elements to write.
+   */
+  default void writeStringList(List<String> elements) {
     SSZ.encodeStringListTo(elements, this::writeSSZ);
   }
 
@@ -269,6 +288,17 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of two's compliment integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of Integer elements to write.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
+   */
+  default void writeIntList(int bitLength, List<Integer> elements) {
+    SSZ.encodeIntListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of two's compliment long integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
@@ -280,6 +310,17 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of two's compliment long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of Long elements to write.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
+   */
+  default void writeLongIntList(int bitLength, List<Long> elements) {
+    SSZ.encodeLongIntListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of big integers.
    *
    * @param bitLength The bit length of each integer.
@@ -287,6 +328,17 @@ public interface SSZWriter {
    * @throws IllegalArgumentException if an integer cannot be stored in the number of bytes provided
    */
   default void writeBigIntegerList(int bitLength, BigInteger... elements) {
+    SSZ.encodeBigIntegerListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
+   * Write a java.util.List of big integers.
+   *
+   * @param bitLength The bit length of each integer.
+   * @param elements The java.util.List of BigInteger elements to write.
+   * @throws IllegalArgumentException if an integer cannot be stored in the number of bytes provided
+   */
+  default void writeBigIntegerList(int bitLength, List<BigInteger> elements) {
     SSZ.encodeBigIntegerListTo(bitLength, elements, this::writeSSZ);
   }
 
@@ -342,6 +394,17 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of unsigned integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of unsigned Integer elements to write.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
+   */
+  default void writeUIntList(int bitLength, List<Integer> elements) {
+    SSZ.encodeUIntListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of unsigned long integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
@@ -349,6 +412,17 @@ public interface SSZWriter {
    * @throws IllegalArgumentException If any values are too large for the specified bit length.
    */
   default void writeULongIntList(int bitLength, long... elements) {
+    SSZ.encodeULongIntListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
+   * Write a java.util.List of unsigned long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of unsigned Long elements to write.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
+   */
+  default void writeULongIntList(int bitLength, List<Long> elements) {
     SSZ.encodeULongIntListTo(bitLength, elements, this::writeSSZ);
   }
 
@@ -402,11 +476,29 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of unsigned 256-bit integers.
+   *
+   * @param elements The java.util.List of UInt256 elements to write.
+   */
+  default void writeUInt256List(List<UInt256> elements) {
+    SSZ.encodeUInt256ListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of hashes.
    *
    * @param elements The hashes to write as a list.
    */
   default void writeHashList(Bytes... elements) {
+    SSZ.encodeHashListTo(elements, this::writeSSZ);
+  }
+
+  /**
+   * Write a java.util.List of hashes.
+   *
+   * @param elements The java.util.List of Bytes (hash) elements to write.
+   */
+  default void writeHashList(List<Bytes> elements) {
     SSZ.encodeHashListTo(elements, this::writeSSZ);
   }
 
@@ -421,11 +513,30 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of addresses.
+   *
+   * @param elements The java.util.List of Bytes (address) elements to write.
+   * @throws IllegalArgumentException If any {@code address.size != 20}.
+   */
+  default void writeAddressList(List<Bytes> elements) {
+    SSZ.encodeAddressListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of booleans.
    *
    * @param elements The booleans to write as a list.
    */
   default void writeBooleanList(boolean... elements) {
+    SSZ.encodeBooleanListTo(elements, this::writeSSZ);
+  }
+
+  /**
+   * Write a java.util.List of booleans.
+   *
+   * @param elements The java.util.List of Boolean elements to write.
+   */
+  default void writeBooleanList(List<Boolean> elements) {
     SSZ.encodeBooleanListTo(elements, this::writeSSZ);
   }
 }
