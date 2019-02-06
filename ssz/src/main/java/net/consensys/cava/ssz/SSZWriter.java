@@ -494,6 +494,15 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of hashes.
+   *
+   * @param elements The java.util.List of Bytes (hash) elements to write.
+   */
+  default void writeHashList(List<Bytes> elements) {
+    SSZ.encodeHashListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of addresses.
    *
    * @param elements The addresses to write as a list.

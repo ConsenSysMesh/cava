@@ -907,6 +907,18 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of hashes.
+   *
+   * @param elements The java.util.List of hashes to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeHashList(List<Bytes> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeHashListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeHashListTo(Bytes[] elements, Consumer<Bytes> appender) {
     int hashLength = 0;
     for (Bytes bytes : elements) {
@@ -917,6 +929,21 @@ public final class SSZ {
       }
     }
     appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 32)));
+    for (Bytes bytes : elements) {
+      appender.accept(bytes);
+    }
+  }
+
+  static void encodeHashListTo(List<Bytes> elements, Consumer<Bytes> appender) {
+    int hashLength = 0;
+    for (Bytes bytes : elements) {
+      if (hashLength == 0) {
+        hashLength = bytes.size();
+      } else {
+        checkArgument(bytes.size() == hashLength, "Hashes must be all of the same size");
+      }
+    }
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 32)));
     for (Bytes bytes : elements) {
       appender.accept(bytes);
     }
