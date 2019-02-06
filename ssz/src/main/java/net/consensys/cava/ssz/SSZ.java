@@ -1001,8 +1001,27 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of booleans.
+   *
+   * @param elements The java.util.List of Booleans to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeBooleanList(List<Boolean> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeBooleanListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeBooleanListTo(boolean[] elements, Consumer<Bytes> appender) {
     appender.accept(encodeInt32(elements.length));
+    for (boolean value : elements) {
+      appender.accept(encodeBoolean(value));
+    }
+  }
+
+  static void encodeBooleanListTo(List<Boolean> elements, Consumer<Bytes> appender) {
+    appender.accept(encodeInt32(elements.size()));
     for (boolean value : elements) {
       appender.accept(encodeBoolean(value));
     }

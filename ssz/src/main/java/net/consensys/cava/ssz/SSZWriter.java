@@ -530,4 +530,13 @@ public interface SSZWriter {
   default void writeBooleanList(boolean... elements) {
     SSZ.encodeBooleanListTo(elements, this::writeSSZ);
   }
+
+  /**
+   * Write a java.util.List of booleans.
+   *
+   * @param elements The java.util.List of Boolean elements to write.
+   */
+  default void writeBooleanList(List<Boolean> elements) {
+    SSZ.encodeBooleanListTo(elements, this::writeSSZ);
+  }
 }

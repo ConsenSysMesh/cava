@@ -400,6 +400,16 @@ class BytesSSZWriterTest {
   }
 
   @Test
+  void shouldWriteVaragsListsOfBooleans() {
+    assertEquals(fromHexString("0400000000010100"), SSZ.encodeBooleanList(false, true, true, false));
+  }
+
+  @Test
+  void shouldWriteUtilListsOfBooleans() {
+    assertEquals(fromHexString("0400000000010100"), SSZ.encodeBooleanList(Arrays.asList(false, true, true, false)));
+  }
+
+  @Test
   void shouldWritePreviouslyEncodedValues() {
     Bytes output = SSZ.encode(writer -> writer.writeSSZ(SSZ.encodeByteArray("abc".getBytes(UTF_8))));
     assertEquals("abc", SSZ.decodeString(output));
