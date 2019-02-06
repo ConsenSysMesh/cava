@@ -476,6 +476,15 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of unsigned 256-bit integers.
+   *
+   * @param elements The java.util.List of UInt256 elements to write.
+   */
+  default void writeUInt256List(List<UInt256> elements) {
+    SSZ.encodeUInt256ListTo(elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of hashes.
    *
    * @param elements The hashes to write as a list.

@@ -572,7 +572,7 @@ public final class SSZ {
   }
 
   /**
-   * Encode a list of two's compliment integers.
+   * Encode a java.util.List of two's compliment integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
    * @param elements the java.util.List of Integers to write.
@@ -616,7 +616,7 @@ public final class SSZ {
   }
 
   /**
-   * Encode a list of two's compliment long integers.
+   * Encode a java.util.List of two's compliment long integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
    * @param elements the java.util.List of Longs to write.
@@ -660,7 +660,7 @@ public final class SSZ {
   }
 
   /**
-   * Encode a list of big integers.
+   * Encode a java.util.List of big integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
    * @param elements The java.util.List of BigIntegers to write.
@@ -744,7 +744,7 @@ public final class SSZ {
   }
 
   /**
-   * Encode a list of unsigned integers.
+   * Encode a java.util.List of unsigned integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
    * @param elements the java.util.List of unsigned Integers to write.
@@ -788,7 +788,7 @@ public final class SSZ {
   }
 
   /**
-   * Encode a list of unsigned long integers.
+   * Encode a java.util.List of unsigned long integers.
    *
    * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
    * @param elements the java.util.List of unsigned Longs to write.
@@ -869,8 +869,27 @@ public final class SSZ {
     return Bytes.wrap(encoded.toArray(new Bytes[0]));
   }
 
+  /**
+   * Encode a java.util.List of {@link UInt256}.
+   *
+   * @param elements The java.util.List of UInt256s to write.
+   * @return SSZ encoding in a {@link Bytes} value.
+   */
+  public static Bytes encodeUInt256List(List<UInt256> elements) {
+    ArrayList<Bytes> encoded = new ArrayList<>(elements.size() + 1);
+    encodeUInt256ListTo(elements, b -> encoded.add(Bytes.wrap(b)));
+    return Bytes.wrap(encoded.toArray(new Bytes[0]));
+  }
+
   static void encodeUInt256ListTo(UInt256[] elements, Consumer<Bytes> appender) {
     appender.accept(Bytes.wrap(listLengthPrefix(elements.length, 256 / 8)));
+    for (UInt256 value : elements) {
+      appender.accept(encodeUInt256(value));
+    }
+  }
+
+  static void encodeUInt256ListTo(List<UInt256> elements, Consumer<Bytes> appender) {
+    appender.accept(Bytes.wrap(listLengthPrefix(elements.size(), 256 / 8)));
     for (UInt256 value : elements) {
       appender.accept(encodeUInt256(value));
     }
