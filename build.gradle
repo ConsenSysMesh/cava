@@ -117,6 +117,7 @@ subprojects {
   tasks.withType(JavaCompile) {
     options.fork = true
     options.incremental = true
+    options.encoding = 'UTF-8'
   }
 
   task allDependencies(type: DependencyReportTask) {}
