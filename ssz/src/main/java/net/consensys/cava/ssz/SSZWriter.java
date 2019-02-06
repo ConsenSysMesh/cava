@@ -416,6 +416,17 @@ public interface SSZWriter {
   }
 
   /**
+   * Write a java.util.List of unsigned long integers.
+   *
+   * @param bitLength The bit length of the encoded integers (must be a multiple of 8).
+   * @param elements The java.util.List of unsigned Long elements to write.
+   * @throws IllegalArgumentException If any values are too large for the specified bit length.
+   */
+  default void writeULongIntList(int bitLength, List<Long> elements) {
+    SSZ.encodeULongIntListTo(bitLength, elements, this::writeSSZ);
+  }
+
+  /**
    * Write a list of 8-bit unsigned integers.
    *
    * @param elements The integers to write as a list.
