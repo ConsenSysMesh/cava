@@ -39,7 +39,7 @@ class PingPongTest {
   @Test
   void pingPongRoundtrip() {
     AtomicReference<RLPxMessage> capturedPing = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,
@@ -66,7 +66,7 @@ class PingPongTest {
   @Test
   void pongPingRoundtrip() {
     AtomicReference<RLPxMessage> capturedPong = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,

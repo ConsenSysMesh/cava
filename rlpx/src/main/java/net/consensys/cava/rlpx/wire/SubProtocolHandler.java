@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.rlpx.wire;
 
+import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
 
 /**
@@ -21,17 +22,21 @@ public interface SubProtocolHandler {
 
   /**
    * Handle an incoming wire protocol message
-   * 
+   *
+   * @param connectionId the peer connection identifier
+   * @param messageType the type of the message
    * @param message the message to be handled
+   * @return a handle tracking the completion of the handling of the message.
    */
-  void handle(WireSubProtocolMessage message);
+  AsyncCompletion handle(String connectionId, int messageType, Bytes message);
 
   /**
    * Handle a new peer connection
    * 
-   * @param conn the new peer connection
+   * @param connectionId the new peer connection identifier
+   * @return a handle to the completion of the addition of the new peer.
    */
-  void newPeerConnection(WireConnection conn);
+  AsyncCompletion handleNewPeerConnection(String connectionId);
 
   /**
    * Stops a subprotocol operations.

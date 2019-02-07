@@ -26,11 +26,10 @@ import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
 import net.consensys.cava.rlpx.MemoryWireConnectionsRepository;
 import net.consensys.cava.rlpx.RLPxService;
+import net.consensys.cava.rlpx.wire.DefaultWireConnection;
 import net.consensys.cava.rlpx.wire.SubProtocol;
 import net.consensys.cava.rlpx.wire.SubProtocolHandler;
 import net.consensys.cava.rlpx.wire.SubProtocolIdentifier;
-import net.consensys.cava.rlpx.wire.WireConnection;
-import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
@@ -55,40 +54,9 @@ import org.logl.logl.SimpleLogger;
 @ExtendWith({VertxExtension.class, BouncyCastleExtension.class})
 class VertxAcceptanceTest {
 
-  private static class MyMessage implements WireSubProtocolMessage {
-
-    private final SubProtocolIdentifier identifier;
-    private final String connectionId;
-
-    public MyMessage(SubProtocolIdentifier identifier, String connectionId) {
-      this.identifier = identifier;
-      this.connectionId = connectionId;
-    }
-
-    @Override
-    public SubProtocolIdentifier subProtocolIdentifier() {
-      return identifier;
-    }
-
-    @Override
-    public String connectionId() {
-      return connectionId;
-    }
-
-    @Override
-    public Bytes toBytes() {
-      return Bytes.fromHexString("deadbeef");
-    }
-
-    @Override
-    public int messageType() {
-      return 0;
-    }
-  }
-
   private static class MyCustomSubProtocolHandler implements SubProtocolHandler {
 
-    public final List<WireSubProtocolMessage> messages = new ArrayList<>();
+    public final List<Bytes> messages = new ArrayList<>();
 
     private final RLPxService rlpxService;
     private final SubProtocolIdentifier identifier;
@@ -99,13 +67,15 @@ class VertxAcceptanceTest {
     }
 
     @Override
-    public void handle(WireSubProtocolMessage message) {
+    public AsyncCompletion handle(String connectionId, int messageType, Bytes message) {
       messages.add(message);
+      return AsyncCompletion.completed();
     }
 
     @Override
-    public void newPeerConnection(WireConnection conn) {
-      rlpxService.send(new MyMessage(identifier, conn.id()));
+    public AsyncCompletion handleNewPeerConnection(String connId) {
+      rlpxService.send(identifier, 0, connId, Bytes.fromHexString("deadbeef"));
+      return AsyncCompletion.completed();
     }
 
     @Override
@@ -190,7 +160,7 @@ class VertxAcceptanceTest {
       assertEquals(1, sp.handler.messages.size());
       assertEquals(1, secondSp.handler.messages.size());
 
-      AsyncCompletion completion = repository.asMap().values().iterator().next().sendPing();
+      AsyncCompletion completion = ((DefaultWireConnection) repository.asMap().values().iterator().next()).sendPing();
       completion.join();
       assertTrue(completion.isDone());
     } finally {
@@ -252,7 +222,7 @@ class VertxAcceptanceTest {
         threadPool.submit(() -> {
           try {
 
-            repository.asMap().values().iterator().next().sendPing();
+            ((DefaultWireConnection) repository.asMap().values().iterator().next()).sendPing();
             task.complete();
           } catch (Throwable t) {
             task.completeExceptionally(t);

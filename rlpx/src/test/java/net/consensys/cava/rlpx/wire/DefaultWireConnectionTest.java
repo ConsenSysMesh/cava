@@ -28,7 +28,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.logl.LoggerProvider;
 
 @ExtendWith(BouncyCastleExtension.class)
-class WireConnectionTest {
+class DefaultWireConnectionTest {
 
   private static final Bytes nodeId = SECP256K1.KeyPair.random().publicKey().bytes();
   private static final Bytes peerNodeId = SECP256K1.KeyPair.random().publicKey().bytes();
@@ -36,7 +36,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfNoHelloExchanged() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,
@@ -61,7 +61,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfNoHelloReceived() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,
@@ -86,7 +86,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfNoMapping() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,
@@ -115,7 +115,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfNoNodeID() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,
@@ -142,7 +142,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfNodeIDMismatches() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,
@@ -171,7 +171,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfConnectedToSelf() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         nodeId,
@@ -198,7 +198,7 @@ class WireConnectionTest {
   @Test
   void disconnectIfInvalidP2PConnection() {
     AtomicReference<RLPxMessage> capturedDisconnect = new AtomicReference<>();
-    WireConnection conn = new WireConnection(
+    DefaultWireConnection conn = new DefaultWireConnection(
         "abc",
         nodeId,
         peerNodeId,

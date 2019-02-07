@@ -12,9 +12,11 @@
  */
 package net.consensys.cava.rlpx;
 
+import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncCompletion;
 import net.consensys.cava.crypto.SECP256K1;
-import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
+import net.consensys.cava.rlpx.wire.DisconnectReason;
+import net.consensys.cava.rlpx.wire.SubProtocolIdentifier;
 
 import java.net.InetSocketAddress;
 
@@ -49,17 +51,30 @@ public interface RLPxService {
 
   /**
    * Sends a wire message to a peer.
-   * 
+   *
+   * @param subProtocolIdentifier the identifier of the subprotocol this message is part of
+   * @param messageType the type of the message according to the subprotocol
+   * @param connectionId the identifier of the connection.
    * @param message the message, addressed to a connection.
    */
-  void send(WireSubProtocolMessage message);
+  void send(SubProtocolIdentifier subProtocolIdentifier, int messageType, String connectionId, Bytes message);
 
   /**
    * Sends a wire message to all connected peers.
-   * 
+   *
+   * @param subProtocolIdentifier the identifier of the subprotocol this message is part ofs
+   * @param messageType the type of the message according to the subprotocol
    * @param message the message to broadcast.
    */
-  void broadcast(WireSubProtocolMessage message);
+  void broadcast(SubProtocolIdentifier subProtocolIdentifier, int messageType, Bytes message);
+
+  /**
+   * Sends a message to the peer explaining that we are about to disconnect.
+   *
+   * @param connectionId the identifier of the connection to target
+   * @param reason the reason for disconnection
+   */
+  void disconnect(String connectionId, DisconnectReason reason);
 
   /**
    * Gets the wire connections repository associated with this service.

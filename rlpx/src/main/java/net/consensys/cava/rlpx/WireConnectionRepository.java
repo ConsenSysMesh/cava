@@ -29,7 +29,7 @@ public interface WireConnectionRepository {
 
   /**
    * Gets a wire connection by its identifier, as provided by
-   * <code>net.consensys.cava.rlpx.wire.WireConnection#id</code>
+   * <code>net.consensys.cava.rlpx.wire.DefaultWireConnection#id</code>
    * 
    * @param id the identifier of the wire connection
    * @return the wire connection associated with the identifier, or <code>null</code> if no such wire connection exists.

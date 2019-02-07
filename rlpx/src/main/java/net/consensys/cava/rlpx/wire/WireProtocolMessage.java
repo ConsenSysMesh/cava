@@ -17,7 +17,7 @@ import net.consensys.cava.bytes.Bytes;
 /**
  * A set of bytes made available to a subprotocol after it has been successfully decrypted.
  */
-public interface WireProtocolMessage {
+interface WireProtocolMessage {
 
 
   /**
