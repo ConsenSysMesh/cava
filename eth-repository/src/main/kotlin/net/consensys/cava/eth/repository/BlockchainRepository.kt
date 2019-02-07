@@ -133,12 +133,7 @@ class BlockchainRepository
    * @return a future with the block if found
    */
   suspend fun retrieveBlock(blockHash: Bytes): Block? {
-    val bytes: Bytes? = retrieveBlockBytes(blockHash)
-    return if (bytes == null) {
-      null
-    } else {
-      Block.fromBytes(bytes)
-    }
+    return retrieveBlockBytes(blockHash)?.let { Block.fromBytes(it) } ?: return null
   }
 
   /**
@@ -168,8 +163,7 @@ class BlockchainRepository
    * @return a future with the block header if found
    */
   suspend fun retrieveBlockHeader(blockHash: Hash): BlockHeader? {
-    val bytes = retrieveBlockHeaderBytes(blockHash.toBytes()) ?: return null
-    return BlockHeader.fromBytes(bytes)
+    return retrieveBlockHeaderBytes(blockHash.toBytes())?.let { BlockHeader.fromBytes(it) } ?: return null
   }
 
   /**
@@ -189,12 +183,8 @@ class BlockchainRepository
    * @return the current chain head, or the genesis block if no chain head is present.
    */
   suspend fun retrieveChainHead(): Block? {
-    val bytes = chainMetadata.get(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)))
-    return if (bytes == null) {
-      retrieveGenesisBlock()
-    } else {
-      retrieveBlock(bytes)
-    }
+    return chainMetadata.get(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)))
+      ?.let { retrieveBlock(it) } ?: retrieveGenesisBlock()
   }
 
   /**
@@ -203,12 +193,8 @@ class BlockchainRepository
    * @return the current chain head header, or the genesis block if no chain head is present.
    */
   suspend fun retrieveChainHeadHeader(): BlockHeader? {
-    val bytes = chainMetadata.get(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)))
-    return if (bytes == null) {
-      retrieveGenesisBlock()?.header()
-    } else {
-      retrieveBlockHeader(bytes)
-    }
+    return chainMetadata.get(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)))
+      ?.let { retrieveBlockHeader(it) } ?: retrieveGenesisBlock()?.header()
   }
 
   /**
