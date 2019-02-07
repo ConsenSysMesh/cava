@@ -10,14 +10,27 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.eth.repository;
+package net.consensys.cava.eth.repository
 
 /**
- * Exception thrown when an issue arises when reading the index.
+ * Block header index fields.
+ *
  */
-final class IndexReadException extends RuntimeException {
-
-  IndexReadException(Exception e) {
-    super(e);
-  }
+enum class BlockHeaderFields
+/**
+ * Default constructor.
+ *
+ * @param fieldName the name to use when indexing the field with Lucene.
+ */
+private constructor(val fieldName: String) {
+  PARENT_HASH("parentHash"),
+  OMMERS_HASH("ommersHash"),
+  COINBASE("coinbase"),
+  STATE_ROOT("stateRoot"),
+  DIFFICULTY("difficulty"),
+  NUMBER("number"),
+  GAS_LIMIT("gasLimit"),
+  GAS_USED("gasUsed"),
+  EXTRA_DATA("extraData"),
+  TIMESTAMP("timestamp")
 }
