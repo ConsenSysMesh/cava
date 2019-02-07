@@ -6,9 +6,11 @@ dependencies {
   compileOnly 'io.vertx:vertx-core'
   compileOnly 'org.bouncycastle:bcprov-jdk15on'
   compileOnly 'org.junit.jupiter:junit-jupiter-api'
+  compileOnly 'org.apache.lucene:lucene-core'
 
   testCompile 'com.github.kstyrc:embedded-redis'
   testCompile 'io.lettuce:lettuce-core'
+  testCompile 'org.apache.lucene:lucene-core'
   testCompile 'org.junit.jupiter:junit-jupiter-api'
   testCompile 'org.junit.jupiter:junit-jupiter-params'
 
