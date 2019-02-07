@@ -24,17 +24,19 @@ import net.consensys.cava.rlpx.RLPxConnection;
 import net.consensys.cava.rlpx.RLPxConnectionFactory;
 import net.consensys.cava.rlpx.RLPxService;
 import net.consensys.cava.rlpx.WireConnectionRepository;
+import net.consensys.cava.rlpx.wire.DefaultWireConnection;
 import net.consensys.cava.rlpx.wire.DisconnectReason;
 import net.consensys.cava.rlpx.wire.SubProtocol;
 import net.consensys.cava.rlpx.wire.SubProtocolHandler;
+import net.consensys.cava.rlpx.wire.SubProtocolIdentifier;
 import net.consensys.cava.rlpx.wire.WireConnection;
-import net.consensys.cava.rlpx.wire.WireSubProtocolMessage;
 
 import java.net.InetSocketAddress;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.Collectors;
 
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
@@ -177,23 +179,34 @@ public final class VertxRLPxService implements RLPxService {
   }
 
   @Override
-  public void send(WireSubProtocolMessage message) {
+  public void send(SubProtocolIdentifier subProtocolIdentifier, int messageType, String connectionId, Bytes message) {
     if (!started.get()) {
       throw new IllegalStateException("The RLPx service is not active");
     }
-    WireConnection conn = wireConnection(message.connectionId());
+    DefaultWireConnection conn = wireConnection(connectionId);
     if (conn != null) {
-      conn.sendMessage(message);
+      conn.sendMessage(subProtocolIdentifier, messageType, message);
     }
   }
 
   @Override
-  public void broadcast(WireSubProtocolMessage message) {
+  public void disconnect(String connectionId, DisconnectReason disconnectReason) {
+    if (!started.get()) {
+      throw new IllegalStateException("The RLPx service is not active");
+    }
+    DefaultWireConnection conn = wireConnection(connectionId);
+    if (conn != null) {
+      conn.disconnect(disconnectReason);
+    }
+  }
+
+  @Override
+  public void broadcast(SubProtocolIdentifier subProtocolIdentifier, int messageType, Bytes message) {
     if (!started.get()) {
       throw new IllegalStateException("The RLPx service is not active");
     }
     for (WireConnection conn : repository.asIterable()) {
-      conn.sendMessage(message);
+      ((DefaultWireConnection) conn).sendMessage(subProtocolIdentifier, messageType, message);
     }
   }
 
@@ -202,7 +215,7 @@ public final class VertxRLPxService implements RLPxService {
 
       private RLPxConnection conn;
 
-      private WireConnection wireConnection;
+      private DefaultWireConnection wireConnection;
 
       @Override
       public void handle(Buffer buffer) {
@@ -226,10 +239,14 @@ public final class VertxRLPxService implements RLPxService {
   public AsyncCompletion stop() {
     if (started.compareAndSet(true, false)) {
       for (WireConnection conn : repository.asIterable()) {
-        conn.disconnect(DisconnectReason.CLIENT_QUITTING);
+        ((DefaultWireConnection) conn).disconnect(DisconnectReason.CLIENT_QUITTING);
       }
       repository.close();
       client.close();
+
+      AsyncCompletion handlersCompletion =
+          AsyncCompletion.allOf(handlers.values().stream().map(SubProtocolHandler::stop).collect(Collectors.toList()));
+
       CompletableAsyncCompletion completableAsyncCompletion = AsyncCompletion.incomplete();
       server.close(res -> {
         if (res.succeeded()) {
@@ -238,7 +255,7 @@ public final class VertxRLPxService implements RLPxService {
           completableAsyncCompletion.completeExceptionally(res.cause());
         }
       });
-      return completableAsyncCompletion;
+      return handlersCompletion.thenCombine(completableAsyncCompletion);
     } else {
       return AsyncCompletion.completed();
     }
@@ -294,7 +311,7 @@ public final class VertxRLPxService implements RLPxService {
 
             private RLPxConnection conn;
 
-            private WireConnection wireConnection;
+            private DefaultWireConnection wireConnection;
 
             @Override
             public void handle(Buffer buffer) {
@@ -341,9 +358,9 @@ public final class VertxRLPxService implements RLPxService {
     return connected;
   }
 
-  private WireConnection createConnection(RLPxConnection conn, NetSocket netSocket) {
+  private DefaultWireConnection createConnection(RLPxConnection conn, NetSocket netSocket) {
     String id = UUID.randomUUID().toString();
-    WireConnection wireConnection = new WireConnection(
+    DefaultWireConnection wireConnection = new DefaultWireConnection(
         id,
         conn.publicKey().bytes(),
         conn.peerPublicKey().bytes(),
@@ -364,10 +381,10 @@ public final class VertxRLPxService implements RLPxService {
     return wireConnection;
   }
 
-  private WireConnection wireConnection(String id) {
+  private DefaultWireConnection wireConnection(String id) {
     if (!started.get()) {
       throw new IllegalStateException("The RLPx service is not active");
     }
-    return repository.get(id);
+    return (DefaultWireConnection) repository.get(id);
   }
 }
