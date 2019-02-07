@@ -42,7 +42,7 @@ public final class BlockBody {
     return RLP.decodeList(encoded, BlockBody::readFrom);
   }
 
-  static BlockBody readFrom(RLPReader reader) {
+  public static BlockBody readFrom(RLPReader reader) {
     List<Transaction> txs = new ArrayList<>();
     reader.readList((listReader, l) -> {
       while (!listReader.isComplete()) {
@@ -118,7 +118,7 @@ public final class BlockBody {
     return "BlockBody{" + "transactions=" + transactions + ", ommers=" + ommers + '}';
   }
 
-  void writeTo(RLPWriter writer) {
+  public void writeTo(RLPWriter writer) {
     writer.writeList(listWriter -> {
       for (Transaction tx : transactions) {
         listWriter.writeList(tx::writeTo);
