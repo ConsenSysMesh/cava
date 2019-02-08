@@ -13,6 +13,7 @@
 package net.consensys.cava.crypto.sodium;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -41,6 +42,21 @@ class SignatureTest {
     Bytes signature = Signature.signDetached(Bytes.fromHexString("deadbeef"), kp.secretKey());
     boolean result = Signature.verifyDetached(Bytes.fromHexString("deadbeef"), signature, kp.publicKey());
     assertTrue(result);
+  }
+
+  @Test
+  void checkSignAndVerify() {
+    Signature.KeyPair keyPair = Signature.KeyPair.random();
+    Bytes signed = Signature.sign(Bytes.fromHexString("deadbeef"), keyPair.secretKey());
+    Bytes messageBytes = Signature.openSigned(signed, keyPair.publicKey());
+    assertEquals(Bytes.fromHexString("deadbeef"), messageBytes);
+  }
+
+  @Test
+  void testSignatureSecretToBoxKeyPair() {
+    Signature.KeyPair signKeyPiar = Signature.KeyPair.random();
+    Box.KeyPair boxKeyPair = signKeyPiar.secretKey().toBoxKeyPair();
+    assertNotNull(boxKeyPair);
   }
 
 }

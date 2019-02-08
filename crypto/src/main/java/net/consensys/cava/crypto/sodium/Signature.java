@@ -211,6 +211,21 @@ public final class Signature {
       return Signature.signDetached(content, this);
     }
 
+    /**
+     * converts signature key (Ed25519) to a box key (Curve25519) so that the same key pair can be used both for
+     * authenticated encryption and for signatures. See https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
+     *
+     * @return Box.KeyPair generated from Signature.KeyPair.SecretKey
+     */
+    public Box.KeyPair toBoxKeyPair() {
+      byte[] curvedSk = new byte[Box.SecretKey.length()];
+      int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(curvedSk, this.bytesArray());
+      if (rc != 0) {
+        throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
+      }
+      return Box.KeyPair.forSecretKey(Box.SecretKey.fromBytes(curvedSk));
+    }
+
     @Override
     public boolean equals(Object obj) {
       if (obj == this) {
@@ -421,6 +436,15 @@ public final class Signature {
       return secretKey;
     }
 
+    /**
+     * See Signature.SecretKey#toBoxKeyPair()
+     * 
+     * @return Box.KeyPair generated from Signature.KeyPair
+     */
+    public Box.KeyPair toBoxKeyPair() {
+      return secretKey.toBoxKeyPair();
+    }
+
     @Override
     public boolean equals(Object obj) {
       if (obj == this) {
@@ -501,5 +525,50 @@ public final class Signature {
     }
 
     return true;
+  }
+
+  public static Bytes sign(Bytes message, Signature.SecretKey secretKey) {
+    return Bytes.wrap(sign(message.toArrayUnsafe(), secretKey));
+  }
+
+  /**
+   * Signs a message for a given key.
+   *
+   * @param message The message to sign.
+   * @param secretKey The secret key to sign the message with.
+   * @return The signature prepended to the message
+   */
+  public static byte[] sign(byte[] message, Signature.SecretKey secretKey) {
+    byte[] signature = new byte[(int) Sodium.crypto_sign_bytes() + message.length];
+    LongLongByReference signatureLengthReference = new LongLongByReference();
+    int rc = Sodium.crypto_sign(signature, signatureLengthReference, message, message.length, secretKey.bytesArray());
+    if (rc != 0) {
+      throw new SodiumException("crypto_sign: failed with result " + rc);
+    }
+
+    return signature;
+  }
+
+  public static Bytes openSigned(Bytes signed, Signature.PublicKey publicKey) {
+    return Bytes.wrap(openSigned(signed.toArrayUnsafe(), publicKey));
+  }
+
+  /**
+   * Verifies the signature of the signed message using the public key and returns the message.
+   * 
+   * @param signed signed message (signature + message)
+   * @param publicKey pk used to verify the signature
+   * @return the message
+   */
+  public static byte[] openSigned(byte[] signed, Signature.PublicKey publicKey) {
+
+    byte[] message = new byte[signed.length];
+    LongLongByReference messageLongReference = new LongLongByReference();
+    int rc = Sodium.crypto_sign_open(message, messageLongReference, signed, signed.length, publicKey.bytesArray());
+    if (rc != 0) {
+      throw new SodiumException("crypto_sign_open: failed with result " + rc);
+    }
+
+    return Arrays.copyOfRange(message, 0, messageLongReference.intValue());
   }
 }
