@@ -478,6 +478,22 @@ public final class Box implements AutoCloseable {
     }
 
     /**
+     * Converts signature key pair (Ed25519) to a box key pair (Curve25519) so that the same key pair can be used both
+     * for authenticated encryption and for signatures. See https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
+     *
+     * @param keyPair A {@link Signature.KeyPair}.
+     * @return A {@link KeyPair}.
+     */
+    public static KeyPair forSignatureKeyPair(Signature.KeyPair keyPair) {
+      byte[] curvedSk = new byte[Box.SecretKey.length()];
+      int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(curvedSk, keyPair.secretKey().bytesArray());
+      if (rc != 0) {
+        throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
+      }
+      return forSecretKey(SecretKey.fromBytes(curvedSk));
+    }
+
+    /**
      * @return The public key of the key pair.
      */
     public PublicKey publicKey() {

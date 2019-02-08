@@ -172,4 +172,11 @@ class BoxTest {
       assertNull(precomputed.decryptDetached(result.cipherTextArray(), result.macArray(), nonce));
     }
   }
+
+  @Test
+  void checkBoxKeyPairForSignatureKeyPair() {
+    Signature.KeyPair signKeyPair = Signature.KeyPair.random();
+    Box.KeyPair boxKeyPair = Box.KeyPair.forSignatureKeyPair(signKeyPair);
+    assertNotNull(boxKeyPair);
+  }
 }

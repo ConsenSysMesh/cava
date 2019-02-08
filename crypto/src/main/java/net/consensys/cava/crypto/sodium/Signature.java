@@ -211,21 +211,6 @@ public final class Signature {
       return Signature.signDetached(content, this);
     }
 
-    /**
-     * converts signature key (Ed25519) to a box key (Curve25519) so that the same key pair can be used both for
-     * authenticated encryption and for signatures. See https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
-     *
-     * @return Box.KeyPair generated from Signature.KeyPair.SecretKey
-     */
-    public Box.KeyPair toBoxKeyPair() {
-      byte[] curvedSk = new byte[Box.SecretKey.length()];
-      int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(curvedSk, this.bytesArray());
-      if (rc != 0) {
-        throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
-      }
-      return Box.KeyPair.forSecretKey(Box.SecretKey.fromBytes(curvedSk));
-    }
-
     @Override
     public boolean equals(Object obj) {
       if (obj == this) {
@@ -436,15 +421,6 @@ public final class Signature {
       return secretKey;
     }
 
-    /**
-     * See Signature.SecretKey#toBoxKeyPair()
-     * 
-     * @return Box.KeyPair generated from Signature.KeyPair
-     */
-    public Box.KeyPair toBoxKeyPair() {
-      return secretKey.toBoxKeyPair();
-    }
-
     @Override
     public boolean equals(Object obj) {
       if (obj == this) {
@@ -563,8 +539,8 @@ public final class Signature {
    * @param publicKey pk used to verify the signature
    * @return the message
    */
-  public static Bytes openSigned(Bytes signed, Signature.PublicKey publicKey) {
-    return Bytes.wrap(openSigned(signed.toArrayUnsafe(), publicKey));
+  public static Bytes verify(Bytes signed, Signature.PublicKey publicKey) {
+    return Bytes.wrap(verify(signed.toArrayUnsafe(), publicKey));
   }
 
   /**
@@ -574,7 +550,7 @@ public final class Signature {
    * @param publicKey pk used to verify the signature
    * @return the message
    */
-  public static byte[] openSigned(byte[] signed, Signature.PublicKey publicKey) {
+  public static byte[] verify(byte[] signed, Signature.PublicKey publicKey) {
 
     byte[] message = new byte[signed.length];
     LongLongByReference messageLongReference = new LongLongByReference();
