@@ -527,6 +527,13 @@ public final class Signature {
     return true;
   }
 
+  /**
+   * Signs a message for a given key.
+   *
+   * @param message The message to sign.
+   * @param secretKey The secret key to sign the message with.
+   * @return The signature prepended to the message
+   */
   public static Bytes sign(Bytes message, Signature.SecretKey secretKey) {
     return Bytes.wrap(sign(message.toArrayUnsafe(), secretKey));
   }
@@ -549,6 +556,13 @@ public final class Signature {
     return signature;
   }
 
+  /**
+   * Verifies the signature of the signed message using the public key and returns the message.
+   * 
+   * @param signed signed message (signature + message)
+   * @param publicKey pk used to verify the signature
+   * @return the message
+   */
   public static Bytes openSigned(Bytes signed, Signature.PublicKey publicKey) {
     return Bytes.wrap(openSigned(signed.toArrayUnsafe(), publicKey));
   }

@@ -54,8 +54,8 @@ class SignatureTest {
 
   @Test
   void testSignatureSecretToBoxKeyPair() {
-    Signature.KeyPair signKeyPiar = Signature.KeyPair.random();
-    Box.KeyPair boxKeyPair = signKeyPiar.secretKey().toBoxKeyPair();
+    Signature.KeyPair signKeyPair = Signature.KeyPair.random();
+    Box.KeyPair boxKeyPair = signKeyPair.secretKey().toBoxKeyPair();
     assertNotNull(boxKeyPair);
   }
 
