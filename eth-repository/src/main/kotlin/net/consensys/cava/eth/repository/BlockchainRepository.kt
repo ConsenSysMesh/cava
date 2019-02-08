@@ -18,7 +18,6 @@ import net.consensys.cava.eth.Block
 import net.consensys.cava.eth.BlockHeader
 import net.consensys.cava.eth.Hash
 import net.consensys.cava.kv.KeyValueStore
-import java.nio.charset.StandardCharsets
 
 /**
  * Repository housing blockchain information.
@@ -43,6 +42,9 @@ class BlockchainRepository
   ) {
 
   companion object {
+
+    val CHAIN_HEAD = Bytes.wrap("chainHead".toByteArray())
+    val GENESIS_BLOCK = Bytes.wrap("genesisBlock".toByteArray())
 
     /**
      * Initializes a blockchain repository with metadata, placing it in key-value stores.
@@ -133,12 +135,7 @@ class BlockchainRepository
    * @return a future with the block if found
    */
   suspend fun retrieveBlock(blockHash: Bytes): Block? {
-    val bytes: Bytes? = retrieveBlockBytes(blockHash)
-    return if (bytes == null) {
-      null
-    } else {
-      Block.fromBytes(bytes)
-    }
+    return retrieveBlockBytes(blockHash)?.let { Block.fromBytes(it) } ?: return null
   }
 
   /**
@@ -168,8 +165,7 @@ class BlockchainRepository
    * @return a future with the block header if found
    */
   suspend fun retrieveBlockHeader(blockHash: Hash): BlockHeader? {
-    val bytes = retrieveBlockHeaderBytes(blockHash.toBytes()) ?: return null
-    return BlockHeader.fromBytes(bytes)
+    return retrieveBlockHeaderBytes(blockHash.toBytes())?.let { BlockHeader.fromBytes(it) } ?: return null
   }
 
   /**
@@ -189,12 +185,8 @@ class BlockchainRepository
    * @return the current chain head, or the genesis block if no chain head is present.
    */
   suspend fun retrieveChainHead(): Block? {
-    val bytes = chainMetadata.get(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)))
-    return if (bytes == null) {
-      retrieveGenesisBlock()
-    } else {
-      retrieveBlock(bytes)
-    }
+    return chainMetadata.get(CHAIN_HEAD)
+      ?.let { retrieveBlock(it) } ?: retrieveGenesisBlock()
   }
 
   /**
@@ -203,12 +195,8 @@ class BlockchainRepository
    * @return the current chain head header, or the genesis block if no chain head is present.
    */
   suspend fun retrieveChainHeadHeader(): BlockHeader? {
-    val bytes = chainMetadata.get(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)))
-    return if (bytes == null) {
-      retrieveGenesisBlock()?.header()
-    } else {
-      retrieveBlockHeader(bytes)
-    }
+    return chainMetadata.get(CHAIN_HEAD)
+      ?.let { retrieveBlockHeader(it) } ?: retrieveGenesisBlock()?.header()
   }
 
   /**
@@ -217,7 +205,7 @@ class BlockchainRepository
    * @return the genesis block
    */
   suspend fun retrieveGenesisBlock(): Block? {
-    return retrieveBlock(chainMetadata.get(Bytes.wrap("genesisBlock".toByteArray(StandardCharsets.UTF_8)))!!)
+    return retrieveBlock(chainMetadata.get(GENESIS_BLOCK)!!)
   }
 
   /**
@@ -231,11 +219,11 @@ class BlockchainRepository
   }
 
   private suspend fun setChainHead(header: BlockHeader) {
-    return chainMetadata.put(Bytes.wrap("chainHead".toByteArray(StandardCharsets.UTF_8)), header.hash().toBytes())
+    return chainMetadata.put(CHAIN_HEAD, header.hash().toBytes())
   }
 
   private suspend fun setGenesisBlock(block: Block) {
     return chainMetadata
-      .put(Bytes.wrap("genesisBlock".toByteArray(StandardCharsets.UTF_8)), block.header().hash().toBytes())
+      .put(GENESIS_BLOCK, block.header().hash().toBytes())
   }
 }
