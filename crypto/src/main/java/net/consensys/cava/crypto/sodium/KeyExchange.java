@@ -27,7 +27,7 @@ import jnr.ffi.Pointer;
  * Key exchange.
  *
  * <p>
- * Allows two parties can securely compute a set of shared keys using their peer's public key and their own secret key.
+ * Allows two parties to securely compute a set of shared keys using their peer's public key and their own secret key.
  */
 public final class KeyExchange {
 
