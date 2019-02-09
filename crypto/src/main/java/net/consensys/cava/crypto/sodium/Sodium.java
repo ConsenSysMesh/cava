@@ -769,11 +769,11 @@ public final class Sodium {
     return libSodium().crypto_auth_hmacsha512_keybytes();
   }
 
-  static int crypto_auth_hmacsha512(byte[] out, byte[] in, long inlen, byte[] k) {
+  static int crypto_auth_hmacsha512(byte[] out, byte[] in, long inlen, Pointer k) {
     return libSodium().crypto_auth_hmacsha512(out, in, inlen, k);
   }
 
-  static int crypto_auth_hmacsha512_verify(byte[] h, byte[] in, long inlen, byte[] k) {
+  static int crypto_auth_hmacsha512_verify(byte[] h, byte[] in, long inlen, Pointer k) {
     return libSodium().crypto_auth_hmacsha512_verify(h, in, inlen, k);
   }
 
@@ -805,11 +805,11 @@ public final class Sodium {
     return libSodium().crypto_auth_hmacsha512256_keybytes();
   }
 
-  static int crypto_auth_hmacsha512256(byte[] out, byte[] in, long inlen, byte[] k) {
+  static int crypto_auth_hmacsha512256(byte[] out, byte[] in, long inlen, Pointer k) {
     return libSodium().crypto_auth_hmacsha512256(out, in, inlen, k);
   }
 
-  static int crypto_auth_hmacsha512256_verify(byte[] h, byte[] in, long inlen, byte[] k) {
+  static int crypto_auth_hmacsha512256_verify(byte[] h, byte[] in, long inlen, Pointer k) {
     return libSodium().crypto_auth_hmacsha512256_verify(h, in, inlen, k);
   }
 
@@ -889,11 +889,11 @@ public final class Sodium {
     return libSodium().crypto_auth_hmacsha256_keybytes();
   }
 
-  static int crypto_auth_hmacsha256(byte[] out, byte[] in, long inlen, byte[] k) {
+  static int crypto_auth_hmacsha256(byte[] out, byte[] in, long inlen, Pointer k) {
     return libSodium().crypto_auth_hmacsha256(out, in, inlen, k);
   }
 
-  static int crypto_auth_hmacsha256_verify(byte[] h, byte[] in, long inlen, byte[] k) {
+  static int crypto_auth_hmacsha256_verify(byte[] h, byte[] in, long inlen, Pointer k) {
     return libSodium().crypto_auth_hmacsha256_verify(h, in, inlen, k);
   }
 
