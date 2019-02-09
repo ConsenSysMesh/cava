@@ -120,6 +120,19 @@ public final class Box implements AutoCloseable {
     }
 
     /**
+     * Transforms the Ed25519 signature public key to a Curve25519 public key. See
+     * https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
+     *
+     * @param publicKey the signature public key
+     * @return the public key as a Curve25519 public key
+     */
+    public static Box.PublicKey forSignaturePublicKey(Signature.PublicKey publicKey) {
+      byte[] curveKey = new byte[(int) Sodium.crypto_box_publickeybytes()];
+      Sodium.crypto_sign_ed25519_pk_to_curve25519(curveKey, publicKey.bytesArray());
+      return Box.PublicKey.fromBytes(curveKey);
+    }
+
+    /**
      * Obtain the length of the key in bytes (32).
      *
      * @return The length of the key in bytes (32).
@@ -224,6 +237,19 @@ public final class Box implements AutoCloseable {
             "key must be " + Sodium.crypto_box_secretkeybytes() + " bytes, got " + bytes.length);
       }
       return Sodium.dup(bytes, SecretKey::new);
+    }
+
+    /**
+     * Transforms the Ed25519 secret key to a Curve25519 secret key. See
+     * https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
+     *
+     * @param secretKey the signature secret key
+     * @return the secret key as a Curve25519 secret key
+     */
+    public static SecretKey forSignatureSecretKey(Signature.SecretKey secretKey) {
+      Pointer curveKey = Sodium.malloc(Sodium.crypto_box_secretkeybytes());
+      Sodium.crypto_sign_ed25519_sk_to_curve25519(curveKey, secretKey.ptr);
+      return new SecretKey(curveKey, (int) Sodium.crypto_box_secretkeybytes());
     }
 
     /**
