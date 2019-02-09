@@ -2194,7 +2194,7 @@ public final class Sodium {
     return libSodium().crypto_sign_ed25519_seed_keypair(pk, sk, seed);
   }
 
-  static int crypto_sign_ed25519_pk_to_curve25519(byte[] curve25519_pk, byte[] ed25519_pk) {
+  static int crypto_sign_ed25519_pk_to_curve25519(Pointer curve25519_pk, Pointer ed25519_pk) {
     return libSodium().crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk);
   }
 

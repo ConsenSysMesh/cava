@@ -1856,7 +1856,7 @@ public interface LibSodium {
   int crypto_sign_ed25519_seed_keypair(@Out byte[] pk, @Out byte[] sk, @In byte[] seed);
 
   // int crypto_sign_ed25519_pk_to_curve25519(unsigned char * curve25519_pk, const unsigned char * ed25519_pk);
-  int crypto_sign_ed25519_pk_to_curve25519(@Out byte[] curve25519_pk, @In byte[] ed25519_pk);
+  int crypto_sign_ed25519_pk_to_curve25519(@Out Pointer curve25519_pk, @In Pointer ed25519_pk);
 
   // int crypto_sign_ed25519_sk_to_curve25519(unsigned char * curve25519_sk, const unsigned char * ed25519_sk);
   int crypto_sign_ed25519_sk_to_curve25519(@Out Pointer curve25519_sk, @In Pointer ed25519_sk);
