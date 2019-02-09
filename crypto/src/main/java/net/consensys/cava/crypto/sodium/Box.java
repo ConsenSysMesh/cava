@@ -485,12 +485,25 @@ public final class Box implements AutoCloseable {
      * @return A {@link KeyPair}.
      */
     public static KeyPair forSignatureKeyPair(Signature.KeyPair keyPair) {
-      byte[] curvedSk = new byte[Box.SecretKey.length()];
-      int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(curvedSk, keyPair.secretKey().bytesArray());
-      if (rc != 0) {
-        throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
+      Pointer signatureSecretKeyPtr = keyPair.secretKey().ptr;
+      checkArgument(signatureSecretKeyPtr != null, "Signature.SecretKey has been destroyed");
+      Pointer secretKey = null;
+      try {
+        int secretKeyLength = SecretKey.length();
+        secretKey = Sodium.malloc(secretKeyLength);
+        int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(secretKey, keyPair.secretKey().ptr);
+        if (rc != 0) {
+          throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
+        }
+        SecretKey sk = new SecretKey(secretKey, secretKeyLength);
+        secretKey = null;
+        return forSecretKey(sk);
+      } catch (Throwable e) {
+        if (secretKey != null) {
+          Sodium.sodium_free(secretKey);
+        }
+        throw e;
       }
-      return forSecretKey(SecretKey.fromBytes(curvedSk));
     }
 
     /**

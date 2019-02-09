@@ -2198,7 +2198,7 @@ public final class Sodium {
     return libSodium().crypto_sign_ed25519_pk_to_curve25519(curve25519_pk, ed25519_pk);
   }
 
-  static int crypto_sign_ed25519_sk_to_curve25519(byte[] curve25519_sk, byte[] ed25519_sk) {
+  static int crypto_sign_ed25519_sk_to_curve25519(Pointer curve25519_sk, Pointer ed25519_sk) {
     return libSodium().crypto_sign_ed25519_sk_to_curve25519(curve25519_sk, ed25519_sk);
   }
 
@@ -2206,7 +2206,7 @@ public final class Sodium {
     return libSodium().crypto_sign_ed25519_sk_to_seed(seed, sk);
   }
 
-  static int crypto_sign_ed25519_sk_to_pk(byte[] pk, byte[] sk) {
+  static int crypto_sign_ed25519_sk_to_pk(Pointer pk, Pointer sk) {
     return libSodium().crypto_sign_ed25519_sk_to_pk(pk, sk);
   }
 
@@ -2254,27 +2254,27 @@ public final class Sodium {
     return libSodium().crypto_sign_primitive();
   }
 
-  static int crypto_sign_seed_keypair(byte[] pk, byte[] sk, byte[] seed) {
+  static int crypto_sign_seed_keypair(Pointer pk, Pointer sk, Pointer seed) {
     return libSodium().crypto_sign_seed_keypair(pk, sk, seed);
   }
 
-  static int crypto_sign_keypair(byte[] pk, byte[] sk) {
+  static int crypto_sign_keypair(Pointer pk, Pointer sk) {
     return libSodium().crypto_sign_keypair(pk, sk);
   }
 
-  static int crypto_sign(byte[] sm, LongLongByReference smlen_p, byte[] m, long mlen, byte[] sk) {
+  static int crypto_sign(byte[] sm, @Nullable LongLongByReference smlen_p, byte[] m, long mlen, Pointer sk) {
     return libSodium().crypto_sign(sm, smlen_p, m, mlen, sk);
   }
 
-  static int crypto_sign_open(byte[] m, LongLongByReference mlen_p, byte[] sm, long smlen, byte[] pk) {
+  static int crypto_sign_open(byte[] m, LongLongByReference mlen_p, byte[] sm, long smlen, Pointer pk) {
     return libSodium().crypto_sign_open(m, mlen_p, sm, smlen, pk);
   }
 
-  static int crypto_sign_detached(byte[] sig, LongLongByReference siglen_p, byte[] m, long mlen, byte[] sk) {
+  static int crypto_sign_detached(byte[] sig, @Nullable LongLongByReference siglen_p, byte[] m, long mlen, Pointer sk) {
     return libSodium().crypto_sign_detached(sig, siglen_p, m, mlen, sk);
   }
 
-  static int crypto_sign_verify_detached(byte[] sig, byte[] m, long mlen, byte[] pk) {
+  static int crypto_sign_verify_detached(byte[] sig, byte[] m, long mlen, Pointer pk) {
     return libSodium().crypto_sign_verify_detached(sig, m, mlen, pk);
   }
 
