@@ -1,4 +1,4 @@
-description = 'Scuttlebutt Core library'
+description = 'Scuttlebutt Discovery library'
 
 dependencies {
   compile project(':bytes')
