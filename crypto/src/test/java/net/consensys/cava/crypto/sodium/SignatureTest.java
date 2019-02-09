@@ -43,4 +43,12 @@ class SignatureTest {
     assertTrue(result);
   }
 
+  @Test
+  void checkSignAndVerify() {
+    Signature.KeyPair keyPair = Signature.KeyPair.random();
+    Bytes signed = Signature.sign(Bytes.fromHexString("deadbeef"), keyPair.secretKey());
+    Bytes messageBytes = Signature.verify(signed, keyPair.publicKey());
+    assertEquals(Bytes.fromHexString("deadbeef"), messageBytes);
+  }
+
 }

@@ -502,4 +502,63 @@ public final class Signature {
 
     return true;
   }
+
+  /**
+   * Signs a message for a given key.
+   *
+   * @param message The message to sign.
+   * @param secretKey The secret key to sign the message with.
+   * @return The signature prepended to the message
+   */
+  public static Bytes sign(Bytes message, Signature.SecretKey secretKey) {
+    return Bytes.wrap(sign(message.toArrayUnsafe(), secretKey));
+  }
+
+  /**
+   * Signs a message for a given key.
+   *
+   * @param message The message to sign.
+   * @param secretKey The secret key to sign the message with.
+   * @return The signature prepended to the message
+   */
+  public static byte[] sign(byte[] message, Signature.SecretKey secretKey) {
+    byte[] signature = new byte[(int) Sodium.crypto_sign_bytes() + message.length];
+    LongLongByReference signatureLengthReference = new LongLongByReference();
+    int rc = Sodium.crypto_sign(signature, signatureLengthReference, message, message.length, secretKey.bytesArray());
+    if (rc != 0) {
+      throw new SodiumException("crypto_sign: failed with result " + rc);
+    }
+
+    return signature;
+  }
+
+  /**
+   * Verifies the signature of the signed message using the public key and returns the message.
+   * 
+   * @param signed signed message (signature + message)
+   * @param publicKey pk used to verify the signature
+   * @return the message
+   */
+  public static Bytes verify(Bytes signed, Signature.PublicKey publicKey) {
+    return Bytes.wrap(verify(signed.toArrayUnsafe(), publicKey));
+  }
+
+  /**
+   * Verifies the signature of the signed message using the public key and returns the message.
+   * 
+   * @param signed signed message (signature + message)
+   * @param publicKey pk used to verify the signature
+   * @return the message
+   */
+  public static byte[] verify(byte[] signed, Signature.PublicKey publicKey) {
+
+    byte[] message = new byte[signed.length];
+    LongLongByReference messageLongReference = new LongLongByReference();
+    int rc = Sodium.crypto_sign_open(message, messageLongReference, signed, signed.length, publicKey.bytesArray());
+    if (rc != 0) {
+      throw new SodiumException("crypto_sign_open: failed with result " + rc);
+    }
+
+    return Arrays.copyOfRange(message, 0, messageLongReference.intValue());
+  }
 }
