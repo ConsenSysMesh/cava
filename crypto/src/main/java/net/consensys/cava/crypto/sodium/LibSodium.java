@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.crypto.sodium;
 
+import javax.annotation.Nullable;
+
 import jnr.ffi.Pointer;
 import jnr.ffi.annotations.In;
 import jnr.ffi.annotations.Out;
@@ -1857,13 +1859,13 @@ public interface LibSodium {
   int crypto_sign_ed25519_pk_to_curve25519(@Out byte[] curve25519_pk, @In byte[] ed25519_pk);
 
   // int crypto_sign_ed25519_sk_to_curve25519(unsigned char * curve25519_sk, const unsigned char * ed25519_sk);
-  int crypto_sign_ed25519_sk_to_curve25519(@Out byte[] curve25519_sk, @In byte[] ed25519_sk);
+  int crypto_sign_ed25519_sk_to_curve25519(@Out Pointer curve25519_sk, @In Pointer ed25519_sk);
 
   // int crypto_sign_ed25519_sk_to_seed(unsigned char * seed, const unsigned char * sk);
   int crypto_sign_ed25519_sk_to_seed(@Out byte[] seed, @In byte[] sk);
 
   // int crypto_sign_ed25519_sk_to_pk(unsigned char * pk, const unsigned char * sk);
-  int crypto_sign_ed25519_sk_to_pk(@Out byte[] pk, @In byte[] sk);
+  int crypto_sign_ed25519_sk_to_pk(@Out Pointer pk, @In Pointer sk);
 
   // int crypto_sign_ed25519ph_init(crypto_sign_ed25519ph_state * state);
   int crypto_sign_ed25519ph_init(@Out Pointer state);
@@ -1909,18 +1911,18 @@ public interface LibSodium {
   String crypto_sign_primitive();
 
   // int crypto_sign_seed_keypair(unsigned char * pk, unsigned char * sk, const unsigned char * seed);
-  int crypto_sign_seed_keypair(@Out byte[] pk, @Out byte[] sk, @In byte[] seed);
+  int crypto_sign_seed_keypair(@Out Pointer pk, @Out Pointer sk, @In Pointer seed);
 
   // int crypto_sign_keypair(unsigned char * pk, unsigned char * sk);
-  int crypto_sign_keypair(@Out byte[] pk, @Out byte[] sk);
+  int crypto_sign_keypair(@Out Pointer pk, @Out Pointer sk);
 
   // int crypto_sign(unsigned char * sm, unsigned long long * smlen_p, const unsigned char * m, unsigned long long mlen, const unsigned char * sk);
   int crypto_sign(
       @Out byte[] sm,
-      @Out LongLongByReference smlen_p,
+      @Nullable @Out LongLongByReference smlen_p,
       @In byte[] m,
       @In @u_int64_t long mlen,
-      @In byte[] sk);
+      @In Pointer sk);
 
   // int crypto_sign_open(unsigned char * m, unsigned long long * mlen_p, const unsigned char * sm, unsigned long long smlen, const unsigned char * pk);
   int crypto_sign_open(
@@ -1928,18 +1930,18 @@ public interface LibSodium {
       @Out LongLongByReference mlen_p,
       @In byte[] sm,
       @In @u_int64_t long smlen,
-      @In byte[] pk);
+      @In Pointer pk);
 
   // int crypto_sign_detached(unsigned char * sig, unsigned long long * siglen_p, const unsigned char * m, unsigned long long mlen, const unsigned char * sk);
   int crypto_sign_detached(
       @Out byte[] sig,
-      @Out LongLongByReference siglen_p,
+      @Nullable @Out LongLongByReference siglen_p,
       @In byte[] m,
       @In @u_int64_t long mlen,
-      @In byte[] sk);
+      @In Pointer sk);
 
   // int crypto_sign_verify_detached(const unsigned char * sig, const unsigned char * m, unsigned long long mlen, const unsigned char * pk);
-  int crypto_sign_verify_detached(@In byte[] sig, @In byte[] m, @In @u_int64_t long mlen, @In byte[] pk);
+  int crypto_sign_verify_detached(@In byte[] sig, @In byte[] m, @In @u_int64_t long mlen, @In Pointer pk);
 
   // int crypto_sign_init(crypto_sign_state * state);
   int crypto_sign_init(@Out Pointer state);

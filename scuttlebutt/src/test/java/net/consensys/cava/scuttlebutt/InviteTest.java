@@ -14,12 +14,20 @@ package net.consensys.cava.scuttlebutt;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import net.consensys.cava.crypto.sodium.Signature;
+import net.consensys.cava.crypto.sodium.Sodium;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class InviteTest {
+
+  @BeforeAll
+  static void checkAvailable() {
+    assumeTrue(Sodium.isAvailable(), "Sodium native library is not available");
+  }
 
   @Test
   void invalidPort() {
