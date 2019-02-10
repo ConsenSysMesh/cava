@@ -45,6 +45,11 @@ final class Ed25519KeyPairIdentity implements Identity {
   }
 
   @Override
+  public Bytes publicKeyBytes() {
+    return keyPair.publicKey().bytes();
+  }
+
+  @Override
   public String curveName() {
     return "ed25519";
   }

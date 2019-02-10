@@ -46,6 +46,11 @@ final class SECP256K1PublicKeyIdentity implements Identity {
   }
 
   @Override
+  public Bytes publicKeyBytes() {
+    return publicKey.bytes();
+  }
+
+  @Override
   public String curveName() {
     return "secp256k1";
   }

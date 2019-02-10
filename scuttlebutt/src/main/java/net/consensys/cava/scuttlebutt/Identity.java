@@ -137,6 +137,11 @@ public interface Identity {
   String publicKeyAsBase64String();
 
   /**
+   * Provides the bytes of the public key of the identity.
+   */
+  Bytes publicKeyBytes();
+
+  /**
    * Provides the name of the curve associated with this identity
    * 
    * @return the name of the curve associated with this identity
