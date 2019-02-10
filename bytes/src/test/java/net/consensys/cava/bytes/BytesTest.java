@@ -420,4 +420,58 @@ class BytesTest extends CommonBytesTests {
     Bytes bytes = Bytes.fromHexString("0x");
     assertEquals(Bytes.fromHexString("0x"), bytes.reverse());
   }
+
+  @Test
+  void mutableBytesIncrement() {
+    MutableBytes one = MutableBytes.wrap(new byte[] {1});
+    one.increment();
+    assertEquals(2, one.get(0));
+    assertEquals(1, one.size());
+  }
+
+  @Test
+  void mutableBytesIncrementMax() {
+    MutableBytes maxed = MutableBytes.wrap(new byte[] {1, (byte) 0xFF});
+    maxed.increment();
+    assertEquals(2, maxed.get(0));
+    assertEquals(0, maxed.get(1));
+    assertEquals(2, maxed.size());
+  }
+
+  @Test
+  void mutableBytesIncrementOverflow() {
+    MutableBytes maxed = MutableBytes.wrap(new byte[] {(byte) 0xFF, (byte) 0xFF, (byte) 0xFF});
+    maxed.increment();
+    assertEquals(0, maxed.get(0));
+    assertEquals(0, maxed.get(1));
+    assertEquals(0, maxed.get(2));
+    assertEquals(3, maxed.size());
+  }
+
+  @Test
+  void mutableBytesDecrement() {
+    MutableBytes one = MutableBytes.wrap(new byte[] {2});
+    one.decrement();
+    assertEquals(1, one.get(0));
+    assertEquals(1, one.size());
+  }
+
+  @Test
+  void mutableBytesDecrementMax() {
+    MutableBytes maxed = MutableBytes.wrap(new byte[] {1, (byte) 0x00});
+    maxed.decrement();
+    assertEquals(0, maxed.get(0));
+    assertEquals((byte) 0xFF, maxed.get(1));
+    assertEquals(2, maxed.size());
+  }
+
+  @Test
+  void mutableBytesDecrementOverflow() {
+    MutableBytes maxed = MutableBytes.wrap(new byte[] {(byte) 0x00, (byte) 0x00, (byte) 0x00});
+    maxed.decrement();
+    assertEquals((byte) 0xFF, maxed.get(0));
+    assertEquals((byte) 0xFF, maxed.get(1));
+    assertEquals((byte) 0xFF, maxed.get(2));
+    assertEquals(3, maxed.size());
+  }
 }

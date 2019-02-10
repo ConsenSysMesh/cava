@@ -213,6 +213,42 @@ public interface MutableBytes extends Bytes {
   void set(int i, byte b);
 
   /**
+   * Increments the value of the bytes by 1, treating the value as big endian.
+   *
+   * If incrementing overflows the value, all bits flip, ie incrementing 0xFFFF will return 0x0000.
+   */
+  default MutableBytes increment() {
+    for (int i = size() - 1; i >= 0; i--) {
+      if (get(i) == (byte) 0xFF) {
+        set(i, (byte) 0x00);
+      } else {
+        byte currentValue = get(i);
+        set(i, ++currentValue);
+        break;
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Decrements the value of the bytes by 1, treating the value as big endian.
+   *
+   * If decrementing underflows the value, all bits flip, ie decrementing 0x0000 will return 0xFFFF.
+   */
+  default MutableBytes decrement() {
+    for (int i = size() - 1; i >= 0; i--) {
+      if (get(i) == (byte) 0x00) {
+        set(i, (byte) 0xFF);
+      } else {
+        byte currentValue = get(i);
+        set(i, --currentValue);
+        break;
+      }
+    }
+    return this;
+  }
+
+  /**
    * Set the 4 bytes starting at the specified index to the specified integer value.
    *
    * @param i The index, which must less than or equal to {@code size() - 4}.
