@@ -314,19 +314,42 @@ public final class Sodium {
     return result;
   }
 
-  static <T> T scalarMultBase(Pointer src, long length, BiFunction<Pointer, Long, T> ctr) {
-    if (length != Sodium.crypto_scalarmult_scalarbytes()) {
+  static <T> T scalarMultBase(Pointer n, long nlen, BiFunction<Pointer, Long, T> ctr) {
+    if (nlen != Sodium.crypto_scalarmult_scalarbytes()) {
       throw new IllegalArgumentException(
-          "key length is " + length + " but required " + Sodium.crypto_scalarmult_scalarbytes());
+          "secret key length is " + nlen + " but required " + Sodium.crypto_scalarmult_scalarbytes());
     }
-    long sbytes = Sodium.crypto_scalarmult_bytes();
-    Pointer dst = malloc(Sodium.crypto_scalarmult_bytes());
+    long qbytes = Sodium.crypto_scalarmult_bytes();
+    Pointer dst = malloc(qbytes);
     try {
-      int rc = Sodium.crypto_scalarmult_base(dst, src);
+      int rc = Sodium.crypto_scalarmult_base(dst, n);
       if (rc != 0) {
         throw new SodiumException("crypto_scalarmult_base: failed with result " + rc);
       }
-      return ctr.apply(dst, sbytes);
+      return ctr.apply(dst, qbytes);
+    } catch (Throwable e) {
+      sodium_free(dst);
+      throw e;
+    }
+  }
+
+  static <T> T scalarMult(Pointer n, long nlen, Pointer p, long plen, BiFunction<Pointer, Long, T> ctr) {
+    if (nlen != Sodium.crypto_scalarmult_scalarbytes()) {
+      throw new IllegalArgumentException(
+          "secret key length is " + nlen + " but required " + Sodium.crypto_scalarmult_scalarbytes());
+    }
+    if (plen != Sodium.crypto_scalarmult_bytes()) {
+      throw new IllegalArgumentException(
+          "public key length is " + plen + " but required " + Sodium.crypto_scalarmult_bytes());
+    }
+    long qbytes = Sodium.crypto_scalarmult_bytes();
+    Pointer dst = malloc(qbytes);
+    try {
+      int rc = Sodium.crypto_scalarmult(dst, n, p);
+      if (rc != 0) {
+        throw new SodiumException("crypto_scalarmult_base: failed with result " + rc);
+      }
+      return ctr.apply(dst, qbytes);
     } catch (Throwable e) {
       sodium_free(dst);
       throw e;
@@ -1874,7 +1897,7 @@ public final class Sodium {
     return libSodium().crypto_scalarmult_base(q, n);
   }
 
-  static int crypto_scalarmult(byte[] q, byte[] n, byte[] p) {
+  static int crypto_scalarmult(Pointer q, Pointer n, Pointer p) {
     return libSodium().crypto_scalarmult(q, n, p);
   }
 
