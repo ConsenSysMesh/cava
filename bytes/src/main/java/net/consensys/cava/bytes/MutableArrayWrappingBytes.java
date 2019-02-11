@@ -31,8 +31,34 @@ class MutableArrayWrappingBytes extends ArrayWrappingBytes implements MutableByt
   public void set(int i, byte b) {
     // Check bounds because while the array access would throw, the error message would be confusing
     // for the caller.
-    checkElementIndex(i, size());
-    this.bytes[offset + i] = b;
+    checkElementIndex(i, length);
+    bytes[offset + i] = b;
+  }
+
+  @Override
+  public MutableBytes increment() {
+    for (int i = length - 1; i >= offset; --i) {
+      if (bytes[i] == (byte) 0xFF) {
+        bytes[i] = (byte) 0x00;
+      } else {
+        ++bytes[i];
+        break;
+      }
+    }
+    return this;
+  }
+
+  @Override
+  public MutableBytes decrement() {
+    for (int i = length - 1; i >= offset; --i) {
+      if (bytes[i] == (byte) 0x00) {
+        bytes[i] = (byte) 0xFF;
+      } else {
+        --bytes[i];
+        break;
+      }
+    }
+    return this;
   }
 
   @Override

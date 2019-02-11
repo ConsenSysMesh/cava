@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.bytes;
 
+import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkElementIndex;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
@@ -204,6 +205,33 @@ public interface MutableBytes extends Bytes {
   }
 
   /**
+   * Create a value that contains the specified bytes in their specified order.
+   *
+   * @param bytes The bytes that must compose the returned value.
+   * @return A value containing the specified bytes.
+   */
+  static MutableBytes of(byte... bytes) {
+    return wrap(bytes);
+  }
+
+  /**
+   * Create a value that contains the specified bytes in their specified order.
+   *
+   * @param bytes The bytes.
+   * @return A value containing bytes are the one from {@code bytes}.
+   * @throws IllegalArgumentException if any of the specified would be truncated when storing as a byte.
+   */
+  static MutableBytes of(int... bytes) {
+    byte[] result = new byte[bytes.length];
+    for (int i = 0; i < bytes.length; i++) {
+      int b = bytes[i];
+      checkArgument(b == (((byte) b) & 0xff), "%sth value %s does not fit a byte", i + 1, b);
+      result[i] = (byte) b;
+    }
+    return wrap(result);
+  }
+
+  /**
    * Set a byte in this value.
    *
    * @param i The index of the byte to set.
@@ -256,6 +284,42 @@ public interface MutableBytes extends Bytes {
     set(i++, (byte) ((value >>> 16) & 0xFF));
     set(i++, (byte) ((value >>> 8) & 0xFF));
     set(i, (byte) (value & 0xFF));
+  }
+
+  /**
+   * Increments the value of the bytes by 1, treating the value as big endian.
+   *
+   * If incrementing overflows the value, all bits flip, ie incrementing 0xFFFF will return 0x0000.
+   */
+  default MutableBytes increment() {
+    for (int i = size() - 1; i >= 0; --i) {
+      if (get(i) == (byte) 0xFF) {
+        set(i, (byte) 0x00);
+      } else {
+        byte currentValue = get(i);
+        set(i, ++currentValue);
+        break;
+      }
+    }
+    return this;
+  }
+
+  /**
+   * Decrements the value of the bytes by 1, treating the value as big endian.
+   *
+   * If decrementing underflows the value, all bits flip, ie decrementing 0x0000 will return 0xFFFF.
+   */
+  default MutableBytes decrement() {
+    for (int i = size() - 1; i >= 0; --i) {
+      if (get(i) == (byte) 0x00) {
+        set(i, (byte) 0xFF);
+      } else {
+        byte currentValue = get(i);
+        set(i, --currentValue);
+        break;
+      }
+    }
+    return this;
   }
 
   /**

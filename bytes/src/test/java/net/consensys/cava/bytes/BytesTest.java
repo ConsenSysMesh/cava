@@ -420,4 +420,46 @@ class BytesTest extends CommonBytesTests {
     Bytes bytes = Bytes.fromHexString("0x");
     assertEquals(Bytes.fromHexString("0x"), bytes.reverse());
   }
+
+  @Test
+  void mutableBytesIncrement() {
+    MutableBytes one = MutableBytes.of(1);
+    one.increment();
+    assertEquals(Bytes.of(2), one);
+  }
+
+  @Test
+  void mutableBytesIncrementMax() {
+    MutableBytes maxed = MutableBytes.of(1, 0xFF);
+    maxed.increment();
+    assertEquals(Bytes.of(2, 0), maxed);
+  }
+
+  @Test
+  void mutableBytesIncrementOverflow() {
+    MutableBytes maxed = MutableBytes.of(0xFF, 0xFF, 0xFF);
+    maxed.increment();
+    assertEquals(Bytes.of(0, 0, 0), maxed);
+  }
+
+  @Test
+  void mutableBytesDecrement() {
+    MutableBytes one = MutableBytes.of(2);
+    one.decrement();
+    assertEquals(Bytes.of(1), one);
+  }
+
+  @Test
+  void mutableBytesDecrementMax() {
+    MutableBytes maxed = MutableBytes.of(1, 0);
+    maxed.decrement();
+    assertEquals(Bytes.of(0, 0xFF), maxed);
+  }
+
+  @Test
+  void mutableBytesDecrementOverflow() {
+    MutableBytes maxed = MutableBytes.of(0x00, 0x00, 0x00);
+    maxed.decrement();
+    assertEquals(Bytes.of(0xFF, 0xFF, 0xFF), maxed);
+  }
 }

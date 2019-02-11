@@ -49,6 +49,16 @@ final class DelegatingMutableBytes48 implements MutableBytes48 {
   }
 
   @Override
+  public MutableBytes increment() {
+    return delegate.increment();
+  }
+
+  @Override
+  public MutableBytes decrement() {
+    return delegate.decrement();
+  }
+
+  @Override
   public MutableBytes mutableSlice(int i, int length) {
     return delegate.mutableSlice(i, length);
   }
