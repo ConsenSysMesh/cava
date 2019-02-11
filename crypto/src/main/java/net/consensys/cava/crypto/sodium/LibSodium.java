@@ -1519,7 +1519,7 @@ public interface LibSodium {
   int crypto_scalarmult_base(@Out Pointer q, @In Pointer n);
 
   // int crypto_scalarmult(unsigned char * q, const unsigned char * n, const unsigned char * p);
-  int crypto_scalarmult(@Out byte[] q, @In byte[] n, @In byte[] p);
+  int crypto_scalarmult(@Out Pointer q, @In Pointer n, @In Pointer p);
 
   // size_t crypto_secretbox_xsalsa20poly1305_keybytes(void);
   @ssize_t
