@@ -275,7 +275,24 @@ public final class AES256GCM implements AutoCloseable {
     }
 
     /**
-     * Generate a new {@link Nonce} using a random generator.
+     * Create a zero {@link Nonce}.
+     *
+     * @return A zero nonce.
+     */
+    public static Nonce zero() {
+      int length = length();
+      Pointer ptr = Sodium.malloc(length);
+      try {
+        Sodium.sodium_memzero(ptr, length);
+        return new Nonce(ptr, length);
+      } catch (Throwable e) {
+        Sodium.sodium_free(ptr);
+        throw e;
+      }
+    }
+
+    /**
+     * Generate a random {@link Nonce}.
      *
      * @return A randomly generated nonce.
      */
