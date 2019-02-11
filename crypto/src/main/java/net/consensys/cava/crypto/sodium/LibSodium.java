@@ -423,10 +423,10 @@ public interface LibSodium {
   long crypto_auth_hmacsha512_keybytes();
 
   // int crypto_auth_hmacsha512(unsigned char * out, const unsigned char * in, unsigned long long inlen, const unsigned char * k);
-  int crypto_auth_hmacsha512(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen, @In byte[] k);
+  int crypto_auth_hmacsha512(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen, @In Pointer k);
 
   // int crypto_auth_hmacsha512_verify(const unsigned char * h, const unsigned char * in, unsigned long long inlen, const unsigned char * k);
-  int crypto_auth_hmacsha512_verify(@In byte[] h, @In byte[] in, @In @u_int64_t long inlen, @In byte[] k);
+  int crypto_auth_hmacsha512_verify(@In byte[] h, @In byte[] in, @In @u_int64_t long inlen, @In Pointer k);
 
   // size_t crypto_auth_hmacsha512_statebytes(void);
   @ssize_t
@@ -453,10 +453,10 @@ public interface LibSodium {
   long crypto_auth_hmacsha512256_keybytes();
 
   // int crypto_auth_hmacsha512256(unsigned char * out, const unsigned char * in, unsigned long long inlen, const unsigned char * k);
-  int crypto_auth_hmacsha512256(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen, @In byte[] k);
+  int crypto_auth_hmacsha512256(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen, @In Pointer k);
 
   // int crypto_auth_hmacsha512256_verify(const unsigned char * h, const unsigned char * in, unsigned long long inlen, const unsigned char * k);
-  int crypto_auth_hmacsha512256_verify(@In byte[] h, @In byte[] in, @In @u_int64_t long inlen, @In byte[] k);
+  int crypto_auth_hmacsha512256_verify(@In byte[] h, @In byte[] in, @In @u_int64_t long inlen, @In Pointer k);
 
   // size_t crypto_auth_hmacsha512256_statebytes(void);
   @ssize_t
@@ -523,10 +523,10 @@ public interface LibSodium {
   long crypto_auth_hmacsha256_keybytes();
 
   // int crypto_auth_hmacsha256(unsigned char * out, const unsigned char * in, unsigned long long inlen, const unsigned char * k);
-  int crypto_auth_hmacsha256(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen, @In byte[] k);
+  int crypto_auth_hmacsha256(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen, @In Pointer k);
 
   // int crypto_auth_hmacsha256_verify(const unsigned char * h, const unsigned char * in, unsigned long long inlen, const unsigned char * k);
-  int crypto_auth_hmacsha256_verify(@In byte[] h, @In byte[] in, @In @u_int64_t long inlen, @In byte[] k);
+  int crypto_auth_hmacsha256_verify(@In byte[] h, @In byte[] in, @In @u_int64_t long inlen, @In Pointer k);
 
   // size_t crypto_auth_hmacsha256_statebytes(void);
   @ssize_t
