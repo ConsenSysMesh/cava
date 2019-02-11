@@ -120,6 +120,33 @@ public final class Box implements AutoCloseable {
     }
 
     /**
+     * Transforms the Ed25519 signature public key to a Curve25519 public key. See
+     * https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
+     *
+     * @param publicKey the signature public key
+     * @return the public key as a Curve25519 public key
+     */
+    public static PublicKey forSignaturePublicKey(Signature.PublicKey publicKey) {
+      Pointer publicKeyPtr = null;
+      try {
+        int publicKeyLength = PublicKey.length();
+        publicKeyPtr = Sodium.malloc(publicKeyLength);
+        int rc = Sodium.crypto_sign_ed25519_pk_to_curve25519(publicKeyPtr, publicKey.ptr);
+        if (rc != 0) {
+          throw new SodiumException("crypto_sign_ed25519_pk_to_curve25519: failed with results " + rc);
+        }
+        PublicKey pk = new PublicKey(publicKeyPtr, publicKeyLength);
+        publicKeyPtr = null;
+        return pk;
+      } catch (Throwable e) {
+        if (publicKeyPtr != null) {
+          Sodium.sodium_free(publicKeyPtr);
+        }
+        throw e;
+      }
+    }
+
+    /**
      * Obtain the length of the key in bytes (32).
      *
      * @return The length of the key in bytes (32).
@@ -224,6 +251,34 @@ public final class Box implements AutoCloseable {
             "key must be " + Sodium.crypto_box_secretkeybytes() + " bytes, got " + bytes.length);
       }
       return Sodium.dup(bytes, SecretKey::new);
+    }
+
+    /**
+     * Transforms the Ed25519 secret key to a Curve25519 secret key. See
+     * https://libsodium.gitbook.io/doc/advanced/ed25519-curve25519
+     *
+     * @param secretKey the signature secret key
+     * @return the secret key as a Curve25519 secret key
+     */
+    public static SecretKey forSignatureSecretKey(Signature.SecretKey secretKey) {
+      checkArgument(secretKey.ptr != null, "Signature.SecretKey has been destroyed");
+      Pointer secretKeyPtr = null;
+      try {
+        int secretKeyLength = SecretKey.length();
+        secretKeyPtr = Sodium.malloc(secretKeyLength);
+        int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(secretKeyPtr, secretKey.ptr);
+        if (rc != 0) {
+          throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
+        }
+        SecretKey sk = new SecretKey(secretKeyPtr, secretKeyLength);
+        secretKeyPtr = null;
+        return sk;
+      } catch (Throwable e) {
+        if (secretKeyPtr != null) {
+          Sodium.sodium_free(secretKeyPtr);
+        }
+        throw e;
+      }
     }
 
     /**
@@ -485,25 +540,7 @@ public final class Box implements AutoCloseable {
      * @return A {@link KeyPair}.
      */
     public static KeyPair forSignatureKeyPair(Signature.KeyPair keyPair) {
-      Pointer signatureSecretKeyPtr = keyPair.secretKey().ptr;
-      checkArgument(signatureSecretKeyPtr != null, "Signature.SecretKey has been destroyed");
-      Pointer secretKey = null;
-      try {
-        int secretKeyLength = SecretKey.length();
-        secretKey = Sodium.malloc(secretKeyLength);
-        int rc = Sodium.crypto_sign_ed25519_sk_to_curve25519(secretKey, keyPair.secretKey().ptr);
-        if (rc != 0) {
-          throw new SodiumException("crypto_sign_ed25519_sk_to_curve25519: failed with results " + rc);
-        }
-        SecretKey sk = new SecretKey(secretKey, secretKeyLength);
-        secretKey = null;
-        return forSecretKey(sk);
-      } catch (Throwable e) {
-        if (secretKey != null) {
-          Sodium.sodium_free(secretKey);
-        }
-        throw e;
-      }
+      return forSecretKey(SecretKey.forSignatureSecretKey(keyPair.secretKey()));
     }
 
     /**

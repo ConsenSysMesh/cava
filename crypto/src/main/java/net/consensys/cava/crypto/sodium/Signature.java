@@ -59,7 +59,7 @@ public final class Signature {
    * A signing public key.
    */
   public static final class PublicKey {
-    private final Pointer ptr;
+    final Pointer ptr;
     private final int length;
 
     private PublicKey(Pointer ptr, int length) {

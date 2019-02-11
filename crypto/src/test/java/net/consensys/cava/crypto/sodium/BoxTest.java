@@ -14,6 +14,7 @@ package net.consensys.cava.crypto.sodium;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -178,5 +179,16 @@ class BoxTest {
     Signature.KeyPair signKeyPair = Signature.KeyPair.random();
     Box.KeyPair boxKeyPair = Box.KeyPair.forSignatureKeyPair(signKeyPair);
     assertNotNull(boxKeyPair);
+  }
+
+  @Test
+  void checkBoxKeysForSignatureKeys() {
+    Signature.KeyPair keyPair = Signature.KeyPair.random();
+    Box.PublicKey boxPubKey = Box.PublicKey.forSignaturePublicKey(keyPair.publicKey());
+    Box.SecretKey boxSecretKey = Box.SecretKey.forSignatureSecretKey(keyPair.secretKey());
+    assertEquals(boxPubKey, Box.KeyPair.forSecretKey(boxSecretKey).publicKey());
+
+    Box.KeyPair boxKeyPair = Box.KeyPair.forSignatureKeyPair(keyPair);
+    assertEquals(boxKeyPair, Box.KeyPair.forSecretKey(boxSecretKey));
   }
 }
