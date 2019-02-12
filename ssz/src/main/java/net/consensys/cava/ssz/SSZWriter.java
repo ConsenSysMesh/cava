@@ -95,6 +95,18 @@ public interface SSZWriter {
   }
 
   /**
+   * Write an unsigned big integer to the output.
+   *
+   * @param value The integer to write.
+   * @param bitLength The bit length of the integer value.
+   * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   * @throws IllegalArgumentException If the value is negative
+   */
+  default void writeUBigInteger(BigInteger value, int bitLength) {
+    writeSSZ(SSZ.encodeUnsignedBigIntegerToByteArray(value, bitLength));
+  }
+
+  /**
    * Write a big integer to the output.
    *
    * @param value The integer to write.
@@ -149,6 +161,7 @@ public interface SSZWriter {
    * @param value The integer to write.
    * @param bitLength The bit length of the integer value.
    * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   * @throws IllegalArgumentException If the value is negative
    */
   default void writeUInt(int value, int bitLength) {
     writeSSZ(SSZ.encodeULongToByteArray(value, bitLength));
@@ -160,6 +173,7 @@ public interface SSZWriter {
    * @param value The long value to write.
    * @param bitLength The bit length of the integer value.
    * @throws IllegalArgumentException If the value is too large for the specified bit length.
+   * @throws IllegalArgumentException If the value is negative
    */
   default void writeULong(long value, int bitLength) {
     writeSSZ(SSZ.encodeULongToByteArray(value, bitLength));

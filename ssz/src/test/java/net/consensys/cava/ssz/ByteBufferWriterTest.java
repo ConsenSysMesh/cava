@@ -70,7 +70,7 @@ class ByteBufferWriterTest {
     ByteBuffer buffer = ByteBuffer.allocate(64);
     SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(100000), 24));
     buffer.flip();
-    assertEquals(fromHexString("0186a0"), Bytes.wrapByteBuffer(buffer));
+    assertEquals(fromHexString("A08601"), Bytes.wrapByteBuffer(buffer));
 
     buffer.clear();
     SSZ.encodeTo(buffer, writer -> writer.writeBigInteger(BigInteger.valueOf(127).pow(16), 112));
