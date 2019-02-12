@@ -169,13 +169,24 @@ public final class Auth {
     }
 
     /**
+     * Obtain the bytes of this key.
+     *
+     * WARNING: This will cause the key to be copied into heap memory.
+     *
      * @return The bytes of this key.
+     * @deprecated Use {@link #bytesArray()} to obtain the bytes as an array, which should be overwritten when no longer
+     *             required.
      */
     public Bytes bytes() {
       return Bytes.wrap(bytesArray());
     }
 
     /**
+     * Obtain the bytes of this key.
+     *
+     * WARNING: This will cause the key to be copied into heap memory. The returned array should be overwritten when no
+     * longer required.
+     *
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {

@@ -218,13 +218,24 @@ public final class KeyExchange {
     }
 
     /**
+     * Obtain the bytes of this key.
+     *
+     * WARNING: This will cause the key to be copied into heap memory.
+     *
      * @return The bytes of this key.
+     * @deprecated Use {@link #bytesArray()} to obtain the bytes as an array, which should be overwritten when no longer
+     *             required.
      */
     public Bytes bytes() {
       return Bytes.wrap(bytesArray());
     }
 
     /**
+     * Obtain the bytes of this key.
+     *
+     * WARNING: This will cause the key to be copied into heap memory. The returned array should be overwritten when no
+     * longer required.
+     *
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
@@ -471,8 +482,9 @@ public final class KeyExchange {
   /**
    * A KeyExchange session key.
    */
-  public static final class SessionKey {
-    private final Pointer ptr;
+  public static final class SessionKey implements Destroyable {
+    @Nullable
+    private Pointer ptr;
     private final int length;
 
     private SessionKey(Pointer ptr, int length) {
@@ -482,7 +494,21 @@ public final class KeyExchange {
 
     @Override
     protected void finalize() {
-      Sodium.sodium_free(ptr);
+      destroy();
+    }
+
+    @Override
+    public void destroy() {
+      if (ptr != null) {
+        Pointer p = ptr;
+        ptr = null;
+        Sodium.sodium_free(p);
+      }
+    }
+
+    @Override
+    public boolean isDestroyed() {
+      return ptr == null;
     }
 
     /**
@@ -536,26 +562,40 @@ public final class KeyExchange {
       if (!(obj instanceof SessionKey)) {
         return false;
       }
+      checkState(this.ptr != null, "SessionKey has been destroyed");
       SessionKey other = (SessionKey) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
     }
 
     @Override
     public int hashCode() {
+      checkState(this.ptr != null, "SessionKey has been destroyed");
       return Sodium.hashCode(ptr, length);
     }
 
     /**
+     * Obtain the bytes of this key.
+     *
+     * WARNING: This will cause the key to be copied into heap memory.
+     *
      * @return The bytes of this key.
+     * @deprecated Use {@link #bytesArray()} to obtain the bytes as an array, which should be overwritten when no longer
+     *             required.
      */
     public Bytes bytes() {
       return Bytes.wrap(bytesArray());
     }
 
     /**
+     * Obtain the bytes of this key.
+     *
+     * WARNING: This will cause the key to be copied into heap memory. The returned array should be overwritten when no
+     * longer required.
+     *
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
+      checkState(ptr != null, "SessionKey has been destroyed");
       return Sodium.reify(ptr, length);
     }
   }
