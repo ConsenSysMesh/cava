@@ -133,9 +133,9 @@ class BytesSSZWriterTest {
 
   @Test
   void shouldWriteSignedBigIntegers() {
-    assertEquals(fromHexString("0186A0"), SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(100000), 24)));
-    assertEquals(fromHexString("EB16"), SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(-5354), 16)));
-    assertEquals(fromHexString("8000"), SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(-32768), 16)));
+    assertEquals(fromHexString("A08601"), SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(100000), 24)));
+    assertEquals(fromHexString("16EB"), SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(-5354), 16)));
+    assertEquals(fromHexString("0080"), SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(-32768), 16)));
     assertEquals(
         fromHexString("01F81D7AF1971CEDD9BBA5EFCEE1"),
         SSZ.encode(writer -> writer.writeBigInteger(BigInteger.valueOf(127).pow(16), 112)));

@@ -244,6 +244,23 @@ public final class SSZ {
     return Bytes.wrap(encodeBigIntegerToByteArray(value, bitLength));
   }
 
+  /**
+   * Encode a big integer to a {@link Bytes} value.
+   *
+   * @param value The big integer to encode.
+   * @param bitLength The bit length of the integer value (must be a multiple of 8).
+   * @return The SSZ encoding in a {@link Bytes} value.
+   * @throws IllegalArgumentException If the value is too large for the specified {@code bitLength}.
+   */
+  public static Bytes encodeUnsignedBigInteger(BigInteger value, int bitLength) {
+    return Bytes.wrap(encodeUnsignedBigIntegerToByteArray(value, bitLength));
+  }
+
+  public static byte[] encodeUnsignedBigIntegerToByteArray(BigInteger value, int bitLength) {
+    checkArgument(value.compareTo(BigInteger.ZERO) >= 0, "Value must be positive or zero");
+    return encodeBigIntegerToByteArray(value, bitLength);
+  }
+
   public static byte[] encodeBigIntegerToByteArray(BigInteger value, int bitLength) {
     checkArgument(bitLength % 8 == 0, "bitLength must be a multiple of 8");
 
@@ -258,17 +275,18 @@ public final class SSZ {
     int byteLength = bitLength / 8;
     checkArgument(valueBytes <= byteLength, "value is too large for the desired bitLength");
 
+    byte[] encoded;
     if (valueBytes == byteLength && offset == 0) {
-      return bytes;
-    }
-
-    byte[] encoded = new byte[byteLength];
-    int padLength = byteLength - valueBytes;
-    System.arraycopy(bytes, offset, encoded, padLength, valueBytes);
-    if (value.signum() < 0) {
-      // Extend the two's-compliment integer by setting all leading bits to 1.
-      for (int i = 0; i < padLength; i++) {
-        encoded[i] = (byte) 0xFF;
+      encoded = bytes;
+    } else {
+      encoded = new byte[byteLength];
+      int padLength = byteLength - valueBytes;
+      System.arraycopy(bytes, offset, encoded, padLength, valueBytes);
+      if (value.signum() < 0) {
+        // Extend the two's-compliment integer by setting all leading bits to 1.
+        for (int i = 0; i < padLength; i++) {
+          encoded[i] = (byte) 0xFF;
+        }
       }
     }
     // reverse the array to make it little endian
@@ -351,6 +369,7 @@ public final class SSZ {
 
     int zeros = Long.numberOfLeadingZeros(value);
     int valueBytes = 8 - (zeros / 8);
+    checkArgument(zeros == 0 || value >= 0, "Value must be positive or zero");
 
     int byteLength = bitLength / 8;
     checkArgument(valueBytes <= byteLength, "value is too large for the desired bitLength");
