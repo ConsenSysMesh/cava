@@ -16,13 +16,11 @@ package net.consensys.cava.crypto.sodium;
 // https://github.com/jedisct1/libsodium-doc/blob/424b7480562c2e063bc8c52c452ef891621c8480/public-key_cryptography/public-key_signatures.md
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Arrays;
 import java.util.Objects;
-import javax.annotation.Nullable;
 import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
@@ -59,17 +57,10 @@ public final class Signature {
    * A signing public key.
    */
   public static final class PublicKey {
-    final Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private PublicKey(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+      this.value = new Allocated(ptr, length);
     }
 
     /**
@@ -124,6 +115,17 @@ public final class Signature {
       return Signature.verifyDetached(message, signature, this);
     }
 
+    /**
+     * Verifies the signature of a message.
+     *
+     * @param message the message itself
+     * @param signature the signature of the message
+     * @return true if the signature matches the message according to this public key
+     */
+    public boolean verify(Allocated message, Allocated signature) {
+      return Signature.verifyDetached(message, signature, this);
+    }
+
     @Override
     public boolean equals(Object obj) {
       if (obj == this) {
@@ -133,26 +135,26 @@ public final class Signature {
         return false;
       }
       PublicKey other = (PublicKey) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return Objects.equals(this.value, other.value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this key.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -160,32 +162,20 @@ public final class Signature {
    * A Signature secret key.
    */
   public static final class SecretKey implements Destroyable {
-    @Nullable
-    Pointer ptr;
-    private final int length;
+    Allocated value;
 
     private SecretKey(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -239,15 +229,14 @@ public final class Signature {
       if (!(obj instanceof SecretKey)) {
         return false;
       }
-      checkState(ptr != null, "SecretKey has been destroyed");
+
       SecretKey other = (SecretKey) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(this.value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "SecretKey has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return Objects.hashCode(value);
     }
 
     /**
@@ -260,7 +249,7 @@ public final class Signature {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -272,8 +261,7 @@ public final class Signature {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "SecretKey has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -281,17 +269,10 @@ public final class Signature {
    * A Signature key pair seed.
    */
   public static final class Seed {
-    private final Pointer ptr;
-    private final int length;
+    private final Allocated value;
 
     private Seed(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+      this.value = new Allocated(ptr, length);
     }
 
     /**
@@ -355,26 +336,26 @@ public final class Signature {
         return false;
       }
       Seed other = (Seed) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return Objects.hashCode(value);
     }
 
     /**
      * @return The bytes of this seed.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this seed.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -404,11 +385,11 @@ public final class Signature {
      * @return A {@link KeyPair}.
      */
     public static KeyPair forSecretKey(SecretKey secretKey) {
-      checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
+      checkArgument(!secretKey.value.isDestroyed(), "SecretKey has been destroyed");
       int publicKeyLength = PublicKey.length();
       Pointer publicKey = Sodium.malloc(publicKeyLength);
       try {
-        int rc = Sodium.crypto_sign_ed25519_sk_to_pk(publicKey, secretKey.ptr);
+        int rc = Sodium.crypto_sign_ed25519_sk_to_pk(publicKey, secretKey.value.pointer());
         if (rc != 0) {
           throw new SodiumException("crypto_sign_ed25519_sk_to_pk: failed with result " + rc);
         }
@@ -468,7 +449,7 @@ public final class Signature {
       try {
         int secretKeyLength = SecretKey.length();
         secretKey = Sodium.malloc(secretKeyLength);
-        int rc = Sodium.crypto_sign_seed_keypair(publicKey, secretKey, seed.ptr);
+        int rc = Sodium.crypto_sign_seed_keypair(publicKey, secretKey, seed.value.pointer());
         if (rc != 0) {
           throw new SodiumException("crypto_sign_seed_keypair: failed with result " + rc);
         }
@@ -540,10 +521,33 @@ public final class Signature {
    * @param secretKey The secret key to sign the message with.
    * @return The signature of the message.
    */
+  public static Allocated signDetached(Allocated message, SecretKey secretKey) {
+    checkArgument(!secretKey.value.isDestroyed(), "SecretKey has been destroyed");
+    Allocated signature = Allocated.allocate(Sodium.crypto_sign_bytes());
+    int rc = Sodium.crypto_sign_detached(
+        signature.pointer(),
+        new LongLongByReference(Sodium.crypto_sign_bytes()),
+        message.pointer(),
+        (long) message.length(),
+        secretKey.value.pointer());
+    if (rc != 0) {
+      throw new SodiumException("crypto_sign_detached: failed with result " + rc);
+    }
+
+    return signature;
+  }
+
+  /**
+   * Signs a message for a given key.
+   *
+   * @param message The message to sign.
+   * @param secretKey The secret key to sign the message with.
+   * @return The signature of the message.
+   */
   public static byte[] signDetached(byte[] message, SecretKey secretKey) {
-    checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
+    checkArgument(!secretKey.value.isDestroyed(), "SecretKey has been destroyed");
     byte[] signature = new byte[(int) Sodium.crypto_sign_bytes()];
-    int rc = Sodium.crypto_sign_detached(signature, null, message, message.length, secretKey.ptr);
+    int rc = Sodium.crypto_sign_detached(signature, null, message, message.length, secretKey.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_sign_detached: failed with result " + rc);
     }
@@ -571,8 +575,32 @@ public final class Signature {
    * @param publicKey The secret key of the receiver.
    * @return whether the signature matches the message according to the public key.
    */
+  public static boolean verifyDetached(Allocated message, Allocated signature, PublicKey publicKey) {
+    int rc = Sodium.crypto_sign_verify_detached(
+        signature.pointer(),
+        message.pointer(),
+        message.length(),
+        publicKey.value.pointer());
+    if (rc == -1) {
+      return false;
+    }
+    if (rc != 0) {
+      throw new SodiumException("crypto_sign_verify_detached: failed with result " + rc);
+    }
+
+    return true;
+  }
+
+  /**
+   * Decrypt a message using a given key.
+   *
+   * @param message The cipher text to decrypt.
+   * @param signature The public key of the sender.
+   * @param publicKey The secret key of the receiver.
+   * @return whether the signature matches the message according to the public key.
+   */
   public static boolean verifyDetached(byte[] message, byte[] signature, PublicKey publicKey) {
-    int rc = Sodium.crypto_sign_verify_detached(signature, message, message.length, publicKey.ptr);
+    int rc = Sodium.crypto_sign_verify_detached(signature, message, message.length, publicKey.value.pointer());
     if (rc == -1) {
       return false;
     }
@@ -602,9 +630,9 @@ public final class Signature {
    * @return The signature prepended to the message
    */
   public static byte[] sign(byte[] message, SecretKey secretKey) {
-    checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
+    checkArgument(!secretKey.value.isDestroyed(), "SecretKey has been destroyed");
     byte[] signature = new byte[(int) Sodium.crypto_sign_bytes() + message.length];
-    int rc = Sodium.crypto_sign(signature, null, message, message.length, secretKey.ptr);
+    int rc = Sodium.crypto_sign(signature, null, message, message.length, secretKey.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_sign: failed with result " + rc);
     }
@@ -633,7 +661,7 @@ public final class Signature {
   public static byte[] verify(byte[] signed, PublicKey publicKey) {
     byte[] message = new byte[signed.length];
     LongLongByReference messageLongReference = new LongLongByReference();
-    int rc = Sodium.crypto_sign_open(message, messageLongReference, signed, signed.length, publicKey.ptr);
+    int rc = Sodium.crypto_sign_open(message, messageLongReference, signed, signed.length, publicKey.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_sign_open: failed with result " + rc);
     }

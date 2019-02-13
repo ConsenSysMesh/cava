@@ -77,17 +77,10 @@ public final class PasswordHash {
    * A PasswordHash salt.
    */
   public static final class Salt {
-    private final Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Salt(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+      this.value = new Allocated(ptr, length);
     }
 
     /**
@@ -151,26 +144,26 @@ public final class PasswordHash {
         return false;
       }
       Salt other = (Salt) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this salt.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this salt.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -552,7 +545,8 @@ public final class PasswordHash {
     }
     byte[] out = new byte[length];
 
-    int rc = Sodium.crypto_pwhash(out, length, password, password.length, salt.ptr, opsLimit, memLimit, algorithm.id);
+    int rc = Sodium
+        .crypto_pwhash(out, length, password, password.length, salt.value.pointer(), opsLimit, memLimit, algorithm.id);
     if (rc != 0) {
       throw new SodiumException("crypto_pwhash: failed with result " + rc);
     }

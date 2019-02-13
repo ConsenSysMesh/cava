@@ -12,7 +12,9 @@
  */
 package net.consensys.cava.crypto;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 import static java.nio.file.StandardOpenOption.READ;
 import static net.consensys.cava.crypto.Hash.keccak256;
 import static net.consensys.cava.crypto.SECP256K1.Parameters.CURVE;
@@ -29,7 +31,11 @@ import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.nio.channels.FileChannel;
 import java.nio.file.Path;
-import java.security.*;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
+import java.security.SecureRandom;
 import java.security.spec.ECGenParameterSpec;
 import java.util.Arrays;
 import javax.annotation.Nullable;

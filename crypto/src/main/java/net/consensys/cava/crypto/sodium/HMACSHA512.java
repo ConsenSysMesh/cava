@@ -13,11 +13,9 @@
 package net.consensys.cava.crypto.sodium;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 import net.consensys.cava.bytes.Bytes;
 
-import javax.annotation.Nullable;
 import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
@@ -33,32 +31,20 @@ public final class HMACSHA512 {
    * A HMACSHA512 secret key.
    */
   public static final class Key implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
-    private Key(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+    Key(Pointer ptr, int length) {
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -121,30 +107,27 @@ public final class HMACSHA512 {
       if (!(obj instanceof Key)) {
         return false;
       }
-      checkState(ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this key.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -167,13 +150,13 @@ public final class HMACSHA512 {
    * @return the authenticator of the message
    */
   public static byte[] authenticate(byte[] message, Key key) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     long authBytes = Sodium.crypto_auth_hmacsha512_bytes();
     if (authBytes > Integer.MAX_VALUE) {
       throw new SodiumException("crypto_auth_hmacsha512_bytes: " + authBytes + " is too large");
     }
     byte[] out = new byte[(int) authBytes];
-    int rc = Sodium.crypto_auth_hmacsha512(out, message, message.length, key.ptr);
+    int rc = Sodium.crypto_auth_hmacsha512(out, message, message.length, key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_auth_hmacsha512: failed with result " + rc);
     }
@@ -201,7 +184,7 @@ public final class HMACSHA512 {
    * @return true if the authenticator verifies the message according to the secret, false otherwise
    */
   public static boolean verify(byte[] authenticator, byte[] in, Key key) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     if (authenticator.length != Sodium.crypto_auth_hmacsha512_bytes()) {
       throw new IllegalArgumentException(
           "Expected authenticator of "
@@ -210,7 +193,7 @@ public final class HMACSHA512 {
               + authenticator.length
               + " instead");
     }
-    int rc = Sodium.crypto_auth_hmacsha512_verify(authenticator, in, in.length, key.ptr);
+    int rc = Sodium.crypto_auth_hmacsha512_verify(authenticator, in, in.length, key.value.pointer());
     return rc == 0;
   }
 }

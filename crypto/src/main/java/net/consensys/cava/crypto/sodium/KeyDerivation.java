@@ -18,7 +18,6 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Arrays;
-import javax.annotation.Nullable;
 import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
@@ -62,32 +61,20 @@ public final class KeyDerivation {
    * A KeyDerivation master key.
    */
   public static final class MasterKey implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private MasterKey(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -181,12 +168,12 @@ public final class KeyDerivation {
      * @return The derived sub key.
      */
     public byte[] deriveKeyArray(int length, long subkeyId, byte[] context) {
-      checkState(ptr != null, "MasterKey has been destroyed");
+      checkState(!value.isDestroyed(), "MasterKey has been destroyed");
       assertSubKeyLength(length);
       assertContextLength(context);
 
       byte[] subKey = new byte[length];
-      int rc = Sodium.crypto_kdf_derive_from_key(subKey, subKey.length, subkeyId, context, ptr);
+      int rc = Sodium.crypto_kdf_derive_from_key(subKey, subKey.length, subkeyId, context, value.pointer());
       if (rc != 0) {
         throw new SodiumException("crypto_kdf_derive_from_key: failed with result " + rc);
       }
@@ -237,15 +224,13 @@ public final class KeyDerivation {
       if (!(obj instanceof MasterKey)) {
         return false;
       }
-      checkState(ptr != null, "MasterKey has been destroyed");
       MasterKey other = (MasterKey) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "MasterKey has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
@@ -258,7 +243,7 @@ public final class KeyDerivation {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -270,8 +255,7 @@ public final class KeyDerivation {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "MasterKey has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 

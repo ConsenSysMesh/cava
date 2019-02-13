@@ -892,6 +892,10 @@ public final class Sodium {
     return libSodium().crypto_hash_sha256(out, in, inlen);
   }
 
+  static int crypto_hash_sha256(Pointer out, Pointer in, long inlen) {
+    return libSodium().crypto_hash_sha256(out, in, inlen);
+  }
+
   static int crypto_hash_sha256_init(Pointer state) {
     return libSodium().crypto_hash_sha256_init(state);
   }
@@ -1354,7 +1358,7 @@ public final class Sodium {
     return libSodium().crypto_generichash_statebytes();
   }
 
-  static int crypto_generichash(byte[] out, long outlen, byte[] in, long inlen, byte[] key, long keylen) {
+  static int crypto_generichash(Pointer out, long outlen, Pointer in, long inlen, Pointer key, long keylen) {
     return libSodium().crypto_generichash(out, outlen, in, inlen, key, keylen);
   }
 
@@ -1961,7 +1965,15 @@ public final class Sodium {
     return libSodium().crypto_secretbox_easy(c, m, mlen, n, k);
   }
 
+  static int crypto_secretbox_easy(Pointer c, Pointer m, long mlen, Pointer n, Pointer k) {
+    return libSodium().crypto_secretbox_easy(c, m, mlen, n, k);
+  }
+
   static int crypto_secretbox_open_easy(byte[] m, byte[] c, long clen, Pointer n, Pointer k) {
+    return libSodium().crypto_secretbox_open_easy(m, c, clen, n, k);
+  }
+
+  static int crypto_secretbox_open_easy(Pointer m, Pointer c, long clen, Pointer n, Pointer k) {
     return libSodium().crypto_secretbox_open_easy(m, c, clen, n, k);
   }
 
@@ -2295,6 +2307,19 @@ public final class Sodium {
 
   static int crypto_sign_detached(byte[] sig, @Nullable LongLongByReference siglen_p, byte[] m, long mlen, Pointer sk) {
     return libSodium().crypto_sign_detached(sig, siglen_p, m, mlen, sk);
+  }
+
+  static int crypto_sign_detached(
+      Pointer sig,
+      @Nullable LongLongByReference siglen_p,
+      Pointer m,
+      long mlen,
+      Pointer sk) {
+    return libSodium().crypto_sign_detached(sig, siglen_p, m, mlen, sk);
+  }
+
+  static int crypto_sign_verify_detached(Pointer sig, Pointer m, long mlen, Pointer pk) {
+    return libSodium().crypto_sign_verify_detached(sig, m, mlen, pk);
   }
 
   static int crypto_sign_verify_detached(byte[] sig, byte[] m, long mlen, Pointer pk) {

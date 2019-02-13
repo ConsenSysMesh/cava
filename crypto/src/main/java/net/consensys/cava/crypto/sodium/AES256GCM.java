@@ -13,7 +13,6 @@
 package net.consensys.cava.crypto.sodium;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 import static java.util.Objects.requireNonNull;
 
 import net.consensys.cava.bytes.Bytes;
@@ -79,32 +78,20 @@ public final class AES256GCM implements AutoCloseable {
    * An AES256-GSM key.
    */
   public static final class Key implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Key(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -183,15 +170,13 @@ public final class AES256GCM implements AutoCloseable {
       if (!(obj instanceof Key)) {
         return false;
       }
-      checkState(this.ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(this.ptr != null, "Key has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
@@ -204,7 +189,7 @@ public final class AES256GCM implements AutoCloseable {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -216,8 +201,7 @@ public final class AES256GCM implements AutoCloseable {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -225,17 +209,10 @@ public final class AES256GCM implements AutoCloseable {
    * An AES256-GSM nonce.
    */
   public static final class Nonce {
-    private final Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Nonce(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+      this.value = new Allocated(ptr, length);
     }
 
     /**
@@ -321,7 +298,7 @@ public final class AES256GCM implements AutoCloseable {
      * @return A new {@link Nonce}.
      */
     public Nonce increment() {
-      return Sodium.dupAndIncrement(ptr, length, Nonce::new);
+      return Sodium.dupAndIncrement(value.pointer(), value.length(), Nonce::new);
     }
 
     @Override
@@ -333,36 +310,36 @@ public final class AES256GCM implements AutoCloseable {
         return false;
       }
       Nonce other = (Nonce) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this nonce.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this nonce.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
   private Pointer ctx;
 
   private AES256GCM(Key key) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     ctx = Sodium.malloc(Sodium.crypto_aead_aes256gcm_statebytes());
     try {
-      int rc = Sodium.crypto_aead_aes256gcm_beforenm(ctx, key.ptr);
+      int rc = Sodium.crypto_aead_aes256gcm_beforenm(ctx, key.value.pointer());
       if (rc != 0) {
         throw new SodiumException("crypto_aead_aes256gcm_beforenm: failed with result " + rc);
       }
@@ -439,7 +416,7 @@ public final class AES256GCM implements AutoCloseable {
    */
   public static byte[] encrypt(byte[] message, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
 
     byte[] cipherText = new byte[maxCombinedCypherTextLength(message)];
 
@@ -452,8 +429,8 @@ public final class AES256GCM implements AutoCloseable {
         data,
         data.length,
         null,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_encrypt: failed with result " + rc);
     }
@@ -517,7 +494,7 @@ public final class AES256GCM implements AutoCloseable {
         data,
         data.length,
         null,
-        nonce.ptr,
+        nonce.value.pointer(),
         ctx);
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_encrypt_afternm: failed with result " + rc);
@@ -583,7 +560,7 @@ public final class AES256GCM implements AutoCloseable {
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
 
     byte[] cipherText = new byte[message.length];
     long abytes = Sodium.crypto_aead_aes256gcm_abytes();
@@ -602,8 +579,8 @@ public final class AES256GCM implements AutoCloseable {
         data,
         data.length,
         null,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_encrypt_detached: failed with result " + rc);
     }
@@ -675,7 +652,7 @@ public final class AES256GCM implements AutoCloseable {
         data,
         data.length,
         null,
-        nonce.ptr,
+        nonce.value.pointer(),
         ctx);
     if (rc != 0) {
       throw new SodiumException("crypto_aead_aes256gcm_encrypt_detached_afternm: failed with result " + rc);
@@ -741,7 +718,7 @@ public final class AES256GCM implements AutoCloseable {
   @Nullable
   public static byte[] decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
 
     byte[] clearText = new byte[maxClearTextLength(cipherText)];
 
@@ -754,8 +731,8 @@ public final class AES256GCM implements AutoCloseable {
         cipherText.length,
         data,
         data.length,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc == -1) {
       return null;
     }
@@ -828,7 +805,7 @@ public final class AES256GCM implements AutoCloseable {
         cipherText.length,
         data,
         data.length,
-        nonce.ptr,
+        nonce.value.pointer(),
         ctx);
     if (rc == -1) {
       return null;
@@ -910,7 +887,7 @@ public final class AES256GCM implements AutoCloseable {
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
 
     long abytes = Sodium.crypto_aead_aes256gcm_abytes();
     if (abytes > Integer.MAX_VALUE) {
@@ -929,8 +906,8 @@ public final class AES256GCM implements AutoCloseable {
         mac,
         data,
         data.length,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc == -1) {
       return null;
     }
@@ -1014,7 +991,7 @@ public final class AES256GCM implements AutoCloseable {
         mac,
         data,
         data.length,
-        nonce.ptr,
+        nonce.value.pointer(),
         ctx);
     if (rc == -1) {
       return null;
