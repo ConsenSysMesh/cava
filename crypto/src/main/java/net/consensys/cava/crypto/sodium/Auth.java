@@ -13,11 +13,9 @@
 package net.consensys.cava.crypto.sodium;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 import net.consensys.cava.bytes.Bytes;
 
-import javax.annotation.Nullable;
 import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
@@ -59,32 +57,20 @@ public final class Auth {
    * An Auth key.
    */
   public static final class Key implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Key(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -157,15 +143,13 @@ public final class Auth {
       if (!(obj instanceof Key)) {
         return false;
       }
-      checkState(ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
@@ -178,7 +162,7 @@ public final class Auth {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -190,8 +174,7 @@ public final class Auth {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -214,14 +197,14 @@ public final class Auth {
    * @return The authentication tag.
    */
   public static byte[] auth(byte[] input, Key key) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     long abytes = Sodium.crypto_auth_bytes();
     if (abytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_auth_bytes: " + abytes + " is too large");
     }
     byte[] tag = new byte[(int) abytes];
 
-    int rc = Sodium.crypto_auth(tag, input, input.length, key.ptr);
+    int rc = Sodium.crypto_auth(tag, input, input.length, key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_auth_bytes: failed with result " + rc);
     }
@@ -249,12 +232,12 @@ public final class Auth {
    * @return {@code true} if the tag correction authenticates the input (using the specified key).
    */
   public static boolean verify(byte[] tag, byte[] input, Key key) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     long abytes = Sodium.crypto_auth_bytes();
     if (tag.length != abytes) {
       throw new IllegalArgumentException("tag must be " + abytes + " bytes, got " + tag.length);
     }
-    int rc = Sodium.crypto_auth_verify(tag, input, input.length, key.ptr);
+    int rc = Sodium.crypto_auth_verify(tag, input, input.length, key.value.pointer());
     return (rc == 0);
   }
 }

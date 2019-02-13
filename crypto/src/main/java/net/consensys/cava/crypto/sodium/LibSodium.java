@@ -505,6 +505,9 @@ public interface LibSodium {
   // int crypto_hash_sha256(unsigned char * out, const unsigned char * in, unsigned long long inlen);
   int crypto_hash_sha256(@Out byte[] out, @In byte[] in, @In @u_int64_t long inlen);
 
+  // int crypto_hash_sha256(unsigned char * out, const unsigned char * in, unsigned long long inlen);
+  int crypto_hash_sha256(@Out Pointer out, @In Pointer in, @In @u_int64_t long inlen);
+
   // int crypto_hash_sha256_init(crypto_hash_sha256_state * state);
   int crypto_hash_sha256_init(@Out Pointer state);
 
@@ -1000,11 +1003,11 @@ public interface LibSodium {
 
   // int crypto_generichash(unsigned char * out, size_t outlen, const unsigned char * in, unsigned long long inlen, const unsigned char * key, size_t keylen);
   int crypto_generichash(
-      @Out byte[] out,
+      @Out Pointer out,
       @In @ssize_t long outlen,
-      @In byte[] in,
+      @In Pointer in,
       @In @u_int64_t long inlen,
-      @In byte[] key,
+      @In Pointer key,
       @In @ssize_t long keylen);
 
   // int crypto_generichash_init(crypto_generichash_state * state, const unsigned char * key, const size_t keylen, const size_t outlen);
@@ -1584,10 +1587,16 @@ public interface LibSodium {
   long crypto_secretbox_messagebytes_max();
 
   // int crypto_secretbox_easy(unsigned char * c, const unsigned char * m, unsigned long long mlen, const unsigned char * n, const unsigned char * k);
+  int crypto_secretbox_easy(@Out Pointer c, @In Pointer m, @In @u_int64_t long mlen, @In Pointer n, @In Pointer k);
+
+  // int crypto_secretbox_easy(unsigned char * c, const unsigned char * m, unsigned long long mlen, const unsigned char * n, const unsigned char * k);
   int crypto_secretbox_easy(@Out byte[] c, @In byte[] m, @In @u_int64_t long mlen, @In Pointer n, @In Pointer k);
 
   // int crypto_secretbox_open_easy(unsigned char * m, const unsigned char * c, unsigned long long clen, const unsigned char * n, const unsigned char * k);
   int crypto_secretbox_open_easy(@Out byte[] m, @In byte[] c, @In @u_int64_t long clen, @In Pointer n, @In Pointer k);
+
+  // int crypto_secretbox_open_easy(unsigned char * m, const unsigned char * c, unsigned long long clen, const unsigned char * n, const unsigned char * k);
+  int crypto_secretbox_open_easy(@Out Pointer m, @In Pointer c, @In @u_int64_t long clen, @In Pointer n, @In Pointer k);
 
   // int crypto_secretbox_detached(unsigned char * c, unsigned char * mac, const unsigned char * m, unsigned long long mlen, const unsigned char * n, const unsigned char * k);
   int crypto_secretbox_detached(
@@ -1939,6 +1948,17 @@ public interface LibSodium {
       @In byte[] m,
       @In @u_int64_t long mlen,
       @In Pointer sk);
+
+  // int crypto_sign_detached(unsigned char * sig, unsigned long long * siglen_p, const unsigned char * m, unsigned long long mlen, const unsigned char * sk);
+  int crypto_sign_detached(
+      @Out Pointer sig,
+      @Nullable @Out LongLongByReference siglen_p,
+      @In Pointer m,
+      @In @u_int64_t long mlen,
+      @In Pointer sk);
+
+  // int crypto_sign_verify_detached(const unsigned char * sig, const unsigned char * m, unsigned long long mlen, const unsigned char * pk);
+  int crypto_sign_verify_detached(@In Pointer sig, @In Pointer m, @In @u_int64_t long mlen, @In Pointer pk);
 
   // int crypto_sign_verify_detached(const unsigned char * sig, const unsigned char * m, unsigned long long mlen, const unsigned char * pk);
   int crypto_sign_verify_detached(@In byte[] sig, @In byte[] m, @In @u_int64_t long mlen, @In Pointer pk);

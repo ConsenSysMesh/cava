@@ -100,32 +100,21 @@ public final class XChaCha20Poly1305 {
    * A XChaCha20-Poly1305 key.
    */
   public static final class Key implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Key(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
+      this.value = new Allocated(ptr, length);
     }
 
-    @Override
-    protected void finalize() {
-      destroy();
-    }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -204,15 +193,13 @@ public final class XChaCha20Poly1305 {
       if (!(obj instanceof Key)) {
         return false;
       }
-      checkState(ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
@@ -225,7 +212,7 @@ public final class XChaCha20Poly1305 {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -237,8 +224,7 @@ public final class XChaCha20Poly1305 {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -246,17 +232,10 @@ public final class XChaCha20Poly1305 {
    * A XChaCha20-Poly1305 nonce.
    */
   public static final class Nonce {
-    private final Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Nonce(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+      this.value = new Allocated(ptr, length);
     }
 
     /**
@@ -344,7 +323,7 @@ public final class XChaCha20Poly1305 {
      * @return A new {@link Nonce}.
      */
     public Nonce increment() {
-      return Sodium.dupAndIncrement(ptr, length, Nonce::new);
+      return Sodium.dupAndIncrement(value.pointer(), value.length(), Nonce::new);
     }
 
     @Override
@@ -356,26 +335,26 @@ public final class XChaCha20Poly1305 {
         return false;
       }
       Nonce other = (Nonce) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this nonce.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this nonce.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -428,7 +407,7 @@ public final class XChaCha20Poly1305 {
    */
   public static byte[] encrypt(byte[] message, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     byte[] cipherText = new byte[maxCypherTextLength(message)];
 
     LongLongByReference cipherTextLen = new LongLongByReference();
@@ -440,8 +419,8 @@ public final class XChaCha20Poly1305 {
         data,
         data.length,
         null,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_aead_xchacha20poly1305_ietf_encrypt: failed with result " + rc);
     }
@@ -506,7 +485,7 @@ public final class XChaCha20Poly1305 {
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     byte[] cipherText = new byte[message.length];
     long abytes = Sodium.crypto_aead_xchacha20poly1305_ietf_abytes();
     if (abytes > Integer.MAX_VALUE) {
@@ -524,8 +503,8 @@ public final class XChaCha20Poly1305 {
         data,
         data.length,
         null,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_aead_xchacha20poly1305_ietf_encrypt_detached: failed with result " + rc);
     }
@@ -545,7 +524,7 @@ public final class XChaCha20Poly1305 {
     private boolean complete = false;
 
     private SSEncrypt(Key key) {
-      checkArgument(key.ptr != null, "Key has been destroyed");
+      checkArgument(!key.isDestroyed(), "Key has been destroyed");
       long abytes = Sodium.crypto_secretstream_xchacha20poly1305_abytes();
       if (abytes > Integer.MAX_VALUE) {
         throw new IllegalStateException("crypto_aead_xchacha20poly1305_ietf_abytes: " + abytes + " is too large");
@@ -561,7 +540,7 @@ public final class XChaCha20Poly1305 {
 
       Pointer state = Sodium.malloc(Sodium.crypto_secretstream_xchacha20poly1305_statebytes());
       try {
-        int rc = Sodium.crypto_secretstream_xchacha20poly1305_init_push(state, header, key.ptr);
+        int rc = Sodium.crypto_secretstream_xchacha20poly1305_init_push(state, header, key.value.pointer());
         if (rc != 0) {
           throw new SodiumException("crypto_secretstream_xchacha20poly1305_init_push: failed with result " + rc);
         }
@@ -690,7 +669,7 @@ public final class XChaCha20Poly1305 {
   @Nullable
   public static byte[] decrypt(byte[] cipherText, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     byte[] clearText = new byte[maxClearTextLength(cipherText)];
 
     LongLongByReference clearTextLen = new LongLongByReference();
@@ -702,8 +681,8 @@ public final class XChaCha20Poly1305 {
         cipherText.length,
         data,
         data.length,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc == -1) {
       return null;
     }
@@ -783,7 +762,7 @@ public final class XChaCha20Poly1305 {
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, byte[] data, Key key, Nonce nonce) {
     assertAvailable();
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     long abytes = Sodium.crypto_aead_xchacha20poly1305_ietf_abytes();
     if (abytes > Integer.MAX_VALUE) {
       throw new IllegalStateException("crypto_aead_xchacha20poly1305_ietf_abytes: " + abytes + " is too large");
@@ -801,8 +780,8 @@ public final class XChaCha20Poly1305 {
         mac,
         data,
         data.length,
-        nonce.ptr,
-        key.ptr);
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc == -1) {
       return null;
     }
@@ -820,7 +799,7 @@ public final class XChaCha20Poly1305 {
     private boolean complete = false;
 
     private SSDecrypt(Key key, byte[] header) {
-      checkArgument(key.ptr != null, "Key has been destroyed");
+      checkArgument(!key.isDestroyed(), "Key has been destroyed");
       if (header.length != Sodium.crypto_secretstream_xchacha20poly1305_headerbytes()) {
         throw new IllegalArgumentException(
             "header must be "
@@ -837,7 +816,7 @@ public final class XChaCha20Poly1305 {
 
       Pointer state = Sodium.malloc(Sodium.crypto_secretstream_xchacha20poly1305_statebytes());
       try {
-        int rc = Sodium.crypto_secretstream_xchacha20poly1305_init_pull(state, header, key.ptr);
+        int rc = Sodium.crypto_secretstream_xchacha20poly1305_init_pull(state, header, key.value.pointer());
         if (rc != 0) {
           throw new SodiumException("crypto_secretstream_xchacha20poly1305_init_push: failed with result " + rc);
         }

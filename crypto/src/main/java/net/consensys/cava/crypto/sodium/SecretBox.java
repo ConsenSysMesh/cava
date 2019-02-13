@@ -13,7 +13,6 @@
 package net.consensys.cava.crypto.sodium;
 
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static java.util.Objects.requireNonNull;
 
@@ -58,32 +57,32 @@ public final class SecretBox {
    * A SecretBox key.
    */
   public static final class Key implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Key(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
+      this.value = new Allocated(ptr, length);
     }
 
-    @Override
-    protected void finalize() {
-      destroy();
+    private Key(Allocated value) {
+      this.value = value;
+    }
+
+    public static Key fromHash(GenericHash.Hash hash) {
+      return new Key(hash.value);
+    }
+
+    public static Key fromHash(SHA256Hash.Hash hash) {
+      return new Key(hash.value);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -156,15 +155,13 @@ public final class SecretBox {
       if (!(obj instanceof Key)) {
         return false;
       }
-      checkState(ptr != null, "Key has been destroyed");
       Key other = (Key) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
@@ -177,7 +174,7 @@ public final class SecretBox {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -189,8 +186,7 @@ public final class SecretBox {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "Key has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -198,17 +194,10 @@ public final class SecretBox {
    * A SecretBox nonce.
    */
   public static final class Nonce {
-    private final Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Nonce(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+      this.value = new Allocated(ptr, length);
     }
 
     /**
@@ -290,7 +279,7 @@ public final class SecretBox {
      * @return A new {@link Nonce}.
      */
     public Nonce increment() {
-      return Sodium.dupAndIncrement(ptr, length(), Nonce::new);
+      return Sodium.dupAndIncrement(value.pointer(), length(), Nonce::new);
     }
 
     @Override
@@ -302,26 +291,26 @@ public final class SecretBox {
         return false;
       }
       Nonce other = (Nonce) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this nonce.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this nonce.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -345,12 +334,37 @@ public final class SecretBox {
    * @param nonce A unique nonce.
    * @return The encrypted data.
    */
+  public static Allocated encrypt(Allocated message, Key key, Nonce nonce) {
+    int macbytes = macLength();
+    Allocated cipherText = Allocated.allocate(macbytes + message.length());
+    int rc = Sodium.crypto_secretbox_easy(
+        cipherText.pointer(),
+        message.pointer(),
+        message.length(),
+        nonce.value.pointer(),
+        key.value.pointer());
+    if (rc != 0) {
+      throw new SodiumException("crypto_secretbox_easy: failed with result " + rc);
+    }
+
+    return cipherText;
+  }
+
+  /**
+   * Encrypt a message with a key.
+   *
+   * @param message The message to encrypt.
+   * @param key The key to use for encryption.
+   * @param nonce A unique nonce.
+   * @return The encrypted data.
+   */
   public static byte[] encrypt(byte[] message, Key key, Nonce nonce) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     int macbytes = macLength();
 
     byte[] cipherText = new byte[macbytes + message.length];
-    int rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
+    int rc =
+        Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.value.pointer(), key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_easy: failed with result " + rc);
     }
@@ -379,12 +393,18 @@ public final class SecretBox {
    * @return The encrypted data and message authentication code.
    */
   public static DetachedEncryptionResult encryptDetached(byte[] message, Key key, Nonce nonce) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     int macbytes = macLength();
 
     byte[] cipherText = new byte[message.length];
     byte[] mac = new byte[macbytes];
-    int rc = Sodium.crypto_secretbox_detached(cipherText, mac, message, message.length, nonce.ptr, key.ptr);
+    int rc = Sodium.crypto_secretbox_detached(
+        cipherText,
+        mac,
+        message,
+        message.length,
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc != 0) {
       throw new SodiumException("crypto_secretbox_detached: failed with result " + rc);
     }
@@ -415,15 +435,52 @@ public final class SecretBox {
    * @return The decrypted data, or {@code null} if verification failed.
    */
   @Nullable
+  public static Allocated decrypt(Allocated cipherText, Key key, Nonce nonce) {
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
+    int macLength = macLength();
+    if (macLength > cipherText.length()) {
+      throw new IllegalArgumentException("cipherText is too short");
+    }
+
+    Allocated clearText = Allocated.allocate(cipherText.length() - macLength);
+    int rc = Sodium.crypto_secretbox_open_easy(
+        clearText.pointer(),
+        cipherText.pointer(),
+        cipherText.length(),
+        nonce.value.pointer(),
+        key.value.pointer());
+    if (rc == -1) {
+      return null;
+    }
+    if (rc != 0) {
+      throw new SodiumException("crypto_secretbox_open_easy: failed with result " + rc);
+    }
+    return clearText;
+  }
+
+  /**
+   * Decrypt a message using a key.
+   *
+   * @param cipherText The cipher text to decrypt.
+   * @param key The key to use for decryption.
+   * @param nonce The nonce that was used for encryption.
+   * @return The decrypted data, or {@code null} if verification failed.
+   */
+  @Nullable
   public static byte[] decrypt(byte[] cipherText, Key key, Nonce nonce) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     int macLength = macLength();
     if (macLength > cipherText.length) {
       throw new IllegalArgumentException("cipherText is too short");
     }
 
     byte[] clearText = new byte[cipherText.length - macLength];
-    int rc = Sodium.crypto_secretbox_open_easy(clearText, cipherText, cipherText.length, nonce.ptr, key.ptr);
+    int rc = Sodium.crypto_secretbox_open_easy(
+        clearText,
+        cipherText,
+        cipherText.length,
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc == -1) {
       return null;
     }
@@ -459,14 +516,20 @@ public final class SecretBox {
    */
   @Nullable
   public static byte[] decryptDetached(byte[] cipherText, byte[] mac, Key key, Nonce nonce) {
-    checkArgument(key.ptr != null, "Key has been destroyed");
+    checkArgument(!key.isDestroyed(), "Key has been destroyed");
     int macLength = macLength();
     if (macLength != mac.length) {
       throw new IllegalArgumentException("mac must be " + macLength + " bytes, got " + mac.length);
     }
 
     byte[] clearText = new byte[cipherText.length];
-    int rc = Sodium.crypto_secretbox_open_detached(clearText, cipherText, mac, cipherText.length, nonce.ptr, key.ptr);
+    int rc = Sodium.crypto_secretbox_open_detached(
+        clearText,
+        cipherText,
+        mac,
+        cipherText.length,
+        nonce.value.pointer(),
+        key.value.pointer());
     if (rc == -1) {
       return null;
     }
@@ -719,11 +782,12 @@ public final class SecretBox {
     byte[] cipherText = new byte[macLength + message.length];
     Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    assert key.ptr != null;
+    assert !key.isDestroyed();
 
     int rc;
     try {
-      rc = Sodium.crypto_secretbox_easy(cipherText, message, message.length, nonce.ptr, key.ptr);
+      rc = Sodium
+          .crypto_secretbox_easy(cipherText, message, message.length, nonce.value.pointer(), key.value.pointer());
     } finally {
       key.destroy();
     }
@@ -1020,11 +1084,17 @@ public final class SecretBox {
     byte[] mac = new byte[macLength];
     Nonce nonce = Nonce.random();
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    assert key.ptr != null;
+    assert !key.isDestroyed();
 
     int rc;
     try {
-      rc = Sodium.crypto_secretbox_detached(cipherText, mac, message, message.length, nonce.ptr, key.ptr);
+      rc = Sodium.crypto_secretbox_detached(
+          cipherText,
+          mac,
+          message,
+          message.length,
+          nonce.value.pointer(),
+          key.value.pointer());
     } finally {
       key.destroy();
     }
@@ -1292,7 +1362,7 @@ public final class SecretBox {
     byte[] clearText = new byte[cipherText.length - noncebytes - macLength];
     Nonce nonce = Nonce.fromBytes(Arrays.copyOf(cipherText, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    assert key.ptr != null;
+    assert !key.isDestroyed();
 
     int rc;
     try {
@@ -1300,8 +1370,8 @@ public final class SecretBox {
           clearText,
           Arrays.copyOfRange(cipherText, noncebytes, cipherText.length),
           cipherText.length - noncebytes,
-          nonce.ptr,
-          key.ptr);
+          nonce.value.pointer(),
+          key.value.pointer());
     } finally {
       key.destroy();
     }
@@ -1648,7 +1718,7 @@ public final class SecretBox {
     byte[] clearText = new byte[cipherText.length];
     Nonce nonce = Nonce.fromBytes(Arrays.copyOf(mac, noncebytes));
     Key key = deriveKeyFromPassword(password, nonce, opsLimit, memLimit, algorithm);
-    assert key.ptr != null;
+    assert !key.isDestroyed();
 
     int rc;
     try {
@@ -1657,8 +1727,8 @@ public final class SecretBox {
           cipherText,
           Arrays.copyOfRange(mac, noncebytes, mac.length),
           cipherText.length,
-          nonce.ptr,
-          key.ptr);
+          nonce.value.pointer(),
+          key.value.pointer());
     } finally {
       key.destroy();
     }
@@ -1710,7 +1780,7 @@ public final class SecretBox {
   private static byte[] prependNonce(Nonce nonce, byte[] bytes) {
     int nonceLength = Nonce.length();
     byte[] data = new byte[nonceLength + bytes.length];
-    nonce.ptr.get(0, data, 0, nonceLength);
+    nonce.value.pointer().get(0, data, 0, nonceLength);
     System.arraycopy(bytes, 0, data, nonceLength, bytes.length);
     return data;
   }

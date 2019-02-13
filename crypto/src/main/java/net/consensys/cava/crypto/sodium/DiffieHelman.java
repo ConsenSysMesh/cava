@@ -18,7 +18,6 @@ import static com.google.common.base.Preconditions.checkState;
 import net.consensys.cava.bytes.Bytes;
 
 import java.util.Objects;
-import javax.annotation.Nullable;
 import javax.security.auth.Destroyable;
 
 import jnr.ffi.Pointer;
@@ -39,17 +38,30 @@ public final class DiffieHelman {
    * A Diffie-Helman public key.
    */
   public static final class PublicKey {
-    private final Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private PublicKey(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
+      this.value = new Allocated(ptr, length);
     }
 
-    @Override
-    protected void finalize() {
-      Sodium.sodium_free(ptr);
+    /**
+     * Creates a new public key based on a signature public key.
+     *
+     * @param publicKey the signature public key to copy
+     * @return A public key.
+     */
+    public static PublicKey forBoxPublicKey(Box.PublicKey publicKey) {
+      return new PublicKey(Sodium.dup(publicKey.value.pointer(), length()), length());
+    }
+
+    /**
+     * Creates a new public key based on a signature public key.
+     *
+     * @param publicKey the signature public key to copy
+     * @return A public key.
+     */
+    public static PublicKey forSignaturePublicKey(Signature.PublicKey publicKey) {
+      return forBoxPublicKey(Box.PublicKey.forSignaturePublicKey(publicKey));
     }
 
     /**
@@ -104,26 +116,26 @@ public final class DiffieHelman {
         return false;
       }
       PublicKey other = (PublicKey) obj;
-      return Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this key.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -131,32 +143,40 @@ public final class DiffieHelman {
    * A Diffie-Helman secret key.
    */
   public static final class SecretKey implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private SecretKey(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
+    }
+
+    /**
+     * Creates a new secret key based on a box secret key.
+     *
+     * @param secretKey the box secret key to copy
+     * @return A secret key.
+     */
+    public static SecretKey forBoxSecretKey(Box.SecretKey secretKey) {
+      return new SecretKey(Sodium.dup(secretKey.value.pointer(), length()), length());
+    }
+
+    /**
+     * Creates a new secret key based on a signature secret key.
+     *
+     * @param secretKey the signature secret key to copy
+     * @return A secret key.
+     */
+    public static SecretKey forSignatureSecretKey(Signature.SecretKey secretKey) {
+      return forBoxSecretKey(Box.SecretKey.forSignatureSecretKey(secretKey));
     }
 
     /**
@@ -210,15 +230,13 @@ public final class DiffieHelman {
       if (!(obj instanceof SecretKey)) {
         return false;
       }
-      checkState(ptr != null, "SecretKey has been destroyed");
       SecretKey other = (SecretKey) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "SecretKey has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
@@ -231,7 +249,7 @@ public final class DiffieHelman {
      *             required.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
@@ -243,8 +261,7 @@ public final class DiffieHelman {
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "SecretKey has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 
@@ -274,8 +291,8 @@ public final class DiffieHelman {
      * @return A {@link KeyPair}.
      */
     public static KeyPair forSecretKey(SecretKey secretKey) {
-      checkArgument(secretKey.ptr != null, "SecretKey has been destroyed");
-      return Sodium.scalarMultBase(secretKey.ptr, SecretKey.length(), (ptr, len) -> {
+      checkArgument(!secretKey.isDestroyed(), "SecretKey has been destroyed");
+      return Sodium.scalarMultBase(secretKey.value.pointer(), SecretKey.length(), (ptr, len) -> {
         int publicKeyLength = PublicKey.length();
         if (len != publicKeyLength) {
           throw new IllegalStateException(
@@ -330,32 +347,20 @@ public final class DiffieHelman {
    * A Diffie-Helman shared secret.
    */
   public static final class Secret implements Destroyable {
-    @Nullable
-    private Pointer ptr;
-    private final int length;
+    final Allocated value;
 
     private Secret(Pointer ptr, int length) {
-      this.ptr = ptr;
-      this.length = length;
-    }
-
-    @Override
-    protected void finalize() {
-      destroy();
+      this.value = new Allocated(ptr, length);
     }
 
     @Override
     public void destroy() {
-      if (ptr != null) {
-        Pointer p = ptr;
-        ptr = null;
-        Sodium.sodium_free(p);
-      }
+      value.destroy();
     }
 
     @Override
     public boolean isDestroyed() {
-      return ptr == null;
+      return value.isDestroyed();
     }
 
     /**
@@ -366,15 +371,20 @@ public final class DiffieHelman {
      * @return A shared {@link Secret}.
      */
     public static Secret forKeys(SecretKey secretKey, PublicKey publicKey) {
-      checkState(secretKey.ptr != null, "SecretKey has been destroyed");
-      return Sodium.scalarMult(secretKey.ptr, secretKey.length, publicKey.ptr, publicKey.length, (ptr, len) -> {
-        int secretLength = Secret.length();
-        if (len != secretLength) {
-          throw new IllegalStateException(
-              "Secret length " + secretLength + " is not same as generated key length " + len);
-        }
-        return new Secret(ptr, secretLength);
-      });
+      checkState(!secretKey.isDestroyed(), "SecretKey has been destroyed");
+      return Sodium.scalarMult(
+          secretKey.value.pointer(),
+          secretKey.value.length(),
+          publicKey.value.pointer(),
+          publicKey.value.length(),
+          (ptr, len) -> {
+            int secretLength = Secret.length();
+            if (len != secretLength) {
+              throw new IllegalStateException(
+                  "Secret length " + secretLength + " is not same as generated key length " + len);
+            }
+            return new Secret(ptr, secretLength);
+          });
     }
 
     /**
@@ -428,30 +438,27 @@ public final class DiffieHelman {
       if (!(obj instanceof Secret)) {
         return false;
       }
-      checkState(ptr != null, "Secret has been destroyed");
       Secret other = (Secret) obj;
-      return other.ptr != null && Sodium.sodium_memcmp(this.ptr, other.ptr, length) == 0;
+      return other.value.equals(value);
     }
 
     @Override
     public int hashCode() {
-      checkState(ptr != null, "Secret has been destroyed");
-      return Sodium.hashCode(ptr, length);
+      return value.hashCode();
     }
 
     /**
      * @return The bytes of this key.
      */
     public Bytes bytes() {
-      return Bytes.wrap(bytesArray());
+      return value.bytes();
     }
 
     /**
      * @return The bytes of this key.
      */
     public byte[] bytesArray() {
-      checkState(ptr != null, "Secret has been destroyed");
-      return Sodium.reify(ptr, length);
+      return value.bytesArray();
     }
   }
 }
