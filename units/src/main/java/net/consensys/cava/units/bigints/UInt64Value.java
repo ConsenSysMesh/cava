@@ -14,32 +14,31 @@ package net.consensys.cava.units.bigints;
 
 
 import net.consensys.cava.bytes.Bytes;
-import net.consensys.cava.bytes.Bytes48;
 
 import java.math.BigInteger;
 
 /**
- * Represents a 384-bit (48 bytes) unsigned integer value.
+ * Represents a 64-bit (8 bytes) unsigned integer value.
  *
  * <p>
- * A {@link UInt384Value} is an unsigned integer value stored with 48 bytes, so whose value can range between 0 and
- * 2^384-1.
+ * A {@link UInt64Value} is an unsigned integer value stored with 8 bytes, so whose value can range between 0 and
+ * 2^64-1.
  *
  * <p>
- * This interface defines operations for value types with a 384-bit precision range. The methods provided by this
+ * This interface defines operations for value types with a 64-bit precision range. The methods provided by this
  * interface take parameters of the same type (and also {@code long}. This provides type safety by ensuring calculations
- * cannot mix different {@code UInt384Value} types.
+ * cannot mix different {@code UInt64Value} types.
  *
  * <p>
- * Where only a pure numerical 384-bit value is required, {@link UInt384} should be used.
+ * Where only a pure numerical 64-bit value is required, {@link UInt64} should be used.
  *
  * <p>
- * It is strongly advised to extend {@link BaseUInt384Value} rather than implementing this interface directly. Doing so
+ * It is strongly advised to extend {@link BaseUInt64Value} rather than implementing this interface directly. Doing so
  * provides type safety in that quantities of different units cannot be mixed accidentally.
  *
  * @param <T> The concrete type of the value.
  */
-public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
+public interface UInt64Value<T extends UInt64Value<T>> extends Comparable<T> {
 
   /**
    * @return True if this is the value 0.
@@ -102,7 +101,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    * @return {@code (this + value) mod modulus}
    * @throws ArithmeticException {@code modulus} == 0.
    */
-  T addMod(T value, UInt384 modulus);
+  T addMod(T value, UInt64 modulus);
 
   /**
    * Returns a value equivalent to {@code ((this + value) mod modulus)}.
@@ -112,7 +111,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    * @return {@code (this + value) mod modulus}
    * @throws ArithmeticException {@code modulus} == 0.
    */
-  T addMod(long value, UInt384 modulus);
+  T addMod(long value, UInt64 modulus);
 
   /**
    * Returns a value equivalent to {@code ((this + value) mod modulus)}.
@@ -195,7 +194,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    * @return {@code (this * value) mod modulus}
    * @throws ArithmeticException {@code value} &lt; 0 or {@code modulus} == 0.
    */
-  T multiplyMod(T value, UInt384 modulus);
+  T multiplyMod(T value, UInt64 modulus);
 
   /**
    * Returns a value that is {@code ((this * value) mod modulus)}.
@@ -205,7 +204,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    * @return {@code (this * value) mod modulus}
    * @throws ArithmeticException {@code value} &lt; 0 or {@code modulus} == 0.
    */
-  T multiplyMod(long value, UInt384 modulus);
+  T multiplyMod(long value, UInt64 modulus);
 
   /**
    * Returns a value that is {@code ((this * value) mod modulus)}.
@@ -236,27 +235,27 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
   T divide(long value);
 
   /**
-   * Returns a value that is {@code (this<sup>exponent</sup> mod 2<sup>384</sup>)}
+   * Returns a value that is {@code (this<sup>exponent</sup> mod 2<sup>64</sup>)}
    *
    * <p>
-   * This calculates an exponentiation over the modulus of {@code 2^384}.
+   * This calculates an exponentiation over the modulus of {@code 2^64}.
    *
    * <p>
-   * Note that {@code exponent} is an {@link UInt384} rather than of the type {@code T}.
+   * Note that {@code exponent} is an {@link UInt64} rather than of the type {@code T}.
    *
    * @param exponent The exponent to which this value is to be raised.
-   * @return {@code this<sup>exponent</sup> mod 2<sup>384</sup>}
+   * @return {@code this<sup>exponent</sup> mod 2<sup>64</sup>}
    */
-  T pow(UInt384 exponent);
+  T pow(UInt64 exponent);
 
   /**
-   * Returns a value that is {@code (this<sup>exponent</sup> mod 2<sup>384</sup>)}
+   * Returns a value that is {@code (this<sup>exponent</sup> mod 2<sup>64</sup>)}
    *
    * <p>
-   * This calculates an exponentiation over the modulus of {@code 2^384}.
+   * This calculates an exponentiation over the modulus of {@code 2^64}.
    *
    * @param exponent The exponent to which this value is to be raised.
-   * @return {@code this<sup>exponent</sup> mod 2<sup>384</sup>}
+   * @return {@code this<sup>exponent</sup> mod 2<sup>64</sup>}
    */
   T pow(long exponent);
 
@@ -267,7 +266,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    * @return {@code this mod modulus}.
    * @throws ArithmeticException {@code modulus} == 0.
    */
-  T mod(UInt384 modulus);
+  T mod(UInt64 modulus);
 
   /**
    * Returns a value that is {@code (this mod modulus)}.
@@ -283,13 +282,13 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    */
   default boolean fitsInt() {
     // Ints are 4 bytes, so anything but the 4 last bytes must be zeroes
-    Bytes48 bytes = toBytes();
-    for (int i = 0; i < Bytes48.SIZE - 4; i++) {
+    Bytes bytes = toBytes();
+    for (int i = 0; i < 8 - 4; i++) {
       if (bytes.get(i) != 0)
         return false;
     }
     // Lastly, the left-most byte of the int must not start with a 1.
-    return bytes.get(Bytes48.SIZE - 4) >= 0;
+    return bytes.get(4) >= 0;
   }
 
   /**
@@ -301,20 +300,14 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
     if (!fitsInt()) {
       throw new ArithmeticException("Value does not fit a 4 byte int");
     }
-    return toBytes().getInt(Bytes48.SIZE - 4);
+    return toBytes().getInt(4);
   }
 
   /**
    * @return True if this value fits a java {@code long} (i.e. is less or equal to {@code Long.MAX_VALUE}).
    */
   default boolean fitsLong() {
-    // Longs are 8 bytes, so anything but the 8 last bytes must be zeroes
-    for (int i = 0; i < Bytes48.SIZE - 8; i++) {
-      if (toBytes().get(i) != 0)
-        return false;
-    }
-    // Lastly, the left-most byte of the long must not start with a 1.
-    return toBytes().get(Bytes48.SIZE - 8) >= 0;
+    return true;
   }
 
   /**
@@ -326,7 +319,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
     if (!fitsLong()) {
       throw new ArithmeticException("Value does not fit a 8 byte long");
     }
-    return toBytes().getLong(Bytes48.SIZE - 8);
+    return toBytes().getLong(0);
   }
 
   /**
@@ -340,7 +333,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
    * This value represented as an hexadecimal string.
    *
    * <p>
-   * Note that this representation includes all the 48 underlying bytes, no matter what the integer actually represents
+   * Note that this representation includes all the 8 underlying bytes, no matter what the integer actually represents
    * (in other words, it can have many leading zeros). For a shorter representation that don't include leading zeros,
    * use {@link #toShortHexString}.
    *
@@ -356,16 +349,16 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
   }
 
   /**
-   * Convert this value to a {@link UInt384}.
+   * Convert this value to a {@link UInt64}.
    *
-   * @return This value as a {@link UInt384}.
+   * @return This value as a {@link UInt64}.
    */
-  UInt384 toUInt384();
+  UInt64 toUInt64();
 
   /**
    * @return The value as bytes.
    */
-  Bytes48 toBytes();
+  Bytes toBytes();
 
   /**
    * @return The value as bytes without any leading zero bytes.
@@ -374,7 +367,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
 
   /**
    * @return the number of zero bits preceding the highest-order ("leftmost") one-bit in the binary representation of
-   *         this value, or 384 if the value is equal to zero.
+   *         this value, or 64 if the value is equal to zero.
    */
   default int numberOfLeadingZeros() {
     return toBytes().numberOfLeadingZeros();
