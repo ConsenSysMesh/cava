@@ -61,8 +61,38 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
    *
    * @param value The amount to be added to this value.
    * @return {@code this + value}
+   * @throws ArithmeticException if the result of the addition overflows
+   */
+  default T tryAdd(T value) {
+    T result = add(value);
+    if (this.compareTo(result) > 0) {
+      throw new ArithmeticException("Value overflowed");
+    }
+    return result;
+  }
+
+  /**
+   * Returns a value that is {@code (this + value)}.
+   *
+   * @param value The amount to be added to this value.
+   * @return {@code this + value}
    */
   T add(long value);
+
+  /**
+   * Returns a value that is {@code (this + value)}.
+   *
+   * @param value The amount to be added to this value.
+   * @return {@code this + value}
+   * @throws ArithmeticException if the result of the addition overflows
+   */
+  default T tryAdd(long value) {
+    T result = add(value);
+    if (this.compareTo(result) > 0) {
+      throw new ArithmeticException("Value overflowed");
+    }
+    return result;
+  }
 
   /**
    * Returns a value equivalent to {@code ((this + value) mod modulus)}.
@@ -105,10 +135,40 @@ public interface UInt256Value<T extends UInt256Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this - value)}.
    *
+   * @param value The amount to be subtracted to this value.
+   * @return {@code this - value}
+   * @throws ArithmeticException if the result of the addition underflows
+   */
+  default T trySubtract(T value) {
+    T result = subtract(value);
+    if (this.compareTo(result) < 0) {
+      throw new ArithmeticException("Value underflowed");
+    }
+    return result;
+  }
+
+  /**
+   * Returns a value that is {@code (this - value)}.
+   *
    * @param value The amount to be subtracted from this value.
    * @return {@code this - value}
    */
   T subtract(long value);
+
+  /**
+   * Returns a value that is {@code (this - value)}.
+   *
+   * @param value The amount to be subtracted to this value.
+   * @return {@code this - value}
+   * @throws ArithmeticException if the result of the addition underflows
+   */
+  default T trySubtract(long value) {
+    T result = subtract(value);
+    if (this.compareTo(result) < 0) {
+      throw new ArithmeticException("Value underflowed");
+    }
+    return result;
+  }
 
   /**
    * Returns a value that is {@code (this * value)}.

@@ -702,4 +702,18 @@ class UInt64Test {
     String msg = String.format("Expected %s but got %s", expected.toHexString(), actual.toHexString());
     assertEquals(expected, actual, msg);
   }
+
+  @Test
+  void testTryAdd() {
+    assertThrows(ArithmeticException.class, () -> UInt64.MAX_VALUE.tryAdd(3));
+
+    assertThrows(ArithmeticException.class, () -> UInt64.MAX_VALUE.tryAdd(UInt64.MAX_VALUE));
+  }
+
+  @Test
+  void testTrySubtract() {
+    assertThrows(ArithmeticException.class, () -> UInt64.valueOf(3).trySubtract(5));
+
+    assertThrows(ArithmeticException.class, () -> UInt64.MIN_VALUE.trySubtract(UInt64.MAX_VALUE));
+  }
 }
