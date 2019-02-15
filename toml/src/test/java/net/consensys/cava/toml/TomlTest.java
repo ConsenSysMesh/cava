@@ -78,7 +78,7 @@ class TomlTest {
   void shouldParseString(String input, String expected) {
     TomlParseResult result = Toml.parse(input);
     assertFalse(result.hasErrors(), () -> joinErrors(result));
-    assertEquals(expected.replaceAll("\n", System.lineSeparator()), result.getString("foo"));
+    assertEquals(expected, result.getString("foo"));
   }
 
   private static Stream<Arguments> stringSupplier() {
@@ -87,28 +87,31 @@ class TomlTest {
         Arguments.of("foo = \"\\\"\"", "\""),
         Arguments.of("foo = \"bar \\b \\f \\n \\\\ \\u0053 \\U0010FfFf baz\"", "bar \b \f \n \\ S \uDBFF\uDFFF baz"),
         Arguments.of("foo = \"\"\"\"\"\"", ""),
-        Arguments.of("foo = \"\"\"  foo\nbar\"\"\"", "  foo\nbar"),
+        Arguments.of("foo = \"\"\"  foo\nbar\"\"\"", "  foo" + System.lineSeparator() + "bar"),
         Arguments.of("foo = \"\"\"\n  foobar\"\"\"", "  foobar"),
-        Arguments.of("foo = \"\"\"\n  foo\nbar\"\"\"", "  foo\nbar"),
-        Arguments.of("foo = \"\"\"\\n  foo\nbar\"\"\"", "\n  foo\nbar"),
-        Arguments.of("foo = \"\"\"\n\n  foo\nbar\"\"\"", "\n  foo\nbar"),
-        Arguments.of("foo = \"\"\"  foo \\  \nbar\"\"\"", "  foo \nbar"),
-        Arguments.of("foo = \"\"\"  foo \\\nbar\"\"\"", "  foo \nbar"),
-        Arguments.of("foo = \"\"\"  foo \\       \nbar\"\"\"", "  foo \nbar"),
+        Arguments.of("foo = \"\"\"\n  foo\nbar\"\"\"", "  foo" + System.lineSeparator() + "bar"),
+        Arguments.of("foo = \"\"\"\\n  foo\nbar\"\"\"", "\n  foo" + System.lineSeparator() + "bar"),
+        Arguments
+            .of("foo = \"\"\"\n\n  foo\nbar\"\"\"", System.lineSeparator() + "  foo" + System.lineSeparator() + "bar"),
+        Arguments.of("foo = \"\"\"  foo \\  \nbar\"\"\"", "  foo " + System.lineSeparator() + "bar"),
+        Arguments.of("foo = \"\"\"  foo \\\nbar\"\"\"", "  foo " + System.lineSeparator() + "bar"),
+        Arguments.of("foo = \"\"\"  foo \\       \nbar\"\"\"", "  foo " + System.lineSeparator() + "bar"),
         Arguments.of("foo = \"foobar#\" # comment", "foobar#"),
         Arguments.of("foo = \"foobar#\"", "foobar#"),
         Arguments.of("foo = \"foo \\\" bar #\" # \"baz\"", "foo \" bar #"),
         Arguments.of("foo = ''", ""),
         Arguments.of("foo = '\"'", "\""),
         Arguments.of("foo = 'foobar \\'", "foobar \\"),
-        Arguments.of("foo = '''foobar \n'''", "foobar \n"),
-        Arguments.of("foo = '''\nfoobar \n'''", "foobar \n"),
-        Arguments.of("foo = '''\nfoobar \\    \n'''", "foobar \\    \n"),
+        Arguments.of("foo = '''foobar \n'''", "foobar " + System.lineSeparator()),
+        Arguments.of("foo = '''\nfoobar \n'''", "foobar " + System.lineSeparator()),
+        Arguments.of("foo = '''\nfoobar \\    \n'''", "foobar \\    " + System.lineSeparator()),
         Arguments.of("# I am a comment. Hear me roar. Roar.\nfoo = \"value\" # Yeah, you can do this.", "value"),
         Arguments.of(
             "foo = \"I'm a string. \\\"You can quote me\\\". Name\\tJos\\u00E9\\nLocation\\tSF.\"",
             "I'm a string. \"You can quote me\". Name\tJosé\nLocation\tSF."),
-        Arguments.of("foo=\"\"\"\nRoses are red\nViolets are blue\"\"\"", "Roses are red\nViolets are blue"));
+        Arguments.of(
+            "foo=\"\"\"\nRoses are red\nViolets are blue\"\"\"",
+            "Roses are red" + System.lineSeparator() + "Violets are blue"));
   }
 
   @Test
@@ -288,7 +291,8 @@ class TomlTest {
         Arguments.of("foo = [11:44:02,]", new Object[] {LocalTime.parse("11:44:02")}),
         Arguments.of("foo = [\n'bar', #baz\n]", new Object[] {"bar"}),
         Arguments.of("foo = ['bar', 'baz']", new Object[] {"bar", "baz"}),
-        Arguments.of("foo = [\n'''bar\nbaz''',\n'baz'\n]", new Object[] {"bar\nbaz", "baz"}),
+        Arguments
+            .of("foo = [\n'''bar\nbaz''',\n'baz'\n]", new Object[] {"bar" + System.lineSeparator() + "baz", "baz"}),
         Arguments.of("foo = [['bar']]", new Object[] {new Object[] {"bar"}}));
   }
 
