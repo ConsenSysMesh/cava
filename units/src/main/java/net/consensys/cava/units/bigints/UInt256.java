@@ -441,10 +441,8 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise AND of this value and the supplied value.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param value The value to perform the operation with.
-   * @return The result of a bit-wise AND.
+   * @param value the value to perform the operation with
+   * @return the result of a bit-wise AND
    */
   public UInt256 and(UInt256 value) {
     int[] result = new int[INTS_SIZE];
@@ -457,10 +455,8 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise AND of this value and the supplied bytes.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param bytes The bytes to perform the operation with.
-   * @return The result of a bit-wise AND.
+   * @param bytes the bytes to perform the operation with
+   * @return the result of a bit-wise AND
    */
   public UInt256 and(Bytes32 bytes) {
     int[] result = new int[INTS_SIZE];
@@ -477,10 +473,8 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise OR of this value and the supplied value.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param value The value to perform the operation with.
-   * @return The result of a bit-wise OR.
+   * @param value the value to perform the operation with
+   * @return the result of a bit-wise OR
    */
   public UInt256 or(UInt256 value) {
     int[] result = new int[INTS_SIZE];
@@ -493,10 +487,8 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise OR of this value and the supplied bytes.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param bytes The bytes to perform the operation with.
-   * @return The result of a bit-wise OR.
+   * @param bytes the bytes to perform the operation with
+   * @return the result of a bit-wise OR
    */
   public UInt256 or(Bytes32 bytes) {
     int[] result = new int[INTS_SIZE];
@@ -512,10 +504,8 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise XOR of this value and the supplied value.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param value The value to perform the operation with.
-   * @return The result of a bit-wise XOR.
+   * @param value the value to perform the operation with
+   * @return the result of a bit-wise XOR
    */
   public UInt256 xor(UInt256 value) {
     int[] result = new int[INTS_SIZE];
@@ -528,10 +518,8 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise XOR of this value and the supplied bytes.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param bytes The bytes to perform the operation with.
-   * @return The result of a bit-wise XOR.
+   * @param bytes the bytes to perform the operation with
+   * @return the result of a bit-wise XOR
    */
   public UInt256 xor(Bytes32 bytes) {
     int[] result = new int[INTS_SIZE];
@@ -547,7 +535,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   /**
    * Return a bit-wise NOT of this value.
    *
-   * @return The result of a bit-wise NOT.
+   * @return the result of a bit-wise NOT
    */
   public UInt256 not() {
     int[] result = new int[INTS_SIZE];

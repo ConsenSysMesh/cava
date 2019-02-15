@@ -308,10 +308,8 @@ public final class UInt64 implements UInt64Value<UInt64> {
   /**
    * Return a bit-wise AND of this value and the supplied value.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param value The value to perform the operation with.
-   * @return The result of a bit-wise AND.
+   * @param value the value to perform the operation with
+   * @return the result of a bit-wise AND
    */
   public UInt64 and(UInt64 value) {
     if (this.value == 0 || value.value == 0) {
@@ -322,8 +320,6 @@ public final class UInt64 implements UInt64Value<UInt64> {
 
   /**
    * Return a bit-wise AND of this value and the supplied bytes.
-   *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
    *
    * @param bytes the bytes to perform the operation with
    * @return the result of a bit-wise AND
@@ -344,10 +340,8 @@ public final class UInt64 implements UInt64Value<UInt64> {
   /**
    * Return a bit-wise OR of this value and the supplied value.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param value The value to perform the operation with.
-   * @return The result of a bit-wise OR.
+   * @param value the value to perform the operation with
+   * @return the result of a bit-wise OR
    */
   public UInt64 or(UInt64 value) {
     return create(this.value | value.value);
@@ -356,10 +350,9 @@ public final class UInt64 implements UInt64Value<UInt64> {
   /**
    * Return a bit-wise OR of this value and the supplied bytes.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param bytes The bytes to perform the operation with.
-   * @return The result of a bit-wise OR.
+   * @param bytes the bytes to perform the operation with
+   * @return the result of a bit-wise OR
+   * @throws IllegalArgumentException if more than 8 bytes are supplied
    */
   public UInt64 or(Bytes bytes) {
     checkArgument(bytes.size() <= 8, "or with more than 8 bytes");
@@ -371,8 +364,9 @@ public final class UInt64 implements UInt64Value<UInt64> {
    *
    * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
    *
-   * @param value The value to perform the operation with.
-   * @return The result of a bit-wise XOR.
+   * @param value the value to perform the operation with
+   * @return the result of a bit-wise XOR
+   * @throws IllegalArgumentException if more than 8 bytes are supplied
    */
   public UInt64 xor(UInt64 value) {
     return create(this.value ^ value.value);
@@ -381,10 +375,9 @@ public final class UInt64 implements UInt64Value<UInt64> {
   /**
    * Return a bit-wise XOR of this value and the supplied bytes.
    *
-   * If this value and the supplied value are different lengths, then the shorter will be zero-padded to the left.
-   *
-   * @param bytes The bytes to perform the operation with.
-   * @return The result of a bit-wise XOR.
+   * @param bytes the bytes to perform the operation with
+   * @return the result of a bit-wise XOR
+   * @throws IllegalArgumentException if more than 8 bytes are supplied
    */
   public UInt64 xor(Bytes bytes) {
     checkArgument(bytes.size() <= 8, "xor with more than 8 bytes");
@@ -394,7 +387,7 @@ public final class UInt64 implements UInt64Value<UInt64> {
   /**
    * Return a bit-wise NOT of this value.
    *
-   * @return The result of a bit-wise NOT.
+   * @return the result of a bit-wise NOT
    */
   public UInt64 not() {
     return create(~this.value);
