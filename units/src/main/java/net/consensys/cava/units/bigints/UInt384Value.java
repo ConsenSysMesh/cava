@@ -59,14 +59,14 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this + value)}.
    *
-   * @param value The amount to be added to this value.
+   * @param value the amount to be added to this value
    * @return {@code this + value}
    * @throws ArithmeticException if the result of the addition overflows
    */
-  default T tryAdd(T value) {
+  default T addExact(T value) {
     T result = add(value);
-    if (this.compareTo(result) > 0) {
-      throw new ArithmeticException("Value overflowed");
+    if (compareTo(result) > 0) {
+      throw new ArithmeticException("UInt384 overflow");
     }
     return result;
   }
@@ -82,14 +82,14 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this + value)}.
    *
-   * @param value The amount to be added to this value.
+   * @param value the amount to be added to this value
    * @return {@code this + value}
    * @throws ArithmeticException if the result of the addition overflows
    */
-  default T tryAdd(long value) {
+  default T addExact(long value) {
     T result = add(value);
-    if (this.compareTo(result) > 0) {
-      throw new ArithmeticException("Value overflowed");
+    if ((value > 0 && compareTo(result) > 0) || (value < 0 && compareTo(result) < 0)) {
+      throw new ArithmeticException("UInt384 overflow");
     }
     return result;
   }
@@ -135,14 +135,14 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this - value)}.
    *
-   * @param value The amount to be subtracted to this value.
+   * @param value the amount to be subtracted to this value
    * @return {@code this - value}
-   * @throws ArithmeticException if the result of the addition underflows
+   * @throws ArithmeticException if the result of the addition overflows
    */
-  default T trySubtract(T value) {
+  default T subtractExact(T value) {
     T result = subtract(value);
-    if (this.compareTo(result) < 0) {
-      throw new ArithmeticException("Value underflowed");
+    if (compareTo(result) < 0) {
+      throw new ArithmeticException("UInt384 overflow");
     }
     return result;
   }
@@ -158,14 +158,14 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this - value)}.
    *
-   * @param value The amount to be subtracted to this value.
+   * @param value the amount to be subtracted to this value
    * @return {@code this - value}
-   * @throws ArithmeticException if the result of the addition underflows
+   * @throws ArithmeticException if the result of the addition overflows
    */
-  default T trySubtract(long value) {
+  default T subtractExact(long value) {
     T result = subtract(value);
-    if (this.compareTo(result) < 0) {
-      throw new ArithmeticException("Value underflowed");
+    if ((value > 0 && compareTo(result) < 0) || (value < 0 && compareTo(result) > 0)) {
+      throw new ArithmeticException("UInt384 overflow");
     }
     return result;
   }
@@ -294,8 +294,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
 
   /**
    * @return This value as a java {@code int} assuming it is small enough to fit an {@code int}.
-   * @throws ArithmeticException If the value does not fit an {@code int}, that is if {@code
-   *     !fitsInt()}.
+   * @throws ArithmeticException If the value does not fit an {@code int}, that is if {@code !fitsInt()}.
    */
   default int intValue() {
     if (!fitsInt()) {
@@ -319,8 +318,7 @@ public interface UInt384Value<T extends UInt384Value<T>> extends Comparable<T> {
 
   /**
    * @return This value as a java {@code long} assuming it is small enough to fit a {@code long}.
-   * @throws ArithmeticException If the value does not fit a {@code long}, that is if {@code
-   *     !fitsLong()}.
+   * @throws ArithmeticException If the value does not fit a {@code long}, that is if {@code !fitsLong()}.
    */
   default long toLong() {
     if (!fitsLong()) {

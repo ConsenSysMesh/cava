@@ -17,6 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import net.consensys.cava.bytes.Bytes;
 
+import java.math.BigInteger;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,19 @@ class UInt64Test {
 
   private static UInt64 hv(String s) {
     return UInt64.fromHexString(s);
+  }
+
+  @Test
+  void valueOfLong() {
+    assertThrows(IllegalArgumentException.class, () -> UInt64.valueOf(-1));
+    assertThrows(IllegalArgumentException.class, () -> UInt64.valueOf(Long.MIN_VALUE));
+    assertThrows(IllegalArgumentException.class, () -> UInt64.valueOf(~0L));
+  }
+
+  @Test
+  void valueOfBigInteger() {
+    assertThrows(IllegalArgumentException.class, () -> UInt64.valueOf(BigInteger.valueOf(-1)));
+    assertThrows(IllegalArgumentException.class, () -> UInt64.valueOf(BigInteger.valueOf(2).pow(64)));
   }
 
   @ParameterizedTest
@@ -698,22 +712,49 @@ class UInt64Test {
         Arguments.of(hv("0x100000000"), 33));
   }
 
+  @ParameterizedTest
+  @MethodSource("addExactProvider")
+  void addExact(UInt64 value, UInt64 operand) {
+    assertThrows(ArithmeticException.class, () -> value.addExact(operand));
+  }
+
+  private static Stream<Arguments> addExactProvider() {
+    return Stream.of(Arguments.of(UInt64.MAX_VALUE, v(1)), Arguments.of(UInt64.MAX_VALUE, UInt64.MAX_VALUE));
+  }
+
+  @ParameterizedTest
+  @MethodSource("addExactLongProvider")
+  void addExactLong(UInt64 value, long operand) {
+    assertThrows(ArithmeticException.class, () -> value.addExact(operand));
+  }
+
+  private static Stream<Arguments> addExactLongProvider() {
+    return Stream
+        .of(Arguments.of(UInt64.MAX_VALUE, 3), Arguments.of(UInt64.MAX_VALUE, Long.MAX_VALUE), Arguments.of(v(0), -1));
+  }
+
+  @ParameterizedTest
+  @MethodSource("subtractExactProvider")
+  void subtractExact(UInt64 value, UInt64 operand) {
+    assertThrows(ArithmeticException.class, () -> value.subtractExact(operand));
+  }
+
+  private static Stream<Arguments> subtractExactProvider() {
+    return Stream.of(Arguments.of(v(0), v(1)), Arguments.of(v(0), UInt64.MAX_VALUE));
+  }
+
+  @ParameterizedTest
+  @MethodSource("subtractExactLongProvider")
+  void subtractExactLong(UInt64 value, long operand) {
+    assertThrows(ArithmeticException.class, () -> value.subtractExact(operand));
+  }
+
+  private static Stream<Arguments> subtractExactLongProvider() {
+    return Stream.of(Arguments.of(v(0), 1), Arguments.of(v(0), Long.MAX_VALUE), Arguments.of(UInt64.MAX_VALUE, -1));
+  }
+
   private void assertValueEquals(UInt64 expected, UInt64 actual) {
     String msg = String.format("Expected %s but got %s", expected.toHexString(), actual.toHexString());
     assertEquals(expected, actual, msg);
-  }
-
-  @Test
-  void testTryAdd() {
-    assertThrows(ArithmeticException.class, () -> UInt64.MAX_VALUE.tryAdd(3));
-
-    assertThrows(ArithmeticException.class, () -> UInt64.MAX_VALUE.tryAdd(UInt64.MAX_VALUE));
-  }
-
-  @Test
-  void testTrySubtract() {
-    assertThrows(ArithmeticException.class, () -> UInt64.valueOf(3).trySubtract(5));
-
-    assertThrows(ArithmeticException.class, () -> UInt64.MIN_VALUE.trySubtract(UInt64.MAX_VALUE));
   }
 }

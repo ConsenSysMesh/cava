@@ -765,6 +765,47 @@ class BaseUInt384ValueTest {
         Arguments.of(hv("0x100000000"), 33));
   }
 
+  @ParameterizedTest
+  @MethodSource("addExactProvider")
+  void addExact(Value value, Value operand) {
+    assertThrows(ArithmeticException.class, () -> value.addExact(operand));
+  }
+
+  private static Stream<Arguments> addExactProvider() {
+    return Stream.of(Arguments.of(Value.MAX_VALUE, v(1)), Arguments.of(Value.MAX_VALUE, Value.MAX_VALUE));
+  }
+
+  @ParameterizedTest
+  @MethodSource("addExactLongProvider")
+  void addExactLong(Value value, long operand) {
+    assertThrows(ArithmeticException.class, () -> value.addExact(operand));
+  }
+
+  private static Stream<Arguments> addExactLongProvider() {
+    return Stream
+        .of(Arguments.of(Value.MAX_VALUE, 3), Arguments.of(Value.MAX_VALUE, Long.MAX_VALUE), Arguments.of(v(0), -1));
+  }
+
+  @ParameterizedTest
+  @MethodSource("subtractExactProvider")
+  void subtractExact(Value value, Value operand) {
+    assertThrows(ArithmeticException.class, () -> value.subtractExact(operand));
+  }
+
+  private static Stream<Arguments> subtractExactProvider() {
+    return Stream.of(Arguments.of(v(0), v(1)), Arguments.of(v(0), Value.MAX_VALUE));
+  }
+
+  @ParameterizedTest
+  @MethodSource("subtractExactLongProvider")
+  void subtractExactLong(Value value, long operand) {
+    assertThrows(ArithmeticException.class, () -> value.subtractExact(operand));
+  }
+
+  private static Stream<Arguments> subtractExactLongProvider() {
+    return Stream.of(Arguments.of(v(0), 1), Arguments.of(v(0), Long.MAX_VALUE), Arguments.of(Value.MAX_VALUE, -1));
+  }
+
   private void assertValueEquals(Value expected, Value actual) {
     String msg = String.format("Expected %s but got %s", expected.toHexString(), actual.toHexString());
     assertEquals(expected, actual, msg);

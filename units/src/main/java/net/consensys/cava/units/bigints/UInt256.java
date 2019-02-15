@@ -30,7 +30,7 @@ import java.util.Arrays;
 public final class UInt256 implements UInt256Value<UInt256> {
   private final static int MAX_CONSTANT = 64;
   private final static BigInteger BI_MAX_CONSTANT = BigInteger.valueOf(MAX_CONSTANT);
-  private static UInt256 CONSTANTS[] = new UInt256[MAX_CONSTANT + 1];
+  private static UInt256[] CONSTANTS = new UInt256[MAX_CONSTANT + 1];
   static {
     CONSTANTS[0] = new UInt256(Bytes32.ZERO);
     for (int i = 1; i <= MAX_CONSTANT; ++i) {
@@ -46,8 +46,6 @@ public final class UInt256 implements UInt256Value<UInt256> {
   public final static UInt256 ZERO = valueOf(0);
   /** The value 1 */
   public final static UInt256 ONE = valueOf(1);
-  /** The value 10 */
-  public final static UInt256 TEN = valueOf(10);
 
   private static final int INTS_SIZE = 32 / 4;
   // The mask is used to obtain the value of an int as if it were unsigned.
@@ -55,7 +53,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   private static final BigInteger P_2_256 = BigInteger.valueOf(2).pow(256);
 
   // The unsigned int components of the value
-  private final int ints[];
+  private final int[] ints;
 
   /**
    * Return a {@code UInt256} containing the specified value.
@@ -72,21 +70,16 @@ public final class UInt256 implements UInt256Value<UInt256> {
     return new UInt256(value);
   }
 
-  private UInt256(long value) {
-    this.ints = new int[INTS_SIZE];
-    this.ints[INTS_SIZE - 2] = (int) ((value >>> 32) & LONG_MASK);
-    this.ints[INTS_SIZE - 1] = (int) (value & LONG_MASK);
-  }
-
   /**
    * Return a {@link UInt256} containing the specified value.
    *
-   * @param value The value to create a {@link UInt256} for.
-   * @return A {@link UInt256} containing the specified value.
-   * @throws IllegalArgumentException If the value is negative.
+   * @param value the value to create a {@link UInt256} for
+   * @return a {@link UInt256} containing the specified value
+   * @throws IllegalArgumentException if the value is negative or too large to be represented as a UInt256
    */
   public static UInt256 valueOf(BigInteger value) {
     checkArgument(value.signum() >= 0, "Argument must be positive");
+    checkArgument(value.bitLength() <= 256, "Argument is too large to represent a UInt256");
     if (value.compareTo(BI_MAX_CONSTANT) <= 0) {
       return CONSTANTS[value.intValue()];
     }
@@ -129,7 +122,13 @@ public final class UInt256 implements UInt256Value<UInt256> {
     }
   }
 
-  private UInt256(int ints[]) {
+  private UInt256(long value) {
+    this.ints = new int[INTS_SIZE];
+    this.ints[INTS_SIZE - 2] = (int) ((value >>> 32) & LONG_MASK);
+    this.ints[INTS_SIZE - 1] = (int) (value & LONG_MASK);
+  }
+
+  private UInt256(int[] ints) {
     this.ints = ints;
   }
 
@@ -155,7 +154,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (isZero()) {
       return value;
     }
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     boolean constant = true;
     long sum = (this.ints[INTS_SIZE - 1] & LONG_MASK) + (value.ints[INTS_SIZE - 1] & LONG_MASK);
     result[INTS_SIZE - 1] = (int) (sum & LONG_MASK);
@@ -181,7 +180,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (value > 0 && isZero()) {
       return UInt256.valueOf(value);
     }
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     boolean constant = true;
     long sum = (this.ints[INTS_SIZE - 1] & LONG_MASK) + (value & LONG_MASK);
     result[INTS_SIZE - 1] = (int) (sum & LONG_MASK);
@@ -236,7 +235,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
       return this;
     }
 
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     boolean constant = true;
     long sum = (this.ints[INTS_SIZE - 1] & LONG_MASK) + ((~value.ints[INTS_SIZE - 1]) & LONG_MASK) + 1;
     result[INTS_SIZE - 1] = (int) (sum & LONG_MASK);
@@ -271,7 +270,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
   }
 
   private static UInt256 multiply(int[] x, int[] y) {
-    int result[] = new int[INTS_SIZE + INTS_SIZE];
+    int[] result = new int[INTS_SIZE + INTS_SIZE];
 
     long carry = 0;
     for (int j = INTS_SIZE - 1, k = INTS_SIZE + INTS_SIZE - 1; j >= 0; j--, k--) {
@@ -448,7 +447,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise AND.
    */
   public UInt256 and(UInt256 value) {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = this.ints[i] & value.ints[i];
     }
@@ -464,7 +463,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise AND.
    */
   public UInt256 and(Bytes32 bytes) {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1, j = 28; i >= 0; --i, j -= 4) {
       int other = ((int) bytes.get(j) & 0xFF) << 24;
       other |= ((int) bytes.get(j + 1) & 0xFF) << 16;
@@ -484,7 +483,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise OR.
    */
   public UInt256 or(UInt256 value) {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = this.ints[i] | value.ints[i];
     }
@@ -500,7 +499,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise OR.
    */
   public UInt256 or(Bytes32 bytes) {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1, j = 28; i >= 0; --i, j -= 4) {
       result[i] = this.ints[i] | (((int) bytes.get(j) & 0xFF) << 24);
       result[i] |= ((int) bytes.get(j + 1) & 0xFF) << 16;
@@ -519,7 +518,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise XOR.
    */
   public UInt256 xor(UInt256 value) {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = this.ints[i] ^ value.ints[i];
     }
@@ -535,7 +534,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise XOR.
    */
   public UInt256 xor(Bytes32 bytes) {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1, j = 28; i >= 0; --i, j -= 4) {
       result[i] = this.ints[i] ^ (((int) bytes.get(j) & 0xFF) << 24);
       result[i] ^= ((int) bytes.get(j + 1) & 0xFF) << 16;
@@ -551,7 +550,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
    * @return The result of a bit-wise NOT.
    */
   public UInt256 not() {
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     for (int i = INTS_SIZE - 1; i >= 0; --i) {
       result[i] = ~(this.ints[i]);
     }
@@ -571,7 +570,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (distance >= 256) {
       return ZERO;
     }
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     int d = distance / 32;
     int s = distance % 32;
 
@@ -603,7 +602,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
     if (distance >= 256) {
       return ZERO;
     }
-    int result[] = new int[INTS_SIZE];
+    int[] result = new int[INTS_SIZE];
     int d = distance / 32;
     int s = distance % 32;
 
@@ -704,7 +703,7 @@ public final class UInt256 implements UInt256Value<UInt256> {
 
   @Override
   public BigInteger toBigInteger() {
-    byte mag[] = new byte[32];
+    byte[] mag = new byte[32];
     for (int i = 0, j = 0; i < INTS_SIZE; ++i) {
       mag[j++] = (byte) (this.ints[i] >>> 24);
       mag[j++] = (byte) ((this.ints[i] >>> 16) & 0xFF);
