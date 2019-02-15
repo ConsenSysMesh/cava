@@ -398,7 +398,7 @@ class TomlBackedConfigurationTest {
   void writeConfigurationToToml() throws Exception {
     // @formatter:off
     Configuration config = Configuration.fromToml(
-        "foo = \"12\"\n"
+      ("foo = \"12\"\n"
       + "bar = 13\n"
       + "foobar = 156.34\n"
       + "amaps = [{a = 1, b = 2}, {a = 'hello'}]\n"
@@ -414,13 +414,13 @@ class TomlBackedConfigurationTest {
       + "[deepmap.' deep']\n"
       + "'' = 'emptykey'\n"
       + "[deepmap.deeper]\n"
-      + "farewell='goodbye'\n"
+      + "farewell='goodbye'\n").replace("\n", System.lineSeparator())
     );
     // @formatter:on
 
     // @formatter:off
     String expected =
-        "amaps = [{a = 1, b = 2}, {a = \"hello\"}]\n"
+      ("amaps = [{a = 1, b = 2}, {a = \"hello\"}]\n"
       + "bar = 13\n"
       + "foo = \"12\"\n"
       + "foobar = 156.34\n"
@@ -439,8 +439,9 @@ class TomlBackedConfigurationTest {
       + "\"\" = \"emptykey\"\n"
       + "\n"
       + "[deepmap.deeper]\n"
-      + "farewell = \"goodbye\"\n";
+      + "farewell = \"goodbye\"\n").replace("\n", System.lineSeparator());
     // @formatter:on
+
     assertEquals(expected, config.toToml());
   }
 
@@ -455,7 +456,7 @@ class TomlBackedConfigurationTest {
 
     // @formatter:off
     Configuration config = Configuration.fromToml(
-        "foo = \"12\"\n"
+      ("foo = \"12\"\n"
       + "bar = 13\n"
       + "foobar = 156.34\n"
       + "amaps = [{a = 1, b = 2}, {a = 'hello'}]\n"
@@ -471,12 +472,12 @@ class TomlBackedConfigurationTest {
       + "[deepmap.' deep']\n"
       + "'' = 'emptykey'\n"
       + "[deepmap.deeper]\n"
-      + "farewell='goodbye'\n", schema);
+      + "farewell='goodbye'\n").replace("\n", System.lineSeparator()), schema);
     // @formatter:on
 
     // @formatter:off
     String expected =
-        "amaps = [{a = 1, b = 2}, {a = \"hello\"}]\n"
+      ("amaps = [{a = 1, b = 2}, {a = \"hello\"}]\n"
       + "## Lucky number 13\n"
       + "bar = 13\n"
       + "foo = \"12\"\n"
@@ -498,7 +499,7 @@ class TomlBackedConfigurationTest {
       + "\"\" = \"emptykey\"\n"
       + "\n"
       + "[deepmap.deeper]\n"
-      + "farewell = \"goodbye\"\n";
+      + "farewell = \"goodbye\"\n").replace("\n", System.lineSeparator());
     // @formatter:on
     assertEquals(expected, config.toToml());
   }
