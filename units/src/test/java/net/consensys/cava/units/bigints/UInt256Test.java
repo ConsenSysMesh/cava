@@ -39,6 +39,19 @@ class UInt256Test {
     return UInt256.fromHexString(s);
   }
 
+  @Test
+  void valueOfLong() {
+    assertThrows(IllegalArgumentException.class, () -> UInt256.valueOf(-1));
+    assertThrows(IllegalArgumentException.class, () -> UInt256.valueOf(Long.MIN_VALUE));
+    assertThrows(IllegalArgumentException.class, () -> UInt256.valueOf(~0L));
+  }
+
+  @Test
+  void valueOfBigInteger() {
+    assertThrows(IllegalArgumentException.class, () -> UInt256.valueOf(BigInteger.valueOf(-1)));
+    assertThrows(IllegalArgumentException.class, () -> UInt256.valueOf(BigInteger.valueOf(2).pow(256)));
+  }
+
   @ParameterizedTest
   @MethodSource("addProvider")
   void add(UInt256 v1, UInt256 v2, UInt256 expected) {
@@ -865,22 +878,51 @@ class UInt256Test {
         Arguments.of(hv("0x100000000"), 33));
   }
 
+  @ParameterizedTest
+  @MethodSource("addExactProvider")
+  void addExact(UInt256 value, UInt256 operand) {
+    assertThrows(ArithmeticException.class, () -> value.addExact(operand));
+  }
+
+  private static Stream<Arguments> addExactProvider() {
+    return Stream.of(Arguments.of(UInt256.MAX_VALUE, v(1)), Arguments.of(UInt256.MAX_VALUE, UInt256.MAX_VALUE));
+  }
+
+  @ParameterizedTest
+  @MethodSource("addExactLongProvider")
+  void addExactLong(UInt256 value, long operand) {
+    assertThrows(ArithmeticException.class, () -> value.addExact(operand));
+  }
+
+  private static Stream<Arguments> addExactLongProvider() {
+    return Stream.of(
+        Arguments.of(UInt256.MAX_VALUE, 3),
+        Arguments.of(UInt256.MAX_VALUE, Long.MAX_VALUE),
+        Arguments.of(v(0), -1));
+  }
+
+  @ParameterizedTest
+  @MethodSource("subtractExactProvider")
+  void subtractExact(UInt256 value, UInt256 operand) {
+    assertThrows(ArithmeticException.class, () -> value.subtractExact(operand));
+  }
+
+  private static Stream<Arguments> subtractExactProvider() {
+    return Stream.of(Arguments.of(v(0), v(1)), Arguments.of(v(0), UInt256.MAX_VALUE));
+  }
+
+  @ParameterizedTest
+  @MethodSource("subtractExactLongProvider")
+  void subtractExactLong(UInt256 value, long operand) {
+    assertThrows(ArithmeticException.class, () -> value.subtractExact(operand));
+  }
+
+  private static Stream<Arguments> subtractExactLongProvider() {
+    return Stream.of(Arguments.of(v(0), 1), Arguments.of(v(0), Long.MAX_VALUE), Arguments.of(UInt256.MAX_VALUE, -1));
+  }
+
   private void assertValueEquals(UInt256 expected, UInt256 actual) {
     String msg = String.format("Expected %s but got %s", expected.toHexString(), actual.toHexString());
     assertEquals(expected, actual, msg);
-  }
-
-  @Test
-  void testTryAdd() {
-    assertThrows(ArithmeticException.class, () -> UInt256.MAX_VALUE.tryAdd(3));
-
-    assertThrows(ArithmeticException.class, () -> UInt256.MAX_VALUE.tryAdd(UInt256.MAX_VALUE));
-  }
-
-  @Test
-  void testTrySubtract() {
-    assertThrows(ArithmeticException.class, () -> UInt256.valueOf(3).trySubtract(5));
-
-    assertThrows(ArithmeticException.class, () -> UInt256.MIN_VALUE.trySubtract(UInt256.MAX_VALUE));
   }
 }

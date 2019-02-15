@@ -289,7 +289,9 @@ public interface MutableBytes extends Bytes {
   /**
    * Increments the value of the bytes by 1, treating the value as big endian.
    *
-   * If incrementing overflows the value, all bits flip, ie incrementing 0xFFFF will return 0x0000.
+   * If incrementing overflows the value then all bits flip, i.e. incrementing 0xFFFF will return 0x0000.
+   *
+   * @return this value
    */
   default MutableBytes increment() {
     for (int i = size() - 1; i >= 0; --i) {
@@ -307,7 +309,9 @@ public interface MutableBytes extends Bytes {
   /**
    * Decrements the value of the bytes by 1, treating the value as big endian.
    *
-   * If decrementing underflows the value, all bits flip, ie decrementing 0x0000 will return 0xFFFF.
+   * If decrementing underflows the value then all bits flip, i.e. decrementing 0x0000 will return 0xFFFF.
+   *
+   * @return this value
    */
   default MutableBytes decrement() {
     for (int i = size() - 1; i >= 0; --i) {

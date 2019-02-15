@@ -21,8 +21,7 @@ import java.math.BigInteger;
  * Represents a 64-bit (8 bytes) unsigned integer value.
  *
  * <p>
- * A {@link UInt64Value} is an unsigned integer value stored with 8 bytes, so whose value can range between 0 and
- * 2^64-1.
+ * A {@link UInt64Value} is an unsigned integer value whose value can range between 0 and 2^64-1.
  *
  * <p>
  * This interface defines operations for value types with a 64-bit precision range. The methods provided by this
@@ -58,14 +57,14 @@ public interface UInt64Value<T extends UInt64Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this + value)}.
    *
-   * @param value The amount to be added to this value.
+   * @param value the amount to be added to this value
    * @return {@code this + value}
    * @throws ArithmeticException if the result of the addition overflows
    */
-  default T tryAdd(T value) {
+  default T addExact(T value) {
     T result = add(value);
-    if (this.compareTo(result) > 0) {
-      throw new ArithmeticException("Value overflowed");
+    if (compareTo(result) > 0) {
+      throw new ArithmeticException("UInt64 overflow");
     }
     return result;
   }
@@ -81,14 +80,14 @@ public interface UInt64Value<T extends UInt64Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this + value)}.
    *
-   * @param value The amount to be added to this value.
+   * @param value the amount to be added to this value
    * @return {@code this + value}
    * @throws ArithmeticException if the result of the addition overflows
    */
-  default T tryAdd(long value) {
+  default T addExact(long value) {
     T result = add(value);
-    if (this.compareTo(result) > 0) {
-      throw new ArithmeticException("Value overflowed");
+    if ((value > 0 && compareTo(result) > 0) || (value < 0 && compareTo(result) < 0)) {
+      throw new ArithmeticException("UInt64 overflow");
     }
     return result;
   }
@@ -134,14 +133,14 @@ public interface UInt64Value<T extends UInt64Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this - value)}.
    *
-   * @param value The amount to be subtracted to this value.
+   * @param value the amount to be subtracted to this value
    * @return {@code this - value}
-   * @throws ArithmeticException if the result of the addition underflows
+   * @throws ArithmeticException if the result of the subtraction overflows
    */
-  default T trySubtract(T value) {
+  default T subtractExact(T value) {
     T result = subtract(value);
-    if (this.compareTo(result) < 0) {
-      throw new ArithmeticException("Value underflowed");
+    if (compareTo(result) < 0) {
+      throw new ArithmeticException("UInt64 overflow");
     }
     return result;
   }
@@ -157,14 +156,14 @@ public interface UInt64Value<T extends UInt64Value<T>> extends Comparable<T> {
   /**
    * Returns a value that is {@code (this - value)}.
    *
-   * @param value The amount to be subtracted to this value.
+   * @param value the amount to be subtracted to this value
    * @return {@code this - value}
-   * @throws ArithmeticException if the result of the addition underflows
+   * @throws ArithmeticException if the result of the subtraction overflows
    */
-  default T trySubtract(long value) {
+  default T subtractExact(long value) {
     T result = subtract(value);
-    if (this.compareTo(result) < 0) {
-      throw new ArithmeticException("Value underflowed");
+    if ((value > 0 && compareTo(result) < 0) || (value < 0 && compareTo(result) > 0)) {
+      throw new ArithmeticException("UInt64 overflow");
     }
     return result;
   }
