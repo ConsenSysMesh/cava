@@ -13,6 +13,7 @@
 package net.consensys.cava.scuttlebutt;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.crypto.SECP256K1;
 import net.consensys.cava.crypto.sodium.Signature;
 
 import java.util.Objects;
@@ -46,8 +47,18 @@ final class Ed25519PublicKeyIdentity implements Identity {
   }
 
   @Override
-  public String curveName() {
-    return "ed25519";
+  public Curve curve() {
+    return Curve.Ed25519;
+  }
+
+  @Override
+  public Signature.PublicKey ed25519PublicKey() {
+    return publicKey;
+  }
+
+  @Override
+  public SECP256K1.PublicKey secp256k1PublicKey() {
+    throw new UnsupportedOperationException();
   }
 
   @Override

@@ -15,6 +15,7 @@ package net.consensys.cava.scuttlebutt;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
@@ -142,6 +143,7 @@ class IdentityTest {
     Bytes message = Bytes.fromHexString("deadbeef");
     Bytes signature = id.sign(message);
     assertTrue(idWithPk.verify(signature, message));
+    assertEquals(kp.publicKey(), id.ed25519PublicKey());
   }
 
   @Test
@@ -154,5 +156,12 @@ class IdentityTest {
     Bytes message = Bytes.fromHexString("deadbeef");
     Bytes signature = id.sign(message);
     assertTrue(idWithPk.verify(signature, message));
+    assertEquals(kp.publicKey(), id.secp256k1PublicKey());
+  }
+
+  @Test
+  void curveUnsupported() {
+    assertThrows(UnsupportedOperationException.class, () -> Identity.random().secp256k1PublicKey());
+    assertThrows(UnsupportedOperationException.class, () -> Identity.randomSECP256K1().ed25519PublicKey());
   }
 }
