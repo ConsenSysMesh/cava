@@ -104,7 +104,17 @@ public final class Transaction {
       throw new RLPException("Additional bytes present at the end of the encoding");
     }
 
-    byte v = (byte) ((int) encodedV - V_BASE);
+    Byte v = null;
+    Integer chainId = null;
+
+    if ((int) encodedV == V_BASE || (int) encodedV == (V_BASE + 1)) {
+      v = (byte) ((int) encodedV - V_BASE);
+    } else if (((int) encodedV) > 35) {
+      chainId = (encodedV - 35) / 2;
+      v = (byte) (encodedV - (2 * chainId + 35));
+    } else {
+      throw new RLPException("Invalid v encoded value " + encodedV);
+    }
 
     SECP256K1.Signature signature;
     try {
@@ -113,7 +123,7 @@ public final class Transaction {
       throw new RLPException("Invalid signature: " + e.getMessage());
     }
     try {
-      return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, signature);
+      return new Transaction(nonce, gasPrice, gasLimit, address, value, payload, chainId, signature);
     } catch (IllegalArgumentException e) {
       throw new RLPException(e.getMessage(), e);
     }
@@ -127,6 +137,7 @@ public final class Transaction {
   private final Wei value;
   private final SECP256K1.Signature signature;
   private final Bytes payload;
+  private final Integer chainId;
   private volatile Hash hash;
   private volatile Address sender;
   private volatile Boolean validSignature;
@@ -150,6 +161,30 @@ public final class Transaction {
       Wei value,
       Bytes payload,
       SECP256K1.KeyPair keyPair) {
+    this(nonce, gasPrice, gasLimit, to, value, payload, keyPair, null);
+  }
+
+  /**
+   * Create a transaction.
+   *
+   * @param nonce The transaction nonce.
+   * @param gasPrice The transaction gas price.
+   * @param gasLimit The transaction gas limit.
+   * @param to The target contract address, if any.
+   * @param value The amount of Eth to transfer.
+   * @param payload The transaction payload.
+   * @param keyPair A keypair to generate the transaction signature with.
+   * @param chainId the chain ID.
+   */
+  public Transaction(
+      UInt256 nonce,
+      Wei gasPrice,
+      Gas gasLimit,
+      @Nullable Address to,
+      Wei value,
+      Bytes payload,
+      SECP256K1.KeyPair keyPair,
+      @Nullable Integer chainId) {
     this(
         nonce,
         gasPrice,
@@ -157,7 +192,8 @@ public final class Transaction {
         to,
         value,
         payload,
-        generateSignature(nonce, gasPrice, gasLimit, to, value, payload, keyPair));
+        chainId,
+        generateSignature(nonce, gasPrice, gasLimit, to, value, payload, chainId, keyPair));
   }
 
   /**
@@ -178,6 +214,7 @@ public final class Transaction {
       @Nullable Address to,
       Wei value,
       Bytes payload,
+      @Nullable Integer chainId,
       SECP256K1.Signature signature) {
     requireNonNull(nonce);
     checkArgument(nonce.compareTo(UInt256.ZERO) >= 0, "nonce must be >= 0");
@@ -192,6 +229,7 @@ public final class Transaction {
     this.value = value;
     this.signature = signature;
     this.payload = payload;
+    this.chainId = chainId;
   }
 
   /**
@@ -252,6 +290,14 @@ public final class Transaction {
   }
 
   /**
+   * @return the chain id of the transaction, or null if no chain id was encoded on the transaction.
+   * @see <a href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-155.md">EIP-155</a>
+   */
+  public Integer chainId() {
+    return chainId;
+  }
+
+  /**
    * Calculate and return the hash for this transaction.
    *
    * @return The hash.
@@ -278,7 +324,7 @@ public final class Transaction {
 
   @Nullable
   private Address verifySignatureAndGetSender() {
-    Bytes data = signatureData(nonce, gasPrice, gasLimit, to, value, payload);
+    Bytes data = signatureData(nonce, gasPrice, gasLimit, to, value, payload, chainId);
 
     SECP256K1.PublicKey publicKey = SECP256K1.PublicKey.recoverFromSignature(data, signature);
     if (publicKey == null) {
@@ -346,7 +392,12 @@ public final class Transaction {
     writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
     writer.writeUInt256(value.toUInt256());
     writer.writeValue(payload);
-    writer.writeByte((byte) ((int) signature.v() + V_BASE));
+    if (chainId != null) {
+      int v = signature.v() + V_BASE + 8 + chainId * 2;
+      writer.writeByte((byte) v);
+    } else {
+      writer.writeByte((byte) ((int) signature.v() + V_BASE));
+    }
     writer.writeBigInteger(signature.r());
     writer.writeBigInteger(signature.s());
   }
@@ -358,8 +409,9 @@ public final class Transaction {
       @Nullable Address to,
       Wei value,
       Bytes payload,
+      @Nullable Integer chainId,
       SECP256K1.KeyPair keyPair) {
-    return SECP256K1.sign(signatureData(nonce, gasPrice, gasLimit, to, value, payload), keyPair);
+    return SECP256K1.sign(signatureData(nonce, gasPrice, gasLimit, to, value, payload, chainId), keyPair);
   }
 
   private static Bytes signatureData(
@@ -368,7 +420,8 @@ public final class Transaction {
       Gas gasLimit,
       @Nullable Address to,
       Wei value,
-      Bytes payload) {
+      Bytes payload,
+      @Nullable Integer chainId) {
     return RLP.encodeList(writer -> {
       writer.writeUInt256(nonce);
       writer.writeValue(gasPrice.toMinimalBytes());
@@ -376,6 +429,11 @@ public final class Transaction {
       writer.writeValue((to != null) ? to.toBytes() : Bytes.EMPTY);
       writer.writeValue(value.toMinimalBytes());
       writer.writeValue(payload);
+      if (chainId != null) {
+        writer.writeInt(chainId);
+        writer.writeUInt256(UInt256.ZERO);
+        writer.writeUInt256(UInt256.ZERO);
+      }
     });
   }
 }

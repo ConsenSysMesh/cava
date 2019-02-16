@@ -49,7 +49,7 @@ class TransactionTestSuite {
   void testTransaction(String name, String milestone, String rlp, String hash, String sender) {
     if (hash == null || sender == null) {
       assertTrue(hash == null && sender == null, "Invalid test case");
-      testInvalidTransaction(rlp);
+      testInvalidTransaction(rlp, milestone);
     } else {
       testValidTransaction(rlp, hash, sender);
     }
@@ -63,7 +63,7 @@ class TransactionTestSuite {
     assertEquals(Bytes.fromHexString(hash), tx.hash().toBytes());
   }
 
-  private void testInvalidTransaction(String rlp) {
+  private void testInvalidTransaction(String rlp, String milestone) {
     Bytes rlpBytes;
     try {
       rlpBytes = Bytes.fromHexString(rlp);
@@ -80,6 +80,16 @@ class TransactionTestSuite {
 
     if (tx.sender() == null) {
       return;
+    }
+
+    if ("Constantinople".equals(milestone) || "Byzantium".equals(milestone) || "EIP158".equals(milestone)) {
+      if (tx.chainId() == null) {
+        return;
+      }
+    } else {
+      if (tx.chainId() != null) {
+        return;
+      }
     }
 
     fail("Expected an invalid transaction but it was successfully read");
@@ -114,10 +124,10 @@ class TransactionTestSuite {
       String rlp = (String) testData.get("rlp");
       List<Arguments> arguments = new ArrayList<>();
       for (String milestone : new String[] {
-          //          "Byzantium",
-          //          "Constantinople",
-          //          "EIP150",
-          //          "EIP158",
+          "Byzantium",
+          "Constantinople",
+          "EIP150",
+          "EIP158",
           "Frontier",
           "Homestead"}) {
         Map milestoneData = (Map) testData.get(milestone);
