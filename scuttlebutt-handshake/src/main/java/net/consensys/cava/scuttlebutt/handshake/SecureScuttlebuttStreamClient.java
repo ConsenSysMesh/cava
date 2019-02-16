@@ -28,6 +28,13 @@ public interface SecureScuttlebuttStreamClient {
   Bytes sendToServer(Bytes message);
 
   /**
+   * Prepares a goodbye message to be sent to the server
+   * 
+   * @return the goodbye message
+   */
+  Bytes sendGoodbyeToServer();
+
+  /**
    * Decrypts a message from the server
    * 
    * @param message the message to decrypt

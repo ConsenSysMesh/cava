@@ -13,6 +13,8 @@
 package net.consensys.cava.scuttlebutt.handshake;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 import net.consensys.cava.bytes.Bytes;
@@ -102,5 +104,28 @@ class SecureScuttlebuttStreamTest {
       Bytes responseDecrypted = clientToServer.readFromServer(response);
       assertEquals(Bytes.fromHexString("deadbeef"), responseDecrypted);
     }
+  }
+
+  @Test
+  void testGoodbyeCheck() {
+    assertFalse(SecureScuttlebuttStreamServer.isGoodbye(Bytes.wrap(new byte[17])));
+    assertFalse(SecureScuttlebuttStreamServer.isGoodbye(Bytes.wrap(new byte[19])));
+    assertFalse(SecureScuttlebuttStreamServer.isGoodbye(Bytes.random(18)));
+  }
+
+  @Test
+  void sendingGoodbyes() {
+    SHA256Hash.Hash clientToServerKey = SHA256Hash.hash(SHA256Hash.Input.fromBytes(Bytes32.random()));
+    Bytes clientToServerNonce = Bytes.random(24);
+    SHA256Hash.Hash serverToClientKey = SHA256Hash.hash(SHA256Hash.Input.fromBytes(Bytes32.random()));
+    Bytes serverToClientNonce = Bytes.random(24);
+    SecureScuttlebuttStream clientToServer =
+        new SecureScuttlebuttStream(clientToServerKey, clientToServerNonce, serverToClientKey, serverToClientNonce);
+    SecureScuttlebuttStream serverToClient =
+        new SecureScuttlebuttStream(clientToServerKey, clientToServerNonce, serverToClientKey, serverToClientNonce);
+    Bytes message = clientToServer.sendGoodbyeToServer();
+    assertTrue(SecureScuttlebuttStreamServer.isGoodbye(serverToClient.readFromClient(message)));
+    assertTrue(
+        SecureScuttlebuttStreamServer.isGoodbye(clientToServer.readFromServer(serverToClient.sendGoodbyeToClient())));
   }
 }

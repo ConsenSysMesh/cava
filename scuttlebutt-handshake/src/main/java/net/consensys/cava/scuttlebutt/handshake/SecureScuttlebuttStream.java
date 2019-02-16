@@ -44,6 +44,11 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
   }
 
   @Override
+  public synchronized Bytes sendGoodbyeToServer() {
+    return sendToServer(Bytes.wrap(new byte[18]));
+  }
+
+  @Override
   public synchronized Bytes readFromServer(Bytes message) {
     return decrypt(message, serverToClientKey, serverToClientNonce);
   }
@@ -51,6 +56,11 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
   @Override
   public synchronized Bytes sendToClient(Bytes message) {
     return encrypt(message, serverToClientKey, serverToClientNonce);
+  }
+
+  @Override
+  public synchronized Bytes sendGoodbyeToClient() {
+    return sendToClient(Bytes.wrap(new byte[18]));
   }
 
   @Override
