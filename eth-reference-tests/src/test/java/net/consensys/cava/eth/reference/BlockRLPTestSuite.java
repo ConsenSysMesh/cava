@@ -128,6 +128,7 @@ class BlockRLPTestSuite {
               toAddress,
               Wei.valueOf(UInt256.fromHexString((String) txData.get("value"))),
               Bytes.fromHexString((String) txData.get("data")),
+              null,
               Signature.create(
                   (byte) ((int) Bytes.fromHexString((String) txData.get("v")).get(0) - 27),
                   Bytes.fromHexString((String) txData.get("r")).toUnsignedBigInteger(),
