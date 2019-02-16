@@ -51,5 +51,4 @@ class InviteTest {
             + secretKey.bytes().toBase64String(),
         invite.toString());
   }
-
 }

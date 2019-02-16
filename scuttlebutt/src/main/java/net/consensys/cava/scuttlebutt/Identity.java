@@ -24,6 +24,19 @@ import net.consensys.cava.crypto.sodium.Signature;
 public interface Identity {
 
   /**
+   * Curves supported by those identities.
+   */
+  public enum Curve {
+    Ed25519("ed25519"), SECP256K1("secp256k1");
+
+    public final String name;
+
+    Curve(String name) {
+      this.name = name;
+    }
+  }
+
+  /**
    * Creates a new Ed25519 identity backed by this key pair.
    *
    * @param keyPair the key pair of the identity
@@ -137,11 +150,36 @@ public interface Identity {
   String publicKeyAsBase64String();
 
   /**
+   * Provides the curve associated with this identity
+   *
+   * @return the curve associated with this identity
+   */
+  Curve curve();
+
+  /**
    * Provides the name of the curve associated with this identity
    * 
    * @return the name of the curve associated with this identity
    */
-  String curveName();
+  default String curveName() {
+    return curve().name;
+  }
+
+  /**
+   * Provides the identity's associated Ed25519 public key.
+   * 
+   * @return the identity's associated Ed25519 public key
+   * @throws UnsupportedOperationException if the identity does not use the Ed25519 algorithm.
+   */
+  Signature.PublicKey ed25519PublicKey();
+
+  /**
+   * Provides the identity's associated SECP256K1 public key.
+   * 
+   * @return the identity's associated SECP256K1 public key
+   * @throws UnsupportedOperationException if the identity does not use the SECP256K1 algorithm.
+   */
+  SECP256K1.PublicKey secp256k1PublicKey();
 
   /**
    * Encodes the identity into a canonical Scuttlebutt identity string
