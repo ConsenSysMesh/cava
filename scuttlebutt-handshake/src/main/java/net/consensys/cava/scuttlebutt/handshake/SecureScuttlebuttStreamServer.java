@@ -20,12 +20,30 @@ import net.consensys.cava.bytes.Bytes;
 public interface SecureScuttlebuttStreamServer {
 
   /**
+   * Checks if a message is a goodbye message, indicating the end of the connection
+   * 
+   * @param message the message to interpret
+   *
+   * @return true if the message is a goodbye message, or false otherwise
+   */
+  static boolean isGoodbye(Bytes message) {
+    return message.size() == 18 && message.numberOfLeadingZeroBytes() == 18;
+  }
+
+  /**
    * Prepares a message to be sent to the client
    * 
    * @param message the message to encrypt and format
    * @return the message, encrypted and ready to send
    */
   Bytes sendToClient(Bytes message);
+
+  /**
+   * Prepares a goodbye message to be sent to the client
+   * 
+   * @return the goodbye message
+   */
+  Bytes sendGoodbyeToClient();
 
   /**
    * Decrypts a message from the client
