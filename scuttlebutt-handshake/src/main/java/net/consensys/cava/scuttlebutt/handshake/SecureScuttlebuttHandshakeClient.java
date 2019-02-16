@@ -22,6 +22,8 @@ import net.consensys.cava.crypto.sodium.HMACSHA512256;
 import net.consensys.cava.crypto.sodium.SHA256Hash;
 import net.consensys.cava.crypto.sodium.SecretBox;
 import net.consensys.cava.crypto.sodium.Signature;
+import net.consensys.cava.scuttlebutt.Identity;
+import net.consensys.cava.scuttlebutt.Invite;
 
 /**
  * Class responsible for performing a Secure Scuttlebutt handshake with a remote peer, as defined in the
@@ -60,21 +62,21 @@ public final class SecureScuttlebuttHandshakeClient {
     return new SecureScuttlebuttHandshakeClient(ourKeyPair, networkIdentifier, serverLongTermPublicKey);
   }
 
-  //  /**
-  //   * Create a new handshake client to connect to the server specified in the invite
-  //   *
-  //   * @param invite the invite
-  //   * @return a new Secure Scuttlebutt handshake client
-  //   */
-  //  public static SecureScuttlebuttHandshakeClient fromInvite(Bytes32 networkIdentifier, Invite invite) {
-  //    if (!"ed25519".equals(invite.identity().curveName())) {
-  //      throw new IllegalArgumentException("Only ed25519 keys are supported");
-  //    }
-  //    return new SecureScuttlebuttHandshakeClient(
-  //        Signature.KeyPair.forSecretKey(invite.secretKey()),
-  //        networkIdentifier,
-  //        Signature.PublicKey.fromBytes(invite.identity().publicKeyBytes()));
-  //  }
+  /**
+   * Create a new handshake client to connect to the server specified in the invite
+   *
+   * @param invite the invite
+   * @return a new Secure Scuttlebutt handshake client
+   */
+  public static SecureScuttlebuttHandshakeClient fromInvite(Bytes32 networkIdentifier, Invite invite) {
+    if (!Identity.Curve.Ed25519.equals(invite.identity().curve())) {
+      throw new IllegalArgumentException("Only ed25519 keys are supported");
+    }
+    return new SecureScuttlebuttHandshakeClient(
+        Signature.KeyPair.forSecretKey(invite.secretKey()),
+        networkIdentifier,
+        invite.identity().ed25519PublicKey());
+  }
 
   private SecureScuttlebuttHandshakeClient(
       Signature.KeyPair longTermKeyPair,

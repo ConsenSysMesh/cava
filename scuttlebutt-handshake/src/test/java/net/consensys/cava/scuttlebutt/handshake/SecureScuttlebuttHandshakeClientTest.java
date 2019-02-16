@@ -22,6 +22,8 @@ import net.consensys.cava.crypto.sodium.SecretBox;
 import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.crypto.sodium.Sodium;
 import net.consensys.cava.junit.BouncyCastleExtension;
+import net.consensys.cava.scuttlebutt.Identity;
+import net.consensys.cava.scuttlebutt.Invite;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -138,13 +140,13 @@ class SecureScuttlebuttHandshakeClientTest {
     }
   }
 
-  //  @Test
-  //  void fromInviteWrongCurve() {
-  //    assertThrows(
-  //        IllegalArgumentException.class,
-  //        () -> SecureScuttlebuttHandshakeClient.fromInvite(
-  //            Bytes32.random(),
-  //            new Invite("localhost", 30303, Identity.randomSECP256K1(), Signature.KeyPair.random().secretKey())));
-  //  }
+  @Test
+  void fromInviteWrongCurve() {
+    assertThrows(
+        IllegalArgumentException.class,
+        () -> SecureScuttlebuttHandshakeClient.fromInvite(
+            Bytes32.random(),
+            new Invite("localhost", 30303, Identity.randomSECP256K1(), Signature.KeyPair.random().secretKey())));
+  }
 
 }
