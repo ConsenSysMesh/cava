@@ -14,6 +14,7 @@ package net.consensys.cava.ssz.experimental
 
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.units.bigints.UInt256
+import net.consensys.cava.units.bigints.UInt384
 import java.math.BigInteger
 
 @ExperimentalUnsignedTypes
@@ -35,6 +36,9 @@ internal class BytesSSZReader(private val delegate: net.consensys.cava.ssz.SSZRe
 
   override fun readUInt256(): UInt256 =
     delegate.readUInt256()
+
+  override fun readUInt384(): UInt384 =
+    delegate.readUInt384()
 
   override fun readAddress(): Bytes =
     delegate.readAddress()
@@ -65,6 +69,9 @@ internal class BytesSSZReader(private val delegate: net.consensys.cava.ssz.SSZRe
 
   override fun readUInt256List(): List<UInt256> =
     delegate.readUInt256List()
+
+  override fun readUInt384List(): List<UInt384> =
+    delegate.readUInt384List()
 
   override fun readAddressList(): List<Bytes> =
     delegate.readAddressList()

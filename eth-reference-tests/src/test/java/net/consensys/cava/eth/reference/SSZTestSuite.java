@@ -159,7 +159,6 @@ class SSZTestSuite {
   private static Stream<Arguments> findTests(String glob) throws IOException {
     return Resources.find(glob).flatMap(url -> {
       try (InputStream in = url.openConnection().getInputStream()) {
-        System.out.println(url);
         return prepareTests(in);
       } catch (IOException e) {
         throw new UncheckedIOException(e);
