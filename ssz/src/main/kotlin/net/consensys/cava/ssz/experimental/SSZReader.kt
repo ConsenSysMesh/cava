@@ -16,6 +16,7 @@ import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.ssz.EndOfSSZException
 import net.consensys.cava.ssz.InvalidSSZTypeException
 import net.consensys.cava.units.bigints.UInt256
+import net.consensys.cava.units.bigints.UInt384
 import java.math.BigInteger
 import java.nio.charset.StandardCharsets.UTF_8
 
@@ -116,7 +117,7 @@ interface SSZReader {
   fun readInt32(): Int = readInt(32)
 
   /**
-   * Read an 64-bit two's-compliment integer from the SSZ source.
+   * Read a 64-bit two's-compliment integer from the SSZ source.
    *
    * @return A long.
    * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 64-bit int.
@@ -184,7 +185,7 @@ interface SSZReader {
   fun readUInt32(): ULong = readULong(32)
 
   /**
-   * Read an 64-bit unsigned integer from the SSZ source.
+   * Read a 64-bit unsigned integer from the SSZ source.
    *
    * @return A long.
    * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 64-bit int.
@@ -200,6 +201,15 @@ interface SSZReader {
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
   fun readUInt256(): UInt256
+
+  /**
+   * Read a [UInt384] from the SSZ source.
+   *
+   * @return A [UInt384].
+   * @throws InvalidSSZTypeException If there are insufficient encoded bytes for a 384-bit int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  fun readUInt384(): UInt384
 
   /**
    * Read a boolean from the SSZ source.
@@ -463,6 +473,16 @@ interface SSZReader {
    * @throws EndOfSSZException If there are no more SSZ values to read.
    */
   fun readUInt256List(): List<UInt256>
+
+  /**
+   * Read a list of 384-bit unsigned int values from the SSZ source.
+   *
+   * @return A list of [UInt256].
+   * @throws InvalidSSZTypeException If the next SSZ value is not a list, there are insufficient encoded bytes for the
+   * desired bit length or any value in the list, or any decoded value was too large to fit into an int.
+   * @throws EndOfSSZException If there are no more SSZ values to read.
+   */
+  fun readUInt384List(): List<UInt384>
 
   /**
    * Read a list of 20-byte addresses from the SSZ source.

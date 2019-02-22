@@ -102,14 +102,14 @@ final class BytesSSZReader implements SSZReader {
 
   @Override
   public UInt256 readUInt256() {
-    ensureBytes(32, () -> "SSZ encoded data has insufficient length to read a 256-bit integer");
-    return UInt256.fromBytes(consumeBytes(32).reverse());
+    ensureBytes(256 / 8, () -> "SSZ encoded data has insufficient length to read a 256-bit integer");
+    return UInt256.fromBytes(consumeBytes(256 / 8).reverse());
   }
 
   @Override
   public UInt384 readUInt384() {
-    ensureBytes(48, () -> "SSZ encoded data has insufficient length to read a 384-bit integer");
-    return UInt384.fromBytes(consumeBytes(48).reverse());
+    ensureBytes(384 / 8, () -> "SSZ encoded data has insufficient length to read a 384-bit integer");
+    return UInt384.fromBytes(consumeBytes(384 / 8).reverse());
   }
 
   @Override
@@ -161,6 +161,11 @@ final class BytesSSZReader implements SSZReader {
   @Override
   public List<UInt256> readUInt256List() {
     return readList(256 / 8, this::readUInt256);
+  }
+
+  @Override
+  public List<UInt384> readUInt384List() {
+    return readList(384 / 8, this::readUInt384);
   }
 
   @Override
