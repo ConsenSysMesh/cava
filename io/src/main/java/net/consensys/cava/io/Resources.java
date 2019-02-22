@@ -148,7 +148,13 @@ public final class Resources {
     if (classLoader instanceof URLClassLoader) {
       URL[] urls = ((URLClassLoader) classLoader).getURLs();
       for (URL url : urls) {
-        String urlPath = url.getPath();
+        String urlPath;
+        try {
+          urlPath = Paths.get(url.toURI()).toString();
+        } catch (URISyntaxException e) {
+          // Should not happen
+          throw new RuntimeException(e);
+        }
         if (!Files.isRegularFile(Paths.get(urlPath))
             || !(urlPath.endsWith(".jar") || urlPath.endsWith(".war") || urlPath.endsWith(".zip"))) {
           continue;
@@ -160,7 +166,7 @@ public final class Resources {
           // Should not happen
           throw new RuntimeException(e);
         }
-        results.put(url.getPath(), jarUri);
+        results.put(urlPath, jarUri);
       }
     }
 
@@ -218,7 +224,13 @@ public final class Resources {
 
   @MustBeClosed
   private static Stream<URL> findFileResources(URL rootDirUrl, String glob) throws IOException {
-    Path rootDir = Paths.get(rootDirUrl.getPath());
+    Path rootDir;
+    try {
+      rootDir = Paths.get(rootDirUrl.toURI());
+    } catch (URISyntaxException e) {
+      // Should not happen
+      throw new RuntimeException(e);
+    }
     if (!Files.isDirectory(rootDir) || !Files.isReadable(rootDir)) {
       return Stream.empty();
     }
