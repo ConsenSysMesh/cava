@@ -89,7 +89,7 @@ public final class Transaction {
     }
     Wei value = Wei.valueOf(reader.readUInt256());
     Bytes payload = reader.readValue();
-    byte encodedV = reader.readByte();
+    int encodedV = reader.readInt();
     Bytes rbytes = reader.readValue();
     if (rbytes.size() > 32) {
       throw new RLPException("r-value of the signature is " + rbytes.size() + ", it should be at most 32 bytes");
@@ -104,12 +104,12 @@ public final class Transaction {
       throw new RLPException("Additional bytes present at the end of the encoding");
     }
 
-    Byte v = null;
+    byte v;
     Integer chainId = null;
 
-    if ((int) encodedV == V_BASE || (int) encodedV == (V_BASE + 1)) {
-      v = (byte) ((int) encodedV - V_BASE);
-    } else if (((int) encodedV) > 35) {
+    if (encodedV == V_BASE || encodedV == (V_BASE + 1)) {
+      v = (byte) (encodedV - V_BASE);
+    } else if (encodedV > 35) {
       chainId = (encodedV - 35) / 2;
       v = (byte) (encodedV - (2 * chainId + 35));
     } else {
@@ -394,9 +394,9 @@ public final class Transaction {
     writer.writeValue(payload);
     if (chainId != null) {
       int v = signature.v() + V_BASE + 8 + chainId * 2;
-      writer.writeByte((byte) v);
+      writer.writeInt(v);
     } else {
-      writer.writeByte((byte) ((int) signature.v() + V_BASE));
+      writer.writeInt((int) signature.v() + V_BASE);
     }
     writer.writeBigInteger(signature.r());
     writer.writeBigInteger(signature.s());
