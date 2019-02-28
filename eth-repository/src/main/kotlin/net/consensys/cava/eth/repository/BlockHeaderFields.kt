@@ -32,5 +32,6 @@ private constructor(val fieldName: String) {
   GAS_LIMIT("gasLimit"),
   GAS_USED("gasUsed"),
   EXTRA_DATA("extraData"),
-  TIMESTAMP("timestamp")
+  TIMESTAMP("timestamp"),
+  TOTAL_DIFFICULTY("totalDifficulty")
 }

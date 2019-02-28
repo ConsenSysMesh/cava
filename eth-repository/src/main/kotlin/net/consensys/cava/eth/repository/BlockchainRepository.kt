@@ -43,7 +43,6 @@ class BlockchainRepository
 
   companion object {
 
-    val CHAIN_HEAD = Bytes.wrap("chainHead".toByteArray())
     val GENESIS_BLOCK = Bytes.wrap("genesisBlock".toByteArray())
 
     /**
@@ -74,10 +73,7 @@ class BlockchainRepository
   suspend fun storeBlock(block: Block) {
     blockStore.put(block.header().hash().toBytes(), block.toBytes())
     blockHeaderStore.put(block.header().hash().toBytes(), block.header().toBytes())
-    blockchainIndex.indexBlockHeader(block.header())
-    if (isChainHead(block.header())) {
-      setChainHead(block.header())
-    }
+    indexBlockHeader(block.header())
   }
 
   /**
@@ -88,14 +84,16 @@ class BlockchainRepository
    */
   suspend fun storeBlockHeader(header: BlockHeader) {
     blockHeaderStore.put(header.hash().toBytes(), header.toBytes())
-    if (isChainHead(header)) {
-        setChainHead(header)
-    }
+    indexBlockHeader(header)
   }
 
-  private suspend fun isChainHead(header: BlockHeader): Boolean {
-    val headHeader = retrieveChainHeadHeader()
-    return headHeader?.number()?.compareTo(header.number()) == -1
+  private suspend fun indexBlockHeader(header: BlockHeader) {
+    blockchainIndex.index { writer -> writer.indexBlockHeader(header) }
+    for (hash in findBlocksByParentHash(header.hash())) {
+      blockHeaderStore.get(hash.toBytes())?.let { bytes ->
+        indexBlockHeader(BlockHeader.fromBytes(bytes))
+      }
+    }
   }
 
   /**
@@ -185,7 +183,7 @@ class BlockchainRepository
    * @return the current chain head, or the genesis block if no chain head is present.
    */
   suspend fun retrieveChainHead(): Block? {
-    return chainMetadata.get(CHAIN_HEAD)
+    return blockchainIndex.findByLargest(BlockHeaderFields.TOTAL_DIFFICULTY)
       ?.let { retrieveBlock(it) } ?: retrieveGenesisBlock()
   }
 
@@ -195,7 +193,7 @@ class BlockchainRepository
    * @return the current chain head header, or the genesis block if no chain head is present.
    */
   suspend fun retrieveChainHeadHeader(): BlockHeader? {
-    return chainMetadata.get(CHAIN_HEAD)
+    return blockchainIndex.findByLargest(BlockHeaderFields.TOTAL_DIFFICULTY)
       ?.let { retrieveBlockHeader(it) } ?: retrieveGenesisBlock()?.header()
   }
 
@@ -205,7 +203,7 @@ class BlockchainRepository
    * @return the genesis block
    */
   suspend fun retrieveGenesisBlock(): Block? {
-    return retrieveBlock(chainMetadata.get(GENESIS_BLOCK)!!)
+    return chainMetadata.get(GENESIS_BLOCK)?.let { retrieveBlock(it) }
   }
 
   /**
@@ -218,8 +216,14 @@ class BlockchainRepository
     return blockchainIndex.findByHashOrNumber(blockNumberOrBlockHash)
   }
 
-  private suspend fun setChainHead(header: BlockHeader) {
-    return chainMetadata.put(CHAIN_HEAD, header.hash().toBytes())
+  /**
+   * Finds hashes of blocks which have a matching parent hash.
+   *
+   * @param parentHash the parent hash
+   * @return the matching blocks
+   */
+  fun findBlocksByParentHash(parentHash: Hash): List<Hash> {
+    return blockchainIndex.findBy(BlockHeaderFields.PARENT_HASH, parentHash)
   }
 
   private suspend fun setGenesisBlock(block: Block) {

@@ -17,10 +17,23 @@ import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.eth.Address
 import net.consensys.cava.eth.BlockHeader
 import net.consensys.cava.eth.Hash
+import net.consensys.cava.eth.repository.BlockHeaderFields.COINBASE
+import net.consensys.cava.eth.repository.BlockHeaderFields.DIFFICULTY
+import net.consensys.cava.eth.repository.BlockHeaderFields.EXTRA_DATA
+import net.consensys.cava.eth.repository.BlockHeaderFields.GAS_LIMIT
+import net.consensys.cava.eth.repository.BlockHeaderFields.GAS_USED
+import net.consensys.cava.eth.repository.BlockHeaderFields.NUMBER
+import net.consensys.cava.eth.repository.BlockHeaderFields.OMMERS_HASH
+import net.consensys.cava.eth.repository.BlockHeaderFields.PARENT_HASH
+import net.consensys.cava.eth.repository.BlockHeaderFields.STATE_ROOT
+import net.consensys.cava.eth.repository.BlockHeaderFields.TIMESTAMP
+import net.consensys.cava.eth.repository.BlockHeaderFields.TOTAL_DIFFICULTY
 import net.consensys.cava.units.bigints.UInt256
 import net.consensys.cava.units.ethereum.Gas
+import org.apache.lucene.document.Document
 import org.apache.lucene.document.Field
 import org.apache.lucene.document.LongPoint
+import org.apache.lucene.document.SortedDocValuesField
 import org.apache.lucene.document.StringField
 import org.apache.lucene.index.IndexWriter
 import org.apache.lucene.index.IndexableField
@@ -127,6 +140,14 @@ interface BlockchainIndexReader {
    * @return the matching hash with the largest field value.
    */
   fun findByLargest(field: BlockHeaderFields): Hash?
+
+  /**
+   * Retrieves the total difficulty of the block header, if it has been computed.
+   *
+   * @param hash the hash of the header
+   * @return the total difficulty of the header if it could be computed.
+   */
+  fun totalDifficulty(hash: Hash): UInt256?
 }
 
 /**
@@ -196,42 +217,38 @@ class BlockchainIndex(private val indexWriter: IndexWriter) : BlockchainIndexWri
   }
 
   override fun indexBlockHeader(blockHeader: BlockHeader) {
-    val document = ArrayList<IndexableField>()
+    val document = mutableListOf<IndexableField>()
     val id = toBytesRef(blockHeader.hash())
     document.add(StringField("_id", id, Field.Store.YES))
-    blockHeader.parentHash().let {
-      document.add(
-        StringField(
-          BlockHeaderFields.PARENT_HASH.fieldName,
-          toBytesRef(blockHeader.parentHash()!!),
-          Field.Store.NO
-        )
+    blockHeader.parentHash()?.let { hash ->
+      val hashRef = toBytesRef(hash)
+      document += StringField(
+        PARENT_HASH.fieldName,
+        hashRef,
+        Field.Store.NO
       )
+      queryDocs(TermQuery(Term("_id", hashRef)), listOf(TOTAL_DIFFICULTY)).firstOrNull()?.let {
+        it.getField(TOTAL_DIFFICULTY.fieldName)?.let {
+          val totalDifficulty = blockHeader.difficulty().add(UInt256.fromBytes(Bytes.wrap(it.binaryValue().bytes)))
+          val diffBytes = toBytesRef(totalDifficulty.toBytes())
+          document += StringField(TOTAL_DIFFICULTY.fieldName, diffBytes, Field.Store.YES)
+          document += SortedDocValuesField(TOTAL_DIFFICULTY.fieldName, diffBytes)
+        }
+      }
+    } ?: run {
+      val diffBytes = toBytesRef(blockHeader.difficulty().toBytes())
+      document += StringField(TOTAL_DIFFICULTY.fieldName, diffBytes, Field.Store.YES)
+      document += SortedDocValuesField(TOTAL_DIFFICULTY.fieldName, diffBytes)
     }
-    document.add(
-      StringField(BlockHeaderFields.OMMERS_HASH.fieldName, toBytesRef(blockHeader.ommersHash()), Field.Store.NO)
-    )
-    document
-      .add(StringField(BlockHeaderFields.COINBASE.fieldName, toBytesRef(blockHeader.coinbase()), Field.Store.NO))
-    document.add(
-      StringField(BlockHeaderFields.STATE_ROOT.fieldName, toBytesRef(blockHeader.stateRoot()), Field.Store.NO)
-    )
-    document.add(
-      StringField(BlockHeaderFields.DIFFICULTY.fieldName, toBytesRef(blockHeader.difficulty()), Field.Store.NO)
-    )
-    document.add(
-      StringField(BlockHeaderFields.DIFFICULTY.fieldName, toBytesRef(blockHeader.difficulty()), Field.Store.NO)
-    )
-    document.add(StringField(BlockHeaderFields.NUMBER.fieldName, toBytesRef(blockHeader.number()), Field.Store.NO))
-    document.add(
-      StringField(BlockHeaderFields.GAS_LIMIT.fieldName, toBytesRef(blockHeader.gasLimit()), Field.Store.NO)
-    )
-    document
-      .add(StringField(BlockHeaderFields.GAS_USED.fieldName, toBytesRef(blockHeader.gasUsed()), Field.Store.NO))
-    document.add(
-      StringField(BlockHeaderFields.EXTRA_DATA.fieldName, toBytesRef(blockHeader.extraData()), Field.Store.NO)
-    )
-    document.add(LongPoint(BlockHeaderFields.TIMESTAMP.fieldName, blockHeader.timestamp().toEpochMilli()))
+    document += StringField(OMMERS_HASH.fieldName, toBytesRef(blockHeader.ommersHash()), Field.Store.NO)
+    document += StringField(COINBASE.fieldName, toBytesRef(blockHeader.coinbase()), Field.Store.NO)
+    document += StringField(STATE_ROOT.fieldName, toBytesRef(blockHeader.stateRoot()), Field.Store.NO)
+    document += StringField(DIFFICULTY.fieldName, toBytesRef(blockHeader.difficulty()), Field.Store.NO)
+    document += StringField(NUMBER.fieldName, toBytesRef(blockHeader.number()), Field.Store.NO)
+    document += StringField(GAS_LIMIT.fieldName, toBytesRef(blockHeader.gasLimit()), Field.Store.NO)
+    document += StringField(GAS_USED.fieldName, toBytesRef(blockHeader.gasUsed()), Field.Store.NO)
+    document += StringField(EXTRA_DATA.fieldName, toBytesRef(blockHeader.extraData()), Field.Store.NO)
+    document += LongPoint(TIMESTAMP.fieldName, blockHeader.timestamp().toEpochMilli())
 
     try {
       indexWriter.updateDocument(Term("_id", id), document)
@@ -240,19 +257,20 @@ class BlockchainIndex(private val indexWriter: IndexWriter) : BlockchainIndexWri
     }
   }
 
-  private fun query(query: Query): List<Hash> {
+  private fun queryDocs(query: Query): List<Document> = queryDocs(query, emptyList())
+
+  private fun queryDocs(query: Query, fields: List<BlockHeaderFields>): List<Document> {
     var searcher: IndexSearcher? = null
     try {
       searcher = searcherManager.acquire()
       val topDocs = searcher!!.search(query, HITS)
 
-      val hashes = ArrayList<Hash>()
+      val docs = mutableListOf<Document>()
       for (hit in topDocs.scoreDocs) {
-        val doc = searcher.doc(hit.doc, setOf("_id"))
-        val bytes = doc.getBinaryValue("_id")
-        hashes.add(Hash.fromBytes(Bytes32.wrap(bytes.bytes)))
+        val doc = searcher.doc(hit.doc, setOf("_id") + fields.map { it.fieldName })
+        docs += doc
       }
-      return hashes
+      return docs
     } catch (e: IOException) {
       throw IndexReadException(e)
     } finally {
@@ -261,6 +279,15 @@ class BlockchainIndex(private val indexWriter: IndexWriter) : BlockchainIndexWri
       } catch (e: IOException) {
       }
     }
+  }
+
+  private fun query(query: Query): List<Hash> {
+    val hashes = mutableListOf<Hash>()
+    for (doc in queryDocs(query)) {
+      val bytes = doc.getBinaryValue("_id")
+      hashes.add(Hash.fromBytes(Bytes32.wrap(bytes.bytes)))
+    }
+    return hashes
   }
 
   override fun findInRange(field: BlockHeaderFields, minValue: UInt256, maxValue: UInt256): List<Hash> {
@@ -282,7 +309,7 @@ class BlockchainIndex(private val indexWriter: IndexWriter) : BlockchainIndexWri
       val topDocs = searcher!!.search(
         MatchAllDocsQuery(),
         HITS,
-        Sort(SortField.FIELD_SCORE, SortField(field.fieldName, SortField.Type.DOC))
+        Sort(SortField.FIELD_SCORE, SortField(field.fieldName, SortField.Type.DOC, true))
       )
 
       for (hit in topDocs.scoreDocs) {
@@ -324,13 +351,20 @@ class BlockchainIndex(private val indexWriter: IndexWriter) : BlockchainIndexWri
       .add(BooleanClause(TermQuery(Term("_id", toBytesRef(hashOrNumber))), BooleanClause.Occur.SHOULD))
       .add(
         BooleanClause(
-          TermQuery(Term(BlockHeaderFields.NUMBER.fieldName, toBytesRef(hashOrNumber))),
+          TermQuery(Term(NUMBER.fieldName, toBytesRef(hashOrNumber))),
           BooleanClause.Occur.SHOULD
         )
       )
       .build()
     return query(query)
   }
+
+  override fun totalDifficulty(hash: Hash): UInt256? =
+    queryDocs(TermQuery(Term("_id", toBytesRef(hash))), listOf(TOTAL_DIFFICULTY)).firstOrNull()?.let {
+      it.getField(TOTAL_DIFFICULTY.fieldName)?.binaryValue()?.bytes?.let { bytes ->
+        UInt256.fromBytes(Bytes.wrap(bytes))
+      }
+    }
 
   private fun findByOneTerm(field: BlockHeaderFields, value: BytesRef): List<Hash> {
     return query(TermQuery(Term(field.fieldName, value)))
