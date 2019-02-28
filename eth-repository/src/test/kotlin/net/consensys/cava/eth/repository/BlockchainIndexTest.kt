@@ -44,38 +44,6 @@ internal class BlockchainIndexTest {
 
   @Test
   @Throws(IOException::class)
-  fun testIndexBlockHeader(@LuceneIndexWriter writer: IndexWriter) {
-
-    val blockchainIndex = BlockchainIndex(writer)
-    val header = BlockHeader(
-      Hash.fromBytes(Bytes32.random()),
-      Hash.fromBytes(Bytes32.random()),
-      Address.fromBytes(Bytes.random(20)),
-      Hash.fromBytes(Bytes32.random()),
-      Hash.fromBytes(Bytes32.random()),
-      Hash.fromBytes(Bytes32.random()),
-      Bytes32.random(),
-      UInt256.fromBytes(Bytes32.random()),
-      UInt256.fromBytes(Bytes32.random()),
-      Gas.valueOf(3),
-      Gas.valueOf(2),
-      Instant.now().truncatedTo(ChronoUnit.SECONDS),
-      Bytes.of(2, 3, 4),
-      Hash.fromBytes(Bytes32.random()),
-      Bytes32.random()
-    )
-    blockchainIndex.indexBlockHeader(header)
-
-    val reader = DirectoryReader.open(writer)
-    val searcher = IndexSearcher(reader)
-    val collector = TopScoreDocCollector.create(10, ScoreDoc(1, 1.0f))
-    searcher.search(TermQuery(Term("_id", BytesRef(header.hash().toBytes().toArrayUnsafe()))), collector)
-    val hits = collector.topDocs().scoreDocs
-    assertEquals(1, hits.size)
-  }
-
-  @Test
-  @Throws(IOException::class)
   fun testIndexBlockHeaderElements(@LuceneIndexWriter writer: IndexWriter) {
 
     val blockchainIndex = BlockchainIndex(writer)
@@ -96,7 +64,7 @@ internal class BlockchainIndexTest {
       Hash.fromBytes(Bytes32.random()),
       Bytes32.random()
     )
-    blockchainIndex.indexBlockHeader(header)
+    blockchainIndex.index { it.indexBlockHeader(header) }
 
     val reader = DirectoryReader.open(writer)
     val searcher = IndexSearcher(reader)
@@ -234,5 +202,51 @@ internal class BlockchainIndexTest {
       assertEquals(1, entries.size)
       assertEquals(header.hash(), entries[0])
     }
+  }
+
+  @Test
+  fun testTotalDifficulty(@LuceneIndexWriter writer: IndexWriter) {
+    val blockchainIndex = BlockchainIndex(writer)
+    val header = BlockHeader(
+      null,
+      Hash.fromBytes(Bytes32.random()),
+      Address.fromBytes(Bytes.random(20)),
+      Hash.fromBytes(Bytes32.random()),
+      Hash.fromBytes(Bytes32.random()),
+      Hash.fromBytes(Bytes32.random()),
+      Bytes32.random(),
+      UInt256.valueOf(1),
+      UInt256.fromBytes(Bytes32.random()),
+      Gas.valueOf(3),
+      Gas.valueOf(2),
+      Instant.now().truncatedTo(ChronoUnit.SECONDS),
+      Bytes.of(2, 3, 4),
+      Hash.fromBytes(Bytes32.random()),
+      Bytes32.random()
+    )
+    blockchainIndex.index { w -> w.indexBlockHeader(header) }
+    assertEquals(UInt256.valueOf(1), blockchainIndex.totalDifficulty(header.hash()))
+
+    val childHeader = BlockHeader(
+      header.hash(),
+      Hash.fromBytes(Bytes32.random()),
+      Address.fromBytes(Bytes.random(20)),
+      Hash.fromBytes(Bytes32.random()),
+      Hash.fromBytes(Bytes32.random()),
+      Hash.fromBytes(Bytes32.random()),
+      Bytes32.random(),
+      UInt256.valueOf(3),
+      UInt256.fromBytes(Bytes32.random()),
+      Gas.valueOf(3),
+      Gas.valueOf(2),
+      Instant.now().truncatedTo(ChronoUnit.SECONDS),
+      Bytes.of(2, 3, 4),
+      Hash.fromBytes(Bytes32.random()),
+      Bytes32.random()
+    )
+
+    blockchainIndex.index { w -> w.indexBlockHeader(childHeader) }
+
+    assertEquals(UInt256.valueOf(4), blockchainIndex.totalDifficulty(childHeader.hash()))
   }
 }
