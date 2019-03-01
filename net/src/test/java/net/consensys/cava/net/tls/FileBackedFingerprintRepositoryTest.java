@@ -30,7 +30,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 
 @ExtendWith(TempDirectoryExtension.class)
-class FingerprintRepositoryTest {
+class FileBackedFingerprintRepositoryTest {
 
   private SecureRandom secureRandom = new SecureRandom();
 
@@ -41,8 +41,8 @@ class FingerprintRepositoryTest {
   }
 
   @Test
-  FingerprintRepository testAddingNewFingerprint(@TempDirectory Path tempFolder) throws IOException {
-    FingerprintRepository repo = new FingerprintRepository(tempFolder.resolve("repo"));
+  FileBackedFingerprintRepository testAddingNewFingerprint(@TempDirectory Path tempFolder) throws IOException {
+    FileBackedFingerprintRepository repo = new FileBackedFingerprintRepository(tempFolder.resolve("repo"));
     Bytes fingerprint = generateFingerprint();
     repo.addFingerprint("foo", fingerprint);
     assertTrue(repo.contains("foo", fingerprint));
@@ -54,7 +54,7 @@ class FingerprintRepositoryTest {
 
   @Test
   void testUpdateFingerprint(@TempDirectory Path tempFolder) throws IOException {
-    FingerprintRepository repo = testAddingNewFingerprint(tempFolder);
+    FileBackedFingerprintRepository repo = testAddingNewFingerprint(tempFolder);
     Bytes fingerprint = generateFingerprint();
     repo.addFingerprint("foo", fingerprint);
     assertTrue(repo.contains("foo", fingerprint));
@@ -65,7 +65,7 @@ class FingerprintRepositoryTest {
 
   @Test
   void testInvalidFingerprintAddedToFile(@TempDirectory Path tempFolder) throws IOException {
-    FingerprintRepository repo = new FingerprintRepository(tempFolder.resolve("repo-bad2"));
+    FileBackedFingerprintRepository repo = new FileBackedFingerprintRepository(tempFolder.resolve("repo-bad2"));
     Bytes fingerprint = generateFingerprint();
     Files.write(
         tempFolder.resolve("repo-bad2"),
