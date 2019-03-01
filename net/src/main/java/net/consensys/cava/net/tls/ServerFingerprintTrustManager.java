@@ -19,7 +19,6 @@ import net.consensys.cava.bytes.Bytes;
 
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.nio.file.Path;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import javax.net.ssl.SSLEngine;
@@ -30,15 +29,15 @@ final class ServerFingerprintTrustManager extends X509ExtendedTrustManager {
 
   private static final X509Certificate[] EMPTY_X509_CERTIFICATES = new X509Certificate[0];
 
-  static ServerFingerprintTrustManager record(Path repository) {
+  static ServerFingerprintTrustManager record(FingerprintRepository repository) {
     return new ServerFingerprintTrustManager(repository, true, true);
   }
 
-  static ServerFingerprintTrustManager tofu(Path repository) {
+  static ServerFingerprintTrustManager tofu(FingerprintRepository repository) {
     return new ServerFingerprintTrustManager(repository, true, false);
   }
 
-  static ServerFingerprintTrustManager whitelist(Path repository) {
+  static ServerFingerprintTrustManager whitelist(FingerprintRepository repository) {
     return new ServerFingerprintTrustManager(repository, false, false);
   }
 
@@ -46,8 +45,11 @@ final class ServerFingerprintTrustManager extends X509ExtendedTrustManager {
   private final boolean acceptNewFingerprints;
   private final boolean updateFingerprints;
 
-  private ServerFingerprintTrustManager(Path repository, boolean acceptNewFingerprints, boolean updateFingerprints) {
-    this.repository = new FingerprintRepository(repository);
+  private ServerFingerprintTrustManager(
+      FingerprintRepository repository,
+      boolean acceptNewFingerprints,
+      boolean updateFingerprints) {
+    this.repository = repository;
     this.acceptNewFingerprints = acceptNewFingerprints;
     this.updateFingerprints = updateFingerprints;
   }

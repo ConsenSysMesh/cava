@@ -43,7 +43,25 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory recordServerFingerprints(Path knownServersFile) {
     requireNonNull(knownServersFile);
-    return recordServerFingerprints(knownServersFile, true);
+    return recordServerFingerprints(new FileBackedFingerprintRepository(knownServersFile));
+  }
+
+  /**
+   * Accept all server certificates, recording certificate fingerprints for those that are not CA-signed.
+   *
+   * <p>
+   * Excepting when a server presents a CA-signed certificate, the server host+port and the certificate fingerprint will
+   * be written to {@code knownServersFile}.
+   *
+   * <p>
+   * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory recordServerFingerprints(FingerprintRepository repository) {
+    requireNonNull(repository);
+    return recordServerFingerprints(repository, true);
   }
 
   /**
@@ -62,7 +80,26 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory recordServerFingerprints(Path knownServersFile, boolean skipCASigned) {
     requireNonNull(knownServersFile);
-    return wrap(ServerFingerprintTrustManager.record(knownServersFile), skipCASigned);
+    return recordServerFingerprints(new FileBackedFingerprintRepository(knownServersFile), skipCASigned);
+  }
+
+  /**
+   * Accept all server certificates, recording certificate fingerprints.
+   *
+   * <p>
+   * For all connections, the server host+port and the fingerprint of the presented certificate will be written to
+   * {@code knownServersFile}.
+   *
+   * <p>
+   * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @param skipCASigned If {@code true}, CA-signed certificates are not recorded.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory recordServerFingerprints(FingerprintRepository repository, boolean skipCASigned) {
+    requireNonNull(repository);
+    return wrap(ServerFingerprintTrustManager.record(repository), skipCASigned);
   }
 
   /**
@@ -82,7 +119,29 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory recordServerFingerprints(Path knownServersFile, TrustManagerFactory tmf) {
     requireNonNull(knownServersFile);
     requireNonNull(tmf);
-    return wrap(ServerFingerprintTrustManager.record(knownServersFile), tmf);
+    return recordServerFingerprints(new FileBackedFingerprintRepository(knownServersFile), tmf);
+  }
+
+  /**
+   * Accept all server certificates, recording certificate fingerprints for those that are not CA-signed.
+   *
+   * <p>
+   * Excepting when a server presents a CA-signed certificate, the server host+port and the certificate fingerprint will
+   * be written to {@code knownServersFile}.
+   *
+   * <p>
+   * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory recordServerFingerprints(
+      FingerprintRepository repository,
+      TrustManagerFactory tmf) {
+    requireNonNull(repository);
+    requireNonNull(tmf);
+    return wrap(ServerFingerprintTrustManager.record(repository), tmf);
   }
 
   /**
@@ -98,7 +157,23 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory trustServerOnFirstUse(Path knownServersFile) {
     requireNonNull(knownServersFile);
-    return trustServerOnFirstUse(knownServersFile, true);
+    return trustServerOnFirstUse(new FileBackedFingerprintRepository(knownServersFile));
+  }
+
+  /**
+   * Accept CA-signed certificates, and otherwise trust server certificates on first use.
+   *
+   * <p>
+   * Except when a server presents a CA-signed certificate, on first connection to a server (identified by host+port)
+   * the fingerprint of the presented certificate will be recorded in {@code knownServersFile}. On subsequent
+   * connections, the presented certificate will be matched to the stored fingerprint to ensure it has not changed.
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustServerOnFirstUse(FingerprintRepository repository) {
+    requireNonNull(repository);
+    return trustServerOnFirstUse(repository, true);
   }
 
   /**
@@ -116,7 +191,25 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory trustServerOnFirstUse(Path knownServersFile, boolean acceptCASigned) {
     requireNonNull(knownServersFile);
-    return wrap(ServerFingerprintTrustManager.tofu(knownServersFile), acceptCASigned);
+    return trustServerOnFirstUse(new FileBackedFingerprintRepository(knownServersFile), acceptCASigned);
+  }
+
+  /**
+   * Trust server certificates on first use.
+   *
+   * <p>
+   * On first connection to a server (identified by host+port) the fingerprint of the presented certificate will be
+   * recorded in {@code knownServersFile}. On subsequent connections, the presented certificate will be matched to the
+   * stored fingerprint to ensure it has not changed.
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted (and the fingerprint will not
+   *        be recorded).
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustServerOnFirstUse(FingerprintRepository repository, boolean acceptCASigned) {
+    requireNonNull(repository);
+    return wrap(ServerFingerprintTrustManager.tofu(repository), acceptCASigned);
   }
 
   /**
@@ -134,7 +227,25 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory trustServerOnFirstUse(Path knownServersFile, TrustManagerFactory tmf) {
     requireNonNull(knownServersFile);
     requireNonNull(tmf);
-    return wrap(ServerFingerprintTrustManager.tofu(knownServersFile), tmf);
+    return trustServerOnFirstUse(new FileBackedFingerprintRepository(knownServersFile), tmf);
+  }
+
+  /**
+   * Accept CA-signed certificates, and otherwise trust server certificates on first use.
+   *
+   * <p>
+   * Except when a server presents a CA-signed certificate, on first connection to a server (identified by host+port)
+   * the fingerprint of the presented certificate will be recorded in {@code knownServersFile}. On subsequent
+   * connections, the presented certificate will be matched to the stored fingerprint to ensure it has not changed.
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustServerOnFirstUse(FingerprintRepository repository, TrustManagerFactory tmf) {
+    requireNonNull(repository);
+    requireNonNull(tmf);
+    return wrap(ServerFingerprintTrustManager.tofu(repository), tmf);
   }
 
   /**
@@ -149,7 +260,22 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory whitelistServers(Path knownServersFile) {
     requireNonNull(knownServersFile);
-    return whitelistServers(knownServersFile, true);
+    return whitelistServers(new FileBackedFingerprintRepository(knownServersFile));
+  }
+
+  /**
+   * Require servers to present known certificates, or CA-signed certificates.
+   *
+   * <p>
+   * If a certificate is not CA-signed, then its fingerprint must be present in the {@code knownServersFile}, associated
+   * with the server (identified by host+port).
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory whitelistServers(FingerprintRepository repository) {
+    requireNonNull(repository);
+    return whitelistServers(repository, true);
   }
 
   /**
@@ -165,7 +291,23 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory whitelistServers(Path knownServersFile, boolean acceptCASigned) {
     requireNonNull(knownServersFile);
-    return wrap(ServerFingerprintTrustManager.whitelist(knownServersFile), acceptCASigned);
+    return whitelistServers(new FileBackedFingerprintRepository(knownServersFile), acceptCASigned);
+  }
+
+  /**
+   * Require servers to present known certificates.
+   *
+   * <p>
+   * The fingerprint for a server certificate must be present in the {@code knownServersFile}, associated with the
+   * server (identified by host+port).
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory whitelistServers(FingerprintRepository repository, boolean acceptCASigned) {
+    requireNonNull(repository);
+    return wrap(ServerFingerprintTrustManager.whitelist(repository), acceptCASigned);
   }
 
   /**
@@ -182,7 +324,24 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory whitelistServers(Path knownServersFile, TrustManagerFactory tmf) {
     requireNonNull(knownServersFile);
     requireNonNull(tmf);
-    return wrap(ServerFingerprintTrustManager.whitelist(knownServersFile), tmf);
+    return whitelistServers(new FileBackedFingerprintRepository(knownServersFile), tmf);
+  }
+
+  /**
+   * Require servers to present known certificates, or CA-signed certificates.
+   *
+   * <p>
+   * If a certificate is not CA-signed, then its fingerprint must be present in the {@code knownServersFile}, associated
+   * with the server (identified by host+port).
+   *
+   * @param repository The repository in which to record fingerprints by host.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory whitelistServers(FingerprintRepository repository, TrustManagerFactory tmf) {
+    requireNonNull(repository);
+    requireNonNull(tmf);
+    return wrap(ServerFingerprintTrustManager.whitelist(repository), tmf);
   }
 
   /**
@@ -200,7 +359,25 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory recordClientFingerprints(Path knownClientsFile) {
     requireNonNull(knownClientsFile);
-    return recordClientFingerprints(knownClientsFile, true);
+    return recordClientFingerprints(new FileBackedFingerprintRepository(knownClientsFile));
+  }
+
+  /**
+   * Accept all client certificates, recording certificate fingerprints for those that are not CA-signed.
+   *
+   * <p>
+   * Excepting when a client presents a CA-signed certificate, the certificate fingerprint will be written to
+   * {@code knownClientsFile}.
+   *
+   * <p>
+   * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
+   *
+   * @param repository The repository in which to record fingerprints.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory recordClientFingerprints(FingerprintRepository repository) {
+    requireNonNull(repository);
+    return recordClientFingerprints(repository, true);
   }
 
   /**
@@ -218,7 +395,25 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory recordClientFingerprints(Path knownClientsFile, boolean skipCASigned) {
     requireNonNull(knownClientsFile);
-    return wrap(ClientFingerprintTrustManager.record(knownClientsFile), skipCASigned);
+    return recordClientFingerprints(new FileBackedFingerprintRepository(knownClientsFile), skipCASigned);
+  }
+
+  /**
+   * Accept all client certificates, recording certificate fingerprints.
+   *
+   * <p>
+   * For all connections, the fingerprint of the presented certificate will be written to {@code knownClientsFile}.
+   *
+   * <p>
+   * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
+   *
+   * @param repository The repository in which to record fingerprints.
+   * @param skipCASigned If {@code true}, CA-signed certificates are not recorded.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory recordClientFingerprints(FingerprintRepository repository, boolean skipCASigned) {
+    requireNonNull(repository);
+    return wrap(ClientFingerprintTrustManager.record(repository), skipCASigned);
   }
 
   /**
@@ -238,7 +433,29 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory recordClientFingerprints(Path knownClientsFile, TrustManagerFactory tmf) {
     requireNonNull(knownClientsFile);
     requireNonNull(tmf);
-    return wrap(ClientFingerprintTrustManager.record(knownClientsFile), tmf);
+    return recordClientFingerprints(new FileBackedFingerprintRepository(knownClientsFile), tmf);
+  }
+
+  /**
+   * Accept all client certificates, recording certificate fingerprints for those that are not CA-signed.
+   *
+   * <p>
+   * Excepting when a client presents a CA-signed certificate, the certificate fingerprint will be written to
+   * {@code knownClientsFile}.
+   *
+   * <p>
+   * Important: this provides no security as it is vulnerable to man-in-the-middle attacks.
+   *
+   * @param repository The repository in which to record fingerprints.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory recordClientFingerprints(
+      FingerprintRepository repository,
+      TrustManagerFactory tmf) {
+    requireNonNull(repository);
+    requireNonNull(tmf);
+    return wrap(ClientFingerprintTrustManager.record(repository), tmf);
   }
 
   /**
@@ -261,7 +478,30 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile) {
     requireNonNull(knownClientsFile);
-    return trustClientOnFirstAccess(knownClientsFile, true);
+    return trustClientOnFirstAccess(new FileBackedFingerprintRepository(knownClientsFile));
+  }
+
+  /**
+   * Accept CA-signed client certificates, and otherwise trust client certificates on first access.
+   *
+   * <p>
+   * Except when a client presents a CA-signed certificate, on first connection to this server the common name and
+   * fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected
+   * if the fingerprint has changed.
+   *
+   * <p>
+   * <i>Note: unlike the seemingly equivalent {@link #trustServerOnFirstUse(Path)} method for authenticating servers,
+   * this method for authenticating clients is <b>insecure</b> and <b>provides zero confidence in client identity</b>.
+   * Unlike the server version, which bases the identity on the hostname and port the connection is being established
+   * to, the client version only uses the common name of the certificate that the connecting client presents. Therefore,
+   * clients can circumvent access control by using a different common name from any previously recorded client.</i>
+   *
+   * @param repository The repository containing fingerprints.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustClientOnFirstAccess(FingerprintRepository repository) {
+    requireNonNull(repository);
+    return trustClientOnFirstAccess(repository, true);
   }
 
   /**
@@ -284,7 +524,30 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile, boolean acceptCASigned) {
     requireNonNull(knownClientsFile);
-    return wrap(ClientFingerprintTrustManager.tofa(knownClientsFile), acceptCASigned);
+    return trustClientOnFirstAccess(new FileBackedFingerprintRepository(knownClientsFile), acceptCASigned);
+  }
+
+  /**
+   * Trust client certificates on first access.
+   *
+   * <p>
+   * on first connection to this server the common name and fingerprint of the presented certificate will be recorded.
+   * On subsequent connections, the client will be rejected if the fingerprint has changed.
+   *
+   * <p>
+   * <i>Note: unlike the seemingly equivalent {@link #trustServerOnFirstUse(Path)} method for authenticating servers,
+   * this method for authenticating clients is <b>insecure</b> and <b>provides zero confidence in client identity</b>.
+   * Unlike the server version, which bases the identity on the hostname and port the connection is being established
+   * to, the client version only uses the common name of the certificate that the connecting client presents. Therefore,
+   * clients can circumvent access control by using a different common name from any previously recorded client.</i>
+   *
+   * @param repository The repository containing fingerprints.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustClientOnFirstAccess(FingerprintRepository repository, boolean acceptCASigned) {
+    requireNonNull(repository);
+    return wrap(ClientFingerprintTrustManager.tofa(repository), acceptCASigned);
   }
 
   /**
@@ -309,7 +572,34 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory trustClientOnFirstAccess(Path knownClientsFile, TrustManagerFactory tmf) {
     requireNonNull(knownClientsFile);
     requireNonNull(tmf);
-    return wrap(ClientFingerprintTrustManager.tofa(knownClientsFile), tmf);
+    return trustClientOnFirstAccess(new FileBackedFingerprintRepository(knownClientsFile), tmf);
+  }
+
+  /**
+   * Accept CA-signed certificates, and otherwise trust client certificates on first access.
+   *
+   * <p>
+   * Except when a client presents a CA-signed certificate, on first connection to this server the common name and
+   * fingerprint of the presented certificate will be recorded. On subsequent connections, the client will be rejected
+   * if the fingerprint has changed.
+   *
+   * <p>
+   * <i>Note: unlike the seemingly equivalent {@link #trustServerOnFirstUse(Path)} method for authenticating servers,
+   * this method for authenticating clients is <b>insecure</b> and <b>provides zero confidence in client identity</b>.
+   * Unlike the server version, which bases the identity on the hostname and port the connection is being established
+   * to, the client version only uses the common name of the certificate that the connecting client presents. Therefore,
+   * clients can circumvent access control by using a different common name from any previously recorded client.</i>
+   *
+   * @param repository The repository containing fingerprints.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory trustClientOnFirstAccess(
+      FingerprintRepository repository,
+      TrustManagerFactory tmf) {
+    requireNonNull(repository);
+    requireNonNull(tmf);
+    return wrap(ClientFingerprintTrustManager.tofa(repository), tmf);
   }
 
   /**
@@ -323,7 +613,21 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory whitelistClients(Path knownClientsFile) {
     requireNonNull(knownClientsFile);
-    return whitelistClients(knownClientsFile, true);
+    return whitelistClients(new FileBackedFingerprintRepository(knownClientsFile));
+  }
+
+  /**
+   * Require servers to present known certificates, or CA-signed certificates.
+   *
+   * <p>
+   * If a certificate is not CA-signed, then its fingerprint must be present in the {@code knownClientsFile}.
+   *
+   * @param repository The repository containing fingerprints.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory whitelistClients(FingerprintRepository repository) {
+    requireNonNull(repository);
+    return whitelistClients(repository, true);
   }
 
   /**
@@ -338,7 +642,22 @@ public final class TrustManagerFactories {
    */
   public static TrustManagerFactory whitelistClients(Path knownClientsFile, boolean acceptCASigned) {
     requireNonNull(knownClientsFile);
-    return wrap(ClientFingerprintTrustManager.whitelist(knownClientsFile), acceptCASigned);
+    return whitelistClients(new FileBackedFingerprintRepository(knownClientsFile), acceptCASigned);
+  }
+
+  /**
+   * Require clients to present known certificates.
+   *
+   * <p>
+   * The fingerprint for a client certificate must be present in {@code knownClientsFile}.
+   *
+   * @param repository The repository containing fingerprints.
+   * @param acceptCASigned If {@code true}, CA-signed certificates will always be accepted.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory whitelistClients(FingerprintRepository repository, boolean acceptCASigned) {
+    requireNonNull(repository);
+    return wrap(ClientFingerprintTrustManager.whitelist(repository), acceptCASigned);
   }
 
   /**
@@ -354,7 +673,23 @@ public final class TrustManagerFactories {
   public static TrustManagerFactory whitelistClients(Path knownClientsFile, TrustManagerFactory tmf) {
     requireNonNull(knownClientsFile);
     requireNonNull(tmf);
-    return wrap(ClientFingerprintTrustManager.whitelist(knownClientsFile), tmf);
+    return whitelistClients(new FileBackedFingerprintRepository(knownClientsFile), tmf);
+  }
+
+  /**
+   * Require servers to present known certificates, or CA-signed certificates.
+   *
+   * <p>
+   * If a certificate is not CA-signed, then its fingerprint must be present in the {@code knownClientsFile}.
+   *
+   * @param repository The repository containing fingerprints.
+   * @param tmf A {@link TrustManagerFactory} for checking server certificates against a CA.
+   * @return A trust manager factory.
+   */
+  public static TrustManagerFactory whitelistClients(FingerprintRepository repository, TrustManagerFactory tmf) {
+    requireNonNull(repository);
+    requireNonNull(tmf);
+    return wrap(ClientFingerprintTrustManager.whitelist(repository), tmf);
   }
 
   private static TrustManagerFactory wrap(X509TrustManager trustManager, boolean acceptCASigned) {
