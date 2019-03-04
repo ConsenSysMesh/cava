@@ -17,6 +17,9 @@ import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.eth.Address
 import net.consensys.cava.eth.BlockHeader
 import net.consensys.cava.eth.Hash
+import net.consensys.cava.eth.Log
+import net.consensys.cava.eth.LogsBloomFilter
+import net.consensys.cava.eth.TransactionReceipt
 import net.consensys.cava.junit.BouncyCastleExtension
 import net.consensys.cava.junit.LuceneIndex
 import net.consensys.cava.junit.LuceneIndexWriter
@@ -248,5 +251,92 @@ internal class BlockchainIndexTest {
     blockchainIndex.index { w -> w.indexBlockHeader(childHeader) }
 
     assertEquals(UInt256.valueOf(4), blockchainIndex.totalDifficulty(childHeader.hash()))
+  }
+
+  @Test
+  fun queryTransactionReceiptByField(@LuceneIndexWriter writer: IndexWriter) {
+    val blockchainIndex = BlockchainIndex(writer)
+
+    val txReceipt = TransactionReceipt(Bytes32.random(), 3,
+      LogsBloomFilter(Bytes.random(256)),
+      listOf(
+        Log(
+          Address.fromBytes(Bytes.random(20)),
+          Bytes.fromHexString("deadbeef"),
+          listOf(Bytes32.random(), Bytes32.random())
+        )
+      )
+    )
+
+    val txHash = Hash.fromBytes(Bytes32.random())
+    val blockHash = Hash.fromBytes(Bytes32.random())
+
+    blockchainIndex.index { it.indexTransactionReceipt(txReceipt, 43, txHash, blockHash) }
+
+    val txReceiptWithStatus = TransactionReceipt(42, 322,
+      LogsBloomFilter(Bytes.random(256)),
+      listOf(
+        Log(
+          Address.fromBytes(Bytes.random(20)),
+          Bytes.fromHexString("deadbeef"),
+          listOf(Bytes32.random(), Bytes32.random())
+        )
+      )
+    )
+
+    val txHash2 = Hash.fromBytes(Bytes32.random())
+    val blockHash2 = Hash.fromBytes(Bytes32.random())
+
+    blockchainIndex.index { it.indexTransactionReceipt(txReceiptWithStatus, 32, txHash2, blockHash2) }
+
+    val reader = blockchainIndex as BlockchainIndexReader
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.BLOCK_HASH, blockHash)
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.TRANSACTION_HASH, txHash)
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.BLOOM_FILTER, txReceipt.bloomFilter().toBytes())
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.STATE_ROOT, txReceipt.stateRoot())
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.LOGGER, txReceipt.logs()[0].logger())
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.LOG_TOPIC, txReceipt.logs()[0].topics()[0])
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.STATUS, txReceiptWithStatus.status())
+      assertEquals(1, entries.size)
+      assertEquals(txHash2, entries[0])
+    }
+
+    run {
+      val entries = reader.findBy(TransactionReceiptFields.CUMULATIVE_GAS_USED, txReceipt.cumulativeGasUsed())
+      assertEquals(1, entries.size)
+      assertEquals(txHash, entries[0])
+    }
   }
 }

@@ -13,25 +13,23 @@
 package net.consensys.cava.eth.repository
 
 /**
- * Block header index fields.
+ * Transaction receipt index fields.
  *
  */
-enum class BlockHeaderFields
+enum class TransactionReceiptFields
 /**
  * Default constructor.
  *
  * @param fieldName the name to use when indexing the field with Lucene.
  */
 constructor(val fieldName: String) {
-  PARENT_HASH("parentHash"),
-  OMMERS_HASH("ommersHash"),
-  COINBASE("coinbase"),
+  INDEX("index"),
+  TRANSACTION_HASH("txHash"),
+  BLOCK_HASH("blockHash"),
+  LOGGER("logger"),
+  LOG_TOPIC("logTopic"),
+  BLOOM_FILTER("bloomFilter"),
   STATE_ROOT("stateRoot"),
-  DIFFICULTY("difficulty"),
-  NUMBER("number"),
-  GAS_LIMIT("gasLimit"),
-  GAS_USED("gasUsed"),
-  EXTRA_DATA("extraData"),
-  TIMESTAMP("timestamp"),
-  TOTAL_DIFFICULTY("totalDifficulty")
+  CUMULATIVE_GAS_USED("cumulativeGasUsed"),
+  STATUS("status")
 }
