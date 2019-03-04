@@ -21,7 +21,10 @@ import net.consensys.cava.eth.Block
 import net.consensys.cava.eth.BlockBody
 import net.consensys.cava.eth.BlockHeader
 import net.consensys.cava.eth.Hash
+import net.consensys.cava.eth.Log
+import net.consensys.cava.eth.LogsBloomFilter
 import net.consensys.cava.eth.Transaction
+import net.consensys.cava.eth.TransactionReceipt
 import net.consensys.cava.junit.BouncyCastleExtension
 import net.consensys.cava.junit.LuceneIndexWriter
 import net.consensys.cava.junit.LuceneIndexWriterExtension
@@ -62,6 +65,7 @@ internal class BlockchainRepositoryTest {
     val genesisBlock = Block(genesisHeader, BlockBody(emptyList(), emptyList()))
     val repo = BlockchainRepository
       .init(
+        MapKeyValueStore(),
         MapKeyValueStore(),
         MapKeyValueStore(),
         MapKeyValueStore(),
@@ -129,6 +133,7 @@ internal class BlockchainRepositoryTest {
     val genesisBlock = Block(genesisHeader, BlockBody(emptyList(), emptyList()))
     val repo = BlockchainRepository
       .init(
+        MapKeyValueStore(),
         MapKeyValueStore(),
         MapKeyValueStore(),
         MapKeyValueStore(),
@@ -238,6 +243,7 @@ internal class BlockchainRepositoryTest {
         MapKeyValueStore(),
         MapKeyValueStore(),
         MapKeyValueStore(),
+        MapKeyValueStore(),
         BlockchainIndex(writer),
         genesisBlock
       )
@@ -343,6 +349,7 @@ internal class BlockchainRepositoryTest {
       MapKeyValueStore(),
       MapKeyValueStore(),
       MapKeyValueStore(),
+      MapKeyValueStore(),
       BlockchainIndex(writer),
       genesisBlock
     )
@@ -422,5 +429,49 @@ internal class BlockchainRepositoryTest {
     repo.storeBlock(Block(header, BlockBody(emptyList(), emptyList())))
 
     assertEquals(biggerNumber3.hash(), repo.retrieveChainHeadHeader()!!.hash())
+  }
+
+  @Test
+  fun storeTransactionReceipt(@LuceneIndexWriter writer: IndexWriter) = runBlocking {
+    val genesisHeader = BlockHeader(
+      null,
+      Hash.fromBytes(Bytes32.random()),
+      Address.fromBytes(Bytes.random(20)),
+      Hash.fromBytes(Bytes32.random()),
+      Hash.fromBytes(Bytes32.random()),
+      Hash.fromBytes(Bytes32.random()),
+      Bytes32.random(),
+      UInt256.valueOf(0),
+      UInt256.fromBytes(Bytes32.random()),
+      Gas.valueOf(3000),
+      Gas.valueOf(2000),
+      Instant.now().plusSeconds(30).truncatedTo(ChronoUnit.SECONDS),
+      Bytes.of(2, 3, 4, 5, 6, 7, 8, 9, 10),
+      Hash.fromBytes(Bytes32.random()),
+      Bytes32.random()
+    )
+    val genesisBlock = Block(genesisHeader, BlockBody(emptyList(), emptyList()))
+    val repo = BlockchainRepository.init(
+      MapKeyValueStore(),
+      MapKeyValueStore(),
+      MapKeyValueStore(),
+      MapKeyValueStore(),
+      BlockchainIndex(writer),
+      genesisBlock
+    )
+
+    val txReceipt = TransactionReceipt(Bytes32.random(), 3, LogsBloomFilter(Bytes.random(256)),
+      listOf(Log(Address.fromBytes(
+        Bytes.random(20)),
+        Bytes.fromHexString("deadbeef"),
+        listOf(Bytes32.random(), Bytes32.random()))))
+
+    val txHash = Hash.fromBytes(Bytes32.random())
+    val blockHash = Hash.fromBytes(Bytes32.random())
+    repo.storeTransactionReceipt(txReceipt, 4, txHash, blockHash)
+
+    assertEquals(txReceipt, repo.retrieveTransactionReceipt(blockHash, 4))
+    assertEquals(listOf(txReceipt), repo.retrieveTransactionReceipts(blockHash))
+    assertEquals(txReceipt, repo.retrieveTransactionReceipt(txHash))
   }
 }

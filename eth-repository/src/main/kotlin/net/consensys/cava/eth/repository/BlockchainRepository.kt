@@ -17,6 +17,7 @@ import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.eth.Block
 import net.consensys.cava.eth.BlockHeader
 import net.consensys.cava.eth.Hash
+import net.consensys.cava.eth.TransactionReceipt
 import net.consensys.cava.kv.KeyValueStore
 
 /**
@@ -38,6 +39,7 @@ class BlockchainRepository
     private val chainMetadata: KeyValueStore,
     private val blockStore: KeyValueStore,
     private val blockHeaderStore: KeyValueStore,
+    private val transactionReceiptsStore: KeyValueStore,
     private val blockchainIndex: BlockchainIndex
   ) {
 
@@ -54,10 +56,15 @@ class BlockchainRepository
       blockStore: KeyValueStore,
       blockHeaderStore: KeyValueStore,
       chainMetadata: KeyValueStore,
+      transactionReceiptsStore: KeyValueStore,
       blockchainIndex: BlockchainIndex,
       genesisBlock: Block
     ): BlockchainRepository {
-      val repo = BlockchainRepository(chainMetadata, blockStore, blockHeaderStore, blockchainIndex)
+      val repo = BlockchainRepository(chainMetadata,
+        blockStore,
+        blockHeaderStore,
+        transactionReceiptsStore,
+        blockchainIndex)
       repo.setGenesisBlock(genesisBlock)
       repo.storeBlock(genesisBlock)
       return repo
@@ -65,7 +72,7 @@ class BlockchainRepository
   }
 
   /**
-   * Stores a block into the repository.
+   * Stores a block in the repository.
    *
    * @param block the block to store
    * @return a handle to the storage operation completion
@@ -74,6 +81,39 @@ class BlockchainRepository
     blockStore.put(block.header().hash().toBytes(), block.toBytes())
     blockHeaderStore.put(block.header().hash().toBytes(), block.header().toBytes())
     indexBlockHeader(block.header())
+  }
+
+  /**
+   * Store all the transaction receipts of a block in the repository.
+   *
+   * Transaction receipts should be ordered by the transactions order of the block.
+   *
+   * @param transactionReceipts the transaction receipts to store
+   * @param txHash the hash of the transaction
+   * @param blockHash the hash of the block that this transaction belongs to
+   */
+  suspend fun storeTransactionReceipts(vararg transactionReceipts: TransactionReceipt, txHash: Hash, blockHash: Hash) {
+    for (i in 0 until transactionReceipts.size) {
+      storeTransactionReceipt(transactionReceipts[i], i, txHash, blockHash)
+    }
+  }
+
+  /**
+   * Stores a transaction receipt in the repository.
+   *
+   * @param transactionReceipt the transaction receipt to store
+   * @param txIndex the index of the transaction in the block
+   * @param txHash the hash of the transaction
+   * @param blockHash the hash of the block that this transaction belongs to
+   */
+  suspend fun storeTransactionReceipt(
+    transactionReceipt: TransactionReceipt,
+    txIndex: Int,
+    txHash: Hash,
+    blockHash: Hash
+  ) {
+    transactionReceiptsStore.put(txHash.toBytes(), transactionReceipt.toBytes())
+    indexTransactionReceipt(transactionReceipt, txIndex, txHash, blockHash)
   }
 
   /**
@@ -93,6 +133,17 @@ class BlockchainRepository
       blockHeaderStore.get(hash.toBytes())?.let { bytes ->
         indexBlockHeader(BlockHeader.fromBytes(bytes))
       }
+    }
+  }
+
+  private suspend fun indexTransactionReceipt(
+    txReceipt: TransactionReceipt,
+    txIndex: Int,
+    txHash: Hash,
+    blockHash: Hash
+  ) {
+    blockchainIndex.index {
+      it.indexTransactionReceipt(txReceipt, txIndex, txHash, blockHash)
     }
   }
 
@@ -204,6 +255,37 @@ class BlockchainRepository
    */
   suspend fun retrieveGenesisBlock(): Block? {
     return chainMetadata.get(GENESIS_BLOCK)?.let { retrieveBlock(it) }
+  }
+
+  /**
+   * Retrieves all transaction receipts associated with a block.
+   *
+   * @param blockHash the hash of the block
+   * @return all transaction receipts associated with a block, in the correct order
+   */
+  suspend fun retrieveTransactionReceipts(blockHash: Hash): List<TransactionReceipt?> {
+    return blockchainIndex.findBy(TransactionReceiptFields.BLOCK_HASH, blockHash).map {
+      transactionReceiptsStore.get(it.toBytes())?.let { TransactionReceipt.fromBytes(it) }
+    }
+  }
+
+  /**
+   * Retrieves a transaction receipt associated with a block and an index
+   * @param blockHash the hash of the block
+   * @param index the index of the transaction in the block
+   */
+  suspend fun retrieveTransactionReceipt(blockHash: Hash, index: Int): TransactionReceipt? {
+    return blockchainIndex.findByBlockHashAndIndex(blockHash, index)?.let {
+      transactionReceiptsStore.get(it.toBytes())?.let { TransactionReceipt.fromBytes(it) }
+    }
+  }
+
+  /**
+   * Retrieves a transaction receipt associated with a block and an index
+   * @param txHash the hash of the transaction
+   */
+  suspend fun retrieveTransactionReceipt(txHash: Hash): TransactionReceipt? {
+    return transactionReceiptsStore.get(txHash.toBytes())?.let { TransactionReceipt.fromBytes(it) }
   }
 
   /**

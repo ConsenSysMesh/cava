@@ -14,6 +14,7 @@ package net.consensys.cava.eth;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
+import net.consensys.cava.rlp.RLP;
 import net.consensys.cava.rlp.RLPReader;
 import net.consensys.cava.rlp.RLPWriter;
 
@@ -35,6 +36,39 @@ import com.google.common.base.MoreObjects;
  * best way to check which format has been used.
  */
 public final class TransactionReceipt {
+
+  /**
+   * Read a transaction receipt from its RLP serialized representation
+   *
+   * @param bytes the bytes of the serialized transaction receipt
+   * @return a transaction receipt
+   */
+  public static TransactionReceipt fromBytes(Bytes bytes) {
+    return RLP.decode(bytes, TransactionReceipt::readFrom);
+  }
+
+  /**
+   * Creates a transaction receipt for the given RLP
+   *
+   * @param reader the RLP-encoded transaction receipt
+   * @return the transaction receipt
+   */
+  public static TransactionReceipt readFrom(final RLPReader reader) {
+    return reader.readList(input -> {
+
+      Bytes statusOrRootState = input.readValue();
+      long cumulativeGas = input.readLong();
+      LogsBloomFilter bloomFilter = new LogsBloomFilter(input.readValue());
+      List<Log> logs = input.readListContents(Log::readFrom);
+
+      if (statusOrRootState.size() == 32) {
+        return new TransactionReceipt(Bytes32.wrap(statusOrRootState), cumulativeGas, bloomFilter, logs);
+      } else {
+        int status = statusOrRootState.toInt();
+        return new TransactionReceipt(status, cumulativeGas, bloomFilter, logs);
+      }
+    });
+  }
 
   private final Bytes32 stateRoot;
   private final long cumulativeGasUsed;
@@ -80,6 +114,15 @@ public final class TransactionReceipt {
   }
 
   /**
+   * Writes the transaction receipt into a serialized RLP form.
+   * 
+   * @return the transaction receipt encoded as a set of bytes using the RLP serialization
+   */
+  public Bytes toBytes() {
+    return RLP.encode(this::writeTo);
+  }
+
+  /**
    * Write an RLP representation.
    *
    * @param writer The RLP output to write to
@@ -97,29 +140,6 @@ public final class TransactionReceipt {
       out.writeLong(cumulativeGasUsed);
       out.writeValue(bloomFilter.toBytes());
       out.writeList(logs, (logWriter, log) -> log.writeTo(logWriter));
-    });
-  }
-
-  /**
-   * Creates a transaction receipt for the given RLP
-   *
-   * @param reader the RLP-encoded transaction receipt
-   * @return the transaction receipt
-   */
-  public static TransactionReceipt readFrom(final RLPReader reader) {
-    return reader.readList(input -> {
-
-      Bytes statusOrRootState = input.readValue();
-      long cumulativeGas = input.readLong();
-      LogsBloomFilter bloomFilter = new LogsBloomFilter(input.readValue());
-      List<Log> logs = input.readListContents(Log::readFrom);
-
-      if (statusOrRootState.size() == 32) {
-        return new TransactionReceipt(Bytes32.wrap(statusOrRootState), cumulativeGas, bloomFilter, logs);
-      } else {
-        int status = statusOrRootState.toInt();
-        return new TransactionReceipt(status, cumulativeGas, bloomFilter, logs);
-      }
     });
   }
 
