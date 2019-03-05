@@ -15,6 +15,7 @@ package net.consensys.cava.eth.repository
 import net.consensys.cava.bytes.Bytes
 import net.consensys.cava.bytes.Bytes32
 import net.consensys.cava.eth.Block
+import net.consensys.cava.eth.BlockBody
 import net.consensys.cava.eth.BlockHeader
 import net.consensys.cava.eth.Hash
 import net.consensys.cava.eth.TransactionReceipt
@@ -31,13 +32,13 @@ class BlockchainRepository
  * Default constructor.
  *
  * @param chainMetadata the key-value store to store chain metadata
- * @param blockStore the key-value store to store blocks
+ * @param blockBodyStore the key-value store to store block bodies
  * @param blockHeaderStore the key-value store to store block headers
  * @param blockchainIndex the blockchain index to index values
  */
   (
     private val chainMetadata: KeyValueStore,
-    private val blockStore: KeyValueStore,
+    private val blockBodyStore: KeyValueStore,
     private val blockHeaderStore: KeyValueStore,
     private val transactionReceiptsStore: KeyValueStore,
     private val blockchainIndex: BlockchainIndex
@@ -53,7 +54,7 @@ class BlockchainRepository
      * @return a new blockchain repository made from the metadata passed in parameter.
      */
     suspend fun init(
-      blockStore: KeyValueStore,
+      blockBodyStore: KeyValueStore,
       blockHeaderStore: KeyValueStore,
       chainMetadata: KeyValueStore,
       transactionReceiptsStore: KeyValueStore,
@@ -61,7 +62,7 @@ class BlockchainRepository
       genesisBlock: Block
     ): BlockchainRepository {
       val repo = BlockchainRepository(chainMetadata,
-        blockStore,
+        blockBodyStore,
         blockHeaderStore,
         transactionReceiptsStore,
         blockchainIndex)
@@ -72,13 +73,23 @@ class BlockchainRepository
   }
 
   /**
-   * Stores a block in the repository.
+   * Stores a block body into the repository.
+   *
+   * @param blockBody the block body to store
+   * @return a handle to the storage operation completion
+   */
+  suspend fun storeBlockBody(blockHash: Hash, blockBody: BlockBody) {
+    blockBodyStore.put(blockHash.toBytes(), blockBody.toBytes())
+  }
+
+  /**
+   * Stores a block into the repository.
    *
    * @param block the block to store
    * @return a handle to the storage operation completion
    */
   suspend fun storeBlock(block: Block) {
-    blockStore.put(block.header().hash().toBytes(), block.toBytes())
+    storeBlockBody(block.header().hash(), block.body())
     blockHeaderStore.put(block.header().hash().toBytes(), block.header().toBytes())
     indexBlockHeader(block.header())
   }
@@ -153,18 +164,38 @@ class BlockchainRepository
    * @param blockHash the hash of the block stored
    * @return a future with the bytes if found
    */
-  suspend fun retrieveBlockBytes(blockHash: Hash): Bytes? {
-    return retrieveBlockBytes(blockHash.toBytes())
+  suspend fun retrieveBlockBodyBytes(blockHash: Hash): Bytes? {
+    return retrieveBlockBodyBytes(blockHash.toBytes())
   }
 
   /**
-   * Retrieves a block into the repository as its serialized RLP bytes representation.
+   * Retrieves a block body into the repository as its serialized RLP bytes representation.
    *
    * @param blockHash the hash of the block stored
    * @return a future with the bytes if found
    */
-  suspend fun retrieveBlockBytes(blockHash: Bytes): Bytes? {
-    return blockStore.get(blockHash)
+  suspend fun retrieveBlockBodyBytes(blockHash: Bytes): Bytes? {
+    return blockBodyStore.get(blockHash)
+  }
+
+  /**
+   * Retrieves a block body into the repository.
+   *
+   * @param blockHash the hash of the block stored
+   * @return a future with the block if found
+   */
+  suspend fun retrieveBlockBody(blockHash: Hash): BlockBody? {
+    return retrieveBlockBody(blockHash.toBytes())
+  }
+
+  /**
+   * Retrieves a block body into the repository.
+   *
+   * @param blockHash the hash of the block stored
+   * @return a future with the block if found
+   */
+  suspend fun retrieveBlockBody(blockHash: Bytes): BlockBody? {
+    return retrieveBlockBodyBytes(blockHash)?.let { BlockBody.fromBytes(it) }
   }
 
   /**
@@ -184,7 +215,9 @@ class BlockchainRepository
    * @return a future with the block if found
    */
   suspend fun retrieveBlock(blockHash: Bytes): Block? {
-    return retrieveBlockBytes(blockHash)?.let { Block.fromBytes(it) } ?: return null
+    return retrieveBlockBody(blockHash)?.let {
+        body -> this.retrieveBlockHeader(blockHash)?.let { Block(it, body) }
+    } ?: return null
   }
 
   /**
@@ -194,7 +227,7 @@ class BlockchainRepository
    * @return a future with the block header bytes if found
    */
   suspend fun retrieveBlockHeaderBytes(blockHash: Hash): Bytes? {
-    return retrieveBlockBytes(blockHash.toBytes())
+    return retrieveBlockBodyBytes(blockHash.toBytes())
   }
 
   /**
