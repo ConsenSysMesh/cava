@@ -49,6 +49,7 @@ dependencyManagement {
     dependencySet(group: 'org.logl', version: '0.3.1') {
       entry 'logl-api'
       entry 'logl-logl'
+      entry 'logl-vertx'
     }
     dependency('org.mapdb:mapdb:3.0.7')
     dependency('org.miracl.milagro.amcl:milagro-crypto-java:0.4.0')

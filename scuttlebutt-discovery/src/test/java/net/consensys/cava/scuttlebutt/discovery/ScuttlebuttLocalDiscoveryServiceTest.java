@@ -50,7 +50,7 @@ class ScuttlebuttLocalDiscoveryServiceTest {
     ScuttlebuttLocalDiscoveryService service = new ScuttlebuttLocalDiscoveryService(
         vertx,
         LoggerProvider.nullProvider().getLogger("test"),
-        8008,
+        0,
         "0.0.0.0",
         "233.0.10.0");
     service.start().join();
@@ -62,7 +62,7 @@ class ScuttlebuttLocalDiscoveryServiceTest {
     ScuttlebuttLocalDiscoveryService service = new ScuttlebuttLocalDiscoveryService(
         vertx,
         LoggerProvider.nullProvider().getLogger("test"),
-        8008,
+        0,
         "0.0.0.0",
         "233.0.10.0");
     service.start().join();
@@ -87,7 +87,7 @@ class ScuttlebuttLocalDiscoveryServiceTest {
     ScuttlebuttLocalDiscoveryService service = new ScuttlebuttLocalDiscoveryService(
         vertx,
         LoggerProvider.nullProvider().getLogger("test"),
-        8008,
+        0,
         "0.0.0.0",
         "233.0.10.0");
     service.stop().join();
@@ -102,16 +102,16 @@ class ScuttlebuttLocalDiscoveryServiceTest {
     ScuttlebuttLocalDiscoveryService service = new ScuttlebuttLocalDiscoveryService(
         vertx,
         loggerProvider.getLogger("test"),
-        8008,
-        8009,
+        18008,
+        18009,
         "127.0.0.1",
         "127.0.0.1",
         false);
     ScuttlebuttLocalDiscoveryService service2 = new ScuttlebuttLocalDiscoveryService(
         vertx,
         loggerProvider.getLogger("test2"),
-        8009,
-        8008,
+        18009,
+        18008,
         "127.0.0.1",
         "127.0.0.1",
         false);

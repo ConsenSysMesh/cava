@@ -16,6 +16,7 @@ dependencies {
 
   testCompile 'io.vertx:vertx-core'
   testCompile 'org.logl:logl-logl'
+  testCompile 'org.logl:logl-vertx'
 
   testRuntime 'org.junit.jupiter:junit-jupiter-engine'
 }
