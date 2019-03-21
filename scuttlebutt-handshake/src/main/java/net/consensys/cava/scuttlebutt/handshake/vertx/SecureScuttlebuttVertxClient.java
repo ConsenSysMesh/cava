@@ -97,9 +97,14 @@ public final class SecureScuttlebuttVertxClient {
           }
         }
       } catch (HandshakeException | StreamException e) {
+        completionHandle.completeExceptionally(e);
         logger.debug(e.getMessage(), e);
         socket.close();
       } catch (Throwable t) {
+        if (!completionHandle.isDone()) {
+          completionHandle.completeExceptionally(t);
+        }
+
         logger.error(t.getMessage(), t);
         throw new RuntimeException(t);
       }
