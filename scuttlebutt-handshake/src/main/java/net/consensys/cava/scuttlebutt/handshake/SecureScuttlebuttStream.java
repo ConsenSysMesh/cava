@@ -84,6 +84,11 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
     SecretBox.Nonce bodyNonce = SecretBox.Nonce.fromBytes(nonce.increment());
     nonce.increment();
     Bytes decryptedHeader = SecretBox.decrypt(message.slice(0, 34), key, headerNonce);
+
+    if (decryptedHeader == null) {
+      throw new StreamException("Failed to decrypt message header");
+    }
+
     int bodySize = ((decryptedHeader.get(0)) << 8) + (decryptedHeader.get(1));
     Bytes body = message.slice(34, bodySize);
     Bytes decryptedBody = SecretBox.decrypt(Bytes.concatenate(decryptedHeader.slice(2), body), key, bodyNonce);
