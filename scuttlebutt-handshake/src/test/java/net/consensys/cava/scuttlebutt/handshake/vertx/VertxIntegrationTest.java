@@ -12,6 +12,7 @@
  */
 package net.consensys.cava.scuttlebutt.handshake.vertx;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -22,6 +23,8 @@ import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
 
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetSocketAddress;
 import java.util.concurrent.atomic.AtomicReference;
@@ -86,7 +89,8 @@ class VertxIntegrationTest {
 
   @Test
   void connectToServer(@VertxInstance Vertx vertx) throws Exception {
-    LoggerProvider provider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(new PrintWriter(System.out));
+    LoggerProvider provider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
     LoglLogDelegateFactory.setProvider(provider);
     Signature.KeyPair serverKeyPair = Signature.KeyPair.random();
     Bytes32 networkIdentifier = Bytes32.random();
@@ -105,15 +109,10 @@ class VertxIntegrationTest {
 
     SecureScuttlebuttVertxClient client =
         new SecureScuttlebuttVertxClient(provider, vertx, Signature.KeyPair.random(), networkIdentifier);
-    AtomicReference<MyClientHandler> handlerRef = new AtomicReference<>();
-    client.connectTo(20000, "0.0.0.0", serverKeyPair.publicKey(), (sendFn, fn) -> {
-      handlerRef.set(new MyClientHandler(sendFn, fn));
-      return handlerRef.get();
-    }).join();
-
+    MyClientHandler handler =
+        (MyClientHandler) client.connectTo(20000, "0.0.0.0", serverKeyPair.publicKey(), MyClientHandler::new).get();
 
     Thread.sleep(1000);
-    MyClientHandler handler = handlerRef.get();
     assertNotNull(handler);
     handler.sendMessage(Bytes.fromHexString("deadbeef"));
     Thread.sleep(1000);

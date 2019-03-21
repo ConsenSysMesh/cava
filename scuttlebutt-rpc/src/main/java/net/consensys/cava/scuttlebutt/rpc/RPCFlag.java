@@ -48,7 +48,7 @@ public interface RPCFlag {
    * Flag to set a stream message.
    */
   enum Stream implements RPCFlag {
-    STREAM(1 << 4);
+    STREAM(1 << 3);
 
     private final int value;
 
@@ -66,7 +66,7 @@ public interface RPCFlag {
    * Flag to set an end or error message.
    */
   enum EndOrError implements RPCFlag {
-    END(1 << 5);
+    END(1 << 2);
 
     private final int value;
 
@@ -84,7 +84,7 @@ public interface RPCFlag {
    * Flag to set a RPC body type.
    */
   enum BodyType implements RPCFlag {
-    BINARY(0), UTF_8_STRING(1 << 7), JSON(1 << 6 | 1 << 7);
+    BINARY(0), UTF_8_STRING(1), JSON(1 << 1);
 
     private final int value;
 
@@ -99,15 +99,10 @@ public interface RPCFlag {
 
     @Override
     public boolean isApplied(byte flagByte) {
-      boolean matchesUTF8 = (UTF_8_STRING.value() & flagByte) == UTF_8_STRING.value();
-      boolean matchesJSON = (JSON.value() & flagByte) == JSON.value();
-      if (matchesUTF8 && matchesJSON) {
-        return this == JSON;
-      } else if (matchesUTF8) {
-        return this == UTF_8_STRING;
-      } else {
+      if (flagByte == BINARY.value) {
         return this == BINARY;
       }
+      return (flagByte & (byte) value) != 0;
     }
 
     /**
@@ -117,15 +112,13 @@ public interface RPCFlag {
      * @return the body type, either JSON, UTF_8_STRING or BINARY
      */
     public static BodyType extractBodyType(byte flagByte) {
-      boolean matchesUTF8 = (UTF_8_STRING.value() & flagByte) == UTF_8_STRING.value();
-      boolean matchesJSON = (JSON.value() & flagByte) == JSON.value();
-      if (matchesUTF8 && matchesJSON) {
-        return JSON;
-      } else if (matchesUTF8) {
-        return UTF_8_STRING;
-      } else {
+      if (BINARY.isApplied(flagByte)) {
         return BINARY;
       }
+      if (UTF_8_STRING.isApplied(flagByte)) {
+        return UTF_8_STRING;
+      }
+      return JSON;
     }
   }
 }

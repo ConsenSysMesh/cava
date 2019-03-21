@@ -75,8 +75,7 @@ class RPCEncodingTest {
 
   @Test
   void response() {
-    Bytes response =
-        RPCCodec.encodeResponse(Bytes.wrap("deadbeef".getBytes(StandardCharsets.UTF_8)), 3, (byte) (1 << 7));
+    Bytes response = RPCCodec.encodeResponse(Bytes.wrap("deadbeef".getBytes(StandardCharsets.UTF_8)), 3, (byte) 1);
     RPCMessage message = new RPCMessage(response);
     assertEquals(-3, message.requestNumber());
     assertEquals("deadbeef", message.asString());

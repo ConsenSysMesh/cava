@@ -16,7 +16,8 @@ package net.consensys.cava.scuttlebutt.handshake.vertx;
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.concurrent.AsyncCompletion;
-import net.consensys.cava.concurrent.CompletableAsyncCompletion;
+import net.consensys.cava.concurrent.AsyncResult;
+import net.consensys.cava.concurrent.CompletableAsyncResult;
 import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.scuttlebutt.handshake.HandshakeException;
 import net.consensys.cava.scuttlebutt.handshake.SecureScuttlebuttHandshakeClient;
@@ -44,6 +45,7 @@ public final class SecureScuttlebuttVertxClient {
     private final NetSocket socket;
     private final SecureScuttlebuttHandshakeClient handshakeClient;
     private final ClientHandlerFactory handlerFactory;
+    private final CompletableAsyncResult<ClientHandler> completionHandle;
     private int handshakeCounter;
     private SecureScuttlebuttStreamClient client;
     private ClientHandler handler;
@@ -52,11 +54,13 @@ public final class SecureScuttlebuttVertxClient {
         Logger logger,
         NetSocket socket,
         Signature.PublicKey remotePublicKey,
-        ClientHandlerFactory handlerFactory) {
+        ClientHandlerFactory handlerFactory,
+        CompletableAsyncResult<ClientHandler> completionHandle) {
       this.logger = logger;
       this.socket = socket;
       this.handshakeClient = SecureScuttlebuttHandshakeClient.create(keyPair, networkIdentifier, remotePublicKey);
       this.handlerFactory = handlerFactory;
+      this.completionHandle = completionHandle;
       socket.closeHandler(res -> {
         if (handler != null) {
           handler.streamClosed();
@@ -81,6 +85,7 @@ public final class SecureScuttlebuttVertxClient {
                 socket.write(Buffer.buffer(client.sendGoodbyeToServer().toArrayUnsafe()));
                 socket.close();
               });
+          completionHandle.complete(handler);
           handshakeCounter++;
         } else {
           Bytes message = client.readFromServer(Bytes.wrapBuffer(buffer));
@@ -134,13 +139,13 @@ public final class SecureScuttlebuttVertxClient {
    * @param handlerFactory the factory of handlers for connections
    * @return a handle to a new stream handler with the remote host
    */
-  public AsyncCompletion connectTo(
+  public AsyncResult<ClientHandler> connectTo(
       int port,
       String host,
       Signature.PublicKey remotePublicKey,
       ClientHandlerFactory handlerFactory) {
     client = vertx.createNetClient(new NetClientOptions().setTcpKeepAlive(true));
-    CompletableAsyncCompletion completion = AsyncCompletion.incomplete();
+    CompletableAsyncResult<ClientHandler> completion = AsyncResult.incomplete();
     client.connect(port, host, res -> {
       if (res.failed()) {
         completion.completeExceptionally(res.cause());
@@ -150,8 +155,8 @@ public final class SecureScuttlebuttVertxClient {
             loggerProvider.getLogger(host + ":" + port),
             socket,
             remotePublicKey,
-            handlerFactory);
-        completion.complete();
+            handlerFactory,
+            completion);
       }
     });
 

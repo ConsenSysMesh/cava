@@ -12,13 +12,14 @@
  */
 package net.consensys.cava.scuttlebutt.rpc;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
-import net.consensys.cava.concurrent.AsyncCompletion;
+import net.consensys.cava.concurrent.AsyncResult;
 import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.io.Base64;
 import net.consensys.cava.junit.VertxExtension;
@@ -26,6 +27,8 @@ import net.consensys.cava.junit.VertxInstance;
 import net.consensys.cava.scuttlebutt.handshake.vertx.ClientHandler;
 import net.consensys.cava.scuttlebutt.handshake.vertx.SecureScuttlebuttVertxClient;
 
+import java.io.BufferedWriter;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.function.Consumer;
 
@@ -46,7 +49,7 @@ import org.logl.vertx.LoglLogDelegateFactory;
 @ExtendWith(VertxExtension.class)
 class PatchworkIntegrationTest {
 
-  public class MyClientHandler implements ClientHandler {
+  public static class MyClientHandler implements ClientHandler {
 
     private final Consumer<Bytes> sender;
     private final Runnable terminationFn;
@@ -80,20 +83,19 @@ class PatchworkIntegrationTest {
     }
   }
 
-  private MyClientHandler clientHandler;
-
   @Disabled
   @Test
   void runWithPatchWork(@VertxInstance Vertx vertx) throws Exception {
     String host = "localhost";
     int port = 8008;
-    LoggerProvider loggerProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(new PrintWriter(System.out));
+    LoggerProvider loggerProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
     LoglLogDelegateFactory.setProvider(loggerProvider);
 
     String networkKeyBase64 = "1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=";
     Signature.KeyPair keyPair = Signature.KeyPair.random();
 
-    String serverPublicKey = ""; // TODO use your own identity public key here.
+    String serverPublicKey = "0r9zoCwu/tUH8lpcBSCad4txtmUrphvVG/zif+MBceo="; // TODO use your own identity public key here.
     Signature.PublicKey publicKey = Signature.PublicKey.fromBytes(Base64.decode(serverPublicKey));
 
     Bytes32 networkKeyBytes32 = Bytes32.wrap(Base64.decode(networkKeyBase64));
@@ -101,26 +103,20 @@ class PatchworkIntegrationTest {
     SecureScuttlebuttVertxClient secureScuttlebuttVertxClient =
         new SecureScuttlebuttVertxClient(loggerProvider, vertx, keyPair, networkKeyBytes32);
 
-    AsyncCompletion onConnect = secureScuttlebuttVertxClient.connectTo(port, host, publicKey, (senderFn, stopFn) -> {
+    AsyncResult<ClientHandler> onConnect =
+        secureScuttlebuttVertxClient.connectTo(port, host, publicKey, MyClientHandler::new);
 
-      // Tell the client handler how to send bytes to the server
-      clientHandler = new MyClientHandler(senderFn, stopFn);
-
-      // We hand over a ClientHandler so we get called back when new bytes arrive
-      return clientHandler;
-    });
-
-    onConnect.join();
+    ClientHandler clientHandler = onConnect.get();
     assertTrue(onConnect.isDone());
     assertFalse(onConnect.isCompletedExceptionally());
     Thread.sleep(1000);
     assertNotNull(clientHandler);
     // An RPC command that just tells us our public key (like ssb-server whoami on the command line.)
-    String rpcRequestBody = "{\n" + "  \"name\": [\"whoami\"],\n" + "  \"type\": \"sync\" " + "}";
+    String rpcRequestBody = "{\"name\": [\"whoami\"],\"type\": \"async\",\"args\":[]}";
     Bytes rpcRequest = RPCCodec.encodeRequest(rpcRequestBody, RPCFlag.BodyType.JSON);
 
     System.out.println("Attempting RPC request...");
-    clientHandler.sendMessage(rpcRequest);
+    ((MyClientHandler) clientHandler).sendMessage(rpcRequest);
 
     Thread.sleep(10000);
 
