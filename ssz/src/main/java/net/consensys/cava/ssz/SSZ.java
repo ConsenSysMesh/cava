@@ -67,10 +67,9 @@ public final class SSZ {
    * Hashes a list of homogeneous values.
    *
    * @param values a list of homogeneous values
-   *
    * @return the merkle hash of the list of values
    */
-  static Bytes merkleHash(List<Bytes> values) {
+  public static Bytes merkleHash(List<Bytes> values) {
     Bytes littleEndianLength = Bytes.ofUnsignedInt(values.size(), LITTLE_ENDIAN);
     Bytes32 valuesLength = Bytes32.rightPad(littleEndianLength);
 
