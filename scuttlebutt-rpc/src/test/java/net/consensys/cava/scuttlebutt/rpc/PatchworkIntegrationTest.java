@@ -118,7 +118,7 @@ class PatchworkIntegrationTest {
       throw new Exception("Secret file does not exist");
     }
 
-    Scanner s = new Scanner(file);
+    Scanner s = new Scanner(file, UTF_8.name());
     s.useDelimiter("\n");
 
     ArrayList<String> list = new ArrayList<String>();
