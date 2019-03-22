@@ -28,10 +28,18 @@ import net.consensys.cava.scuttlebutt.handshake.vertx.ClientHandler;
 import net.consensys.cava.scuttlebutt.handshake.vertx.SecureScuttlebuttVertxClient;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
 import java.util.function.Consumer;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 import io.vertx.core.Vertx;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -43,7 +51,7 @@ import org.logl.vertx.LoglLogDelegateFactory;
 
 /**
  * Test used with a local installation of Patchwork on the developer machine.
- *
+ * <p>
  * Usable as a demo or to check manually connections.
  */
 @ExtendWith(VertxExtension.class)
@@ -92,10 +100,55 @@ class PatchworkIntegrationTest {
         new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
     LoglLogDelegateFactory.setProvider(loggerProvider);
 
-    String networkKeyBase64 = "1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=";
-    Signature.KeyPair keyPair = Signature.KeyPair.random();
 
-    String serverPublicKey = "0r9zoCwu/tUH8lpcBSCad4txtmUrphvVG/zif+MBceo="; // TODO use your own identity public key here.
+    Optional<String> ssbDir = Optional.fromNullable(System.getenv().get("ssb_dir"));
+    Optional<String> homePath =
+        Optional.fromNullable(System.getProperty("user.home")).transform(home -> home + "/.ssb");
+
+    Optional<String> path = ssbDir.or(homePath);
+
+    if (!path.isPresent()) {
+      throw new Exception("Cannot find ssb directory config value");
+    }
+
+    String secretPath = path.get() + "/secret";
+    File file = new File(secretPath);
+
+    if (!file.exists()) {
+      throw new Exception("Secret file does not exist");
+    }
+
+    Scanner s = new Scanner(file, UTF_8.name());
+    s.useDelimiter("\n");
+
+    ArrayList<String> list = new ArrayList<String>();
+    while (s.hasNext()) {
+      String next = s.next();
+
+      // Filter out the comment lines
+      if (!next.startsWith("#")) {
+        list.add(next);
+      }
+    }
+
+    String secretJSON = String.join("", list);
+
+    ObjectMapper mapper = new ObjectMapper();
+
+    HashMap<String, String> values = mapper.readValue(secretJSON, new TypeReference<Map<String, String>>() {});
+    String pubKey = values.get("public").replace(".ed25519", "");
+    String privateKey = values.get("private").replace(".ed25519", "");
+
+    Bytes pubKeyBytes = Base64.decode(pubKey);
+    Bytes privKeyBytes = Base64.decode(privateKey);
+
+    Signature.PublicKey pub = Signature.PublicKey.fromBytes(pubKeyBytes);
+    Signature.SecretKey secretKey = Signature.SecretKey.fromBytes(privKeyBytes);
+
+    Signature.KeyPair keyPair = new Signature.KeyPair(pub, secretKey);
+    String networkKeyBase64 = "1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=";
+
+    String serverPublicKey = pubKey; // TODO use your own identity public key here.
     Signature.PublicKey publicKey = Signature.PublicKey.fromBytes(Base64.decode(serverPublicKey));
 
     Bytes32 networkKeyBytes32 = Bytes32.wrap(Base64.decode(networkKeyBase64));
