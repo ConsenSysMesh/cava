@@ -80,11 +80,16 @@ public final class SecureScuttlebuttVertxClient {
         } else if (handshakeCounter == 1) {
           handshakeClient.readAcceptMessage(Bytes.wrapBuffer(buffer));
           client = handshakeClient.createStream();
-          this.handler = handlerFactory
-              .createHandler(bytes -> socket.write(Buffer.buffer(client.sendToServer(bytes).toArrayUnsafe())), () -> {
-                socket.write(Buffer.buffer(client.sendGoodbyeToServer().toArrayUnsafe()));
-                socket.close();
-              });
+          this.handler = handlerFactory.createHandler(bytes -> {
+            synchronized (NetSocketClientHandler.this) {
+              socket.write(Buffer.buffer(client.sendToServer(bytes).toArrayUnsafe()));
+            }
+          }, () -> {
+            synchronized (NetSocketClientHandler.this) {
+              socket.write(Buffer.buffer(client.sendGoodbyeToServer().toArrayUnsafe()));
+              socket.close();
+            }
+          });
           completionHandle.complete(handler);
           handshakeCounter++;
         } else {

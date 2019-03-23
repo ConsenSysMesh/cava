@@ -158,7 +158,7 @@ class PatchworkIntegrationTest {
     AsyncResult<ClientHandler> onConnect =
         secureScuttlebuttVertxClient.connectTo(port, host, publicKey, MyClientHandler::new);
 
-    ClientHandler clientHandler = onConnect.get();
+    MyClientHandler clientHandler = (MyClientHandler) onConnect.get();
     assertTrue(onConnect.isDone());
     assertFalse(onConnect.isCompletedExceptionally());
     Thread.sleep(1000);
@@ -168,7 +168,10 @@ class PatchworkIntegrationTest {
     Bytes rpcRequest = RPCCodec.encodeRequest(rpcRequestBody, RPCFlag.BodyType.JSON);
 
     System.out.println("Attempting RPC request...");
-    ((MyClientHandler) clientHandler).sendMessage(rpcRequest);
+    clientHandler.sendMessage(rpcRequest);
+    for (int i = 0; i < 10; i++) {
+      clientHandler.sendMessage(RPCCodec.encodeRequest(rpcRequestBody, RPCFlag.BodyType.JSON));
+    }
 
     Thread.sleep(10000);
 

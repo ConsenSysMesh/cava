@@ -67,12 +67,16 @@ public final class SecureScuttlebuttVertxServer {
           netSocket.write(Buffer.buffer(handshakeServer.createAcceptMessage().toArrayUnsafe()));
           streamServer = handshakeServer.createStream();
           handshakeCounter++;
-          handler = handlerFactory.createHandler(
-              bytes -> netSocket.write(Buffer.buffer(streamServer.sendToClient(bytes).toArrayUnsafe())),
-              () -> {
-                netSocket.write(Buffer.buffer(streamServer.sendGoodbyeToClient().toArrayUnsafe()));
-                netSocket.close();
-              });
+          handler = handlerFactory.createHandler(bytes -> {
+            synchronized (NetSocketHandler.this) {
+              netSocket.write(Buffer.buffer(streamServer.sendToClient(bytes).toArrayUnsafe()));
+            }
+          }, () -> {
+            synchronized (NetSocketHandler.this) {
+              netSocket.write(Buffer.buffer(streamServer.sendGoodbyeToClient().toArrayUnsafe()));
+              netSocket.close();
+            }
+          });
         } else {
           Bytes message = streamServer.readFromClient(Bytes.wrapBuffer(buffer));
           if (SecureScuttlebuttStreamServer.isGoodbye(message)) {
