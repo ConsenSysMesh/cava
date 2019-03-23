@@ -35,10 +35,11 @@ public interface SecureScuttlebuttStreamClient {
   Bytes sendGoodbyeToServer();
 
   /**
-   * Decrypts a message from the server
+   * Adds message bytes to the reader stream, returning the bytes that could be decrypted.
    * 
    * @param message the message to decrypt
-   * @return the message, decrypted and ready for consumption
+   * @return the message, decrypted and ready for consumption, or null if the message provided were an incomplete
+   *         message.
    * @throws StreamException if the message cannot be decrypted
    */
   Bytes readFromServer(Bytes message);

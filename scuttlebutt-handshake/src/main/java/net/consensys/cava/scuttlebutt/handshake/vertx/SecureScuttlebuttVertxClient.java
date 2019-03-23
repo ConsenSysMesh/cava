@@ -89,6 +89,9 @@ public final class SecureScuttlebuttVertxClient {
           handshakeCounter++;
         } else {
           Bytes message = client.readFromServer(Bytes.wrapBuffer(buffer));
+          if (message == null) {
+            return;
+          }
           if (SecureScuttlebuttStreamServer.isGoodbye(message)) {
             logger.debug("Goodbye received from remote peer");
             socket.close();

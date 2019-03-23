@@ -255,7 +255,7 @@ public final class SecureScuttlebuttHandshakeServer {
    * @return a clientToServerNonce for use with decrypting messages from the server.
    */
   Bytes serverToClientNonce() {
-    return HMACSHA512256.authenticate(clientLongTermPublicKey.bytes(), networkIdentifier).slice(0, 24);
+    return HMACSHA512256.authenticate(clientEphemeralPublicKey.bytes(), networkIdentifier).slice(0, 24);
   }
 
   /**
