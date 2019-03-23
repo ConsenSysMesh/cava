@@ -107,6 +107,35 @@ class SecureScuttlebuttStreamTest {
   }
 
   @Test
+  void chunkedMessages() {
+    SHA256Hash.Hash clientToServerKey = SHA256Hash.hash(SHA256Hash.Input.fromBytes(Bytes32.random()));
+    Bytes clientToServerNonce = Bytes.random(24);
+    SHA256Hash.Hash serverToClientKey = SHA256Hash.hash(SHA256Hash.Input.fromBytes(Bytes32.random()));
+    Bytes serverToClientNonce = Bytes.random(24);
+    SecureScuttlebuttStream clientToServer =
+        new SecureScuttlebuttStream(clientToServerKey, clientToServerNonce, serverToClientKey, serverToClientNonce);
+    SecureScuttlebuttStream serverToClient =
+        new SecureScuttlebuttStream(clientToServerKey, clientToServerNonce, serverToClientKey, serverToClientNonce);
+
+    Bytes payload = Bytes.random(5128);
+    Bytes encrypted = clientToServer.sendToServer(payload);
+    assertEquals(5128 + 34 + 34, encrypted.size());
+    serverToClient.readFromClient(encrypted.slice(0, 20));
+    serverToClient.readFromClient(encrypted.slice(20, 400));
+    Bytes part1 = serverToClient.readFromClient(encrypted.slice(420, 4000));
+    Bytes decrypted = serverToClient.readFromClient(encrypted.slice(4420));
+    assertEquals(payload, Bytes.concatenate(part1, decrypted));
+
+    Bytes encrypted2 = serverToClient.sendToClient(payload);
+    assertEquals(5128 + 34 + 34, encrypted2.size());
+    clientToServer.readFromServer(encrypted2.slice(0, 20));
+    clientToServer.readFromServer(encrypted2.slice(20, 400));
+    Bytes part2 = clientToServer.readFromServer(encrypted2.slice(420, 4000));
+    Bytes decrypted2 = clientToServer.readFromServer(encrypted2.slice(4420));
+    assertEquals(payload, Bytes.concatenate(part2, decrypted2));
+  }
+
+  @Test
   void testGoodbyeCheck() {
     assertFalse(SecureScuttlebuttStreamServer.isGoodbye(Bytes.wrap(new byte[17])));
     assertFalse(SecureScuttlebuttStreamServer.isGoodbye(Bytes.wrap(new byte[19])));

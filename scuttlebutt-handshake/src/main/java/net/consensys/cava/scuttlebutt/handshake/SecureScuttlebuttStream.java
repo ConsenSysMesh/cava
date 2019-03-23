@@ -50,7 +50,7 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
 
   @Override
   public synchronized Bytes readFromServer(Bytes message) {
-    return decrypt(message, serverToClientKey, serverToClientNonce);
+    return decrypt(message, serverToClientKey, serverToClientNonce, false);
   }
 
   @Override
@@ -65,36 +65,61 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
 
   @Override
   public synchronized Bytes readFromClient(Bytes message) {
-    return decrypt(message, clientToServerKey, clientToServerNonce);
+    return decrypt(message, clientToServerKey, clientToServerNonce, true);
   }
 
-  private Bytes decrypt(Bytes message, SecretBox.Key key, MutableBytes nonce) {
+  private Bytes clientToServerBuffer = Bytes.EMPTY;
+  private Bytes serverToClientBuffer = Bytes.EMPTY;
+
+  private Bytes decrypt(Bytes message, SecretBox.Key key, MutableBytes nonce, boolean isClientToServer) {
     int index = 0;
     List<Bytes> decryptedMessages = new ArrayList<>();
-    while (index < message.size()) {
-      Bytes decryptedMessage = decryptMessage(message.slice(index), key, nonce);
+    Bytes messageWithBuffer;
+    if (isClientToServer) {
+      messageWithBuffer = Bytes.concatenate(clientToServerBuffer, message);
+    } else {
+      messageWithBuffer = Bytes.concatenate(serverToClientBuffer, message);
+    }
+
+    while (index < messageWithBuffer.size()) {
+      Bytes decryptedMessage = decryptMessage(messageWithBuffer.slice(index), key, nonce);
+      if (decryptedMessage == null) {
+        if (isClientToServer) {
+          clientToServerBuffer = messageWithBuffer.slice(index);
+        } else {
+          serverToClientBuffer = messageWithBuffer.slice(index);
+        }
+        break;
+      }
       decryptedMessages.add(decryptedMessage);
       index += decryptedMessage.size() + 34;
     }
-    return Bytes.concatenate(decryptedMessages.toArray(new Bytes[decryptedMessages.size()]));
+    return Bytes.concatenate(decryptedMessages.toArray(new Bytes[0]));
   }
 
   private Bytes decryptMessage(Bytes message, SecretBox.Key key, MutableBytes nonce) {
-    SecretBox.Nonce headerNonce = SecretBox.Nonce.fromBytes(nonce);
-    SecretBox.Nonce bodyNonce = SecretBox.Nonce.fromBytes(nonce.increment());
-    nonce.increment();
+    if (message.size() < 34) {
+      return null;
+    }
+    MutableBytes snapshotNonce = nonce.mutableCopy();
+    SecretBox.Nonce headerNonce = SecretBox.Nonce.fromBytes(snapshotNonce);
+    SecretBox.Nonce bodyNonce = SecretBox.Nonce.fromBytes(snapshotNonce.increment());
     Bytes decryptedHeader = SecretBox.decrypt(message.slice(0, 34), key, headerNonce);
 
     if (decryptedHeader == null) {
       throw new StreamException("Failed to decrypt message header");
     }
 
-    int bodySize = ((decryptedHeader.get(0)) << 8) + (decryptedHeader.get(1));
+    int bodySize = ((decryptedHeader.get(0) & 0xFF) << 8) + (decryptedHeader.get(1) & 0xFF);
+    if (message.size() < bodySize + 34) {
+      return null;
+    }
     Bytes body = message.slice(34, bodySize);
     Bytes decryptedBody = SecretBox.decrypt(Bytes.concatenate(decryptedHeader.slice(2), body), key, bodyNonce);
     if (decryptedBody == null) {
       throw new StreamException("Failed to decrypt message");
     }
+    nonce.increment().increment();
     return decryptedBody;
   }
 
