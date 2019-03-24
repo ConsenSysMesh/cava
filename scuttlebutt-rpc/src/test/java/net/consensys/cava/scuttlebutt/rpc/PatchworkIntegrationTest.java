@@ -69,8 +69,12 @@ class PatchworkIntegrationTest {
 
     @Override
     public void receivedMessage(Bytes message) {
-      System.out.println("We received a message?");
-      System.out.println(new String(message.toArrayUnsafe(), UTF_8));
+
+      RPCMessage rpcMessage = new RPCMessage(message);
+
+      System.out.println(rpcMessage.asString());
+
+
     }
 
     @Override
