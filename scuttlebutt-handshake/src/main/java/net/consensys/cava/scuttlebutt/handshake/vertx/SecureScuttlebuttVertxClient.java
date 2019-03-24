@@ -145,7 +145,10 @@ public final class SecureScuttlebuttVertxClient {
 
   private int getBodyLength(Bytes rpcHeader) {
     Bytes size = rpcHeader.slice(1, 4);
-    int bodySize = ((size.get(0) & 0xFF) << 8) + ((size.get(1) & 0xFF) << 8) + ((size.get(2) & 0xFF) << 8) + ((size.get(3) & 0xFF));
+    int bodySize = ((size.get(0) & 0xFF) << 8)
+        + ((size.get(1) & 0xFF) << 8)
+        + ((size.get(2) & 0xFF) << 8)
+        + ((size.get(3) & 0xFF));
     return bodySize;
   }
 
