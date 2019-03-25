@@ -18,5 +18,7 @@ dependencies {
   testCompile 'org.logl:logl-logl'
   testCompile 'org.logl:logl-vertx'
 
+  testCompile project(':scuttlebutt-rpc')
+
   testRuntime 'org.junit.jupiter:junit-jupiter-engine'
 }
