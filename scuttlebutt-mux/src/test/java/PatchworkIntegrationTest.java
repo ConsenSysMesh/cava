@@ -35,7 +35,7 @@ import java.util.concurrent.CompletableFuture;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 @ExtendWith(VertxExtension.class)
-public class PatchworkIntegrastionTest {
+public class PatchworkIntegrationTest {
 
 
     @Test

@@ -82,7 +82,7 @@ public final class RPCCodec {
   }
 
   /**
-   * Encode a messsage as an RPC request.
+   * Encode a message as an RPC request.
    *
    * @param body the body to encode as an RPC request
    * @param requestNumber the request number
