@@ -10,22 +10,16 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.handshake.vertx;
+package net.consensys.cava.scuttlebutt.mux;
 
-import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 
-import java.util.function.Consumer;
+import java.util.concurrent.Future;
 
-/**
- * Factory creating stream handlers, managing client-side connections.
- */
-public interface ClientHandlerFactory<T extends ClientHandler> {
+public interface Multiplexer {
 
-  /**
-   * Creates a new handler associated with a valid streaming connection.
-   *
-   * @param sender the function to send bytes to the server
-   * @param terminationFunction a function to terminate the stream properly
-   */
-  T createHandler(Consumer<Bytes> sender, Runnable terminationFunction);
+  Future<RPCMessage> makeAsyncRequest(RPCMessage request);
+
+  void openStream(RPCMessage request, ScuttlebuttStreamHandler responseSink);
+
 }

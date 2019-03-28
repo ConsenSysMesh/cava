@@ -82,6 +82,19 @@ public final class RPCCodec {
   }
 
   /**
+   * Encode a messsage as an RPC request.
+   *
+   * @param body the body to encode as an RPC request
+   * @param requestNumber the request number
+   * @param flags the flags of the RPC request (already encoded.)
+   * @return the message encoded as an RPC request
+   */
+  public static Bytes encodeRequest(Bytes body, int requestNumber, byte flags) {
+    return Bytes
+        .concatenate(Bytes.of(flags), Bytes.ofUnsignedInt(body.size()), Bytes.ofUnsignedInt(requestNumber), body);
+  }
+
+  /**
    * Encode a message as a response to a RPC request.
    * 
    * @param body the body to encode as the body of the response
