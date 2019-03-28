@@ -103,7 +103,6 @@ class PatchworkIntegrationTest {
         new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
     LoglLogDelegateFactory.setProvider(loggerProvider);
 
-
     Optional<String> ssbDir = Optional.fromNullable(System.getenv().get("ssb_dir"));
     Optional<String> homePath =
         Optional.fromNullable(System.getProperty("user.home")).transform(home -> home + "/.ssb");

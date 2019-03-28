@@ -98,13 +98,14 @@ public final class SecureScuttlebuttVertxClient {
           Bytes message = client.readFromServer(Bytes.wrapBuffer(buffer));
           messageBuffer = Bytes.concatenate(messageBuffer, message);
 
+          int headerSize = 9;
+
           // Process any whole RPC message repsonses we have, and leave any partial ones at the end in the buffer
           // We may have 1 or more whole messages, or 1 and a half, etc..
-          while (messageBuffer.size() >= 9) {
+          while (messageBuffer.size() >= headerSize) {
 
             Bytes header = messageBuffer.slice(0, 9);
             int bodyLength = getBodyLength(header);
-            int headerSize = 9;
 
             if ((messageBuffer.size() - headerSize) >= (bodyLength)) {
 
@@ -145,11 +146,7 @@ public final class SecureScuttlebuttVertxClient {
 
   private int getBodyLength(Bytes rpcHeader) {
     Bytes size = rpcHeader.slice(1, 4);
-    int bodySize = ((size.get(0) & 0xFF) << 8)
-        + ((size.get(1) & 0xFF) << 8)
-        + ((size.get(2) & 0xFF) << 8)
-        + ((size.get(3) & 0xFF));
-    return bodySize;
+    return size.toInt();
   }
 
   private final LoggerProvider loggerProvider;
