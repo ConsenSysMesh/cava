@@ -22,6 +22,8 @@ import net.consensys.cava.bytes.Bytes32;
 import net.consensys.cava.crypto.sodium.Signature;
 import net.consensys.cava.junit.VertxExtension;
 import net.consensys.cava.junit.VertxInstance;
+import net.consensys.cava.scuttlebutt.rpc.RPCCodec;
+import net.consensys.cava.scuttlebutt.rpc.RPCFlag;
 
 import java.io.BufferedWriter;
 import java.io.OutputStreamWriter;
@@ -114,10 +116,21 @@ class VertxIntegrationTest {
 
     Thread.sleep(1000);
     assertNotNull(handler);
-    handler.sendMessage(Bytes.fromHexString("deadbeef"));
+
+    String rpcRequestBody = "{\"name\": [\"whoami\"],\"type\": \"async\",\"args\":[]}";
+    Bytes rpcRequest = RPCCodec.encodeRequest(rpcRequestBody, RPCFlag.BodyType.JSON);
+
+    handler.sendMessage(rpcRequest);
+
     Thread.sleep(1000);
     MyServerHandler serverHandler = serverHandlerRef.get();
-    assertEquals(Bytes.fromHexString("deadbeef"), serverHandler.received);
+
+    Bytes receivedBytes = serverHandler.received;
+    Bytes receivedBody = receivedBytes.slice(9);
+
+    Bytes requestBody = rpcRequest.slice(9);
+
+    assertEquals(requestBody, receivedBody);
 
     handler.closeStream();
     Thread.sleep(1000);

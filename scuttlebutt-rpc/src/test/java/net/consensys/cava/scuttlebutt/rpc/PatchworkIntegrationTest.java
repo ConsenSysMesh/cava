@@ -69,8 +69,12 @@ class PatchworkIntegrationTest {
 
     @Override
     public void receivedMessage(Bytes message) {
-      System.out.println("We received a message?");
-      System.out.println(new String(message.toArrayUnsafe(), UTF_8));
+
+      RPCMessage rpcMessage = new RPCMessage(message);
+
+      System.out.println(rpcMessage.asString());
+
+
     }
 
     @Override
@@ -98,7 +102,6 @@ class PatchworkIntegrationTest {
     LoggerProvider loggerProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
         new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
     LoglLogDelegateFactory.setProvider(loggerProvider);
-
 
     Optional<String> ssbDir = Optional.fromNullable(System.getenv().get("ssb_dir"));
     Optional<String> homePath =

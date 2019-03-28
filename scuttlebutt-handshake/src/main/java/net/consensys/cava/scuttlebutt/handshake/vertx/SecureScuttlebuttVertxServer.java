@@ -45,6 +45,8 @@ public final class SecureScuttlebuttVertxServer {
     SecureScuttlebuttHandshakeServer handshakeServer =
         SecureScuttlebuttHandshakeServer.create(keyPair, networkIdentifier);
 
+    private Bytes messageBuffer = Bytes.EMPTY;
+
     void handle(NetSocket netSocket) {
       this.netSocket = netSocket;
       netSocket.closeHandler(res -> {
@@ -79,10 +81,35 @@ public final class SecureScuttlebuttVertxServer {
           });
         } else {
           Bytes message = streamServer.readFromClient(Bytes.wrapBuffer(buffer));
-          if (SecureScuttlebuttStreamServer.isGoodbye(message)) {
-            netSocket.close();
-          } else {
-            handler.receivedMessage(message);
+          messageBuffer = Bytes.concatenate(messageBuffer, message);
+
+          int headerSize = 9;
+
+          // Process any whole RPC message repsonses we have, and leave any partial ones at the end in the buffer
+          // We may have 1 or more whole messages, or 1 and a half, etc..
+          while (messageBuffer.size() >= headerSize) {
+
+            Bytes header = messageBuffer.slice(0, 9);
+            int bodyLength = getBodyLength(header);
+
+            if ((messageBuffer.size() - headerSize) >= (bodyLength)) {
+
+              int headerAndBodyLength = bodyLength + headerSize;
+              Bytes wholeMessage = messageBuffer.slice(0, headerAndBodyLength);
+
+              if (SecureScuttlebuttStreamServer.isGoodbye(wholeMessage)) {
+                netSocket.close();
+              } else {
+                handler.receivedMessage(wholeMessage);
+              }
+
+              // We've removed 1 RPC message from the message buffer, leave the remaining messages / part of a message
+              // in the buffer to be processed in the next iteration
+              messageBuffer = messageBuffer.slice(headerAndBodyLength);
+            } else {
+              // We don't have a full RPC message, leave the bytes in the buffer for when more arrive
+              break;
+            }
           }
         }
       } catch (HandshakeException | StreamException e) {
@@ -90,6 +117,11 @@ public final class SecureScuttlebuttVertxServer {
         netSocket.close();
       }
     }
+  }
+
+  private int getBodyLength(Bytes rpcHeader) {
+    Bytes size = rpcHeader.slice(1, 4);
+    return size.toInt();
   }
 
   private final Vertx vertx;
