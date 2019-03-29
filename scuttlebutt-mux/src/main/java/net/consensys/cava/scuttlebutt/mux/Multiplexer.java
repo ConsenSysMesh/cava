@@ -12,14 +12,42 @@
  */
 package net.consensys.cava.scuttlebutt.mux;
 
+import net.consensys.cava.concurrent.AsyncResult;
+import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 
-import java.util.concurrent.Future;
+import com.fasterxml.jackson.core.JsonProcessingException;
 
+import java.util.function.Function;
+
+/**
+ * Multiplexes asynchronous requests and streams across a connection to a node. Handles multiple active requests and
+ * streams across one connection.
+ */
 public interface Multiplexer {
 
-  Future<RPCMessage> makeAsyncRequest(RPCMessage request);
+  /**
+   * Issue an 'async' type request to a node, which will eventually return a result from the node.
+   *
+   * @param request the request details
+   *
+   * @return an async result which will be completed with the result or an error if the request fails.
+   */
+  AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request);
 
-  void openStream(RPCMessage request, ScuttlebuttStreamHandler responseSink);
+  /**
+   * Creates a request which opens a stream (e.g. a 'source' in the protocol docs.)
+   *
+   * @param request the request details
+   * @param streamFactory a function which takes a 'Runnable' which closes the stream when ran, and returns a stream
+   *                      handler to pass messages to
+   *
+   * @return a function, that when invoked, will close the stream if it has not already been closed.
+   *
+   * @throws JsonProcessingException
+   */
+  void openStream(RPCStreamRequest request,
+                  Function<Runnable, ScuttlebuttStreamHandler> streamFactory) throws JsonProcessingException;
 
 }

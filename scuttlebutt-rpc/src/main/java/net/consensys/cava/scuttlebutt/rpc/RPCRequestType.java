@@ -10,24 +10,17 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.mux;
+package net.consensys.cava.scuttlebutt.rpc;
 
-import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Handles incoming items from a result stream
- */
-public interface ScuttlebuttStreamHandler {
+public enum RPCRequestType {
 
-  /**
-   * Handles a new message from the result stream.
-   *
-   * @param message
-   */
-  void onMessage(RPCMessage message);
+  @JsonProperty("async")
+  ASYNC,
 
-  void onStreamEnd();
+  @JsonProperty("source")
+  SOURCE
 
-  void onStreamError(Exception ex);
 
 }

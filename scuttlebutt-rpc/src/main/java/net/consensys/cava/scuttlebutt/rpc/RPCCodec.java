@@ -12,6 +12,8 @@
  */
 package net.consensys.cava.scuttlebutt.rpc;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.consensys.cava.bytes.Bytes;
 
 import java.nio.ByteBuffer;
@@ -26,6 +28,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class RPCCodec {
 
   static final AtomicInteger counter = new AtomicInteger(1);
+
+  private static ObjectMapper mapper = new ObjectMapper();
 
   private static int nextRequestNumber() {
     int requestNumber = counter.getAndIncrement();
@@ -127,6 +131,18 @@ public final class RPCCodec {
       flagByte = flag.apply(flagByte);
     }
     return encodeResponse(body, requestNumber, flagByte);
+  }
+
+  /**
+   * Encodes a message with the body and headers set in the appropriate way to end a stream.
+   *
+   * @return the response encoded as an RPC request
+   * @throws JsonProcessingException
+   */
+  public static Bytes encodeStreamEndRequest(int requestNumber) throws JsonProcessingException {
+    Boolean bool = Boolean.TRUE;
+    byte[] bytes = mapper.writeValueAsBytes(bool);
+    return encodeRequest(Bytes.wrap(bytes), requestNumber, RPCFlag.EndOrError.END);
   }
 
   /**

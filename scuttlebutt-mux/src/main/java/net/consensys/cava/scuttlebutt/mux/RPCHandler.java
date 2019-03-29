@@ -13,75 +13,128 @@
 package net.consensys.cava.scuttlebutt.mux;
 
 import net.consensys.cava.bytes.Bytes;
+import net.consensys.cava.concurrent.AsyncResult;
+import net.consensys.cava.concurrent.CompletableAsyncResult;
 import net.consensys.cava.scuttlebutt.handshake.vertx.ClientHandler;
+import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCCodec;
 import net.consensys.cava.scuttlebutt.rpc.RPCFlag;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
+import org.logl.Logger;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import org.logl.LoggerProvider;
+
+/**
+ * Handles RPC requests and responses from an active connection to a scuttlebutt node
+ */
 public class RPCHandler implements Multiplexer, ClientHandler {
 
   private final Consumer<Bytes> messageSender;
-  private Map<Integer, CompletableFuture<RPCMessage>> awaitingAsyncResponse = new HashMap<>();
+  private final Logger logger;
+  private Map<Integer, CompletableAsyncResult<RPCMessage>> awaitingAsyncResponse = new HashMap<>();
 
   private Map<Integer, ScuttlebuttStreamHandler> streams = new HashMap<>();
 
   /**
-   *
-   * @param messageSender sends the request to the server
+   * Makes RPC requests over a connection
+   * @param messageSender sends the request to the node
+   * @param terminationFn closes the connection
+   * @param logger
    */
-  public RPCHandler(Consumer<Bytes> messageSender, Runnable terminationFn) {
+  public RPCHandler(Consumer<Bytes> messageSender, Runnable terminationFn, LoggerProvider logger) {
     this.messageSender = messageSender;
+
+    this.logger = logger.getLogger("rpc handler");
   }
 
 
   @Override
-  public CompletableFuture<RPCMessage> makeAsyncRequest(RPCMessage request) {
-    CompletableFuture<RPCMessage> future = new CompletableFuture<>();
+  public AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) {
+    CompletableAsyncResult<RPCMessage> result = AsyncResult.incomplete();
 
-    byte rpcFlags = request.rpcFlags();
-    boolean isStream = RPCFlag.Stream.STREAM.isApplied(rpcFlags);
-
-    if (isStream) {
-      future.completeExceptionally(new Exception("Expected async type request, not stream"));
-    } else {
-      int requestNumber = request.requestNumber();
-      awaitingAsyncResponse.put(requestNumber, future);
-
-      Bytes bytes = RPCCodec.encodeRequest(request.body(), requestNumber, rpcFlags);
-
+    try {
+      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage());
+      int requestNumber = message.requestNumber();
+      awaitingAsyncResponse.put(requestNumber, result);
+      Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, request.getRPCFlags());
       messageSender.accept(bytes);
+
+    } catch (JsonProcessingException e) {
+      result.completeExceptionally(e);
     }
 
-    return future;
+    return result;
   }
 
   @Override
-  public void openStream(RPCMessage request, ScuttlebuttStreamHandler responseSink) {
-    CompletableFuture<RPCMessage> future = new CompletableFuture<>();
+  public void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink) throws JsonProcessingException {
 
-    byte rpcFlags = request.rpcFlags();
-    boolean isStream = RPCFlag.Stream.STREAM.isApplied(rpcFlags);
+    try {
+      RPCFlag[] rpcFlags = request.getRPCFlags();
+      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage());
+      int requestNumber = message.requestNumber();
 
-    if (!isStream) {
-      future.completeExceptionally(new Exception("Expected stream type request, not sync type request"));
-    } else {
-      int requestNumber = request.requestNumber();
-      streams.put(requestNumber, responseSink);
+      Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, rpcFlags);
+      messageSender.accept(bytes);
+
+      Runnable closeStreamHandler = new Runnable() {
+        @Override
+        public void run() {
+
+          try {
+            Bytes bytes = RPCCodec.encodeStreamEndRequest(requestNumber);
+            messageSender.accept(bytes);
+          } catch (JsonProcessingException e) {
+            logger.warn("Unexpectedly could not encode stream end message to JSON.");
+          }
+
+        }
+      };
+
+      ScuttlebuttStreamHandler scuttlebuttStreamHandler = responseSink.apply(closeStreamHandler);
+
+      streams.put(requestNumber, scuttlebuttStreamHandler);
+    } catch (JsonProcessingException ex) {
+      throw ex;
     }
-
   }
 
   @Override
   public void receivedMessage(Bytes message) {
 
-    RPCMessage response = new RPCMessage(message);
+    RPCMessage rpcMessage = new RPCMessage(message);
 
+    // A negative request number indicates that this is a response, rather than a request that this node
+    // should service
+    if (rpcMessage.requestNumber() < 0) {
+      handleResponse(rpcMessage);
+    } else {
+      handleRequest(rpcMessage);
+    }
+
+  }
+
+  private void handleRequest(RPCMessage rpcMessage) {
+    // Not yet implemented
+    logger.warn("Received incoming request, but we do not yet handle any requests: " + rpcMessage.asString());
+
+  }
+
+  private void handleResponse(RPCMessage response) {
     int requestNumber = response.requestNumber() * -1;
+
+    if (logger.isDebugEnabled()) {
+      logger.debug("Incoming response: " + response.asString());
+    }
+
     byte rpcFlags = response.rpcFlags();
 
     boolean isStream = RPCFlag.Stream.STREAM.isApplied(rpcFlags);
@@ -99,24 +152,20 @@ public class RPCHandler implements Multiplexer, ClientHandler {
           scuttlebuttStreamHandler.onStreamEnd();
         }
       } else {
-        System.out.println("couldn't find stream handler for RPC response with request number " + requestNumber);
+        logger.warn("Couldn't find stream handler for RPC response with request number " + requestNumber + " " + response.asString());
       }
 
     } else {
 
-      CompletableFuture<RPCMessage> rpcMessageFuture = awaitingAsyncResponse.get(requestNumber);
+      CompletableAsyncResult<RPCMessage> rpcMessageFuture = awaitingAsyncResponse.get(requestNumber);
 
       if (rpcMessageFuture != null) {
-
         rpcMessageFuture.complete(response);
-
         awaitingAsyncResponse.remove(requestNumber);
-
       } else {
-        System.out.println("couldn't find future handler for RPC response with request number " + requestNumber);
+        logger.warn("Couldn't find async handler for RPC response with request number " + requestNumber + " " + response.asString());
       }
     }
-
 
   }
 

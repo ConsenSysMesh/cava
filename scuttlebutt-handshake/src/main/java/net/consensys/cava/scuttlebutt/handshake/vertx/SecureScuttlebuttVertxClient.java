@@ -52,8 +52,6 @@ public final class SecureScuttlebuttVertxClient {
 
     private Bytes messageBuffer = Bytes.EMPTY;
 
-    private Bytes messageBuffer = Bytes.EMPTY;
-
     NetSocketClientHandler(
         Logger logger,
         NetSocket socket,
