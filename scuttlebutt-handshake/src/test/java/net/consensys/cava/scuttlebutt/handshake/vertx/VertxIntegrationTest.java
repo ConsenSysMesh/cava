@@ -56,7 +56,7 @@ class VertxIntegrationTest {
 
     @Override
     public void receivedMessage(Bytes message) {
-      
+
     }
 
     @Override

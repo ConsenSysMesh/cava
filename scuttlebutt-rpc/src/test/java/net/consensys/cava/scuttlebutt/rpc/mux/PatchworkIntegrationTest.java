@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.mux;
+package net.consensys.cava.scuttlebutt.rpc.mux;
 
 /*
  * Copyright 2019 ConsenSys AG.
@@ -25,6 +25,8 @@ package net.consensys.cava.scuttlebutt.mux;
  * specific language governing permissions and limitations under the License.
  */
 import static java.nio.charset.StandardCharsets.UTF_8;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
@@ -38,6 +40,7 @@ import net.consensys.cava.scuttlebutt.handshake.vertx.SecureScuttlebuttVertxClie
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCFunction;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -54,8 +57,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import io.vertx.core.Vertx;
-import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
-import org.junit.Assert;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -68,7 +69,7 @@ import org.logl.vertx.LoglLogDelegateFactory;
 public class PatchworkIntegrationTest {
 
   LoggerProvider loggerProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
-          new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
+      new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
 
   @Test
   public void testWithPatchwork(@VertxInstance Vertx vertx) throws Exception {
@@ -107,10 +108,10 @@ public class PatchworkIntegrationTest {
     AsyncResult<List<RPCMessage>> allResults = AsyncResult.combine(results);
     List<RPCMessage> rpcMessages = allResults.get();
 
-    Assert.assertEquals(10, rpcMessages.size());
+    assertEquals(10, rpcMessages.size());
 
     rpcMessages.forEach(msg -> {
-      Assert.assertFalse(msg.lastMessageOrError());
+      assertFalse(msg.lastMessageOrError());
 
     });
 
@@ -202,17 +203,17 @@ public class PatchworkIntegrationTest {
     String host = "localhost";
     int port = 8008;
     LoggerProvider loggerProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
-            new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
+        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
     LoglLogDelegateFactory.setProvider(loggerProvider);
 
     SecureScuttlebuttVertxClient secureScuttlebuttVertxClient =
-            new SecureScuttlebuttVertxClient(loggerProvider, vertx, keyPair, networkKeyBytes32);
+        new SecureScuttlebuttVertxClient(loggerProvider, vertx, keyPair, networkKeyBytes32);
 
     AsyncResult<RPCHandler> onConnect =
-            secureScuttlebuttVertxClient.connectTo(port, host, keyPair.publicKey(), (sender, terminationFn) -> {
+        secureScuttlebuttVertxClient.connectTo(port, host, keyPair.publicKey(), (sender, terminationFn) -> {
 
-              return new RPCHandler(sender, terminationFn, loggerProvider);
-            });
+          return new RPCHandler(sender, terminationFn, loggerProvider);
+        });
 
     return onConnect.get();
   }
@@ -241,9 +242,7 @@ public class PatchworkIntegrationTest {
 
       @Override
       public void onStreamEnd() {
-        streamEnded.complete(
-                null
-        );
+        streamEnded.complete(null);
       }
 
       @Override

@@ -10,16 +10,16 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.mux;
+package net.consensys.cava.scuttlebutt.rpc.mux;
 
 import net.consensys.cava.concurrent.AsyncResult;
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import java.util.function.Function;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 /**
  * Multiplexes asynchronous requests and streams across a connection to a node. Handles multiple active requests and
@@ -41,13 +41,13 @@ public interface Multiplexer {
    *
    * @param request the request details
    * @param streamFactory a function which takes a 'Runnable' which closes the stream when ran, and returns a stream
-   *                      handler to pass messages to
+   *        handler to pass messages to
    *
    * @return a function, that when invoked, will close the stream if it has not already been closed.
    *
    * @throws JsonProcessingException
    */
-  void openStream(RPCStreamRequest request,
-                  Function<Runnable, ScuttlebuttStreamHandler> streamFactory) throws JsonProcessingException;
+  void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> streamFactory)
+      throws JsonProcessingException;
 
 }

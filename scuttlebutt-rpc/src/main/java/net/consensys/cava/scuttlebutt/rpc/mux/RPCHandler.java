@@ -10,7 +10,7 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.mux;
+package net.consensys.cava.scuttlebutt.rpc.mux;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.concurrent.AsyncResult;
@@ -27,9 +27,8 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.logl.Logger;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.logl.Logger;
 import org.logl.LoggerProvider;
 
 /**
@@ -45,6 +44,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
   /**
    * Makes RPC requests over a connection
+   * 
    * @param messageSender sends the request to the node
    * @param terminationFn closes the connection
    * @param logger
@@ -75,7 +75,8 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink) throws JsonProcessingException {
+  public void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink)
+      throws JsonProcessingException {
 
     try {
       RPCFlag[] rpcFlags = request.getRPCFlags();
@@ -152,7 +153,11 @@ public class RPCHandler implements Multiplexer, ClientHandler {
           scuttlebuttStreamHandler.onStreamEnd();
         }
       } else {
-        logger.warn("Couldn't find stream handler for RPC response with request number " + requestNumber + " " + response.asString());
+        logger.warn(
+            "Couldn't find stream handler for RPC response with request number "
+                + requestNumber
+                + " "
+                + response.asString());
       }
 
     } else {
@@ -163,7 +168,11 @@ public class RPCHandler implements Multiplexer, ClientHandler {
         rpcMessageFuture.complete(response);
         awaitingAsyncResponse.remove(requestNumber);
       } else {
-        logger.warn("Couldn't find async handler for RPC response with request number " + requestNumber + " " + response.asString());
+        logger.warn(
+            "Couldn't find async handler for RPC response with request number "
+                + requestNumber
+                + " "
+                + response.asString());
       }
     }
 

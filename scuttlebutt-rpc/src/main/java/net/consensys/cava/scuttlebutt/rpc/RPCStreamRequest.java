@@ -28,6 +28,7 @@ public class RPCStreamRequest {
 
   /**
    * The details for the function (the name of the function and its arguments.)
+   * 
    * @param function the function to be invoked
    * @param arguments the arguments for the function (can be any arbitrary class which can be marshalled into JSON.)
    */
