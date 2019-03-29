@@ -21,6 +21,7 @@ import net.consensys.cava.scuttlebutt.rpc.RPCCodec;
 import net.consensys.cava.scuttlebutt.rpc.RPCFlag;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
+import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -38,9 +39,12 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
   private final Consumer<Bytes> messageSender;
   private final Logger logger;
-  private Map<Integer, CompletableAsyncResult<RPCMessage>> awaitingAsyncResponse = new HashMap<>();
+  private final Runnable connectionCloser;
 
+  private Map<Integer, CompletableAsyncResult<RPCMessage>> awaitingAsyncResponse = new HashMap<>();
   private Map<Integer, ScuttlebuttStreamHandler> streams = new HashMap<>();
+
+  private boolean closed;
 
   /**
    * Makes RPC requests over a connection
@@ -51,14 +55,20 @@ public class RPCHandler implements Multiplexer, ClientHandler {
    */
   public RPCHandler(Consumer<Bytes> messageSender, Runnable terminationFn, LoggerProvider logger) {
     this.messageSender = messageSender;
+    this.connectionCloser = terminationFn;
+    this.closed = false;
 
     this.logger = logger.getLogger("rpc handler");
   }
 
-
   @Override
   public AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) {
+
     CompletableAsyncResult<RPCMessage> result = AsyncResult.incomplete();
+
+    if (closed) {
+      result.completeExceptionally(new ConnectionClosedException());
+    }
 
     try {
       RPCMessage message = new RPCMessage(request.toEncodedRpcMessage());
@@ -76,7 +86,12 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
   @Override
   public void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink)
-      throws JsonProcessingException {
+      throws JsonProcessingException,
+      ConnectionClosedException {
+
+    if (closed) {
+      throw new ConnectionClosedException();
+    }
 
     try {
       RPCFlag[] rpcFlags = request.getRPCFlags();
@@ -106,6 +121,11 @@ public class RPCHandler implements Multiplexer, ClientHandler {
     } catch (JsonProcessingException ex) {
       throw ex;
     }
+  }
+
+  @Override
+  public void close() {
+    connectionCloser.run();
   }
 
   @Override
@@ -180,6 +200,21 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
   @Override
   public void streamClosed() {
-    System.out.println("Stream closed!");
+    this.closed = true;
+
+    streams.forEach((key, streamHandler) -> {
+      streamHandler.onStreamError(new ConnectionClosedException());
+    });
+
+    streams.clear();
+
+    awaitingAsyncResponse.forEach((key, value) -> {
+      if (!value.isDone()) {
+        value.completeExceptionally(new ConnectionClosedException());
+      }
+
+    });
+
+
   }
 }

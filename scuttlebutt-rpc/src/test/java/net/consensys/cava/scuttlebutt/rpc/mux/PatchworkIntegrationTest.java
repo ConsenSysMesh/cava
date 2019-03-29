@@ -41,6 +41,7 @@ import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCFunction;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
+import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -73,26 +74,8 @@ public class PatchworkIntegrationTest {
 
   @Test
   public void testWithPatchwork(@VertxInstance Vertx vertx) throws Exception {
-    Signature.KeyPair keyPair = getLocalKeys();
-    String networkKeyBase64 = "1KHLiKZvAvjbY1ziZEHMXawbCEIM6qwjCDm3VYRan/s=";
-    Bytes32 networkKeyBytes32 = Bytes32.wrap(Base64.decode(networkKeyBase64));
 
-    String host = "localhost";
-    int port = 8008;
-    LoggerProvider loggerProvider = SimpleLogger.withLogLevel(Level.DEBUG).toPrintWriter(
-        new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
-    LoglLogDelegateFactory.setProvider(loggerProvider);
-
-    SecureScuttlebuttVertxClient secureScuttlebuttVertxClient =
-        new SecureScuttlebuttVertxClient(loggerProvider, vertx, keyPair, networkKeyBytes32);
-
-    AsyncResult<RPCHandler> onConnect =
-        secureScuttlebuttVertxClient.connectTo(port, host, keyPair.publicKey(), (sender, terminationFn) -> {
-
-          return new RPCHandler(sender, terminationFn, loggerProvider);
-        });
-
-    RPCHandler rpcHandler = onConnect.get();
+    RPCHandler rpcHandler = makeRPCHandler(vertx);
 
     List<AsyncResult<RPCMessage>> results = new ArrayList<>();
 
@@ -220,6 +203,7 @@ public class PatchworkIntegrationTest {
 
 
   @Test
+  @Disabled
   public void streamTest(@VertxInstance Vertx vertx) throws Exception {
 
     RPCHandler handler = makeRPCHandler(vertx);
@@ -234,22 +218,26 @@ public class PatchworkIntegrationTest {
 
     RPCStreamRequest streamRequest = new RPCStreamRequest(new RPCFunction("createUserStream"), Arrays.asList(params));
 
-    handler.openStream(streamRequest, (closeStream) -> new ScuttlebuttStreamHandler() {
-      @Override
-      public void onMessage(RPCMessage message) {
-        System.out.print(message.asString());
-      }
+    try {
+      handler.openStream(streamRequest, (closeStream) -> new ScuttlebuttStreamHandler() {
+        @Override
+        public void onMessage(RPCMessage message) {
+          System.out.print(message.asString());
+        }
 
-      @Override
-      public void onStreamEnd() {
-        streamEnded.complete(null);
-      }
+        @Override
+        public void onStreamEnd() {
+          streamEnded.complete(null);
+        }
 
-      @Override
-      public void onStreamError(Exception ex) {
+        @Override
+        public void onStreamError(Exception ex) {
 
-      }
-    });
+        }
+      });
+    } catch (ConnectionClosedException e) {
+      throw e;
+    }
 
     // Wait until the stream is complete
     streamEnded.get();

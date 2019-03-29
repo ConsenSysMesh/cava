@@ -16,6 +16,7 @@ import net.consensys.cava.concurrent.AsyncResult;
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
+import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedException;
 
 import java.util.function.Function;
 
@@ -43,11 +44,16 @@ public interface Multiplexer {
    * @param streamFactory a function which takes a 'Runnable' which closes the stream when ran, and returns a stream
    *        handler to pass messages to
    *
-   * @return a function, that when invoked, will close the stream if it has not already been closed.
-   *
    * @throws JsonProcessingException
    */
   void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> streamFactory)
-      throws JsonProcessingException;
+      throws JsonProcessingException,
+      ConnectionClosedException;
+
+
+  /**
+   * Close the underlying connection
+   */
+  void close();
 
 }

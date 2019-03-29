@@ -26,8 +26,16 @@ public interface ScuttlebuttStreamHandler {
    */
   void onMessage(RPCMessage message);
 
+  /**
+   * Invoked when the stream has been closed.
+   */
   void onStreamEnd();
 
+  /**
+   * Invoked when there is an error in the stream.
+   *
+   * @param ex the underlying error
+   */
   void onStreamError(Exception ex);
 
 }

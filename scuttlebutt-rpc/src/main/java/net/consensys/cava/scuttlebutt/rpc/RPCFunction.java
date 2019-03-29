@@ -15,6 +15,9 @@ package net.consensys.cava.scuttlebutt.rpc;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A scuttlebutt RPC function namespace and name representation.
+ */
 public class RPCFunction {
 
   private final List<String> namespace;
