@@ -34,6 +34,14 @@ import org.logl.LoggerProvider;
 
 /**
  * Handles RPC requests and responses from an active connection to a scuttlebutt node
+ *
+ * Note: the public methods on this class are synchronized so that a request is rejected if the
+ * connection has been closed before it begins and any 'in flight' requests are ended exceptionally
+ * with a 'connection closed' error without new incoming requests being added to the maps by threads.
+ *
+ * In the future,we could perhaps be carefully more fine grained about the locking if we require a high
+ * degree of concurrency.
+ *
  */
 public class RPCHandler implements Multiplexer, ClientHandler {
 
@@ -62,7 +70,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) {
+  public synchronized AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) {
 
     CompletableAsyncResult<RPCMessage> result = AsyncResult.incomplete();
 
@@ -85,7 +93,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink)
+  public synchronized void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink)
       throws JsonProcessingException,
       ConnectionClosedException {
 
@@ -124,12 +132,12 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public void close() {
+  public synchronized void close() {
     connectionCloser.run();
   }
 
   @Override
-  public void receivedMessage(Bytes message) {
+  public synchronized void receivedMessage(Bytes message) {
 
     RPCMessage rpcMessage = new RPCMessage(message);
 
