@@ -35,12 +35,12 @@ import org.logl.LoggerProvider;
 /**
  * Handles RPC requests and responses from an active connection to a scuttlebutt node
  *
- * Note: the public methods on this class are synchronized so that a request is rejected if the
- * connection has been closed before it begins and any 'in flight' requests are ended exceptionally
- * with a 'connection closed' error without new incoming requests being added to the maps by threads.
+ * Note: the public methods on this class are synchronized so that a request is rejected if the connection has been
+ * closed before it begins and any 'in flight' requests are ended exceptionally with a 'connection closed' error without
+ * new incoming requests being added to the maps by threads.
  *
- * In the future,we could perhaps be carefully more fine grained about the locking if we require a high
- * degree of concurrency.
+ * In the future,we could perhaps be carefully more fine grained about the locking if we require a high degree of
+ * concurrency.
  *
  */
 public class RPCHandler implements Multiplexer, ClientHandler {
@@ -93,8 +93,9 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public synchronized void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink)
-      throws JsonProcessingException,
+  public synchronized void openStream(
+      RPCStreamRequest request,
+      Function<Runnable, ScuttlebuttStreamHandler> responseSink) throws JsonProcessingException,
       ConnectionClosedException {
 
     if (closed) {
