@@ -112,7 +112,7 @@ class VertxIntegrationTest {
     SecureScuttlebuttVertxClient client =
         new SecureScuttlebuttVertxClient(provider, vertx, Signature.KeyPair.random(), networkIdentifier);
     MyClientHandler handler =
-        (MyClientHandler) client.connectTo(20000, "0.0.0.0", serverKeyPair.publicKey(), MyClientHandler::new).get();
+        client.connectTo(20000, "0.0.0.0", serverKeyPair.publicKey(), MyClientHandler::new).get();
 
     Thread.sleep(1000);
     assertNotNull(handler);
