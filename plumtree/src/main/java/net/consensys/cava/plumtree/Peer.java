@@ -12,5 +12,8 @@
  */
 package net.consensys.cava.plumtree;
 
-public class Peer {
+/**
+ * A peer part of the gossip system.
+ */
+public interface Peer {
 }
