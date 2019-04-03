@@ -56,7 +56,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
   /**
    * Makes RPC requests over a connection
-   * 
+   *
    * @param messageSender sends the request to the node
    * @param terminationFn closes the connection
    * @param logger
@@ -173,13 +173,18 @@ public class RPCHandler implements Multiplexer, ClientHandler {
       ScuttlebuttStreamHandler scuttlebuttStreamHandler = streams.get(requestNumber);
 
       if (scuttlebuttStreamHandler != null) {
-        scuttlebuttStreamHandler.onMessage(response);
 
         boolean lastMessageOrError = response.lastMessageOrError();
 
-        if (lastMessageOrError) {
+        if (lastMessageOrError && response.asString().equals("true")) {
           streams.remove(requestNumber);
           scuttlebuttStreamHandler.onStreamEnd();
+        } else if (lastMessageOrError) {
+
+          // TODO: specific exception class and extract 'message' field
+          scuttlebuttStreamHandler.onStreamError(new Exception(response.asString()));
+        } else {
+          scuttlebuttStreamHandler.onMessage(response);
         }
       } else {
         logger.warn(
