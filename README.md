@@ -1,3 +1,14 @@
+# CAVA IS MOVING!
+
+Cava is moving to the Apache Software Foundation, under the name Apache Tuweni.
+
+See https://github.com/apache/incubator-tuweni for the latest source.
+
+The website will be up at https://tuweni.apache.org.
+
+Cava is still maintained for now, but all new features and changes should go to Apache Tuweni.
+
+
 # Cava: ConsenSys Core Libraries for Java (& Kotlin)
 
 [![Build Status](https://circleci.com/gh/ConsenSys/cava.svg?style=shield&circle-token=440c81af8cae3c059b516a8e375471258d7e0229)](https://circleci.com/gh/ConsenSys/cava)
