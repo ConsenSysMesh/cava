@@ -19,6 +19,7 @@ import net.consensys.cava.bytes.Bytes;
 import java.io.IOException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Optional;
 
 /**
  * Decoded RPC message, making elements of the message available directly.
@@ -79,6 +80,40 @@ public final class RPCMessage {
    */
   public boolean lastMessageOrError() {
     return lastMessageOrError;
+  }
+
+  /**
+   *
+   * @return true if this is a last message in a stream, and it is not an error
+   */
+  public boolean isSuccessfulLastMessage() {
+    return lastMessageOrError() && asString().equals("true");
+  }
+
+  /**
+   *
+   * @return true if this is an error message response
+   */
+  public boolean isErrorMessage() {
+    return lastMessageOrError && !isSuccessfulLastMessage();
+  }
+
+  /**
+   *
+   * @return the RPC error response body, if this is an error response - nothing otherwise
+   */
+  public Optional<RPCErrorBody> getErrorBody() {
+
+    if (!isErrorMessage()) {
+      // If the body of the response is 'true' or the error flag isn't set, it's a successful end condition
+      return Optional.absent();
+    } else {
+      try {
+        return Optional.of(asJSON(RPCErrorBody.class));
+      } catch (IOException e) {
+        return Optional.absent();
+      }
+    }
   }
 
   /**

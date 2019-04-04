@@ -18,6 +18,7 @@ import net.consensys.cava.concurrent.CompletableAsyncResult;
 import net.consensys.cava.scuttlebutt.handshake.vertx.ClientHandler;
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCCodec;
+import net.consensys.cava.scuttlebutt.rpc.RPCErrorBody;
 import net.consensys.cava.scuttlebutt.rpc.RPCFlag;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
@@ -29,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.google.common.base.Optional;
 import org.logl.Logger;
 import org.logl.LoggerProvider;
 
@@ -174,15 +176,21 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
       if (scuttlebuttStreamHandler != null) {
 
-        boolean lastMessageOrError = response.lastMessageOrError();
-
-        if (lastMessageOrError && response.asString().equals("true")) {
+        if (response.isSuccessfulLastMessage()) {
           streams.remove(requestNumber);
           scuttlebuttStreamHandler.onStreamEnd();
-        } else if (lastMessageOrError) {
+        } else if (response.isErrorMessage()) {
 
-          // TODO: specific exception class and extract 'message' field
-          scuttlebuttStreamHandler.onStreamError(new Exception(response.asString()));
+          Optional<RPCErrorBody> errorBody = response.getErrorBody();
+
+          if (errorBody.isPresent()) {
+            scuttlebuttStreamHandler.onStreamError(new Exception(errorBody.get().getMessage()));
+          } else {
+            // This shouldn't happen, but for safety we fall back to just writing the whole body in the exception message
+            // if we fail to marshall it for whatever reason
+            scuttlebuttStreamHandler.onStreamError(new Exception(response.asString()));
+          }
+
         } else {
           scuttlebuttStreamHandler.onMessage(response);
         }
