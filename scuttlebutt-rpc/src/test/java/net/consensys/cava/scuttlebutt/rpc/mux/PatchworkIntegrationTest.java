@@ -73,6 +73,7 @@ public class PatchworkIntegrationTest {
       new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out, UTF_8))));
 
   @Test
+  @Disabled
   public void testWithPatchwork(@VertxInstance Vertx vertx) throws Exception {
 
     RPCHandler rpcHandler = makeRPCHandler(vertx);
