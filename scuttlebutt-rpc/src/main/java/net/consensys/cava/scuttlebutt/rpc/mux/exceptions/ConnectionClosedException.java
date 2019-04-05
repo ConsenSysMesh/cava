@@ -10,22 +10,12 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.handshake.vertx;
+package net.consensys.cava.scuttlebutt.rpc.mux.exceptions;
 
-import net.consensys.cava.bytes.Bytes;
+public class ConnectionClosedException extends Exception {
 
-import java.util.function.Consumer;
+  public ConnectionClosedException() {
+    super("Connection is closed.");
+  }
 
-/**
- * Factory creating stream handlers, managing client-side connections.
- */
-public interface ClientHandlerFactory<T extends ClientHandler> {
-
-  /**
-   * Creates a new handler associated with a valid streaming connection.
-   *
-   * @param sender the function to send bytes to the server
-   * @param terminationFunction a function to terminate the stream properly
-   */
-  T createHandler(Consumer<Bytes> sender, Runnable terminationFunction);
 }

@@ -10,22 +10,26 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.handshake.vertx;
+package net.consensys.cava.scuttlebutt.rpc;
 
-import net.consensys.cava.bytes.Bytes;
-
-import java.util.function.Consumer;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Factory creating stream handlers, managing client-side connections.
+ * The available type of Scuttlebutt RPC requests
  */
-public interface ClientHandlerFactory<T extends ClientHandler> {
+public enum RPCRequestType {
 
   /**
-   * Creates a new handler associated with a valid streaming connection.
-   *
-   * @param sender the function to send bytes to the server
-   * @param terminationFunction a function to terminate the stream properly
+   * An 'async' request, which returns one result some time in the future.
    */
-  T createHandler(Consumer<Bytes> sender, Runnable terminationFunction);
+  @JsonProperty("async")
+  ASYNC,
+
+  /**
+   * A 'source' type request, which begins a stream of results
+   */
+  @JsonProperty("source")
+  SOURCE
+
+
 }
