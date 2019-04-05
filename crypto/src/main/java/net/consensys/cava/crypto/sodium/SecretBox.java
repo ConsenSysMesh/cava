@@ -318,7 +318,7 @@ public final class SecretBox {
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
       destroy();
     }
   }

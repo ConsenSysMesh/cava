@@ -16,6 +16,7 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.MutableBytes;
 import net.consensys.cava.crypto.sodium.SHA256Hash;
 import net.consensys.cava.crypto.sodium.SecretBox;
+import net.consensys.cava.crypto.sodium.SodiumException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -129,8 +130,8 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
         return decryptedBody;
 
       }
-    } catch (Exception e) {
-      throw new StreamException(e.getMessage());
+    } catch (SodiumException | OutOfMemoryError ex) {
+      throw new StreamException(ex);
     }
   }
 

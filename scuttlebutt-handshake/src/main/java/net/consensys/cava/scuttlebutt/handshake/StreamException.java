@@ -17,4 +17,9 @@ public final class StreamException extends RuntimeException {
   StreamException(String message) {
     super(message);
   }
+
+  StreamException(Throwable ex) {
+    super(ex);
+  }
+
 }
