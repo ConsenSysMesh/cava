@@ -271,7 +271,6 @@ public final class Sodium {
 
   static <T> T dup(byte[] bytes, BiFunction<Pointer, Integer, T> ctr) {
     Pointer ptr = Sodium.dup(bytes);
-
     try {
       return ctr.apply(ptr, bytes.length);
     } catch (Throwable e) {
