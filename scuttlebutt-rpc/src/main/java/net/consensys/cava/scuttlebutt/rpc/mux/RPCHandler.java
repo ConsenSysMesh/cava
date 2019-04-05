@@ -30,6 +30,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Optional;
 import org.logl.Logger;
 import org.logl.LoggerProvider;
@@ -50,6 +51,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   private final Consumer<Bytes> messageSender;
   private final Logger logger;
   private final Runnable connectionCloser;
+  private final ObjectMapper objectMapper;
 
   private Map<Integer, CompletableAsyncResult<RPCMessage>> awaitingAsyncResponse = new HashMap<>();
   private Map<Integer, ScuttlebuttStreamHandler> streams = new HashMap<>();
@@ -61,12 +63,18 @@ public class RPCHandler implements Multiplexer, ClientHandler {
    *
    * @param messageSender sends the request to the node
    * @param terminationFn closes the connection
+   * @param objectMapper the objectMapper to serialize and deserialize message request and response bodies
    * @param logger
    */
-  public RPCHandler(Consumer<Bytes> messageSender, Runnable terminationFn, LoggerProvider logger) {
+  public RPCHandler(
+      Consumer<Bytes> messageSender,
+      Runnable terminationFn,
+      ObjectMapper objectMapper,
+      LoggerProvider logger) {
     this.messageSender = messageSender;
     this.connectionCloser = terminationFn;
     this.closed = false;
+    this.objectMapper = objectMapper;
 
     this.logger = logger.getLogger("rpc handler");
   }
@@ -81,7 +89,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
     }
 
     try {
-      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage());
+      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage(objectMapper));
       int requestNumber = message.requestNumber();
       awaitingAsyncResponse.put(requestNumber, result);
       Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, request.getRPCFlags());
@@ -106,7 +114,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
     try {
       RPCFlag[] rpcFlags = request.getRPCFlags();
-      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage());
+      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage(objectMapper));
       int requestNumber = message.requestNumber();
 
       Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, rpcFlags);
@@ -181,7 +189,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
           scuttlebuttStreamHandler.onStreamEnd();
         } else if (response.isErrorMessage()) {
 
-          Optional<RPCErrorBody> errorBody = response.getErrorBody();
+          Optional<RPCErrorBody> errorBody = response.getErrorBody(objectMapper);
 
           if (errorBody.isPresent()) {
             scuttlebuttStreamHandler.onStreamError(new Exception(errorBody.get().getMessage()));

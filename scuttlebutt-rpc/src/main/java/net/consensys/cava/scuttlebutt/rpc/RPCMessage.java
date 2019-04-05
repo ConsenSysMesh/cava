@@ -26,8 +26,6 @@ import com.google.common.base.Optional;
  */
 public final class RPCMessage {
 
-  private static final ObjectMapper mapper = new ObjectMapper();
-
   private final byte rpcFlags;
   private final boolean stream;
   private final boolean lastMessageOrError;
@@ -99,17 +97,17 @@ public final class RPCMessage {
   }
 
   /**
-   *
+   * @param objectMapper the object mapper to deserialize with
    * @return the RPC error response body, if this is an error response - nothing otherwise
    */
-  public Optional<RPCErrorBody> getErrorBody() {
+  public Optional<RPCErrorBody> getErrorBody(ObjectMapper objectMapper) {
 
     if (!isErrorMessage()) {
       // If the body of the response is 'true' or the error flag isn't set, it's a successful end condition
       return Optional.absent();
     } else {
       try {
-        return Optional.of(asJSON(RPCErrorBody.class));
+        return Optional.of(asJSON(objectMapper, RPCErrorBody.class));
       } catch (IOException e) {
         return Optional.absent();
       }
@@ -163,13 +161,14 @@ public final class RPCMessage {
 
   /**
    * Provides the body of the message, marshalled as a JSON object.
-   * 
+   *
+   * @param objectMapper the object mapper to deserialize with
    * @param clazz the JSON object class
    * @param <T> the matching JSON object class
    * @return a new instance of the JSON object class
    * @throws IOException if an error occurs during marshalling
    */
-  public <T> T asJSON(Class<T> clazz) throws IOException {
-    return mapper.readerFor(clazz).readValue(body().toArrayUnsafe());
+  public <T> T asJSON(ObjectMapper objectMapper, Class<T> clazz) throws IOException {
+    return objectMapper.readerFor(clazz).readValue(body().toArrayUnsafe());
   }
 }

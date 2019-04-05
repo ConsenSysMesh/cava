@@ -17,6 +17,7 @@ import net.consensys.cava.bytes.Bytes;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class RPCAsyncRequest {
 
@@ -37,9 +38,17 @@ public class RPCAsyncRequest {
     this.arguments = arguments;
   }
 
-  public Bytes toEncodedRpcMessage() throws JsonProcessingException {
-    return RPCCodec
-        .encodeRequest(new RPCRequestBody(function.asList(), RPCRequestType.ASYNC, arguments).asBytes(), getRPCFlags());
+  /**
+   * Encode the RPC request as bytes.
+   *
+   * @param objectMapper the object mapper to serialize the request with
+   * @return an RPC request serialized into bytes
+   * @throws JsonProcessingException thrown if there is an error while serializing the request to bytes
+   */
+  public Bytes toEncodedRpcMessage(ObjectMapper objectMapper) throws JsonProcessingException {
+    return RPCCodec.encodeRequest(
+        new RPCRequestBody(function.asList(), RPCRequestType.ASYNC, arguments).asBytes(objectMapper),
+        getRPCFlags());
   }
 
   public RPCFlag[] getRPCFlags() {

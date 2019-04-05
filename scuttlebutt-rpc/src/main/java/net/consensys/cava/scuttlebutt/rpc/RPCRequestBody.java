@@ -28,8 +28,6 @@ public class RPCRequestBody {
   private final RPCRequestType type;
   private final List<Object> args;
 
-  private static final ObjectMapper mapper = new ObjectMapper();
-
   /**
    *
    * @param name the function to be in invoked. If the function is in a namespace, the first n-1 items in the array are
@@ -59,12 +57,13 @@ public class RPCRequestBody {
 
   /**
    *
+   * @param objectMapper the object mapper to serialize to bytes with
    * @return the bytes representation of this RPC request body. The request is first encoded into JSON, then from JSON
    *         to a byte array
    * @throws JsonProcessingException thrown if there is a problem transforming the object to JSON.
    */
-  public Bytes asBytes() throws JsonProcessingException {
-    byte[] bytes = mapper.writeValueAsBytes(this);
+  public Bytes asBytes(ObjectMapper objectMapper) throws JsonProcessingException {
+    byte[] bytes = objectMapper.writeValueAsBytes(this);
     return Bytes.wrap(bytes);
   }
 

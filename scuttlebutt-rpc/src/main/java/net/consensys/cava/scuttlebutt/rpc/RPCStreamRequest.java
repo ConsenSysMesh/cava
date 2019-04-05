@@ -17,6 +17,7 @@ import net.consensys.cava.bytes.Bytes;
 import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * A request which returns a 'source' type result (e.g. opens up a stream that is followed by the request ID.)
@@ -41,9 +42,9 @@ public class RPCStreamRequest {
    * @return The byte representation for the request after it is marshalled into a JSON string.
    * @throws JsonProcessingException if an error was thrown while marshalling to JSON
    */
-  public Bytes toEncodedRpcMessage() throws JsonProcessingException {
+  public Bytes toEncodedRpcMessage(ObjectMapper mapper) throws JsonProcessingException {
     RPCRequestBody body = new RPCRequestBody(function.asList(), RPCRequestType.SOURCE, arguments);
-    return RPCCodec.encodeRequest(body.asBytes(), getRPCFlags());
+    return RPCCodec.encodeRequest(body.asBytes(mapper), getRPCFlags());
   }
 
   /**
