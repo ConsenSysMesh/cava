@@ -193,7 +193,7 @@ public final class SecretBox {
   /**
    * A SecretBox nonce.
    */
-  public static final class Nonce implements AutoCloseable {
+  public static final class Nonce implements Destroyable {
     final Allocated value;
 
     private Nonce(Pointer ptr, int length) {
@@ -230,6 +230,7 @@ public final class SecretBox {
       return Sodium.dup(bytes, Nonce::new);
     }
 
+    @Override
     public void destroy() {
       this.value.destroy();
     }
@@ -315,11 +316,6 @@ public final class SecretBox {
      */
     public byte[] bytesArray() {
       return value.bytesArray();
-    }
-
-    @Override
-    public void close() {
-      destroy();
     }
   }
 
