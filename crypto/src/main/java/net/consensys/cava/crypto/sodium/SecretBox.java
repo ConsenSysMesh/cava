@@ -193,7 +193,7 @@ public final class SecretBox {
   /**
    * A SecretBox nonce.
    */
-  public static final class Nonce {
+  public static final class Nonce implements Destroyable {
     final Allocated value;
 
     private Nonce(Pointer ptr, int length) {
@@ -228,6 +228,11 @@ public final class SecretBox {
             "nonce must be " + Sodium.crypto_secretbox_noncebytes() + " bytes, got " + bytes.length);
       }
       return Sodium.dup(bytes, Nonce::new);
+    }
+
+    @Override
+    public void destroy() {
+      this.value.destroy();
     }
 
     /**

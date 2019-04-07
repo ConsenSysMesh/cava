@@ -16,6 +16,7 @@ import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.MutableBytes;
 import net.consensys.cava.crypto.sodium.SHA256Hash;
 import net.consensys.cava.crypto.sodium.SecretBox;
+import net.consensys.cava.crypto.sodium.SodiumException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -100,29 +101,50 @@ final class SecureScuttlebuttStream implements SecureScuttlebuttStreamClient, Se
   }
 
   private Bytes decryptMessage(Bytes message, SecretBox.Key key, MutableBytes nonce) {
-    if (message.size() < 34) {
-      return null;
-    }
-    MutableBytes snapshotNonce = nonce.mutableCopy();
-    SecretBox.Nonce headerNonce = SecretBox.Nonce.fromBytes(snapshotNonce);
-    SecretBox.Nonce bodyNonce = SecretBox.Nonce.fromBytes(snapshotNonce.increment());
-    Bytes decryptedHeader = SecretBox.decrypt(message.slice(0, 34), key, headerNonce);
 
-    if (decryptedHeader == null) {
-      throw new StreamException("Failed to decrypt message header");
-    }
+    SecretBox.Nonce headerNonce = null;
+    SecretBox.Nonce bodyNonce = null;
 
-    int bodySize = ((decryptedHeader.get(0) & 0xFF) << 8) + (decryptedHeader.get(1) & 0xFF);
-    if (message.size() < bodySize + 34) {
-      return null;
+    try {
+      MutableBytes snapshotNonce = nonce.mutableCopy();
+      headerNonce = SecretBox.Nonce.fromBytes(snapshotNonce);
+      bodyNonce = SecretBox.Nonce.fromBytes(snapshotNonce.increment());
+
+      if (message.size() < 34) {
+        return null;
+      }
+
+      Bytes decryptedHeader = SecretBox.decrypt(message.slice(0, 34), key, headerNonce);
+
+      if (decryptedHeader == null) {
+        throw new StreamException("Failed to decrypt message header");
+      }
+
+      int bodySize = ((decryptedHeader.get(0) & 0xFF) << 8) + (decryptedHeader.get(1) & 0xFF);
+      if (message.size() < bodySize + 34) {
+        return null;
+      }
+      Bytes body = message.slice(34, bodySize);
+      Bytes decryptedBody = SecretBox.decrypt(Bytes.concatenate(decryptedHeader.slice(2), body), key, bodyNonce);
+      if (decryptedBody == null) {
+        throw new StreamException("Failed to decrypt message");
+      }
+      nonce.increment().increment();
+
+      return decryptedBody;
+    } catch (SodiumException | OutOfMemoryError ex) {
+      throw new StreamException(ex);
+    } finally {
+      // These may be null if there was an error while trying to construct them
+      destroyIfNonNull(headerNonce);
+      destroyIfNonNull(bodyNonce);
     }
-    Bytes body = message.slice(34, bodySize);
-    Bytes decryptedBody = SecretBox.decrypt(Bytes.concatenate(decryptedHeader.slice(2), body), key, bodyNonce);
-    if (decryptedBody == null) {
-      throw new StreamException("Failed to decrypt message");
+  }
+
+  private void destroyIfNonNull(SecretBox.Nonce nonce) {
+    if (nonce != null) {
+      nonce.destroy();
     }
-    nonce.increment().increment();
-    return decryptedBody;
   }
 
   private Bytes encrypt(Bytes message, SecretBox.Key clientToServerKey, MutableBytes clientToServerNonce) {
