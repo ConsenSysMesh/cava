@@ -26,6 +26,8 @@ import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedExcepti
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -36,15 +38,7 @@ import org.logl.Logger;
 import org.logl.LoggerProvider;
 
 /**
- * Handles RPC requests and responses from an active connection to a scuttlebutt node
- *
- * Note: the public methods on this class are synchronized so that a request is rejected if the connection has been
- * closed before it begins and any 'in flight' requests are ended exceptionally with a 'connection closed' error without
- * new incoming requests being added to the maps by threads.
- *
- * In the future,we could perhaps be carefully more fine grained about the locking if we require a high degree of
- * concurrency.
- *
+ * Handles RPC requests and responses from an active connection to a scuttlebutt node.
  */
 public class RPCHandler implements Multiplexer, ClientHandler {
 
@@ -57,6 +51,12 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   private Map<Integer, ScuttlebuttStreamHandler> streams = new HashMap<>();
 
   private boolean closed;
+
+  /**
+   * We run each each update on this executor to update the request state synchronously, and to handle the underlying
+   * connection closing by failing the in progress requests and not accepting future requests
+   */
+  private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
   /**
    * Makes RPC requests over a connection
@@ -80,86 +80,113 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public synchronized AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) {
+  public AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) throws JsonProcessingException {
+
+    Bytes bodyBytes = request.toEncodedRpcMessage(objectMapper);
 
     CompletableAsyncResult<RPCMessage> result = AsyncResult.incomplete();
 
-    if (closed) {
-      result.completeExceptionally(new ConnectionClosedException());
-    }
+    Runnable synchronizedAddRequest = () -> {
+      if (closed) {
+        result.completeExceptionally(new ConnectionClosedException());
+      } else {
+        RPCMessage message = new RPCMessage(bodyBytes);
+        int requestNumber = message.requestNumber();
+        awaitingAsyncResponse.put(requestNumber, result);
+        Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, request.getRPCFlags());
+        sendBytes(bytes);
+      }
+    };
 
-    try {
-      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage(objectMapper));
-      int requestNumber = message.requestNumber();
-      awaitingAsyncResponse.put(requestNumber, result);
-      Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, request.getRPCFlags());
-      messageSender.accept(bytes);
-
-    } catch (JsonProcessingException e) {
-      result.completeExceptionally(e);
-    }
-
+    executor.submit(synchronizedAddRequest);
     return result;
   }
 
   @Override
-  public synchronized void openStream(
-      RPCStreamRequest request,
-      Function<Runnable, ScuttlebuttStreamHandler> responseSink) throws JsonProcessingException,
-      ConnectionClosedException {
+  public void openStream(RPCStreamRequest request, Function<Runnable, ScuttlebuttStreamHandler> responseSink)
+      throws JsonProcessingException {
 
-    if (closed) {
-      throw new ConnectionClosedException();
-    }
+    Bytes bodyBytes = request.toEncodedRpcMessage(objectMapper);
 
-    try {
+    Runnable synchronizedRequest = () -> {
+
       RPCFlag[] rpcFlags = request.getRPCFlags();
-      RPCMessage message = new RPCMessage(request.toEncodedRpcMessage(objectMapper));
+      RPCMessage message = new RPCMessage(bodyBytes);
       int requestNumber = message.requestNumber();
 
-      Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, rpcFlags);
-      messageSender.accept(bytes);
+      Bytes requestBytes = RPCCodec.encodeRequest(message.body(), requestNumber, rpcFlags);
 
-      Runnable closeStreamHandler = new Runnable() {
-        @Override
-        public void run() {
+      Runnable closeStreamHandler = () -> {
 
-          try {
-            Bytes bytes = RPCCodec.encodeStreamEndRequest(requestNumber);
-            messageSender.accept(bytes);
-          } catch (JsonProcessingException e) {
-            logger.warn("Unexpectedly could not encode stream end message to JSON.");
-          }
-
+        try {
+          Bytes streamEnd = RPCCodec.encodeStreamEndRequest(requestNumber);
+          sendBytes(streamEnd);
+        } catch (JsonProcessingException e) {
+          logger.warn("Unexpectedly could not encode stream end message to JSON.");
         }
+
       };
 
       ScuttlebuttStreamHandler scuttlebuttStreamHandler = responseSink.apply(closeStreamHandler);
 
-      streams.put(requestNumber, scuttlebuttStreamHandler);
-    } catch (JsonProcessingException ex) {
-      throw ex;
-    }
+      if (closed) {
+        scuttlebuttStreamHandler.onStreamError(new ConnectionClosedException());
+      } else {
+        streams.put(requestNumber, scuttlebuttStreamHandler);
+        sendBytes(requestBytes);
+      }
+
+
+    };
+
+    executor.submit(synchronizedRequest);
   }
 
   @Override
-  public synchronized void close() {
-    connectionCloser.run();
+  public void close() {
+    executor.submit(connectionCloser);
   }
 
   @Override
-  public synchronized void receivedMessage(Bytes message) {
+  public void receivedMessage(Bytes message) {
 
-    RPCMessage rpcMessage = new RPCMessage(message);
+    Runnable synchronizedHandleMessage = () -> {
+      RPCMessage rpcMessage = new RPCMessage(message);
 
-    // A negative request number indicates that this is a response, rather than a request that this node
-    // should service
-    if (rpcMessage.requestNumber() < 0) {
-      handleResponse(rpcMessage);
-    } else {
-      handleRequest(rpcMessage);
-    }
+      // A negative request number indicates that this is a response, rather than a request that this node
+      // should service
+      if (rpcMessage.requestNumber() < 0) {
+        handleResponse(rpcMessage);
+      } else {
+        handleRequest(rpcMessage);
+      }
+    };
 
+    executor.submit(synchronizedHandleMessage);
+  }
+
+  @Override
+  public void streamClosed() {
+
+    Runnable synchronizedCloseStream = () -> {
+      closed = true;
+
+      streams.forEach((key, streamHandler) -> {
+        streamHandler.onStreamError(new ConnectionClosedException());
+      });
+
+      streams.clear();
+
+      awaitingAsyncResponse.forEach((key, value) -> {
+        if (!value.isDone()) {
+          value.completeExceptionally(new ConnectionClosedException());
+        }
+      });
+
+      awaitingAsyncResponse.clear();
+    };
+
+    executor.submit(synchronizedCloseStream);
   }
 
   private void handleRequest(RPCMessage rpcMessage) {
@@ -228,23 +255,8 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
   }
 
-  @Override
-  public void streamClosed() {
-    this.closed = true;
-
-    streams.forEach((key, streamHandler) -> {
-      streamHandler.onStreamError(new ConnectionClosedException());
-    });
-
-    streams.clear();
-
-    awaitingAsyncResponse.forEach((key, value) -> {
-      if (!value.isDone()) {
-        value.completeExceptionally(new ConnectionClosedException());
-      }
-
-    });
-
-
+  private void sendBytes(Bytes bytes) {
+    messageSender.accept(bytes);
   }
+
 }

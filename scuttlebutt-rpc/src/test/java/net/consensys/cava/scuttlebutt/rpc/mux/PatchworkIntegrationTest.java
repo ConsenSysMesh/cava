@@ -41,7 +41,6 @@ import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCFunction;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
-import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedException;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -219,26 +218,22 @@ public class PatchworkIntegrationTest {
 
     RPCStreamRequest streamRequest = new RPCStreamRequest(new RPCFunction("createUserStream"), Arrays.asList(params));
 
-    try {
-      handler.openStream(streamRequest, (closeStream) -> new ScuttlebuttStreamHandler() {
-        @Override
-        public void onMessage(RPCMessage message) {
-          System.out.print(message.asString());
-        }
+    handler.openStream(streamRequest, (closeStream) -> new ScuttlebuttStreamHandler() {
+      @Override
+      public void onMessage(RPCMessage message) {
+        System.out.print(message.asString());
+      }
 
-        @Override
-        public void onStreamEnd() {
-          streamEnded.complete(null);
-        }
+      @Override
+      public void onStreamEnd() {
+        streamEnded.complete(null);
+      }
 
-        @Override
-        public void onStreamError(Exception ex) {
+      @Override
+      public void onStreamError(Exception ex) {
 
-        }
-      });
-    } catch (ConnectionClosedException e) {
-      throw e;
-    }
+      }
+    });
 
     // Wait until the stream is complete
     streamEnded.get();

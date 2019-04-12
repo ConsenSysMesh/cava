@@ -35,7 +35,7 @@ public interface Multiplexer {
    *
    * @return an async result which will be completed with the result or an error if the request fails.
    */
-  AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request);
+  AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) throws JsonProcessingException;
 
   /**
    * Creates a request which opens a stream (e.g. a 'source' in the protocol docs.)
