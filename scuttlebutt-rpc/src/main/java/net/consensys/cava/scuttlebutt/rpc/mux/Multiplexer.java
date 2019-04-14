@@ -14,7 +14,7 @@ package net.consensys.cava.scuttlebutt.rpc.mux;
 
 import net.consensys.cava.concurrent.AsyncResult;
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
-import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import net.consensys.cava.scuttlebutt.rpc.RPCResponse;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedException;
 
@@ -35,7 +35,7 @@ public interface Multiplexer {
    *
    * @return an async result which will be completed with the result or an error if the request fails.
    */
-  AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) throws JsonProcessingException;
+  AsyncResult<RPCResponse> makeAsyncRequest(RPCAsyncRequest request) throws JsonProcessingException;
 
   /**
    * Creates a request which opens a stream (e.g. a 'source' in the protocol docs.)

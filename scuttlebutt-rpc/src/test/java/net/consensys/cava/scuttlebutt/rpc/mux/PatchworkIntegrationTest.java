@@ -26,7 +26,6 @@ package net.consensys.cava.scuttlebutt.rpc.mux;
  */
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import net.consensys.cava.bytes.Bytes;
 import net.consensys.cava.bytes.Bytes32;
@@ -39,7 +38,7 @@ import net.consensys.cava.junit.VertxInstance;
 import net.consensys.cava.scuttlebutt.handshake.vertx.SecureScuttlebuttVertxClient;
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCFunction;
-import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import net.consensys.cava.scuttlebutt.rpc.RPCResponse;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 
 import java.io.BufferedWriter;
@@ -77,27 +76,21 @@ public class PatchworkIntegrationTest {
 
     RPCHandler rpcHandler = makeRPCHandler(vertx);
 
-    List<AsyncResult<RPCMessage>> results = new ArrayList<>();
+    List<AsyncResult<RPCResponse>> results = new ArrayList<>();
 
     for (int i = 0; i < 10; i++) {
       RPCFunction function = new RPCFunction("whoami");
       RPCAsyncRequest asyncRequest = new RPCAsyncRequest(function, new ArrayList<>());
 
-      AsyncResult<RPCMessage> res = rpcHandler.makeAsyncRequest(asyncRequest);
+      AsyncResult<RPCResponse> res = rpcHandler.makeAsyncRequest(asyncRequest);
 
       results.add(res);
     }
 
-    AsyncResult<List<RPCMessage>> allResults = AsyncResult.combine(results);
-    List<RPCMessage> rpcMessages = allResults.get();
+    AsyncResult<List<RPCResponse>> allResults = AsyncResult.combine(results);
+    List<RPCResponse> rpcMessages = allResults.get();
 
     assertEquals(10, rpcMessages.size());
-
-    rpcMessages.forEach(msg -> {
-      assertFalse(msg.lastMessageOrError());
-
-    });
-
   }
 
 
@@ -157,7 +150,7 @@ public class PatchworkIntegrationTest {
     RPCHandler rpcHandler = makeRPCHandler(vertx);
 
 
-    List<AsyncResult<RPCMessage>> results = new ArrayList<>();
+    List<AsyncResult<RPCResponse>> results = new ArrayList<>();
 
     for (int i = 0; i < 20; i++) {
       // Note: in a real use case, this would more likely be a Java class with these fields
@@ -167,13 +160,13 @@ public class PatchworkIntegrationTest {
 
       RPCAsyncRequest asyncRequest = new RPCAsyncRequest(new RPCFunction("publish"), Arrays.asList(params));
 
-      AsyncResult<RPCMessage> rpcMessageAsyncResult = rpcHandler.makeAsyncRequest(asyncRequest);
+      AsyncResult<RPCResponse> rpcMessageAsyncResult = rpcHandler.makeAsyncRequest(asyncRequest);
 
       results.add(rpcMessageAsyncResult);
 
     }
 
-    List<RPCMessage> rpcMessages = AsyncResult.combine(results).get();
+    List<RPCResponse> rpcMessages = AsyncResult.combine(results).get();
 
     rpcMessages.forEach(msg -> System.out.println(msg.asString()));
   }
@@ -220,7 +213,7 @@ public class PatchworkIntegrationTest {
 
     handler.openStream(streamRequest, (closeStream) -> new ScuttlebuttStreamHandler() {
       @Override
-      public void onMessage(RPCMessage message) {
+      public void onMessage(RPCResponse message) {
         System.out.print(message.asString());
       }
 
@@ -232,6 +225,7 @@ public class PatchworkIntegrationTest {
       @Override
       public void onStreamError(Exception ex) {
 
+        streamEnded.completeExceptionally(ex);
       }
     });
 

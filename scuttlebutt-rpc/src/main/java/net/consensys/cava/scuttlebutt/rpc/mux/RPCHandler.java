@@ -18,14 +18,16 @@ import net.consensys.cava.concurrent.CompletableAsyncResult;
 import net.consensys.cava.scuttlebutt.handshake.vertx.ClientHandler;
 import net.consensys.cava.scuttlebutt.rpc.RPCAsyncRequest;
 import net.consensys.cava.scuttlebutt.rpc.RPCCodec;
-import net.consensys.cava.scuttlebutt.rpc.RPCErrorBody;
 import net.consensys.cava.scuttlebutt.rpc.RPCFlag;
 import net.consensys.cava.scuttlebutt.rpc.RPCMessage;
+import net.consensys.cava.scuttlebutt.rpc.RPCResponse;
 import net.consensys.cava.scuttlebutt.rpc.RPCStreamRequest;
 import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.ConnectionClosedException;
+import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.RPCRequestFailedException;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
@@ -33,7 +35,6 @@ import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
 import org.logl.Logger;
 import org.logl.LoggerProvider;
 
@@ -47,7 +48,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   private final Runnable connectionCloser;
   private final ObjectMapper objectMapper;
 
-  private Map<Integer, CompletableAsyncResult<RPCMessage>> awaitingAsyncResponse = new HashMap<>();
+  private Map<Integer, CompletableAsyncResult<RPCResponse>> awaitingAsyncResponse = new HashMap<>();
   private Map<Integer, ScuttlebuttStreamHandler> streams = new HashMap<>();
 
   private boolean closed;
@@ -80,11 +81,11 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   }
 
   @Override
-  public AsyncResult<RPCMessage> makeAsyncRequest(RPCAsyncRequest request) throws JsonProcessingException {
+  public AsyncResult<RPCResponse> makeAsyncRequest(RPCAsyncRequest request) throws JsonProcessingException {
 
     Bytes bodyBytes = request.toEncodedRpcMessage(objectMapper);
 
-    CompletableAsyncResult<RPCMessage> result = AsyncResult.incomplete();
+    CompletableAsyncResult<RPCResponse> result = AsyncResult.incomplete();
 
     Runnable synchronizedAddRequest = () -> {
       if (closed) {
@@ -92,6 +93,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
       } else {
         RPCMessage message = new RPCMessage(bodyBytes);
         int requestNumber = message.requestNumber();
+
         awaitingAsyncResponse.put(requestNumber, result);
         Bytes bytes = RPCCodec.encodeRequest(message.body(), requestNumber, request.getRPCFlags());
         sendBytes(bytes);
@@ -206,6 +208,8 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
     boolean isStream = RPCFlag.Stream.STREAM.isApplied(rpcFlags);
 
+    Optional<RPCRequestFailedException> exception = response.getException(objectMapper);
+
     if (isStream) {
       ScuttlebuttStreamHandler scuttlebuttStreamHandler = streams.get(requestNumber);
 
@@ -214,20 +218,11 @@ public class RPCHandler implements Multiplexer, ClientHandler {
         if (response.isSuccessfulLastMessage()) {
           streams.remove(requestNumber);
           scuttlebuttStreamHandler.onStreamEnd();
-        } else if (response.isErrorMessage()) {
-
-          Optional<RPCErrorBody> errorBody = response.getErrorBody(objectMapper);
-
-          if (errorBody.isPresent()) {
-            scuttlebuttStreamHandler.onStreamError(new Exception(errorBody.get().getMessage()));
-          } else {
-            // This shouldn't happen, but for safety we fall back to just writing the whole body in the exception message
-            // if we fail to marshall it for whatever reason
-            scuttlebuttStreamHandler.onStreamError(new Exception(response.asString()));
-          }
-
+        } else if (exception.isPresent()) {
+          scuttlebuttStreamHandler.onStreamError(exception.get());
         } else {
-          scuttlebuttStreamHandler.onMessage(response);
+          RPCResponse successfulResponse = new RPCResponse(response.body(), response.bodyType());
+          scuttlebuttStreamHandler.onMessage(successfulResponse);
         }
       } else {
         logger.warn(
@@ -239,11 +234,18 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
     } else {
 
-      CompletableAsyncResult<RPCMessage> rpcMessageFuture = awaitingAsyncResponse.get(requestNumber);
+      CompletableAsyncResult<RPCResponse> rpcMessageFuture = awaitingAsyncResponse.remove(requestNumber);
 
       if (rpcMessageFuture != null) {
-        rpcMessageFuture.complete(response);
-        awaitingAsyncResponse.remove(requestNumber);
+
+        if (exception.isPresent()) {
+          rpcMessageFuture.completeExceptionally(exception.get());
+        } else {
+          RPCResponse successfulResponse = new RPCResponse(response.body(), response.bodyType());
+
+          rpcMessageFuture.complete(successfulResponse);
+        }
+
       } else {
         logger.warn(
             "Couldn't find async handler for RPC response with request number "
