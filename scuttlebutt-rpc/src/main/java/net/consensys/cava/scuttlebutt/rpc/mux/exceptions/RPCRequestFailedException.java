@@ -12,7 +12,7 @@
  */
 package net.consensys.cava.scuttlebutt.rpc.mux.exceptions;
 
-public class RPCRequestFailedException extends Exception {
+public final class RPCRequestFailedException extends RuntimeException {
 
   public RPCRequestFailedException(String errorMessage) {
     super(errorMessage);

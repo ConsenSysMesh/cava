@@ -41,11 +41,17 @@ public class RPCResponse {
     this.bodyType = bodyType;
   }
 
-  public Bytes getBody() {
+  /**
+   * @return the RPC response body
+   */
+  public Bytes body() {
     return body;
   }
 
-  public BodyType getBodyType() {
+  /**
+   * @return The type of the data contained in the body.
+   */
+  public BodyType bodyType() {
     return bodyType;
   }
 
@@ -55,7 +61,7 @@ public class RPCResponse {
    * @return the body of the message as a UTF-8 string
    */
   public String asString() {
-    return new String(getBody().toArrayUnsafe(), UTF_8);
+    return new String(body().toArrayUnsafe(), UTF_8);
   }
 
   /**
@@ -68,7 +74,7 @@ public class RPCResponse {
    * @throws IOException if an error occurs during marshalling
    */
   public <T> T asJSON(ObjectMapper objectMapper, Class<T> clazz) throws IOException {
-    return objectMapper.readerFor(clazz).readValue(getBody().toArrayUnsafe());
+    return objectMapper.readerFor(clazz).readValue(body().toArrayUnsafe());
   }
 
 }

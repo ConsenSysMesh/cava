@@ -28,13 +28,13 @@ import net.consensys.cava.scuttlebutt.rpc.mux.exceptions.RPCRequestFailedExcepti
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.vertx.core.Handler;
+import io.vertx.core.Vertx;
 import org.logl.Logger;
 import org.logl.LoggerProvider;
 
@@ -48,30 +48,33 @@ public class RPCHandler implements Multiplexer, ClientHandler {
   private final Runnable connectionCloser;
   private final ObjectMapper objectMapper;
 
+  /**
+   * We run each each update on the vertx event loop to update the request state synchronously, and to handle the
+   * underlying connection closing by failing the in progress requests and not accepting future requests
+   */
+  private final Vertx vertx;
+
   private Map<Integer, CompletableAsyncResult<RPCResponse>> awaitingAsyncResponse = new HashMap<>();
   private Map<Integer, ScuttlebuttStreamHandler> streams = new HashMap<>();
 
   private boolean closed;
 
   /**
-   * We run each each update on this executor to update the request state synchronously, and to handle the underlying
-   * connection closing by failing the in progress requests and not accepting future requests
-   */
-  private final ExecutorService executor = Executors.newSingleThreadExecutor();
-
-  /**
    * Makes RPC requests over a connection
    *
+   * @param vertx The vertx instance to queue requests with
    * @param messageSender sends the request to the node
    * @param terminationFn closes the connection
    * @param objectMapper the objectMapper to serialize and deserialize message request and response bodies
    * @param logger
    */
   public RPCHandler(
+      Vertx vertx,
       Consumer<Bytes> messageSender,
       Runnable terminationFn,
       ObjectMapper objectMapper,
       LoggerProvider logger) {
+    this.vertx = vertx;
     this.messageSender = messageSender;
     this.connectionCloser = terminationFn;
     this.closed = false;
@@ -87,7 +90,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
     CompletableAsyncResult<RPCResponse> result = AsyncResult.incomplete();
 
-    Runnable synchronizedAddRequest = () -> {
+    Handler<Void> synchronizedAddRequest = (event) -> {
       if (closed) {
         result.completeExceptionally(new ConnectionClosedException());
       } else {
@@ -100,7 +103,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
       }
     };
 
-    executor.submit(synchronizedAddRequest);
+    vertx.runOnContext(synchronizedAddRequest);
     return result;
   }
 
@@ -110,7 +113,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
     Bytes bodyBytes = request.toEncodedRpcMessage(objectMapper);
 
-    Runnable synchronizedRequest = () -> {
+    Handler<Void> synchronizedRequest = (event) -> {
 
       RPCFlag[] rpcFlags = request.getRPCFlags();
       RPCMessage message = new RPCMessage(bodyBytes);
@@ -141,18 +144,20 @@ public class RPCHandler implements Multiplexer, ClientHandler {
 
     };
 
-    executor.submit(synchronizedRequest);
+    vertx.runOnContext(synchronizedRequest);
   }
 
   @Override
   public void close() {
-    executor.submit(connectionCloser);
+    vertx.runOnContext((event) -> {
+      connectionCloser.run();
+    });
   }
 
   @Override
   public void receivedMessage(Bytes message) {
 
-    Runnable synchronizedHandleMessage = () -> {
+    Handler<Void> synchronizedHandleMessage = (event) -> {
       RPCMessage rpcMessage = new RPCMessage(message);
 
       // A negative request number indicates that this is a response, rather than a request that this node
@@ -164,13 +169,13 @@ public class RPCHandler implements Multiplexer, ClientHandler {
       }
     };
 
-    executor.submit(synchronizedHandleMessage);
+    vertx.runOnContext(synchronizedHandleMessage);
   }
 
   @Override
   public void streamClosed() {
 
-    Runnable synchronizedCloseStream = () -> {
+    Handler<Void> synchronizedCloseStream = (event) -> {
       closed = true;
 
       streams.forEach((key, streamHandler) -> {
@@ -188,7 +193,7 @@ public class RPCHandler implements Multiplexer, ClientHandler {
       awaitingAsyncResponse.clear();
     };
 
-    executor.submit(synchronizedCloseStream);
+    vertx.runOnContext(synchronizedCloseStream);
   }
 
   private void handleRequest(RPCMessage rpcMessage) {

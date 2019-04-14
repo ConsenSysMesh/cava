@@ -118,7 +118,7 @@ public final class RPCMessage {
   /**
    *
    * @param objectMapper the objectmatter to deserialize the error with.
-   *                     
+   *
    * @return an exception if this represents an error RPC response, otherwise nothing
    */
   public Optional<RPCRequestFailedException> getException(ObjectMapper objectMapper) {

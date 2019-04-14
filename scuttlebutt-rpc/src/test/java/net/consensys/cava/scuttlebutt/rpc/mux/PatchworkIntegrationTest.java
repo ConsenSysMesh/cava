@@ -188,7 +188,7 @@ public class PatchworkIntegrationTest {
     AsyncResult<RPCHandler> onConnect =
         secureScuttlebuttVertxClient.connectTo(port, host, keyPair.publicKey(), (sender, terminationFn) -> {
 
-          return new RPCHandler(sender, terminationFn, new ObjectMapper(), loggerProvider);
+          return new RPCHandler(vertx, sender, terminationFn, new ObjectMapper(), loggerProvider);
         });
 
     return onConnect.get();
