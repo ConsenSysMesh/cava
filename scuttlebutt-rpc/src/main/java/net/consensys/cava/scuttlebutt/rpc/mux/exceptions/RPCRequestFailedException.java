@@ -10,32 +10,11 @@
  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
  * specific language governing permissions and limitations under the License.
  */
-package net.consensys.cava.scuttlebutt.rpc.mux;
+package net.consensys.cava.scuttlebutt.rpc.mux.exceptions;
 
-import net.consensys.cava.scuttlebutt.rpc.RPCResponse;
+public final class RPCRequestFailedException extends RuntimeException {
 
-/**
- * Handles incoming items from a result stream
- */
-public interface ScuttlebuttStreamHandler {
-
-  /**
-   * Handles a new message from the result stream.
-   *
-   * @param message
-   */
-  void onMessage(RPCResponse message);
-
-  /**
-   * Invoked when the stream has been closed.
-   */
-  void onStreamEnd();
-
-  /**
-   * Invoked when there is an error in the stream.
-   *
-   * @param ex the underlying error
-   */
-  void onStreamError(Exception ex);
-
+  public RPCRequestFailedException(String errorMessage) {
+    super(errorMessage);
+  }
 }
